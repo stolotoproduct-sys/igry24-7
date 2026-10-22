@@ -6685,12 +6685,12 @@ function cb(){try{const s=lossbackModel.snapshot();const ready=s.periods.filter(
 function wheelLine(){try{if(!wheelOpen())return {t:`Откроется при ставках от 1 000 ₽ · сейчас ${n(S.mb)} ₽`,b:'Играть',p:Math.min(100,S.mb/WG_MIN*100)};return wheelFree()?{t:'Вращение доступно',b:'Крутить'}:{t:'Следующее вращение через '+wheelCountdown(),b:'Открыть'}}catch(e){return {t:'',b:'Открыть'}}}
 function authView(){
  const c=cb(),w=wheelLine(),lvl=c?c.s.level:{id:1,name:'Старт',rate:0},next=c&&c.s.next;
- const net=(S.won||0)-(S.spent||0);
+
  return `<div class="pf-card pf-acc"><span class="pf-ava">ИП</span><div class="pf-acc-main"><b>Иван Петров</b><small>+7 916 ••• 45 12 · ID 4821 3907</small><span class="pf-ok">${I.check}Аккаунт подтверждён</span></div></div>
  <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div><div><small>Купончики</small><b>${n(S.cp||0)}</b></div></div>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  <h3 class="pf-h">Статистика за ${typeof wgMonth==='function'?wgMonth():'месяц'}</h3>
- <div class="pf-stats"><div class="pf-stat"><small>Выиграно</small><b>${n(S.won)} ₽</b></div><div class="pf-stat"><small>Ставки</small><b>${n(S.spent)} ₽</b></div><div class="pf-stat"><small>Сыграно игр</small><b>${n(S.plays)}</b></div><div class="pf-stat"><small>Итог месяца</small><b class="${net>=0?'up':'down'}">${net>=0?'+':'−'}${n(Math.abs(net))} ₽</b></div></div>
+ <div class="pf-stats"><div class="pf-stat"><small>Выиграно</small><b>${n(S.won)} ₽</b></div><div class="pf-stat"><small>Ставки</small><b>${n(S.spent)} ₽</b></div></div>
  <h3 class="pf-h">Кэшбек</h3>
  <button class="pf-card pf-cb" type="button" data-pf="cashback">${typeof lbMedal==='function'?lbMedal(lvl,true):''}<span class="pf-cb-main"><b>Уровень ${lvl.id} · ${lvl.name} · ${lvl.rate}%</b><span class="pf-track"><i style="width:${c?c.s.progress:0}%"></i></span><small>${next?`До уровня ${next.id} — ${n(c.s.remaining)} ₽ оборота`:'Максимальный уровень'}</small></span><span class="pf-cb-side">${c&&c.ready?`<em>Забрать ${n(c.ready)} ₽</em>`:`<small>Получено</small><b>${n(c?c.paid:0)} ₽</b>`}</span></button>
  <h3 class="pf-h">Колесо удачи и бонусы</h3>
@@ -6707,8 +6707,7 @@ function authView(){
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
 function about(){return `<h3 class="pf-h">О компании</h3>
  <div class="pf-card pf-about"><b class="pf-logo">СТОЛОТО</b><p>Распространитель государственных лотерей России. Тиражи проходят под контролем, выигрыши выплачиваются в рублях.</p></div>
- <div class="pf-card pf-list">${row('doc','Правила игр и акций','','rules')}${row('shield','Политика конфиденциальности','','privacy')}${row('help','Помощь и поддержка','Чат 24/7, частые вопросы','help')}${row('info','Контакты','','contacts')}</div>
- <p class="pf-age">18+ · Играйте ответственно</p>`}
+ <div class="pf-card pf-list">${row('doc','Правила игр и акций','','rules')}${row('shield','Политика конфиденциальности','','privacy')}${row('help','Помощь и поддержка','Чат 24/7, частые вопросы','help')}${row('info','Контакты','','contacts')}</div>`}
 function guestView(){return `<div class="pf-card pf-guest"><span class="pf-ava g">${I.user}</span><b>Вы не вошли</b><p>Войдите, чтобы играть, получать кэшбек, крутить колесо удачи и забирать бонусы.</p>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="login">Войти</button><button class="pf-btn" type="button" data-pf="register">Регистрация</button></div></div>
  <h3 class="pf-h">Что вы получите</h3>
