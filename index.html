@@ -6690,7 +6690,7 @@ function authView(){
  <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div><div><small>Купончики</small><b>${n(S.cp||0)}</b></div></div>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  <h3 class="pf-h">Статистика за ${typeof wgMonth==='function'?wgMonth():'месяц'}</h3>
- <div class="pf-stats"><div class="pf-stat"><small>Выиграно</small><b>${n(S.won)} ₽</b></div><div class="pf-stat"><small>Ставки</small><b>${n(S.spent)} ₽</b></div></div>
+ <div class="pf-stats"><div class="pf-stat"><small>Выиграно</small><b>${n(S.won)} ₽</b></div><div class="pf-stat"><small>Билетов и ставок</small><b>${n(S.plays)}</b></div></div>
  <h3 class="pf-h">Кэшбек</h3>
  <button class="pf-card pf-cb" type="button" data-pf="cashback">${typeof lbMedal==='function'?lbMedal(lvl,true):''}<span class="pf-cb-main"><b>Уровень ${lvl.id} · ${lvl.name} · ${lvl.rate}%</b><span class="pf-track"><i style="width:${c?c.s.progress:0}%"></i></span><small>${next?`До уровня ${next.id} — ${n(c.s.remaining)} ₽ оборота`:'Максимальный уровень'}</small></span><span class="pf-cb-side">${c&&c.ready?`<em>Забрать ${n(c.ready)} ₽</em>`:`<small>Получено</small><b>${n(c?c.paid:0)} ₽</b>`}</span></button>
  <h3 class="pf-h">Колесо удачи и бонусы</h3>
