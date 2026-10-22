@@ -2417,7 +2417,7 @@ html.bonus-orig .header-stb{display:flex!important;align-items:center;gap:4px}
    ===================================================================== */
 :root{--g4-font:'Roboto Flex',Inter,-apple-system,"Segoe UI",Roboto,sans-serif}
 body,button,input,select,textarea{font-family:var(--g4-font)}
-@media (min-width:501px){.phone{width:384px;height:824px}}
+@media (min-width:501px){.phone{width:384px;height:824px}.scr{width:360px;height:800px;border-radius:48px}}
 .ic{display:block;flex:none}
 .ic16{width:16px;height:16px}.ic20{width:20px;height:20px}.ic24{width:24px;height:24px}
 
@@ -4626,7 +4626,7 @@ const fwNextDayFn=()=>{if(fwBusy)return;if(fwPendingClaim)fwPendingClaim();if(S.
 renderPromos();setInterval(renderPromos,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderPromos()});renderBP();
 renderBal();
 /* вписываем телефон в экран на десктопе */
-function fit(){const ph=$('.phone');if(innerWidth<=500){ph.style.zoom='';return}ph.style.zoom=Math.min(1,(innerHeight-24)/898)}
+function fit(){const ph=$('.phone');if(innerWidth<=500){ph.style.zoom='';return}ph.style.zoom=Math.min(1,(innerHeight-24)/824)}
 addEventListener('resize',fit);fit();
 
 /* Bonus programme navigation: panels intentionally empty for the next iteration. */
