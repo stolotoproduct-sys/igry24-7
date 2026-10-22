@@ -6691,7 +6691,6 @@ function authView(){
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  <h3 class="pf-h">Статистика за ${typeof wgMonth==='function'?wgMonth():'месяц'}</h3>
  <div class="pf-stats"><div class="pf-stat"><small>Выиграно</small><b>${n(S.won)} ₽</b></div><div class="pf-stat"><small>Ставки</small><b>${n(S.spent)} ₽</b></div><div class="pf-stat"><small>Сыграно игр</small><b>${n(S.plays)}</b></div><div class="pf-stat"><small>Итог месяца</small><b class="${net>=0?'up':'down'}">${net>=0?'+':'−'}${n(Math.abs(net))} ₽</b></div></div>
- <p class="pf-note">Итог = выигрыши минус ставки рублями. Кэшбек и бонусы не учитываются.</p>
  <h3 class="pf-h">Кэшбек</h3>
  <button class="pf-card pf-cb" type="button" data-pf="cashback">${typeof lbMedal==='function'?lbMedal(lvl,true):''}<span class="pf-cb-main"><b>Уровень ${lvl.id} · ${lvl.name} · ${lvl.rate}%</b><span class="pf-track"><i style="width:${c?c.s.progress:0}%"></i></span><small>${next?`До уровня ${next.id} — ${n(c.s.remaining)} ₽ оборота`:'Максимальный уровень'}</small></span><span class="pf-cb-side">${c&&c.ready?`<em>Забрать ${n(c.ready)} ₽</em>`:`<small>Получено</small><b>${n(c?c.paid:0)} ₽</b>`}</span></button>
  <h3 class="pf-h">Колесо удачи и бонусы</h3>
