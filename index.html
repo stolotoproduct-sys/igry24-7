@@ -2746,6 +2746,27 @@ body,button,input,select,textarea{font-family:var(--g4-font)}
 .lv-steps small{font-size:12px;line-height:16px;color:#a99fc2}
 .lv-tabs em{display:inline-flex;align-items:center;gap:2px}
 .lv-tabs em .ic{width:12px;height:12px}
+/* ---- v3: 3D-билет и компактный герой ---- */
+.lv-ticket-art{position:relative;display:inline-block;width:40px;height:40px;border-radius:12px;overflow:hidden;background:#1b1725;flex:none}
+.lv-ticket-art img{display:block;width:100%;height:100%;object-fit:cover}
+.lv-ticket-art.sm,.lv-ticket-art.card{width:40px;height:40px}
+.lv-ticket-art.xl{width:72px;height:72px;border-radius:16px}
+.lv-ticket-art.off img{filter:grayscale(1) brightness(.6)}
+.lv-hero{display:block;text-align:left;padding:12px;border-radius:16px}
+.lv-hero-row{display:flex;align-items:center;gap:12px}
+.lv-hero-art{position:relative;flex:none;display:block}
+.lv-hero-badge{position:absolute;right:-4px;bottom:-4px;display:grid;place-items:center;width:20px;height:20px;border-radius:10px;background:#2bbf8f;color:#fff;box-shadow:0 0 0 2px #111816}
+.lv-hero-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.lv-hero-t small{font-size:12px;line-height:16px;color:#a99fc2}
+.lv-hero-t b{font-size:16px;line-height:24px;font-weight:800}
+.lv-hero-t span{font-size:12px;line-height:16px;color:#b9aecb}
+.lv-hero-ic{width:72px;height:72px;border-radius:16px}
+.lv-hero-go{height:40px;margin-top:12px;font-size:14px;line-height:20px}
+.lv-hero.ready,.lv-hero.got{background:#15131d}
+.lv-hero.ready{border-color:#f3c64d4d}
+.lv-hero.got{border-color:#7ef0c94d}
+.lv-tk3 .lv-ticket-art.sm{width:40px;height:40px}
+.lv-tk3>div b{font-size:14px;line-height:20px;font-weight:800;color:#ffe08a}
 
 </style>
 </head>
@@ -5296,7 +5317,9 @@ function lbMedal(level,small=false){
  <path d="m60 28 0 30-25-15Z" fill="#fff" opacity=".34"/><path d="m60 58 25-15v29Z" fill="#fff" opacity=".13"/><path d="m60 58 0 29-25-15Z" fill="#fff" opacity=".12"/>
  </svg><b>${level.id}</b></span>`;
 }
-const lvTicketArt=(n,cls='')=>`<span class="lv-ticket-art ${cls}" aria-hidden="true"><svg viewBox="0 0 48 32"><path d="M4 4h40v8a4 4 0 0 0 0 8v8H4v-8a4 4 0 0 0 0-8Z" fill="url(#lvTkG)" stroke="#fff6" stroke-width="1"/><path d="M32 6v20" stroke="#5a3a00" stroke-opacity=".35" stroke-dasharray="2 2"/><defs><linearGradient id="lvTkG" x1="0" y1="0" x2="48" y2="32"><stop stop-color="#ffe27a"/><stop offset="1" stop-color="#e3a52a"/></linearGradient></defs></svg>${n?`<b>${n}</b>`:''}</span>`;
+/* 3D-билет: сгенерирован в Figma (страница «Общее», «3D · Ticket (кэшбек недели)») */
+const LV_TICKET_IMG='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCACgAKADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD876KKK9AoKKKKBhRRTXOMUCuI7EHimk5ozmigkKKKeFGBxQOwypNg9KNo9KWnoIaygA8U1PvVJTWGBkcGlr1Bag5wOKEJJ5pmSe9GcUAS0U1DkGnUFXCiiigYUUUUC2CimsRtPNNQ4NArjn6CmU5yCBTaBBRRT0+7QAKPlFOHUUV7J+yj+znqX7SnxVtNBjWaDw9abbnWb+P/AJY2+4/u1Y9JJCCq/QnooNROcYLmkaRV3Y9D/ZE/YT1n9ozT28T67qMnhjwLFIYo7uGNWuL9l++Igx2qo/56E4/u5Oa+rNZ/4JY/CO801oNM8S+KNPvwoxdzXEU6E9t0bIBjPXBr66sNK07wvoWneH9FtIrDR9OhS3t7WFdsaonyoq+3c56nmj6da+HxGc13W/dPQ9Knho9T8Yf2jf2Q/Hf7N+pNLq9sdX8MyuVt/EFhGWt3PZZQOYXx/C3B9TXiFf0Da7JYzaHe2uq2UWqaZNE0c9ncRh45VPVWU8MD0wetfjz+2b8HtB+F/wARLW+8KQmy8N60k0kOnFy32SaNlEirnnYdylck7clRXv5dmaxy9nbVGNXDuMedbHz/AIoxRRXuHBYKKY4JIpUGBQA6io3+9TlIwOaAuOpG6GlooGRYPpRUjDIqMqR1oEFFFABPSgQU9CMYzzTdh9KCNo54P/6/8D+VAWvsPClnUY6nj6npX7I/8E9/BukeDP2S/DOpaXFEdQ8Q+ZqOoXigGR5WZkCk9giKqAdgGbvXzz+xH+wRoXiXwVafEP4qabJqFvqAE2leHpmZIzBjKzTqCpYv/Ch6DBJ5xX3jaaVY+D/CkWi+FdFs9N06zQ/ZdMtsQxA5Py8Dgc5r5HOswpKk6EX7x6eHoSbTZpbm7jmmEkg1XTUIXupLbzY/tUaq8kIbJQN0p4Yknpx718Jzdmesk0Qarbm8spYz8+T90dT9K/Kj/gova3mm/GrRrKVGj0+PRka1H8DEyuJSPUltufbFfrAW44JB9RXm/wAcf2dPA/7RPhmHSfFUM1pd2hY2OrWLBJ7Xd1CkjBU91PWvoMlzCOFqy5+vU58RGUqfJE/EAggZINA5PAPXbnB2k+m7pn2zmv0z8K/8Eo/BOl62l54g8fal4g0pWDf2dbWkdo0oHRZJQXKg99gGfavq/Uvhn4F1DwUvgyXwhpD+Ekt/sy6YbRAir0GO4P8AtZznnPYfV186wtKyTueZHC1JdD8HCQAT2HU0tfZn7U//AAT11T4Zw3viz4dyXPiHwtGPMn0+T59QsE7kYP76JRnsXAGTkcj4yBBAIxtIyNpyCOxH16/jXr0a1PERc6bujmlTlB2kNcEnpTcH0NS0VuRYOlN3j3pT0NR0Ax+8UjMCKbRQSAGacPk60ittodsleDycD60APDA9PUfrX0/+wd+y4f2gviP/AGrrdqH8C6BJHLflx8l7PkNHa59CAHfHRBjq1eEfCj4Za58YviBovhLw7ALjUtTl8tH5McKf8tJXI4CKuSSfQAda/b/4bfDTQfgb8NNI8D+G4lFlZRATTgBZLqVuZZZMfxueT6DAHFeFm2OjhKLV9WdeHpSnLQ63ULlJpAluBHbRZSNFGBtHAAHYY6D0xVIk5NMMvPLbj1J9aYZea/LZVvaNyluz34w5VZDL22+0280cc0lpJIoBntwokGOmGI/nUE2omwkuPtaC2s4I1Zb2WQBWJ+8CO1WN3vUcyxSRtHMiTRsPnR1BDfhXNKokbcrLAkyQAVOc9GHbr/MU0yA5HBrJu5bq3e6uYmnvVMaCOwTYvzDglScckHnPpU4vI3byxJGJQoZ49w3Lnpke/wDSs/baWL9mXDIo65+lMeUNxgY+tVDIcZ5x9Kb5pyKj2lylCwupXn2axmwxXjruxj/Hp9PXivyB/bK+G+m/Db436mmjRrDpWrp/acdvEuEgd3ZZUHtvVmA7BgO1fpN8YviC2lQx6bp4+0Xssm1UTksfTH05r8x/2pfHcHjf4nNDZXIurXRrVdP+0KcrNPuMkzA913uyg+1fo3C0K06dSvLSDen6r5HDmMIwpa7nkAIYAjoaWkUbRgdB0+lLX3J80xm/PGKPL96XZ706gBnl+9Hl+9PooCwzy/egoR0DEt8vygnjIyOOuRxin9wPU464/H6V9qf8E5P2YR8Q/FX/AAsnxLahvDGhT4sIZl+S8vkG7dg9Ui4J/wBshf4WrmxFeGHpOrN2SNIUnUkkj6h/YP8A2aIf2f8A4aP4n8RWSDxx4jiBlSQZNjbZ3R2o9PVx64H8PP0RJMXdncl5G5ZmPJNR3+pG9nZwzeXjamRj5R0/H1981WaYAV+KZjmU8dVcm9EfT4egqa0RZMg5wefSoFuo5CwSVGcE/KDz0H9ePwqHzMkEdRkn6Yryfxr4hutEubKWOXZIY5QY+m8CZsN+Ir3uHcilxBUqUoT5ZRV12Z0TVnY9fluEgXdLIsYPILHHHqe9ReeJVVkdXQ/xKcg/Q96+WPiT8UNU8Q6e1pC7WvnOse+JiXK4/vdRXuPwxea38DaJDcuXYWkY3N2bGSK6uJuFp8O4ejUqT5pzeq6JGsYtnZtJj3+tUr2xSaO7e2KWd9PH5Yu0iVpAB90Y/i7+nWlZx1zTWmBUgjjvX5xzX0NUncI755b97Y20yhIkk+1Oiqjkj5gCO4x+tcx44+IuneGNJnl+1xmbB2jdjHvWt4guVj0e5ZmEe5cbunHt+Ga/Pj4//FaL4VeMPsz6ZNr17cq9zaSXt4Vt4lDlMGMDLYIz6V9HkeUyzms1z8sY7smc40KftJq5Z/aI+Ntx4R0udLacr4t12Nltx/y00+0I+aY+jsOF9ASeelfGC4A4GF7D0FanijxPqfjbXr3WtZuje6ldvvln+6D6KF/hUDgCssDGe9ft9OlSw9NUMP8ABHY+QxeIeKqc76C00vg4xQzYNMJyaZxslooooGFIxCjJOAOuBmlqazsrnUry3s7OCS6vLmVYYLeFdzyyMQFQDuSSAPcjtmlda30SD0IUXzJFjMixFnVSx/h3EAN6DGc88V+7/hTw9pPgf4aeGfDegQrbaJa2MccMSDAKgA8kdeSST3OSetfP/wCzv+xH4E+EfgvTtQ8aaFZeKvHF4gnuBqCCeC0Y4PlRoflyvAL4ySDj5cCvf9X1C8mmshaQ26QK6xPHKxVY4sEfJj+LOAB061+WcT5xQrQ+rUW21vY+jy/Bzi+eaLBlJOScnuT3pjyZ71n2mqQagshtZRN5LmKQ7SMOPvDtyKlaTJ/xGK/NvaXPe9nZnM/FHxtd+BPDI1Sy0W918h/LktrDmRV65PtXzLcfFub4h6pcTTWVzp14qri3njKeWoP3VB7V9czNuPuPSvO/i14Ik8TeFbuXToFk1m3UyWo4QyEdUJPY1+tcEcXYbJ6kMHXpxUJP+Jd3T812E6CerZ8oeLPilp3hi9jtJzJJeMQViiG4jHSvff2Yvitq/jeHULPUNHvbKxgCtb3FxGVDHoRzXGfs+/Ai+t7+68TeNdLWLV5pCIbSfDiNa+mbSCK2TaqBV9AOK9fjrjLC5mqmWYampwi78/n/AHTSFJx3NMyLjrTHnVEZieAMmq5lUds+1eb/ABc+IieGNJa1tWEl7N8iqvJJPQV+J0adSvONOnG7ZtGldanM/GX4iNqN62hWNwsESIXurlmwkEQGXdj2GP51+cXxt+I0fxL8bvfWJkXR7S3Sw09mJDvAhOHbvliS2D7V6X+0f8VmhguvBOnzmW8mbzNevVIyWPK2qkdlB+fHXgetfOxOST3Jya/oLKsqhk2GVHR1HrJ/ovTr3Pks0xqqSVClstxAAOlLRRXrHgiFQTSbB706igYUUUUEAcnAHUnFfev/AATa/Zwgv5Zfi54mt91pYkx6HBKu3zJBw9zg9h9xffee4r4NggF3PFbnOJ3WI464YgH+dfuZptnYeG/BWg6DpEaQadYWyWyxRdAEUKM49Rzj3NfLcRZg8Dg37P4paHsZdhvbzuXr2+a9upJmyN3C4GFC9gKrM+BjPBGDzVbzec9+mTTXn6V+Dvmk+Z7n20YWVhL62W88jdLNCsEgnAgk2byOqt/eBGOKrvq4sC41JoLMtcmGHM2fNyMqenB9u2KmNzg57+1MMoaSNjg+WwdQQCQfXninyPqXYss5VQW645xUEsgk+tZDvc2RCQCfUvtFwWlM84Qwxn7xU4xgenWrEGpQ3bSiG4jnMTmN2jYEBhwVOOQa35W7GigWsc579M00yZ7moTKfU1Uvb+OxtJJp32RqCMHvVpW0RXKyn4u8VW/hjSJbqaVVfadiMep7V8XfGz41z+ELGTV2fzfEWph10eBvvW8f3XumHbByqD15ru/jL8ULa4/tLWdVkI8PaY3zxqcG5mP3LdP97ofbJr4Q8beM9S+IPie813VnBu7lsiJf9XBGOEiT2QccdetfsHC2TrBUvr2Ihacvh8vP59Dw82xf1an9Xp/FLcwjK8srtJIZZDy7nksxJLHPc5NLR0or7Zq7Ph/MKKKKACiiigAooooEhGztO1mVscMpwQfWv0v/AGcf2lrbx94Lsvts6LrVnEkF/b7uSVAVZQO6MAD7EtnqK/NBunQH61e0PXtS8N6nBqOmXs1jewHMc0LYK/4j1HQ15mPy3D5nSdLEXt0a3T7+foelgcY8HU5nsftBF4ksprH7SZkSILu64rgdU/aH8K6ZetaNeRNIDggtzn2r4h0r9q19b8O/2br1zcaFdLgPdabbefDcereXuBjY+gyvfA6Vwnif4/ag10IvCNsug2qHBvZ4lmvJj/eZmyFHoF9TntXxGG4ISnJ4nELk6W+L5o+rnm+FpwU1q30P1G8N+NtO8UQq9pMpz0w2RW2XwSPSvzY/Z9/ao1vRvGenWPih0v8ATb65S2N6I1imt2c4V2x8rLkc5xiv0hk3wRQM67WK8/gcHnvXy+c5JLJ6q5JOUHs3v8z0MLiaeMV4qz7E3mVSurRZhGIbhrLFwJpTbomZeOQ+eop3mc0wyEGvm4aHdydyjda8LG2urnUIRYQrMyxs8inzBj7/ALfSvFvij8UR4mmOjaHcABEL3E+cLBEv3nPpgZP4V1nxhu7DU9Pj0i5kxNcgJGoYg7ieDxX50fET4n6vcS6t4YtYrTSNIgu5YJYdPU7rkJIyZeQncwJXOOhr9E4ZyGjjV9exEvdht6nnZjjlg4We4nxo+KP/AAnmrW+m6aWTw1pZaOzH/Pw/8dw3+0x6ei4rzk8CimuMrX6rKXMfndWpKrJznuOzRmosH0NGD6GoOclopqDANOoGgooooKCiiigAoopCcUCAkDrQCD0prMDSIwGaAOo+Gfhs+MfiN4X0RZRbm/1O2gM2eUBkGT+AB/Ov2Q1nWLLUpo1sXEkVum0kdyWJP4e/tX4n2Wo3Ol39re2UzW93bSrLDMhwUYcg/njivtD4JftW2uvPb2Opyx6RqwAUJPJiC4PfynPCsf7r/hXymf5XicxpJ0NeXp1Z9PkuJw9KbhVdm+p9o+Z949gawvF3iq28K6RPdzuoIQlQx64OP515xqf7ReiaJC63jrDKowIpMqxP49fwrx/4gfFuHxVZXOv6u/2DwzbfdQkq964GVijHU5PUjgV+f5fkWNx2IjQdNxinq2rI+1nWo0afPKSZh/GL4rTeF9Pm8TzTb9bv90ei2jn/AFR6G6Yei9B+lfHJZ2fezFmJyzOcseuc+5JJrc8a+NdQ8eeJLnWNSIE0gEcUA+5bxD7kaDsF7+prCLDBFftMKNLCUoYbDq0IaLzfVs/NMdi54yr7RvTsKGB70pOKiBwaczAiqPOHbx60Ag9Kjp0fU0Ej6KKKCwooooAKKKKACkYZFBOBmm+Z7UEsQqRSU4ndTSMUBYKBgkBsFcYwR27j3z7/AIYoyPWjj1FNX6aBZt3R2Wi/Fvxfodktrba5M9sq7I47uOO48tR0CmRSV/CsHX/E+reKL37TquoT30oG1GlbIQeiqAFA/Cs0SADGaQ8nOa2liKso+zlNteppKUpLllJtCU7YfakwP7wpfNHrXOZ2EKECkAyaXzQeKQMFOc0wsO2H2pVUigPml3UALRTS+O1KDuFBQtFFFAH/2Q==';
+const lvTicketArt=(n,cls='')=>`<span class="lv-ticket-art ${cls}" aria-hidden="true"><img src="${LV_TICKET_IMG}" alt=""></span>`;
 const lvMinesArt=()=>`<span class="lv-mines-art" aria-hidden="true">${Array.from({length:9},(_,i)=>`<i class="${i===4?'b':i===0||i===7?'o':''}"></i>`).join('')}</span>`;
 
 /* ---------- награды: бесплатные билеты и попытки хранятся в бонусах (Промо → Активные) ---------- */
@@ -5355,24 +5378,24 @@ function lvLevelsHtml(s){
   </section>
   <button type="button" class="lv-more" data-lb-rules="level">${IC(ICD.chev)}Как работает уровень</button>`;
 }
-/* герой: что с прошлой неделей */
+/* герой: что с прошлой неделей — картинка слева, текст справа */
 function lvHero(s){
  const ready=s.ready[0],last=lvLastWeek(s),pending=s.periods.some(p=>p.pending);
  const v=last&&last.claimed?bonusModel.records.find(b=>b.type==='voucher'&&b.tag==='Кэшбек недели'&&b.nominal===last.paid):null;
- let st,art,t,sub,btn='';
- if(ready){st='ready';art=lvTicketArt(ready.ticket.nominal+' ₽','xl');t='Ваш билет готов';sub=`за ${lbRange(ready)}`;btn=`<button type="button" class="lv-hero-go" data-lb-claim="${ready.start}">Забрать билет</button>`}
- else if(pending){st='wait';art=`<span class="lv-hero-ic">${IC(ICD.clock,32)}</span>`;t='Считаем неделю';sub='Ждём результаты тиража'}
- else if(last&&last.claimed){const active=v&&v.status==='active'&&v.expiresAt>Date.now();st='got';art=lvTicketArt(last.paid+' ₽','xl got');t=active?`Билет ${last.paid} ₽ у вас`:`Билет ${last.paid} ₽ использован`;sub=active?`действует до ${lbDate(v.expiresAt)}`:`за ${lbRange(last)}`;if(active)btn=`<button type="button" class="lv-hero-go sec" data-lv-play>Сыграть бесплатно</button>`}
- else if(last&&!last.net){st='plus';art=`<span class="lv-hero-ic plus">${IC(ICD.check,32)}</span>`;t='Неделя в плюсе';sub=`${lbRange(last)} · кэшбек не понадобился`}
- else{st='none';art=lvTicketArt('','xl off');t='Билета нет';sub=last?`проигрыш ${lbRub(last.net)} — меньше ${lbRub(LossbackEngine.tiers[0].min)}`:'начисляем по понедельникам'}
- return `<section class="lv-hero ${st}"><small class="lv-hero-k">Прошлая неделя</small>${art}<b>${t}</b><span>${sub}</span>${btn}</section>`;
+ let st,art,t,sub,btn='',k='Прошлая неделя';
+ if(ready){st='ready';art=lvTicketArt('','xl');k=`За ${lbRange(ready)}`;t=`Билет ${ready.ticket.nominal} ₽ готов`;sub=`В быстрые игры · ${LossbackEngine.TICKET_DAYS} дней`;btn=`<button type="button" class="lv-hero-go" data-lb-claim="${ready.start}">Забрать билет</button>`}
+ else if(pending){st='wait';art=`<span class="lv-hero-ic">${IC(ICD.clock,28)}</span>`;t='Считаем неделю';sub='Ждём результаты тиража'}
+ else if(last&&last.claimed){const active=v&&v.status==='active'&&v.expiresAt>Date.now();st='got';art=lvTicketArt('','xl'+(active?'':' off'))+`<i class="lv-hero-badge">${IC(ICD.check,12)}</i>`;k=`За ${lbRange(last)}`;t=active?`Билет ${last.paid} ₽ у вас`:`Билет ${last.paid} ₽ сыгран`;sub=active?`Действует до ${lbDate(v.expiresAt)}`:'Следующий — в понедельник';if(active)btn=`<button type="button" class="lv-hero-go sec" data-lv-play>Сыграть бесплатно</button>`}
+ else if(last&&!last.net){st='plus';art=`<span class="lv-hero-ic plus">${IC(ICD.check,28)}</span>`;k=`За ${lbRange(last)}`;t='Неделя в плюсе';sub='Кэшбек не понадобился'}
+ else{st='none';art=lvTicketArt('','xl off');k=last?`За ${lbRange(last)}`:k;t='Билета нет';sub=last?`Проигрыш ${lbRub(last.net)} — меньше ${lbRub(LossbackEngine.tiers[0].min)}`:'Начисляем по понедельникам'}
+ return `<section class="lv-hero ${st}"><div class="lv-hero-row"><span class="lv-hero-art">${art}</span><span class="lv-hero-t"><small>${k}</small><b>${t}</b><span>${sub}</span></span></div>${btn}</section>`;
 }
 /* эта неделя: формула + три номинала */
 function lvWeek(s){
  const w=s.week,T=LossbackEngine.tiers,cur=w.ticket;
  return `<section class="lv-week"><div class="lv-week-hd"><b>Эта неделя</b><span>${lbRange(w)}</span></div>
   <div class="lv-eq"><div><small>Покупки</small><b>${lbRub(w.stakes)}</b></div><i>−</i><div><small>Выигрыши</small><b>${lbRub(w.wins)}</b></div><i>=</i><div class="r"><small>Проигрыш</small><b>${lbRub(w.net)}</b></div></div>
-  <div class="lv-tk3" role="list" aria-label="Номинал билета">${T.map(t=>`<div role="listitem" class="${cur&&cur.nominal===t.nominal?'on':''}">${lvTicketArt(t.nominal,'sm')}<small>от ${lbNum(t.min/1000)} тыс ₽</small></div>`).join('')}</div>
+  <div class="lv-tk3" role="list" aria-label="Номинал билета">${T.map(t=>`<div role="listitem" class="${cur&&cur.nominal===t.nominal?'on':''}">${lvTicketArt('','sm')}<b>${t.nominal} ₽</b><small>от ${lbNum(t.min/1000)} тыс ₽</small></div>`).join('')}</div>
   <div class="lv-week-ft">${IC(ICD.cal)}<span>Начислим <b>${lvWd(w.end)}</b> · ${lvIn(w.end)}</span>${w.pending?`<em>${w.pending} ждут тиража</em>`:''}</div></section>`;
 }
 function lvHistory(s){const P=s.periods.slice(0,4);if(!P.length)return '';
