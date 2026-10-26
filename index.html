@@ -2682,6 +2682,70 @@ body,button,input,select,textarea{font-family:var(--g4-font)}
 #lossback .cb-money-top strong{font-size:24px;line-height:32px;white-space:nowrap}
 #lossback .cb-money-top .cb-claim{flex:none}
 .app-header .lb-profile-level[hidden]{display:none!important}
+/* ---- v2: вкладки, широкая карточка уровня, визуальный кэшбек ---- */
+#lossback .cb-carousel{gap:8px;padding:4px 20px 12px;scroll-padding-inline:20px}
+#lossback .cb-level-card{flex:0 0 100%}
+.lv-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:0 0 16px;border-radius:12px;background:#ffffff0d}
+.lv-tabs button{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:8px;font-size:14px;line-height:20px;font-weight:700;color:#a99fc2}
+.lv-tabs button[aria-selected="true"]{background:#a25be6;color:#fff;box-shadow:0 2px 10px #a25be640}
+.lv-tabs em{font-style:normal;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:linear-gradient(#ffe07a,#f0aa2c);color:#2a1700;font-size:12px;line-height:20px;font-weight:800}
+.lv-dot{width:8px;height:8px;border-radius:4px;background:#ff5a6a;box-shadow:0 0 0 2px #15131d}
+.lv-more{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;height:40px;margin:12px 0 0;border-radius:12px;font-size:14px;line-height:20px;font-weight:600;color:#c4a4ea;background:#ffffff08}
+.lv-more .ic{order:2}
+/* герой прошлой недели */
+.lv-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:16px;border-radius:20px;border:1px solid #ffffff12;background:#15131d}
+.lv-hero.ready{border-color:#f3c64d66;background:radial-gradient(ellipse at 50% 0,#4a3510,#1a1510 70%)}
+.lv-hero.got{border-color:#7ef0c94d;background:radial-gradient(ellipse at 50% 0,#123a30,#111816 70%)}
+.lv-hero-k{font-size:12px;line-height:16px;color:#a99fc2;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:8px}
+.lv-hero>b{font-size:20px;line-height:28px;font-weight:800;margin-top:8px}
+.lv-hero>span{font-size:14px;line-height:20px;color:#b9aecb}
+.lv-hero-go{margin-top:12px;width:100%;height:48px;border-radius:12px;background:linear-gradient(#ffe07a,#f0aa2c);color:#2a1700;font-size:16px;line-height:24px;font-weight:800;box-shadow:0 4px 16px #f0aa2c40}
+.lv-hero-go.sec{background:#2bbf8f;color:#fff;box-shadow:none}
+.lv-hero-ic{display:grid;place-items:center;width:72px;height:72px;border-radius:36px;background:#ffffff0f;color:#a99fc2}
+.lv-hero-ic.plus{background:#2bbf8f26;color:#7ef0c9}
+.lv-ticket-art.xl{width:144px;height:96px}
+.lv-ticket-art.xl b{font-size:24px;line-height:32px;margin-right:32px}
+.lv-ticket-art.xl svg{filter:drop-shadow(0 8px 20px #e3a52a66)}
+.lv-ticket-art.got svg{filter:saturate(.6) drop-shadow(0 8px 20px #2bbf8f40)}
+.lv-ticket-art.off svg{filter:grayscale(1) brightness(.45)}
+/* эта неделя */
+.lv-week{margin-top:12px;padding:16px;border-radius:20px;border:1px solid #ffffff12;background:#15131d;display:flex;flex-direction:column;gap:12px}
+.lv-week-hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lv-week-hd b{font-size:16px;line-height:24px;font-weight:700}
+.lv-week-hd span{font-size:12px;line-height:16px;color:#a99fc2;padding:4px 8px;border-radius:8px;background:#ffffff0d}
+.lv-eq{display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr;align-items:center;gap:4px}
+.lv-eq>div{display:flex;flex-direction:column;align-items:center;gap:0;padding:8px 4px;border-radius:12px;background:#ffffff0a}
+.lv-eq>div.r{background:#a25be626;box-shadow:inset 0 0 0 1px #a25be666}
+.lv-eq small{font-size:12px;line-height:16px;color:#a99fc2}
+.lv-eq b{font-size:14px;line-height:20px;font-weight:800;white-space:nowrap}
+.lv-eq>i{font-style:normal;text-align:center;font-size:16px;color:#7d7292}
+.lv-tk3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lv-tk3>div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:12px;border:1px solid transparent;opacity:.55}
+.lv-tk3>div.on{opacity:1;border-color:#f3c64d80;background:#f3c64d14}
+.lv-tk3 .lv-ticket-art.sm{width:56px;height:36px}
+.lv-tk3 .lv-ticket-art.sm b{font-size:12px;line-height:16px;margin-right:14px}
+.lv-tk3 small{font-size:12px;line-height:16px;color:#c9bedb;white-space:nowrap}
+.lv-week-ft{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid #ffffff0d;font-size:14px;line-height:20px;color:#b9aecb}
+.lv-week-ft .ic{color:#c4a4ea}
+.lv-week-ft b{color:#fff;font-weight:700}
+.lv-week-ft em{font-style:normal;font-size:12px;line-height:16px;padding:2px 8px;border-radius:8px;background:#f0aa2c26;color:#ffd76a}
+/* история */
+.lv-hist{display:flex;flex-direction:column;border-radius:16px;border:1px solid #ffffff12;overflow:hidden}
+.lv-hist>div{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:8px 16px;font-size:14px;line-height:20px;color:#c6b4d8}
+.lv-hist>div+div{border-top:1px solid #ffffff0d}
+.lv-hist b{font-weight:700}
+.lv-hist b.ok{color:#7ef0c9}
+.lv-hist b.no{color:#7d7292;font-weight:600}
+.lv-hist button{height:32px;padding:0 12px;border-radius:8px;background:#a25be6;color:#fff;font-size:12px;line-height:16px;font-weight:700}
+/* правила шагами */
+.lv-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.lv-steps>div{display:flex;gap:12px;align-items:flex-start}
+.lv-steps i{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#a25be626;color:#d2b0f5;flex:none}
+.lv-steps span{display:flex;flex-direction:column;gap:2px;padding-top:2px}
+.lv-steps b{font-size:14px;line-height:20px;font-weight:700}
+.lv-steps small{font-size:12px;line-height:16px;color:#a99fc2}
+.lv-tabs em{display:inline-flex;align-items:center;gap:2px}
+.lv-tabs em .ic{width:12px;height:12px}
 
 </style>
 </head>
@@ -5248,7 +5312,7 @@ function lvUseAttempt(){const r=lvMinesRec();if(!r)return false;r.used++;if(r.us
 function lvLevelUps(){const ups=lossbackModel.takeLevelUps();if(!ups.length||!LV.mines)return;let n=0;for(const l of ups)n+=l.attempts;lvGrantAttempts(n);
  const last=ups.at(-1);toast(`Уровень ${last.id} «${last.name}»: +${n} ${lvAttWord(n)} в «Минах»`);if(typeof bpSync==='function')bpSync()}
 function lvClaim(start){const nominal=lossbackModel.claim(start);if(nominal){lvAddTicket(nominal,'Кэшбек недели');if(typeof bpSync==='function')bpSync();toast(`Бесплатный билет ${nominal} ₽ — в быстрых играх и в Промо`)}
- renderLossback();if(bonusModalView?.type==='cashback')lbOpenDetails(bonusModalView.rules);return nominal}
+ renderLossback();return nominal}
 
 /* ---------- виджет в лобби ---------- */
 function lvLastWeek(s){return s.periods[0]||null}
@@ -5262,55 +5326,67 @@ function lvWidget(s){
  e.innerHTML=lvl+cb;
 }
 
-/* ---------- экран «Уровень и кэшбек» ---------- */
+/* ---------- экран: две вкладки — «Уровень» и «Кэшбек» ---------- */
+let lvTab='level';
 function lvTitle(){return LV.cb&&LV.mines?'Уровень и кэшбек':LV.mines?'Уровень месяца':'Кэшбек недели'}
 function lvMonthReset(s){return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(s.monthEnd)}
+const lvDays=t=>Math.max(0,Math.ceil((t-Date.now())/LV_DAY));
+const lvIn=t=>{const d=lvDays(t);return d<=1?'завтра':`через ${d} ${lvWord(d,'день','дня','дней')}`};
+const lvWd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'short',day:'numeric',month:'short',timeZone:'Europe/Moscow'}).format(t);
+function lvTabs(s){if(!(LV.cb&&LV.mines))return '';const dot=s.ready.length?'<i class="lv-dot" aria-label="есть билет"></i>':'',att=lvAttempts();
+ return `<div class="lv-tabs" role="tablist" aria-label="Разделы">${[['level','Уровень',att?`<em aria-label="попыток в Минах: ${att}">${IC(ICD.mine,12)}${att}</em>`:''],['cb','Кэшбек',dot]].map(([id,t,x])=>`<button type="button" role="tab" data-lv-tab="${id}" aria-selected="${lvTab===id}">${t}${x}</button>`).join('')}</div>`}
 function lvLevelsHtml(s){
  const att=lvAttempts(),rec=lvMinesRec();
- return `<div class="cb-section-label"><h3>Уровень месяца</h3><span>${IC(ICD.cal,12)} Сброс ${lvMonthReset(s)}</span></div>
+ return `<div class="cb-section-label"><h3>Покупки за ${new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now())}</h3><span>${IC(ICD.cal,12)} Сброс ${lvMonthReset(s)}</span></div>
   <div class="cb-carousel" tabindex="0" role="region" aria-label="Уровни месяца: горизонтальная прокрутка">
   ${LossbackEngine.levels.map(l=>{
    const current=l.id===s.level.id,passed=l.id<s.level.id,got=s.granted.includes(l.id);
    return `<article class="cb-level-card ${current?'current':passed?'passed':'locked'}" data-lb-level="${l.id}" aria-label="Уровень ${l.id}, ${l.name}">
     ${passed?`<span class="cb-passed-mark" aria-label="Уровень пройден">${IC(ICD.check)}</span>`:''}<div class="cb-level-top"><span class="cb-status">${current?'Мой уровень':passed?'✓ Пройден':'Закрыт'}</span><span class="cb-level-number">Уровень ${l.id}</span></div>
     <div class="cb-level-middle"><div><h3>${l.name}</h3><strong>${l.attempts?'+'+l.attempts:'0'} <small>${l.attempts?lvAttWord(l.attempts)+' в Минах':'попыток'}</small></strong></div>${lbMedal(l)}</div>
-    ${current?`<div class="cb-level-progress"><div><span>${s.next?'До уровня '+s.next.id:'Максимальный уровень'}</span><b>${s.next?lbRub(s.remaining):'Все награды'}</b></div><div class="lb-track" role="progressbar" aria-label="До следующего уровня" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i></div><small>Покупки за месяц ${lbRub(s.turnover)}${s.next?' / '+lbRub(s.next.threshold):''}</small></div>`:`<div class="cb-level-requirement"><span>${passed?'Достигнут':'Нужно покупок за месяц'}</span><b>${l.threshold?'от '+lbRub(l.threshold):'0 ₽'}</b></div>`}
-    <div class="cb-level-perk"><span>${IC(ICD.mine)}${l.attempts?l.attempts+' '+lvAttWord(l.attempts)+' в «Минах»':'Награды — с уровня 1'}</span>${l.attempts?`<small>${got?'Получено ✓':'За уровень, один раз'}</small>`:''}</div>
+    ${current?`<div class="cb-level-progress"><div><span>${s.next?'До уровня '+s.next.id:'Максимальный уровень'}</span><b>${s.next?lbRub(s.remaining):'Все награды'}</b></div><div class="lb-track" role="progressbar" aria-label="До следующего уровня" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i></div><small>${lbRub(s.turnover)}${s.next?' из '+lbRub(s.next.threshold):''}</small></div>`:`<div class="cb-level-requirement"><span>${passed?'Достигнут':'Нужно покупок'}</span><b>${l.threshold?'от '+lbRub(l.threshold):'0 ₽'}</b></div>`}
+    <div class="cb-level-perk"><span>${IC(ICD.mine)}${l.attempts?l.attempts+' '+lvAttWord(l.attempts)+' в «Минах»':'Награды — с уровня 1'}</span>${l.attempts?`<small>${got?'Получено ✓':'Один раз'}</small>`:''}</div>
    </article>`}).join('')}
   </div>
   <div class="cb-dots" aria-label="Перейти к уровню">${LossbackEngine.levels.map(l=>`<button data-lb-select="${l.id}" aria-label="Уровень ${l.id}" aria-pressed="${l.id===lbSelected}"><i></i></button>`).join('')}</div>
   <section class="lv-mines-card${att?'':' off'}">
-   ${lvMinesArt()}<div class="lv-mines-t"><b>Мины</b><small>${att?`${att} ${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.next?`Ещё ${s.next.attempts} — при покупках от ${lbRub(s.next.threshold)}`:'Все попытки месяца получены'}</small></div>
+   ${lvMinesArt()}<div class="lv-mines-t"><b>Мины${att?` · ${att}`:''}</b><small>${att?`${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.next?`+${s.next.attempts} с уровнем ${s.next.id}`:'Все попытки месяца получены'}</small></div>
    <button type="button" class="cb-claim" data-lv-mines ${att?'':'disabled'}>${att?'Играть':'Нет попыток'}</button>
   </section>
-  <p class="lb-month-note">Считаем покупки за рубли в календарном месяце, кроме ${Object.values(LossbackEngine.EXCLUDED).join(', ')}. Награда за каждый уровень — один раз. ${lvMonthReset(s)} уровень и прогресс обнулятся.</p>`;
+  <button type="button" class="lv-more" data-lb-rules="level">${IC(ICD.chev)}Как работает уровень</button>`;
 }
-function lvCashbackHtml(s){
+/* герой: что с прошлой неделей */
+function lvHero(s){
  const ready=s.ready[0],last=lvLastWeek(s),pending=s.periods.some(p=>p.pending);
- const top=ready?['Можно забрать',`Билет ${ready.ticket.nominal} ₽`]:pending?['Ожидаем результаты','—']:last&&last.claimed?['Получено',`Билет ${last.paid} ₽`]:['За прошлую неделю','Билета нет'];
- const note=ready?`Одна бесплатная игра в быстрых играх на ${ready.ticket.nominal} ₽ · действует ${LossbackEngine.TICKET_DAYS} дней`:pending?'Завершим расчёт после тиража':last&&last.claimed?'Билет в «Промо → Активные бонусы» и в быстрых играх':last&&!last.net?'Прошлая неделя в плюсе — кэшбек не нужен':last?`Проигрыш за ${lbRange(last)} меньше ${lbRub(LossbackEngine.tiers[0].min)}`:'Начисляем по понедельникам';
- return `<div class="cb-section-label lv-gap"><h3>Кэшбек недели</h3></div>
-  <section class="cb-money-card">
-   <div class="cb-money-top"><div><span>${top[0]}</span><strong>${top[1]}</strong></div>${ready||pending||last&&last.claimed?`<button class="cb-claim" ${ready?`data-lb-claim="${ready.start}"`:'disabled'}>${ready?'Забрать':pending?'В расчёте':'Получено ✓'}</button>`:''}</div>
-   <div class="cb-money-note">${note}</div>
-   <button class="cb-week-row" data-lb-details><span>Эта неделя <small>Начислим ${lbDate(s.week.end)}</small></span><strong>Расчёт ${IC(ICD.chev)}</strong></button>
-  </section>`;
+ const v=last&&last.claimed?bonusModel.records.find(b=>b.type==='voucher'&&b.tag==='Кэшбек недели'&&b.nominal===last.paid):null;
+ let st,art,t,sub,btn='';
+ if(ready){st='ready';art=lvTicketArt(ready.ticket.nominal+' ₽','xl');t='Ваш билет готов';sub=`за ${lbRange(ready)}`;btn=`<button type="button" class="lv-hero-go" data-lb-claim="${ready.start}">Забрать билет</button>`}
+ else if(pending){st='wait';art=`<span class="lv-hero-ic">${IC(ICD.clock,32)}</span>`;t='Считаем неделю';sub='Ждём результаты тиража'}
+ else if(last&&last.claimed){const active=v&&v.status==='active'&&v.expiresAt>Date.now();st='got';art=lvTicketArt(last.paid+' ₽','xl got');t=active?`Билет ${last.paid} ₽ у вас`:`Билет ${last.paid} ₽ использован`;sub=active?`действует до ${lbDate(v.expiresAt)}`:`за ${lbRange(last)}`;if(active)btn=`<button type="button" class="lv-hero-go sec" data-lv-play>Сыграть бесплатно</button>`}
+ else if(last&&!last.net){st='plus';art=`<span class="lv-hero-ic plus">${IC(ICD.check,32)}</span>`;t='Неделя в плюсе';sub=`${lbRange(last)} · кэшбек не понадобился`}
+ else{st='none';art=lvTicketArt('','xl off');t='Билета нет';sub=last?`проигрыш ${lbRub(last.net)} — меньше ${lbRub(LossbackEngine.tiers[0].min)}`:'начисляем по понедельникам'}
+ return `<section class="lv-hero ${st}"><small class="lv-hero-k">Прошлая неделя</small>${art}<b>${t}</b><span>${sub}</span>${btn}</section>`;
 }
-function lvRulesShort(){
- const T=LossbackEngine.tiers;
- return `<section class="cb-rules-short"><div><h3>Как это работает</h3><button data-lb-rules>Подробнее</button></div>
-  ${LV.cb?`<p><i>${IC(ICD.ticket)}</i><span>Проигрыш недели от <b>${lbRub(T[0].min)}</b> — бесплатный билет <b>${T.map(t=>t.nominal).join(' / ')} ₽</b> в быстрые игры.</span></p>
-  <p><i>${IC(ICD.ret)}</i><span>Проигрыш = покупки за рубли по завершённым тиражам минус все выигрыши. Начисляем по понедельникам.</span></p>`:''}
-  ${LV.mines?`<p><i>${IC(ICD.mine)}</i><span>Каждый уровень месяца — <b>5 попыток в «Минах»</b>. В призах FS и бесплатные билеты.</span></p>`:''}
-  <p><i>${IC(ICD.rub)}</i><span>Рубли не начисляются: только билеты, FS и попытки.</span></p></section>`;
+/* эта неделя: формула + три номинала */
+function lvWeek(s){
+ const w=s.week,T=LossbackEngine.tiers,cur=w.ticket;
+ return `<section class="lv-week"><div class="lv-week-hd"><b>Эта неделя</b><span>${lbRange(w)}</span></div>
+  <div class="lv-eq"><div><small>Покупки</small><b>${lbRub(w.stakes)}</b></div><i>−</i><div><small>Выигрыши</small><b>${lbRub(w.wins)}</b></div><i>=</i><div class="r"><small>Проигрыш</small><b>${lbRub(w.net)}</b></div></div>
+  <div class="lv-tk3" role="list" aria-label="Номинал билета">${T.map(t=>`<div role="listitem" class="${cur&&cur.nominal===t.nominal?'on':''}">${lvTicketArt(t.nominal,'sm')}<small>от ${lbNum(t.min/1000)} тыс ₽</small></div>`).join('')}</div>
+  <div class="lv-week-ft">${IC(ICD.cal)}<span>Начислим <b>${lvWd(w.end)}</b> · ${lvIn(w.end)}</span>${w.pending?`<em>${w.pending} ждут тиража</em>`:''}</div></section>`;
 }
+function lvHistory(s){const P=s.periods.slice(0,4);if(!P.length)return '';
+ return `<div class="cb-section-label lv-gap"><h3>Прошлые недели</h3></div><div class="lv-hist">${P.map(p=>`<div><span>${lbRange(p)}</span>${p.claimed?`<b class="ok">Билет ${p.paid} ₽ ✓</b>`:p.ticket?`<button type="button" data-lb-claim="${p.start}">Забрать ${p.ticket.nominal} ₽</button>`:p.pending?'<b>Считаем</b>':`<b class="no">${p.net?'Нет билета':'В плюсе'}</b>`}</div>`).join('')}</div>`}
+function lvCashbackHtml(s){return lvHero(s)+lvWeek(s)+lvHistory(s)+`<button type="button" class="lv-more" data-lb-rules="cb">${IC(ICD.chev)}Как считается кэшбек</button>`}
 function renderLossback(){
  lvLevelUps();
  const s=lossbackModel.snapshot();if(lbSelected===null)lbSelected=s.level.id;
+ if(!LV.mines)lvTab='cb';else if(!LV.cb)lvTab='level';
  lvWidget(s);
  $$('.header-profile').forEach(e=>{let badge=e.querySelector('.lb-profile-level');if(!badge){badge=document.createElement('span');badge.className='lb-profile-level';e.appendChild(badge)}badge.hidden=!LV.mines||!s.level.id;badge.textContent=s.level.id;badge.setAttribute('aria-label','Уровень '+s.level.id)});
  const h=$('#lossback .lb-title h2');if(h)h.textContent=lvTitle();
- $('#lossbackContent').innerHTML=(LV.mines?lvLevelsHtml(s):'')+(LV.cb?lvCashbackHtml(s):'')+(LV.cb||LV.mines?lvRulesShort():'<p class="lb-month-note">Механики выключены в настройках прототипа.</p>');
+ const body=!(LV.cb||LV.mines)?'<p class="lb-month-note">Механики выключены в настройках прототипа.</p>':lvTab==='cb'?lvCashbackHtml(s):lvLevelsHtml(s);
+ $('#lossbackContent').innerHTML=lvTabs(s)+`<div class="lv-panel" role="tabpanel">${body}</div>`;
  const rail=$('.cb-carousel');if(!rail)return;bpBindRail(rail);
  requestAnimationFrame(()=>{if(rail.isConnected){lbChooseLevel(lbSelected,false);lbPaintStack(rail)}});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lbPaintStack(rail)})},{passive:true});
@@ -5322,29 +5398,28 @@ function lbPaintStack(rail){
  lbSelected=+nearest.dataset.lbLevel;$$('[data-lb-select]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.lbSelect===lbSelected)));
 }
 function lbChooseLevel(id,smooth=true){const rail=$('.cb-carousel');if(!rail)return;const card=$(`[data-lb-level="${id}"]`,rail);if(!card)return;lbSelected=Number(id);rail.scrollTo({left:card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2,behavior:smooth&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});if(!smooth)lbPaintStack(rail);$$('[data-lb-select]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.lbSelect===lbSelected)))}
-
-function lbOpenDetails(rules=false){
- const s=lossbackModel.snapshot(),T=LossbackEngine.tiers,L=LossbackEngine.levels;bonusModalView={type:'cashback',rules};bpOpenModal(rules?'Как это работает':'Расчёт кэшбека');
- const cbPart=LV.cb?`<div class="cb-sheet-formula"><span>Проигрыш недели</span><strong>Покупки за рубли − все выигрыши</strong></div>
-  <div class="cb-sheet-calc"><p><span>Покупки за рубли (тиражи прошли)</span><b>${lbRub(s.week.stakes)}</b></p><p><span>Выигрыши, включая бесплатные билеты</span><b>−${lbRub(s.week.wins)}</b></p><p><span>Чистый проигрыш</span><b>${lbRub(s.week.net)}</b></p><p><span>Билет, если неделя закончится сейчас</span><b>${s.week.ticket?s.week.ticket.nominal+' ₽':'нет'}</b></p></div>
-  <p class="cb-sheet-note">Неделя ${lbRange(s.week)} — расчёт меняется до её конца.${s.week.pending?' Ждут тиража: '+s.week.pending+'.':''}</p>
-  <h4>Номинал билета</h4><div class="lv-tiers">${T.map((t,i)=>`<div><span>Проигрыш от ${lbRub(t.min)}${T[i+1]?'':' и больше'}</span><b>${t.nominal} ₽</b></div>`).join('')}</div>`:'';
- const rulesCb=LV.cb?[`Кэшбек считается за неделю с понедельника по воскресенье по Москве и начисляется один раз — в понедельник.`,`Проигрыш = стоимость билетов, оплаченных рублями, по завершённым тиражам минус выигрыши по всем билетам, включая бесплатные. Если тираж ещё не прошёл, билет учтём, когда он завершится.`,`Если проигрыш меньше ${lbRub(T[0].min)} или неделя в плюсе — кэшбек не начисляется.`,`Награда — один бесплатный билет на ${T.map(t=>t.nominal).join(', ')} ₽ в быстрые игры. При входе в игру билет предложит поставить свой номинал; рубли не списываются. Билет действует ${LossbackEngine.TICKET_DAYS} дней.`,`Покупки за бесплатные билеты и бонусы в проигрыш не входят.`]:[];
- const rulesLv=LV.mines?[`Уровень месяца растёт от покупок за рубли: ${L.slice(1).map(l=>`${lbRub(l.threshold)} — уровень ${l.id}`).join(', ')}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} в уровень не входят.`,`За каждый уровень — ${L[1].attempts} попыток в «Минах», один раз в месяц. Попытки действуют ${LossbackEngine.ATTEMPT_DAYS} дней с получения.`,`В «Минах» каждая безопасная клетка повышает приз: FS в Рапидо или бесплатный билет в быстрые игры. Забрать приз можно в любой момент; мина сгорает попытку без приза.`,`1-го числа уровень и прогресс обнуляются.`]:[];
- const hist=LV.cb&&s.periods.length?`<h4>Прошлые недели</h4><div class="cb-history-rail" tabindex="0" role="region" aria-label="Прошлые недели: горизонтальная прокрутка">${s.periods.map(p=>`<article><span>${lbRange(p)}</span><strong>${p.claimed?'Билет '+p.paid+' ₽':p.ticket?'Билет '+p.ticket.nominal+' ₽':'Нет билета'}</strong><small>${p.claimed?'Получено':p.pending?'Ожидаем результаты':p.ticket?'Готово к получению':p.net?'Проигрыш '+lbRub(p.net):'Неделя в плюсе'}</small><button data-lb-claim="${p.start}" ${p.claimed||p.pending||!p.ticket?'disabled':''}>${p.claimed?'Получено ✓':p.pending?'В расчёте':p.ticket?'Забрать':'—'}</button></article>`).join('')}</div>`:'';
- $('#bpModalBody').innerHTML=`<div class="cb-sheet">${rules?'':cbPart}${rules&&(rulesCb.length||rulesLv.length)?`<ul class="cb-sheet-rules">${[...rulesCb,...rulesLv].map(x=>`<li>${x}</li>`).join('')}</ul>${LV.cb?`<h4>Номинал билета</h4><div class="lv-tiers">${T.map((t,i)=>`<div><span>Проигрыш от ${lbRub(t.min)}</span><b>${t.nominal} ₽</b></div>`).join('')}</div>`:''}`:''}${rules?'':hist}<p class="cb-sheet-note">Пороги и номиналы — демонстрационные.</p></div>`;
- const rail=$('.cb-history-rail');if(rail)bpBindRail(rail);
+/* правила — коротко, по вкладке */
+function lbOpenDetails(rules=true,which){
+ which=which||(LV.mines&&LV.cb?lvTab:LV.mines?'level':'cb');
+ const T=LossbackEngine.tiers,L=LossbackEngine.levels;bonusModalView={type:'cashback',rules:true,which};
+ bpOpenModal(which==='cb'?'Как считается кэшбек':'Как работает уровень');
+ const steps=which==='cb'?[[ICD.cal,'Неделя — пн–вс по Москве','Билет приходит в понедельник, один раз за неделю'],[ICD.ret,'Проигрыш = покупки − выигрыши','Только билеты за рубли и прошедшие тиражи. Выигрыши — все, включая бесплатные'],[ICD.ticket,'Награда — бесплатный билет',`В любую быструю игру, ${LossbackEngine.TICKET_DAYS} дней. Рубли не начисляются`],[ICD.check,'Неделя в плюсе — билета нет',`И если проигрыш меньше ${lbRub(T[0].min)}`]]
+  :[[ICD.cal,'Считаем покупки за месяц',`Только за рубли. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} не идут`],[ICD.mine,`Уровень — ${L[1].attempts} попыток в «Минах»`,`Один раз за уровень, попытки живут ${LossbackEngine.ATTEMPT_DAYS} дней`],[ICD.grid,'Мины: клетка за клеткой','Каждая безопасная повышает приз. Мина — попытка сгорает'],[ICD.clock,'1-го числа — сброс','Уровень и прогресс начинаются с нуля']];
+ const table=which==='cb'?T.map(t=>[`Проигрыш от ${lbRub(t.min)}`,`${t.nominal} ₽`]):L.slice(1).map(l=>[`Уровень ${l.id} · от ${lbRub(l.threshold)}`,`+${l.attempts}`]);
+ $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
+  <h4>${which==='cb'?'Номинал билета':'Уровни месяца'}</h4><div class="lv-tiers">${table.map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join('')}</div><p class="cb-sheet-note">Пороги и номиналы — демонстрационные.</p></div>`;
 }
 document.addEventListener('click',e=>{
+ const tab=e.target.closest('[data-lv-tab]');if(tab&&tab.closest('#lossback')){lvTab=tab.dataset.lvTab;renderLossback();$('#lossback').scrollTop=0;return}
  const select=e.target.closest('[data-lb-select]');if(select){lbChooseLevel(+select.dataset.lbSelect);return}
  const claim=e.target.closest('[data-lb-claim]');if(claim){lvClaim(+claim.dataset.lbClaim);return}
  if(e.target.closest('#lossbackContent [data-lv-mines]')){if(typeof lvOpenMines==='function')lvOpenMines();return}
- if(e.target.closest('[data-lb-rules]'))lbOpenDetails(true);
- else if(e.target.closest('[data-lb-details]'))lbOpenDetails();
+ if(e.target.closest('[data-lv-play]')){openGame(QUICK_IDS[0]);return}
+ const r=e.target.closest('[data-lb-rules]');if(r)lbOpenDetails(true,r.dataset.lbRules||undefined);
 });
 /* виджет: целиком ведёт на экран, кнопки внутри — свои действия */
 {const w=$('#lossbackEntry');
- w.addEventListener('click',e=>{const c=e.target.closest('[data-lb-claim],[data-lv-mines]');if(!c)return;e.stopPropagation();if(c.dataset.lbClaim)lvClaim(+c.dataset.lbClaim);else if(typeof lvOpenMines==='function')lvOpenMines()});
+ w.addEventListener('click',e=>{lvTab=e.target.closest('.lv-w-cb')?'cb':'level';const c=e.target.closest('[data-lb-claim],[data-lv-mines]');if(!c)return;e.stopPropagation();if(c.dataset.lbClaim)lvClaim(+c.dataset.lbClaim);else if(typeof lvOpenMines==='function')lvOpenMines()});
  w.addEventListener('keydown',e=>{if(e.target===w&&(e.key==='Enter'||e.key===' ')){e.preventDefault();go('lossback')}});}
 /* стартовое демо-состояние: уровень 1 уже получен — 5 попыток, 2 из них сыграны */
 function lvSeed(){lvGrantAttempts(5);const r=lvMinesRec();if(r)r.used=2}
@@ -6790,10 +6865,10 @@ function items(){
   const L=[];
   // кэшбек недели и уровень месяца
   try{const s=lossbackModel.snapshot(),ready=s.ready[0],last=s.periods[0];
-    if(LV.cb){if(ready)L.push({id:'cb-ready-'+ready.start,type:'cashback',t:`Кэшбек: бесплатный билет ${num(ready.ticket.nominal)} ₽`,d:'За прошлую неделю — одна бесплатная игра в быстрых играх.',m:0,btn:'Забрать',act:()=>{lvClaim(ready.start);go('lossback')}});
-      else if(last&&last.claimed)L.push({id:'cb-done-'+last.start,type:'cashback',t:'Кэшбек получен',d:`Бесплатный билет ${num(last.paid)} ₽ — в Промо и в быстрых играх.`,m:2,read:true,act:()=>go('lossback')})}
+    if(LV.cb){if(ready)L.push({id:'cb-ready-'+ready.start,type:'cashback',t:`Кэшбек: бесплатный билет ${num(ready.ticket.nominal)} ₽`,d:'За прошлую неделю — одна бесплатная игра в быстрых играх.',m:0,btn:'Забрать',act:()=>{lvClaim(ready.start);lvTab='cb';go('lossback')}});
+      else if(last&&last.claimed)L.push({id:'cb-done-'+last.start,type:'cashback',t:'Кэшбек получен',d:`Бесплатный билет ${num(last.paid)} ₽ — в Промо и в быстрых играх.`,m:2,read:true,act:()=>{lvTab='cb';go('lossback')}})}
     if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,type:'promo',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Открывайте клетки и забирайте FS или бесплатный билет.',m:5,btn:'Играть',act:()=>lvOpenMines()});
-      if(s.next)L.push({id:'lv-level-'+s.level.id,type:'cashback',t:`До уровня ${s.next.id} — ${num(s.remaining)} ₽`,d:`Новый уровень месяца: +${s.next.attempts} попыток в «Минах».`,m:180,act:()=>go('lossback')})}
+      if(s.next)L.push({id:'lv-level-'+s.level.id,type:'cashback',t:`До уровня ${s.next.id} — ${num(s.remaining)} ₽`,d:`Новый уровень месяца: +${s.next.attempts} попыток в «Минах».`,m:180,act:()=>{lvTab='level';go('lossback')}})}
   }catch(e){}
   // колесо удачи
   try{if(wheelFree())L.push({id:'wheel-'+today(),type:'promo',t:'Колесо удачи ждёт',d:'Бесплатное вращение раз в сутки: рубли, фриспины и купончики.',m:12,btn:'Крутить',act:()=>openWheel()})}catch(e){}
@@ -7120,7 +7195,7 @@ $('#mnGo').onclick=()=>{if(st.phase==='play')mnCollect();else mnStart()};
 $('#mn2').onclick=()=>{
  if(st.phase==='boom'){mnClose();return}
  if(st.phase==='won'){const p=st.prize;box.classList.remove('show');st.phase='idle';if(p.k==='tk')openGame(QUICK()[0]);else openGame('rap');return}
- box.classList.remove('show');lbOpenDetails(true)};
+ box.classList.remove('show');lbOpenDetails(true,'level')};
 
 /* сброс прототипа — поле закрывается */
 const _reset=resetProto;resetProto=function(){_reset.apply(this,arguments);st.phase='idle';box.classList.remove('show')};
