@@ -2348,6 +2348,9 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .nj-note{margin:4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
 .ns-body>*{flex:none}
 .nt-readall{white-space:nowrap}
+.nt-chips{cursor:grab;user-select:none;-webkit-user-select:none}
+.nt-chips.dragging{cursor:grabbing}
+.nt-chips.dragging .nt-chip{pointer-events:none}
 
 </style>
 <style>
@@ -7095,6 +7098,12 @@ function journalOpen(){if(typeof bpOpenModal!=='function')return;bonusModalView=
   ${journal().map(j=>`<div class="nj-row"><span class="nj-t"><b>${j.t}${j.ad?' <em>реклама</em>':''}</b><small>${j.d}</small></span><span class="nj-r ${j.res.k}"><b>${j.res.t}</b><small>${j.res.r}</small></span></div>`).join('')}
   <p class="nj-note">Перед отправкой проверяем согласие, актуальность и общий лимит всех кампаний. Эффективность — дополнительные возвраты против группы без рассылки; комфорт — отключения и жалобы.</p></div>`}
 {const j=$('#ntJournal');if(j)j.onclick=()=>{$('#cfg').classList.remove('show');journalOpen()}}
+/* чипы фильтров: перетаскивание мышью (на телефоне — обычный свайп) */
+{const rail=$('#notif .nt-chips');let d=null;
+ rail.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;d={x:e.clientX,left:rail.scrollLeft,z:rail.getBoundingClientRect().width/rail.offsetWidth||1,moved:false}});
+ window.addEventListener('pointermove',e=>{if(!d)return;const dx=(e.clientX-d.x)/d.z;if(Math.abs(dx)>4){d.moved=true;rail.classList.add('dragging')}if(d.moved)rail.scrollLeft=d.left-dx});
+ window.addEventListener('pointerup',()=>{if(!d)return;if(d.moved)NT.dragged=true;setTimeout(()=>{NT.dragged=false},0);d=null;rail.classList.remove('dragging')});
+ rail.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){rail.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});}
 window.NTDEMO={ND,NS,set(k,v){ND[k]=v;nsRender()},journal:journalOpen,summary:()=>nsSummary()[1]};
 window.nsOpen=nsOpen;
 document.addEventListener('click',e=>{
@@ -7102,7 +7111,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('#notif'))return;
   if(e.target.closest('[data-nt-close]')){close();return}
   if(e.target.closest('[data-nt-readall]')){items().forEach(i=>NT.read.add(i.id));render();return}
-  const f=e.target.closest('[data-nt-filter]');if(f){NT.filter=f.dataset.ntFilter;render();return}
+  const f=e.target.closest('[data-nt-filter]');if(f){if(NT.dragged){NT.dragged=false;return}NT.filter=f.dataset.ntFilter;render();return}
   const it=e.target.closest('[data-nt-id]');if(it){const i=items().find(x=>x.id===it.dataset.ntId);NT.read.add(it.dataset.ntId);badge();close();if(i&&i.act)setTimeout(i.act,180)}
 },true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#notif').classList.contains('show'))close();if(e.key==='Enter'&&e.target.matches&&e.target.matches('.nt-item'))e.target.click()});
