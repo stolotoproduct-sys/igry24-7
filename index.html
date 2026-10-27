@@ -2299,6 +2299,55 @@ html.bonus-orig .header-stb{display:flex!important;align-items:center;gap:4px}
 .nt-empty svg{width:42px;height:42px;color:#4a4458;margin-bottom:6px}
 .nt-empty b{color:#fff;font-size:16px}
 .nt-foot{margin:0;padding:10px 16px calc(14px + env(safe-area-inset-bottom));text-align:center;font-size:11.5px;color:#6f6880;border-top:1px solid #ffffff0a}
+/* ---- настройки уведомлений ---- */
+.nt-gear{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#15161e;border:1px solid #262731;color:#fff;flex:none}
+.nt-gear svg{width:20px;height:20px}
+button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:40px;border-radius:12px;background:#ffffff0d;border:0;color:#c69cf0;font:600 14px/20px Inter,sans-serif}
+.ns{z-index:72}
+.ns-body{flex:1;overflow-y:auto;padding:0 16px 24px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+.ns-body h4{margin:4px 0 -4px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7f7690}
+.ns-sum{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border-radius:16px;background:#a25be61f;border:1px solid #a25be659}
+.ns-sum.pause{background:#f0aa2c1a;border-color:#f0aa2c59}
+.ns-sum.shield{background:#2bbf8f1a;border-color:#2bbf8f59}
+.ns-sum b{font-size:14px;line-height:20px;font-weight:700}
+.ns-sum span{font-size:12px;line-height:16px;color:#b9aecb}
+.ns-card{border-radius:16px;background:#15131d;border:1px solid #ffffff14;overflow:hidden}
+.ns-row{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 16px}
+.ns-row+.ns-row{border-top:1px solid #ffffff0f}
+.ns-row.col{flex-direction:column;align-items:stretch;gap:8px;padding:12px 16px}
+.ns-rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ns-rt b{font-size:14px;line-height:20px;font-weight:600}
+.ns-rt b em{font-style:normal;margin-left:4px;padding:2px 6px;border-radius:6px;background:#ff7ab826;color:#ff9fcb;font-size:10px;line-height:12px;font-weight:700;vertical-align:2px}
+.ns-rt small,.ns-hint{font-size:12px;line-height:16px;color:#a99fc2}
+.ns-val{font-size:12px;line-height:16px;color:#8f86a8;text-align:right}
+.ns-sw{position:relative;flex:none;width:44px;height:24px;border-radius:12px;background:#ffffff1f;border:0;transition:background .2s}
+.ns-sw i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:10px;background:#fff;transition:transform .2s}
+.ns-sw[aria-checked="true"]{background:#a25be6}
+.ns-sw[aria-checked="true"] i{transform:translateX(20px)}
+.ns-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ns-chips.two{grid-template-columns:1fr 1fr}
+.ns-chips.four{grid-template-columns:repeat(4,1fr)}
+.ns-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-height:40px;padding:4px;border-radius:12px;border:1px solid #2a2b35;background:#111219;color:#cfc8dc;font:600 13px/16px Inter,sans-serif}
+.ns-chip small{font-size:11px;line-height:14px;font-weight:500;color:#8f86a8}
+.ns-chip.on{background:#a25be6;border-color:#b371ed;color:#fff}
+.ns-chip.on small{color:#eadcff}
+.ns-warn{margin:0;padding:8px 12px;border-radius:12px;background:#f0aa2c1a;color:#ffd76a;font-size:12px;line-height:16px}
+.ns-note{margin:0;font-size:12px;line-height:16px;color:#8f86a8}
+/* журнал отправки (демо) */
+.nj{display:flex;flex-direction:column;gap:8px}
+.nj-ctx{margin:0 0 4px;font-size:12px;line-height:16px;color:#a99fc2}
+.nj-ctx b{color:#fff}
+.nj-row{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:12px;background:#ffffff08}
+.nj-t,.nj-r{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nj-t{flex:1}
+.nj-r{flex:1.2}
+.nj-t b,.nj-r b{font-size:13px;line-height:18px;font-weight:700}
+.nj-t b em{font-style:normal;margin-left:4px;padding:1px 6px;border-radius:6px;background:#ff7ab826;color:#ff9fcb;font-size:10px;font-weight:700}
+.nj-t small,.nj-r small{font-size:12px;line-height:16px;color:#a99fc2}
+.nj-r.send b{color:#7ef0c9}.nj-r.later b{color:#ffd76a}.nj-r.inapp b{color:#c69cf0}.nj-r.skip b,.nj-r.cancel b{color:#ff8a96}
+.nj-note{margin:4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
+.ns-body>*{flex:none}
+.nt-readall{white-space:nowrap}
 
 </style>
 <style>
@@ -2972,6 +3021,7 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
     <div class="cfg-t">Демо-счёт</div>
     <button id="lbNearLevel" class="cfg-lnk" type="button">Уровень: 100 ₽ до следующего (+5 попыток в Минах)</button>
     <button id="lbCloseWeek" class="cfg-lnk" type="button">Кэшбек: завершить демо-неделю и посчитать билет</button>
+    <button id="ntJournal" class="cfg-lnk" type="button">Уведомления: журнал отправки — что и когда уйдёт</button>
     <button id="tmFinishDemo" class="cfg-lnk" type="button">Турниры: завершить текущий и проверить приз</button>
     <button id="bpWagerScenario" class="cfg-lnk" type="button">Бонусы: 0 ₽ и 500 Б — проверить отыгрыш</button>
     <button id="bpEmptyScenario" class="cfg-lnk" type="button">Бонусы: показать пустые активные</button>
@@ -6015,7 +6065,13 @@ const DM_GROUPS=[
  {id:'offers',t:'Доступные предложения',cls:'c2',opts:[['yes','Есть','в «Доступных»'],['no','Нет','всё разобрано']]},
  {id:'raffle',t:'Розыгрыш: уровень',cls:'c5',opts:[[1,'1','старт'],[4,'4','60 до приза'],[24,'24','60 до приза'],[49,'49','60 до приза'],[99,'99','60 до 100']]},
  {id:'picks',t:'Розыгрыш: кирки',cls:'c3',opts:[[0,'0','нет кирок'],[10,'10','кирок'],[50,'50','кирок']]},
- {id:'wheel',t:'Колесо удачи',cls:'c3',opts:[['free1','Можно','крутить сегодня'],['spun','Крутил','таймер до 00:00']]}
+ {id:'wheel',t:'Колесо удачи',cls:'c3',opts:[['free1','Можно','крутить сегодня'],['spun','Крутил','таймер до 00:00']]},
+ {id:'ntHour',t:'Уведомления: время сейчас',cls:'c4',opts:[[9,'09:00','тихие часы'],[14,'14:00','день'],[19,'19:00','вечер'],[23,'23:00','тихие часы']]},
+ {id:'ntOnline',t:'Уведомления: пользователь на сайте',cls:'c2',opts:[['yes','Да','показ внутри'],['no','Нет','push / e-mail']]},
+ {id:'ntHist',t:'Уведомления: история визитов',cls:'c2',opts:[['rich','Есть','время по визитам'],['poor','Мало','выбранное время']]},
+ {id:'ntAds',t:'Уведомления: рекламных за неделю',cls:'c3',opts:[['none','0','можно'],['today','1','сегодня — лимит 24 ч'],['week2','2','лимит недели']]},
+ {id:'ntReact',t:'Уведомления: реакция на предложения',cls:'c2',opts:[['yes','Открывает','обычная частота'],['no','Не открывает','частота снижена']]},
+ {id:'ntSelf',t:'Пауза в игре / самоисключение',cls:'c2',opts:[['no','Нет',''],['yes','Да','реклама выкл.']]}
 ];
 const PRESETS={
  novice:{cash:0,cbOn:'on',cbState:'plus',mnOn:'on',lvl:0,att:0,bonus:'none',fs:'none',offers:'yes',raffle:1,picks:0,wheel:'free1'},
@@ -6072,6 +6128,7 @@ const SET={
   rfRender();rfBindBoard();
  },
  picks(v){rf.st.picks=v;rfRenderPicks()},
+ ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},
  wheel(v){if(typeof fwBusy!=='undefined'&&fwBusy)return;
   if(v==='free1'){S.wheelDay='';S.wheelStreak=0}
   if(v==='free7'){S.wheelStreak=6;S.wheelDay=wsShift(today(),-1)}
@@ -6093,6 +6150,7 @@ function current(){
   offers:bonusModel.list('available').length?'yes':'no',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
+  ...(()=>{const D=window.NTDEMO&&NTDEMO.ND;return D?{ntHour:D.hour,ntOnline:D.online?'yes':'no',ntHist:D.hist,ntAds:D.adlog,ntReact:D.react,ntSelf:D.self}:{}})(),
   readout:{
    series:(()=>{const n=QS[QUICK_IDS.includes($('#game').dataset.g)?$('#game').dataset.g:'coin']||0;return BonusEngine.mode==='orig'?`${n} из 10 · ${n>=3?'награда '+STB_LADDER[n]+' бонусов':'награды пока нет'}`:`${n} из 10 · до суперприза ${10-n}`})(),
    bmode:{none:'выключены',wager:'с отыгрышем',orig:'Столото, 1 = 1 ₽'}[BonusEngine.mode],stb:BonusEngine.mode==='orig'?rfNum(S.stb||0)+' бонусов':'только в режиме Столото',
@@ -6106,7 +6164,8 @@ function current(){
    offers:bonusModel.list('available').length+' шт.',
    raffle:`уровень ${rf.st.level} · ${rfNum(rf.st.points)} очков`,
    picks:rf.st.picks+' шт.',
-   wheel:ws.spun?'крутил сегодня · таймер':'можно крутить'
+   wheel:ws.spun?'крутил сегодня · таймер':'можно крутить',
+   ...(()=>{const t=window.NTDEMO?NTDEMO.summary():'';return {ntHour:t,ntOnline:'',ntHist:'',ntAds:'',ntReact:'',ntSelf:''}})()
   }
  };
 }
@@ -6890,38 +6949,71 @@ const ICO={
   cashback:['#3b2a12','#ffc94d','<path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v8M9.5 10.5h4a1.5 1.5 0 0 1 0 3h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'],
   bonus:['#2c1846','#c88bff','<rect x="4" y="10" width="16" height="10" rx="2" fill="currentColor" opacity=".45"/><rect x="3" y="7" width="18" height="4" rx="1.5" fill="currentColor"/><path d="M12 7v13M12 7C7 7 7 3 9.5 3.5S12 7 12 7Zm0 0c5 0 5-4 2.5-3.5S12 7 12 7Z" fill="none" stroke="currentColor" stroke-width="1.8"/>'],
   games:['#10283f','#5fb4ff','<rect x="3" y="7" width="18" height="11" rx="5" fill="currentColor" opacity=".35"/><path d="M8 10.5v4M6 12.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.5" r="1.3" fill="currentColor"/><circle cx="17.5" cy="13.8" r="1.3" fill="currentColor"/>'],
+  draw:['#10283f','#5fb4ff','<rect x="4" y="5" width="16" height="15" rx="3" fill="currentColor" opacity=".35"/><path d="M8 3v4M16 3v4M4 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="2" fill="currentColor"/>'],
+  reminder:['#3b2a12','#ffc94d','<circle cx="12" cy="13" r="8" fill="currentColor" opacity=".35"/><path d="M12 9v4l3 2M9 3h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>'],
   promo:['#3a1630','#ff7ab8','<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7Z" fill="currentColor"/>']
 };
 const ago=m=>m<1?'сейчас':m<60?m+' мин':m<1440?Math.round(m/60)+' ч':m<2880?'вчера':Math.round(m/1440)+' дн.';
 const num=n=>Math.round(n).toLocaleString('ru-RU');
 const tab=id=>()=>{go('promo');setTimeout(()=>{try{selectBonusTab(id)}catch(e){}},50)};
+/* ---------- настройки пользователя (согласие, темы, время, частота, пауза, персонализация) ---------- */
+const NS_DEF={ch:{push:true,email:true,sms:false},topics:{draw:true,bonus:true,expiry:true,reminder:true,comeback:true},slot:'evening',ad:'2w',personal:true,pauseUntil:0};
+const NS=(()=>{try{return Object.assign(JSON.parse(JSON.stringify(NS_DEF)),JSON.parse(localStorage.getItem('ntSettings')||'{}'))}catch(e){return JSON.parse(JSON.stringify(NS_DEF))}})();
+const nsSave=()=>{try{localStorage.setItem('ntSettings',JSON.stringify(NS))}catch(e){}};
+/* демо-сигналы для проверки логики (меняются в настройках прототипа) */
+const ND={hour:14,hist:'rich',online:true,react:'yes',self:'no',adlog:'none'};
+const TOPICS=[['draw','Результаты тиражей','Только тиражи, в которых вы участвовали',0],['bonus','Бонусы, промокоды и попытки','Когда что-то начислено',0],['expiry','Срок бонуса','Одно напоминание до окончания',0],['reminder','Напоминания о тиражах','Только по вашей подписке',0],['comeback','Предложения','Если давно не заходили — одно сообщение',1]];
+const SLOTS={morning:['Утро','10–13',10],day:['День','13–17',13],evening:['Вечер','17–21',17]};
+const CH={push:'Push',email:'E-mail',sms:'SMS'};
+const PAUSES=[[0,'Нет'],[1,'1 день'],[7,'7 дней'],[30,'30 дней']];
+const quiet=h=>h>=21||h<10;
+const paused=()=>NS.pauseUntil>Date.now();
+const dShort=t=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(t);
+/* окно отправки: по визитам (если хватает истории и персонализация включена), иначе выбранное время */
+function sendWindow(){if(NS.personal&&ND.hist==='rich')return {from:19,label:'по вашим визитам — обычно вечер, 19–21',auto:true};const s=SLOTS[NS.slot];return {from:s[2],label:'в выбранное время — '+s[0].toLowerCase()+', '+s[1],auto:false}}
+function adLimit(){const low=ND.react==='no';const week=NS.ad==='1w'||low?1:2;return {day:1,week,low}}
+/* решение по одному сообщению: отправить / отложить / показать на сайте / не отправлять / отменить */
+function decide(ev){
+ if(paused())return {k:'skip',t:'Не отправлено',r:'Уведомления на паузе до '+dShort(NS.pauseUntil)};
+ if(!NS.topics[ev.topic])return {k:'skip',t:'Не отправлено',r:'Тема выключена в настройках'};
+ if(ev.ad&&ND.self==='yes')return {k:'skip',t:'Не отправлено',r:'Пауза в игре или самоисключение — реклама отключена'};
+ if(ev.expired)return {k:'cancel',t:'Отменено',r:'Предложение уже неактуально'};
+ const ch=Object.keys(CH).filter(c=>NS.ch[c]&&(c!=='sms'||!ev.ad));
+ if(ND.online)return {k:'inapp',t:'Показано на сайте',r:ev.ad?'Вы на сайте — без дублирующего push':'Вы на сайте — в колокольчике'};
+ if(!ch.length)return {k:'skip',t:'Не отправлено',r:'Нет согласия ни на один канал'};
+ if(ev.ad){const L=adLimit(),n7={none:0,today:1,week2:2}[ND.adlog];if(ND.adlog==='today')return {k:'skip',t:'Не отправлено',r:'Лимит: 1 за 24 часа — предложение уже было сегодня'};if(n7>=L.week)return {k:'skip',t:'Не отправлено',r:'Лимит: '+L.week+' за неделю'+(L.low?' (снижен — вы не открываете)':'')}}
+ const w=sendWindow(),names=ch.map(c=>CH[c]).join(' + ');
+ if(quiet(ND.hour))return {k:'later',t:'Отложено',r:names+' в '+(ev.ad?w.from:10)+':00 — тихие часы 21–10'};
+ if(ev.ad&&ND.hour<w.from)return {k:'later',t:'Отложено',r:names+' в '+w.from+':00 — '+(w.auto?'окно по вашим визитам':'выбранное время')};
+ return {k:'send',t:'Отправлено',r:names+' · '+String(ND.hour).padStart(2,'0')+':05'};
+}
 function items(){
   const L=[];
-  // кэшбек недели и уровень месяца
+  // 1. результат тиража, в котором участвовали
+  L.push({id:'draw-res',topic:'draw',type:'draw',t:'Тираж «Монетка» № 12 407: прогноз сыграл',d:'Ваш выигрыш +170 ₽ уже на балансе.',m:3,btn:'Открыть',act:()=>openGame('coin')});
+  L.push({id:'draw-res2',topic:'draw',type:'draw',t:'Тираж «Весы» № 8 115 завершён',d:'Прогноз не сыграл. Результаты — в архиве игры.',m:65,read:true,act:()=>openGame('scale')});
+  // 2. начислены бонусы, промокод или попытки
   try{const s=lossbackModel.snapshot(),ready=s.ready[0],last=s.periods[0];
-    if(LV.cb){if(ready)L.push({id:'cb-ready-'+ready.start,type:'cashback',t:`Кэшбек: бесплатный билет ${num(ready.ticket.nominal)} ₽`,d:'За прошлую неделю — одна бесплатная игра в быстрых играх.',m:0,btn:'Забрать',act:()=>{lvClaim(ready.start);lvTab='cb';go('lossback')}});
-      else if(last&&last.claimed)L.push({id:'cb-done-'+last.start,type:'cashback',t:'Кэшбек получен',d:`Бесплатный билет ${num(last.paid)} ₽ — в Промо и в быстрых играх.`,m:2,read:true,act:()=>{lvTab='cb';go('lossback')}})}
-    if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,type:'promo',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Открывайте клетки и забирайте FS или бесплатный билет.',m:5,btn:'Играть',act:()=>lvOpenMines()});
-      if(s.next)L.push({id:'lv-level-'+s.level.id,type:'cashback',t:`До уровня ${s.next.id} — ${num(s.remaining)} ₽`,d:`Новый уровень месяца: +${s.next.attempts} попыток в «Минах».`,m:180,act:()=>{lvTab='level';go('lossback')}})}
+    if(LV.cb){if(ready)L.push({id:'cb-ready-'+ready.start,topic:'bonus',type:'bonus',t:`Бесплатный билет ${num(ready.ticket.nominal)} ₽`,d:'Кэшбек за прошлую неделю — одна бесплатная игра.',m:0,btn:'Забрать',act:()=>{lvClaim(ready.start);lvTab='cb';go('lossback')}});
+      else if(last&&last.claimed)L.push({id:'cb-done-'+last.start,topic:'bonus',type:'bonus',t:'Кэшбек получен',d:`Бесплатный билет ${num(last.paid)} ₽ — в Промо и в быстрых играх.`,m:2,read:true,act:()=>{lvTab='cb';go('lossback')}})}
+    if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,topic:'bonus',type:'bonus',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Попытки за уровень месяца. Призы — FS и бесплатные билеты.',m:5,btn:'Играть',act:()=>lvOpenMines()})}
   }catch(e){}
-  // колесо удачи
-  try{if(wheelFree())L.push({id:'wheel-'+today(),type:'promo',t:'Колесо удачи ждёт',d:'Бесплатное вращение раз в сутки: рубли, фриспины и купончики.',m:12,btn:'Крутить',act:()=>openWheel()})}catch(e){}
-  // ближайший тираж
-  L.push({id:'draw',type:'games',t:'Тираж через пару минут',d:'Быстрые игры: успейте сделать прогноз — «Чёт или нечет», «Весы», «Индекс удачи».',m:1,btn:'Играть',act:()=>openGame('coin')});
-  // бонусы по режиму
   const mode=(window.BonusEngine&&BonusEngine.mode)||'wager';
+  try{const r=bonusModel.list('active').find(x=>x.ready);if(r)L.push({id:'bonus-ready-'+r.id,topic:'bonus',type:'bonus',t:'Бонус отыгран',d:`Заберите +${num(r.remaining)} ₽ в Промо.`,m:0,btn:'Забрать',act:()=>go('promo')})}catch(e){}
+  // 3. срок бонуса — одно напоминание
   if(mode==='wager'){try{const b=bonusModel.list('active').find(x=>x.type==='deposit'&&!x.ready);
-    if(b){const left=Math.max(0,b.target-b.turnover);L.push({id:'bonus-'+b.id,type:'bonus',t:`Бонус сгорит через ${bpTimeLeft(b.expiresAt)}`,d:`Осталось поставить ${num(left)} Б, чтобы получить +${num(b.remaining)} ₽.`,m:40,btn:'Открыть',act:()=>go('promo')})}
-    const r=bonusModel.list('active').find(x=>x.ready);if(r)L.push({id:'bonus-ready-'+r.id,type:'bonus',t:'Бонус отыгран!',d:`Заберите +${num(r.remaining)} ₽ на рублёвый баланс.`,m:0,btn:'Забрать',act:()=>go('promo')});
-  }catch(e){}}
-  else if(mode==='orig')L.push({id:'stb',type:'bonus',t:'Бонусы Столото в быстрых играх',d:'Угадайте 3 исхода подряд — первая награда 20 бонусов, дальше ×2 за каждую победу.',m:55,btn:'Играть',act:()=>openGame('coin')});
-  // розыгрыш и турнир
-  L.push({id:'raffle',type:'promo',t:'Розыгрыш: есть ходы',d:'Ставки от 100 ₽ дают ходы на поле 5×5. Открывайте клетки и забирайте призы.',m:95,act:tab('raffle')});
-  L.push({id:'tour',type:'games',t:'Турнир «Спринт 24/7» идёт',d:'Вы участвуете. До конца турнира 18 ч — поднимайтесь в таблице.',m:300,act:tab('tournament')});
-  // ранее
-  L.push({id:'weekly',type:'bonus',t:'Недельный набор: 3 FS каждый день',d:'7 дней — 7 игр. Активируйте в разделе «Бонусы».',m:1500,read:true,act:()=>go('promo')});
-  L.push({id:'new-index',type:'games',t:'Новая игра — «Индекс удачи»',d:'Вверх, флэт или вниз: угадайте, чем закроется свеча.',m:2900,read:true,act:()=>openGame('index')});
+    if(b){const left=Math.max(0,b.target-b.turnover);L.push({id:'bonus-'+b.id,topic:'expiry',type:'reminder',t:`Бонус закончится через ${bpTimeLeft(b.expiresAt)}`,d:`Осталось ${num(left)} Б до +${num(b.remaining)} ₽. Напоминаем один раз.`,m:40,btn:'Открыть',act:()=>go('promo')})}}catch(e){}}
+  try{const v=lvTickets()[0];if(v)L.push({id:'tk-exp-'+v.id,topic:'expiry',type:'reminder',t:`Билет ${num(v.nominal)} ₽ действует до ${dShort(v.expiresAt)}`,d:'Бесплатная игра в любой быстрой игре. Напоминаем один раз.',m:20,btn:'Сыграть',act:()=>openGame('coin')})}catch(e){}
+  // 4. скоро интересующий тираж — по подписке
+  L.push({id:'sub-loto',topic:'reminder',type:'reminder',t:'Через 15 минут — тираж «Русское лото»',d:'Вы подписались на напоминание. Билеты ещё можно купить.',m:1,btn:'Купить билет',act:()=>toast('Классические лотереи в прототипе не открываются')});
+  // 5. давно не заходили — одно сообщение с актуальным поводом
+  L.push({id:'comeback',topic:'comeback',type:'promo',ad:true,t:'Для вас бесплатный билет 100 ₽',d:'Пришло, пока вас не было: одна бесплатная игра в «Монетке». Больше не напоминаем.',m:4320,read:true,act:()=>openGame('coin')});
   return L.sort((a,b)=>a.m-b.m);
+}
+/* журнал отправки (демо): что система сделала бы с каждым поводом прямо сейчас */
+function journal(){
+  const evs=[{topic:'draw',t:'Результат тиража',d:'«Монетка» № 12 407'},{topic:'bonus',t:'Начислен билет / попытки',d:'Кэшбек недели, «Мины»'},{topic:'expiry',t:'Срок бонуса',d:'Одно напоминание'},{topic:'reminder',t:'Скоро тираж по подписке',d:'«Русское лото», 15 мин'},{topic:'comeback',ad:true,t:'Давно не заходили',d:'Одно рекламное сообщение'},{topic:'comeback',ad:true,expired:true,t:'Старое предложение',d:'Срок акции прошёл'}];
+  return evs.map(e=>({...e,res:decide(e)}));
 }
 const isRead=i=>i.read||NT.read.has(i.id);
 function unread(){return items().filter(i=>!isRead(i)).length}
@@ -6931,7 +7023,7 @@ function inject(root=document){
     const wrap=document.createElement('span');wrap.className='header-right';prof.before(wrap);
     wrap.insertAdjacentHTML('beforeend',`<button class="header-round header-bell" type="button" data-notif aria-label="Уведомления">${BELL}<b class="notif-badge" data-notif-badge hidden></b></button>`);wrap.appendChild(prof)});
 }
-const FILTERS=[['all','Все'],['unread','Новые'],['cashback','Кэшбек'],['bonus','Бонусы'],['games','Игры']];
+const FILTERS=[['all','Все'],['unread','Новые'],['draw','Тиражи'],['bonus','Бонусы'],['reminder','Напоминания']];
 function row(i){const [bg,fg,svg]=ICO[i.type]||ICO.promo;const r=isRead(i);
   return `<article class="nt-item${r?'':' new'}" data-nt-id="${i.id}" tabindex="0" role="button">
    <span class="nt-ico" style="background:${bg};color:${fg}"><svg viewBox="0 0 24 24">${svg}</svg></span>
@@ -6955,7 +7047,56 @@ function close(){const P=$('#notif');P.classList.remove('show');P.setAttribute('
 $('#scr').insertAdjacentHTML('beforeend',`<div class="nt" id="notif" role="dialog" aria-modal="true" aria-label="Уведомления" aria-hidden="true">
  <div class="nt-head"><button class="nt-back" type="button" data-nt-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 5-7 7 7 7"/></svg></button><h2>Уведомления</h2><button class="nt-readall" type="button" data-nt-readall>Прочитать все</button></div>
  <div class="nt-chips" role="tablist"></div><div class="nt-list"></div>
- <p class="nt-foot">Настроить push и e-mail можно в профиле</p></div>`);
+ <button type="button" class="nt-foot" data-ns-open>Настроить: каналы, темы, время, пауза</button></div>`);
+/* ---------- экран настроек уведомлений ---------- */
+const sw=(on,attr)=>`<button type="button" class="ns-sw" role="switch" aria-checked="${on}" ${attr}><i></i></button>`;
+function nsSummary(){
+  if(paused())return ['pause','На паузе до '+dShort(NS.pauseUntil),'Не присылаем ничего, кроме входа и безопасности.'];
+  if(ND.self==='yes')return ['shield','Рекламные сообщения выключены','У вас пауза в игре. Результаты тиражей и бонусы приходят.'];
+  const w=sendWindow(),L=adLimit();
+  return ['clock','Предложения '+w.label,`Не чаще 1 в сутки и ${L.week} в неделю${L.low?' — снижено, вы их не открываете':''}. Тихие часы 21:00–10:00.`];
+}
+function nsRender(){
+  const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
+  $('.ns-body',P).innerHTML=`<section class="ns-sum ${ic}"><b>${t}</b><span>${d}</span></section>
+  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:'На телефон и в браузер',email:'На почту ivan•••@mail.ru',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`).join('')}</div>
+  ${on?'':'<p class="ns-warn">Все каналы выключены — уведомления будут только в колокольчике на сайте.</p>'}
+  <h4>О чём</h4><div class="ns-card">${TOPICS.map(([k,n,s,ad])=>`<div class="ns-row"><span class="ns-rt"><b>${n}${ad?' <em>реклама</em>':''}</b><small>${s}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
+  <h4>Когда</h4><div class="ns-card"><div class="ns-row"><span class="ns-rt"><b>Подбирать время по моим визитам</b><small>Дни и время заходов, реакции на уведомления, примерная локация и тип подключения</small></span>${sw(NS.personal,'data-ns-personal')}</div>
+   <div class="ns-row col"><span class="ns-rt"><b>${NS.personal?'Если истории мало — присылать':'Присылать'}</b></span><div class="ns-chips">${Object.entries(SLOTS).map(([k,[n,r]])=>`<button type="button" class="ns-chip${NS.slot===k?' on':''}" data-ns-slot="${k}">${n}<small>${r}</small></button>`).join('')}</div></div>
+   <div class="ns-row"><span class="ns-rt"><b>Тихие часы</b><small>21:00–10:00 по местному времени</small></span><span class="ns-val">ночью не беспокоим</span></div></div>
+  <h4>Как часто — предложения</h4><div class="ns-card"><div class="ns-row col"><div class="ns-chips two">${[['1w','1 в неделю'],['2w','До 2 в неделю']].map(([k,n])=>`<button type="button" class="ns-chip${NS.ad===k?' on':''}" data-ns-ad="${k}">${n}<small>не чаще 1 в сутки</small></button>`).join('')}</div><small class="ns-hint">Если вы не открываете предложения, присылаем реже. Результаты тиражей и бонусы — без лимита.</small></div></div>
+  <h4>Пауза</h4><div class="ns-card"><div class="ns-row col"><div class="ns-chips four">${PAUSES.map(([d,n])=>`<button type="button" class="ns-chip${(d?paused()&&Math.round((NS.pauseUntil-NS.pausedAt)/864e5)===d:!paused())?' on':''}" data-ns-pause="${d}">${n}</button>`).join('')}</div></div></div>
+  <p class="ns-note">Проигрыш и попытки отыграться не бывают поводом для сообщений. При самоисключении или паузе в игре рекламные сообщения отключаются.</p>`;
+}
+function nsOpen(){nsRender();const P=$('#ntset');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.nt-back',P).focus()}
+function nsClose(){const P=$('#ntset');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
+$('#scr').insertAdjacentHTML('beforeend',`<div class="nt ns" id="ntset" role="dialog" aria-modal="true" aria-label="Настройки уведомлений" aria-hidden="true">
+ <div class="nt-head"><button class="nt-back" type="button" data-ns-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 5-7 7 7 7"/></svg></button><h2>Настройки</h2></div>
+ <div class="ns-body"></div></div>`);
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-ns-open]')){e.preventDefault();e.stopPropagation();nsOpen();return}
+  if(!e.target.closest('#ntset'))return;
+  if(e.target.closest('[data-ns-close]')){nsClose();return}
+  let b;
+  if(b=e.target.closest('[data-ns-ch]')){NS.ch[b.dataset.nsCh]=!NS.ch[b.dataset.nsCh]}
+  else if(b=e.target.closest('[data-ns-topic]')){NS.topics[b.dataset.nsTopic]=!NS.topics[b.dataset.nsTopic]}
+  else if(e.target.closest('[data-ns-personal]')){NS.personal=!NS.personal;toast(NS.personal?'Время подбираем по вашим визитам':'Персонализация выключена — присылаем в выбранное время')}
+  else if(b=e.target.closest('[data-ns-slot]'))NS.slot=b.dataset.nsSlot;
+  else if(b=e.target.closest('[data-ns-ad]'))NS.ad=b.dataset.nsAd;
+  else if(b=e.target.closest('[data-ns-pause]')){const d=+b.dataset.nsPause;NS.pausedAt=Date.now();NS.pauseUntil=d?Date.now()+d*864e5:0;toast(d?'Уведомления на паузе до '+dShort(NS.pauseUntil):'Пауза снята')}
+  else return;
+  nsSave();nsRender();
+},true);
+/* журнал для демонстрации логики — открывается из настроек прототипа */
+function journalOpen(){if(typeof bpOpenModal!=='function')return;bonusModalView=null;bpOpenModal('Журнал отправки');
+  const now=String(ND.hour).padStart(2,'0')+':00';
+  $('#bpModalBody').innerHTML=`<div class="nj"><p class="nj-ctx"><b>Сейчас ${now}</b>${quiet(ND.hour)?' · тихие часы':''} · ${ND.online?'пользователь на сайте':'не на сайте'} · история ${ND.hist==='rich'?'есть':'мала'} · рекламных за 7 дней: ${{none:0,today:1,week2:2}[ND.adlog]}</p>
+  ${journal().map(j=>`<div class="nj-row"><span class="nj-t"><b>${j.t}${j.ad?' <em>реклама</em>':''}</b><small>${j.d}</small></span><span class="nj-r ${j.res.k}"><b>${j.res.t}</b><small>${j.res.r}</small></span></div>`).join('')}
+  <p class="nj-note">Перед отправкой проверяем согласие, актуальность и общий лимит всех кампаний. Эффективность — дополнительные возвраты против группы без рассылки; комфорт — отключения и жалобы.</p></div>`}
+{const j=$('#ntJournal');if(j)j.onclick=()=>{$('#cfg').classList.remove('show');journalOpen()}}
+window.NTDEMO={ND,NS,set(k,v){ND[k]=v;nsRender()},journal:journalOpen,summary:()=>nsSummary()[1]};
+window.nsOpen=nsOpen;
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-notif]')){e.preventDefault();e.stopPropagation();open();return}
   if(!e.target.closest('#notif'))return;
@@ -6969,7 +7110,7 @@ inject();badge();
 // шапки, которые появляются позже (клон шапки в быстрых играх) + обновление счётчика
 new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&(n.matches('.app-header')||n.querySelector&&n.querySelector('.app-header:not(:has(.header-bell))'))))){inject();badge()}}).observe($('#scr'),{childList:true,subtree:true});
 setInterval(badge,5000);
-const ntReset=resetProto;resetProto=function(){NT.read.clear();NT.filter='all';ntReset.apply(this,arguments);badge()};
+const ntReset=resetProto;resetProto=function(){NT.read.clear();NT.filter='all';Object.assign(NS,JSON.parse(JSON.stringify(NS_DEF)));nsSave();ntReset.apply(this,arguments);badge()};
 window.ntOpen=open;
 })();
 
@@ -7022,7 +7163,7 @@ function authView(){
  <h3 class="pf-h">Ответственная игра</h3>
  <div class="pf-card pf-list">${row('limit','Лимиты на ставки','Не установлены','limits')}${row('clock','Напоминание о времени','Каждые 60 минут','time')}${row('pause','Перерыв от игры','От 1 дня до 6 месяцев','pause')}</div>
  <h3 class="pf-h">Настройки</h3>
- <div class="pf-card pf-list">${row('bell','Уведомления','Push и e-mail','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
+ <div class="pf-card pf-list">${row('bell','Уведомления','Каналы, темы, время и пауза','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  ${about()}
  <button class="pf-out" type="button" data-pf="logout">${I.out}Выйти из аккаунта</button>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
@@ -7077,7 +7218,7 @@ window.addEventListener('click',e=>{
   if(k==='cashback'){close();go('lossback');return}
   if(k==='wheel'){close();openWheel();return}
   if(k==='bonuses'){close();go('promo');setTimeout(()=>{try{selectBonusTab('bonuses')}catch(_){}},50);return}
-  if(k==='notif'){close();try{ntOpen()}catch(_){}return}
+  if(k==='notif'){close();try{nsOpen()}catch(_){}return}
   toast({limits:'Лимиты: день / неделя / месяц (демо)',time:'Напоминание о времени (демо)',pause:'Перерыв от игры (демо)',security:'Безопасность (демо)',rules:'Правила игр и акций (демо)',privacy:'Политика конфиденциальности (демо)',help:'Помощь и поддержка (демо)',contacts:'Контакты (демо)'}[k]||'Демо');return}
  const l=e.target.closest('[data-pfl]');if(l){const k=l.dataset.pfl;if(k==='close')closeLogin();else if(k==='code'||k==='register'){loginNow(k==='register'?'Аккаунт создан — добро пожаловать!':'')}return}
  if(e.target.id==='pfLogin')closeLogin();
