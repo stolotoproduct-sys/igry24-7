@@ -7188,7 +7188,7 @@ function mnRender(){
  b2.hidden=false;
  if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин. Первая клетка — ${mnLabel(MN.ladder[0])}.`:'Попытки дают за уровень месяца.';res.className='mn-res'}
  if(p==='play'){go.disabled=!cur;go.textContent=cur?`Забрать ${mnLabel(cur)}`:'Откройте клетку';b2.hidden=true;const nx=MN.ladder[st.step];res.textContent=nx?`Следующая клетка — ${mnLabel(nx)}`:'';res.className='mn-res'}
- if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent='Закрыть';res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
+ if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
  if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent=st.prize.k==='tk'?'Сыграть билетом':'Сыграть в Рапидо';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промо»`;res.className='mn-res good'}
 }
 function mnStart(){if(!lvUseAttempt()){toast('Нет попыток');return}st.phase='play';st.open.clear();st.mines.clear();st.step=0;st.last=null;st.prize=null;bpSync();renderLossback();mnRender();haptic&&haptic()}
