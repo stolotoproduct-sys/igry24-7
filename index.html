@@ -3131,7 +3131,7 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
     <div class="pm-cond" id="pmCond"></div><div class="pm-rules" id="pmRules"></div>
     <div class="pm-act"><button class="btn gold pm-go" id="pmGo">Забрать</button><button class="btn sec pm-2" id="pm2"></button></div></div></div>
   <div class="fw" id="fw" role="dialog" aria-modal="true" aria-label="Колесо удачи"><div class="fw-in"><button class="pm-x fw-x" aria-label="Закрыть">✕</button>
-    <div class="fw-t">КОЛЕСО <span>УДАЧИ</span></div><div class="fw-sub">Собирайте купончики: 200 = 1 FS</div>
+    <div class="fw-t">КОЛЕСО <span>УДАЧИ</span></div><div class="fw-sub">Собери 200 купончиков и обменяй на награду</div>
     <div class="ws" id="ws" aria-label="Серия ежедневных вращений"></div>
     <div class="fw-wheel"><div class="fw-lights"></div><svg id="fwSvg" viewBox="0 0 256 256"></svg><div class="fw-hub">R</div><div class="fw-ptr"></div></div>
     <div class="fw-res" id="fwRes" role="status" aria-live="polite"></div>
@@ -4907,7 +4907,7 @@ function openWheel(){
 /* купончики: прогресс до промокода и обмен */
 function cpSave(){try{localStorage.setItem('wheelCoupons',String(S.cp))}catch(e){}}
 function renderCoupons(anim){const n=$('#fwCpN');if(!n)return;const cp=S.cp,full=cp>=CP_GOAL;n.textContent=cp;
-  $('#fwCpBar').style.width=Math.min(100,cp/CP_GOAL*100)+'%';$('#fwCpHint').textContent=full?'Можно обменять':`Ещё ${CP_GOAL-cp} до 1 FS`;
+  $('#fwCpBar').style.width=Math.min(100,cp/CP_GOAL*100)+'%';$('#fwCpHint').textContent=full?'Можно обменять':`Ещё ${CP_GOAL-cp} до награды`;
   $('#fwCpGo').disabled=!full;const c=$('#fwCp');c.classList.toggle('full',full);if(anim){c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}}
 const cpCodes={};
 function cpExchange(){if(S.cp<CP_GOAL||fwBusy)return;if(fwPendingClaim)fwPendingClaim();S.cp-=CP_GOAL;cpSave();
@@ -7266,8 +7266,6 @@ function authView(){
   <button class="pf-row" type="button" data-pf="wheel"><span class="pf-ri wheel">${I.ticket}</span><span class="pf-rt"><b>Колесо удачи</b><small>${w.t}</small>${w.p!==undefined?`<span class="pf-track sm"><i style="width:${w.p}%"></i></span>`:''}</span><span class="pf-tag">${w.b}</span></button>
   ${row('gift','Мои бонусы',`Активных: ${typeof bonusModel!=='undefined'?bonusModel.list('active').length:0} · FS: ${n(S.fs||0)}`,'bonuses')}
  </div>
- <h3 class="pf-h">Ответственная игра</h3>
- <div class="pf-card pf-list">${row('limit','Лимиты на ставки','Не установлены','limits')}${row('clock','Напоминание о времени','Каждые 60 минут','time')}${row('pause','Перерыв от игры','От 1 дня до 6 месяцев','pause')}</div>
  <h3 class="pf-h">Настройки</h3>
  <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return !A?'Телефон и почта':A.emailState==='confirmed'&&A.email?'Телефон и почта подтверждены':A.emailState==='pending'?'Почта не подтверждена':'Почта не указана'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('bell','Уведомления','Каналы, темы, время и пауза','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  ${about()}
