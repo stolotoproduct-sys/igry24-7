@@ -7357,8 +7357,8 @@ setAuth(true);
    добавить и подтвердить почту, сменить почту, сменить телефон, регистрация.
    Демо: подходит любой код, кроме 0000 (так показываем ошибку). */
 (function(){
-const KEY='acCfg';
-const DEF={phone:'+7 916 123-45-12',email:'ivan.petrov@mail.ru',emailState:'confirmed',name:'Иван Петров',birth:'12.04.1990'};
+const KEY='acCfg2';
+const DEF={phone:'+7 916 123-45-12',email:'',emailState:'none',name:'Иван Петров',birth:'12.04.1990'};
 let AC;try{AC={...DEF,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){AC={...DEF}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(AC))}catch(e){}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
