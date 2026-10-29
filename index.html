@@ -2354,6 +2354,10 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .nt-dot{top:6px;right:6px}
 .nt-item.new .nt-top time{margin-right:6px}
 
+/* почта не подтверждена — вместо переключателя действие */
+.ns-need{color:#ffd76a!important}
+.ns-link{flex:none;height:32px;padding:0 12px;border-radius:8px;border:0;background:#a25be6;color:#fff;font:700 12px/16px var(--g4-font,'Roboto Flex',Inter,sans-serif)}
+
 </style>
 <style>
 /* ===== Профиль игрока (сетка 4 px, Roboto Flex) ===== */
@@ -2460,6 +2464,89 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .lb-entry .lb-entry-title span svg{width:12px;height:12px;vertical-align:-1px}
 
 #lobby #homeWheel.is-guest .reward-art{filter:saturate(.4) brightness(.7)}
+
+/* личные данные */
+button.pf-acc{cursor:pointer}.pf-acc .pf-acc-main{flex:1}
+.pf-ok.warn{background:#f0aa2c26;color:#ffd76a}
+.pf-dot{flex:none;width:8px;height:8px;border-radius:4px;background:#ff3b5c}
+
+</style>
+<style>
+/* ===== Личные данные и подтверждение контактов (сетка 4 px) ===== */
+.ac,.acf{position:absolute;inset:0;display:flex;flex-direction:column;background:#0a0b11;color:#f4efff;font-family:var(--g4-font,'Roboto Flex',Inter,sans-serif);transform:translateX(100%);transition:transform .32s cubic-bezier(.3,.8,.3,1);pointer-events:none}
+.ac{z-index:74}.acf{z-index:97}
+.ac.show,.acf.show{transform:none;pointer-events:auto}
+.ac-head{display:flex;align-items:center;gap:12px;padding:calc(var(--sb,0px) + 16px) 16px 8px;flex:none}
+.ac-head h2{flex:1;margin:0;font-size:24px;line-height:32px;font-weight:700}
+.ac-back,.ac-x{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#15161e;border:1px solid #262731;color:#fff;font-size:14px}
+.ac-back svg{width:20px;height:20px}
+.ac-body{flex:1;overflow-y:auto;padding:8px 16px 32px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+.ac-body::-webkit-scrollbar{display:none}
+.ac-body>*{flex:none}
+.ac-body h4{margin:4px 0 -4px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7f7690}
+.ac-card{border-radius:16px;background:#15131d;border:1px solid #ffffff14;overflow:hidden}
+.ac-who{display:flex;align-items:center;gap:16px;padding:16px}
+.ac-ava{flex:none;width:56px;height:56px;border-radius:28px;display:grid;place-items:center;background:linear-gradient(160deg,#b06ff0,#6a3fe0);color:#fff;font-size:20px;line-height:24px;font-weight:800}
+.ac-badge{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;height:24px;padding:0 8px;border-radius:12px;background:#2fbf7c26;color:#7fe0ae;font-size:12px;line-height:16px;font-weight:600;margin-top:4px}
+.ac-badge svg{width:12px;height:12px}
+.ac-row{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 16px;background:none;border:0;color:inherit;text-align:left;font:inherit}
+button.ac-row{cursor:pointer}
+.ac-row+.ac-row{border-top:1px solid #ffffff0f}
+.ac-ri{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#ffffff0f;color:#c69cf0}
+.ac-ri.warn{background:#f0aa2c1f;color:#ffd76a}
+.ac-ri svg{width:20px;height:20px}
+.ac-rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ac-rt b{font-size:14px;line-height:20px;font-weight:600;overflow-wrap:anywhere}
+.ac-who .ac-rt b{font-size:20px;line-height:24px;font-weight:700}
+.ac-rt small{font-size:12px;line-height:16px;color:#a99fc2}
+.ac-st{display:inline-flex;align-items:center;gap:4px}
+.ac-st svg{flex:none;width:12px;height:12px}
+.ac-st.ok{color:#7fe0ae}.ac-st.warn{color:#ffd76a}
+.ac-act{flex:none;height:32px;padding:0 12px;border-radius:8px;border:1px solid #ffffff1f;background:#ffffff0f;color:#fff;font:700 12px/16px var(--g4-font,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.ac-act.primary{border:0;background:#a25be6}
+.ac-val{flex:none;font-size:12px;line-height:16px;font-weight:700;color:#c69cf0}
+.ac-warn{margin:0;padding:8px 12px;border-radius:12px;background:#f0aa2c1a;color:#ffd76a;font-size:12px;line-height:16px}
+.ac-note{margin:0;font-size:12px;line-height:16px;color:#8f86a8}
+/* шаги */
+.acf-prog{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;line-height:20px;font-weight:700}
+.acf-dots{display:flex;gap:4px}
+.acf-dots i{width:16px;height:4px;border-radius:2px;background:#ffffff1f}
+.acf-dots i.on{background:#a25be6}.acf-dots i.cur{width:24px;background:#c69cf0}
+.acf-body{flex:1;overflow-y:auto;padding:16px 16px 32px;display:flex;flex-direction:column;gap:8px}
+.acf-body h3{margin:0;font-size:24px;line-height:32px;font-weight:800}
+.acf-text{margin:0 0 8px;font-size:14px;line-height:20px;color:#cbbdd9}
+.acf-form{display:flex;flex-direction:column;gap:12px}
+.acf-form .pf-btn{flex:none}
+.pf-btn.ghost{background:none;border:0;color:#c69cf0}
+.acf-field{display:flex;flex-direction:column;gap:4px;font-size:12px;line-height:16px;color:#a99fc2}
+.acf-field input{height:48px;padding:0 16px;border-radius:12px;border:1px solid #ffffff1f;background:#15131d;color:#fff;font:500 16px/24px var(--g4-font,'Roboto Flex',Inter,sans-serif);outline:none}
+.acf-field input:focus{border-color:#a25be6}
+.acf-field.err input{border-color:#ff3b5c}
+.acf-err{margin:-4px 0 0;font-size:12px;line-height:16px;color:#ff8fa3}
+.acf-agree{display:flex;gap:12px;align-items:flex-start;font-size:12px;line-height:16px;color:#cbbdd9;cursor:pointer}
+.acf-agree input{flex:none;width:20px;height:20px;margin:0;accent-color:#a25be6}
+.acf-agree u{color:#c69cf0;text-decoration:none}
+.acf-meter{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:-4px;position:relative;padding-bottom:20px}
+.acf-meter i{height:4px;border-radius:2px;background:#ffffff1f}
+.acf-meter::after{content:attr(data-t);position:absolute;left:0;bottom:0;font-size:12px;line-height:16px;color:#a99fc2}
+.acf-meter.s1 i:nth-child(1){background:#ff8fa3}
+.acf-meter.s2 i:nth-child(-n+2){background:#ffd76a}
+.acf-meter.s3 i{background:#7fe0ae}
+/* код */
+.acf-code{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:8px;max-width:calc(var(--n) * 56px);cursor:text}
+.acf-code input{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;font-size:16px;caret-color:transparent}
+.acf-code i{height:56px;border-radius:12px;border:1px solid #ffffff1f;background:#15131d;display:grid;place-items:center;font:800 24px/32px var(--g4-font,'Roboto Flex',Inter,sans-serif);font-style:normal;font-variant-numeric:tabular-nums}
+.acf-code:focus-within i.cur{border-color:#a25be6;box-shadow:0 0 0 3px #a25be633}
+.acf-code.err i{border-color:#ff3b5c}
+.acf-resend{margin:8px 0 0;font-size:14px;line-height:20px;color:#8f86a8}
+.acf-links{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:8px}
+.acf-link{background:none;border:0;padding:0;color:#c69cf0;font:700 14px/20px var(--g4-font,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acf-link.dim{color:#7f7690;font-weight:600;font-size:12px;line-height:16px}
+/* готово */
+.acf-done{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding-top:48px}
+.acf-done svg{width:80px;height:80px;margin-bottom:8px}
+.acf-done .pf-btn{flex:none;width:100%;margin-top:16px}
+.ac-rt b.ac-em{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 </style>
 <style>
@@ -6076,7 +6163,8 @@ const DM_GROUPS=[
  {id:'ntHist',t:'Уведомления: история визитов',cls:'c2',opts:[['rich','Есть','время по визитам'],['poor','Мало','выбранное время']]},
  {id:'ntAds',t:'Уведомления: рекламных за неделю',cls:'c3',opts:[['none','0','можно'],['today','1','сегодня — лимит 24 ч'],['week2','2','лимит недели']]},
  {id:'ntReact',t:'Уведомления: реакция на предложения',cls:'c2',opts:[['yes','Открывает','обычная частота'],['no','Не открывает','частота снижена']]},
- {id:'ntSelf',t:'Пауза в игре / самоисключение',cls:'c2',opts:[['no','Нет',''],['yes','Да','реклама выкл.']]}
+ {id:'ntSelf',t:'Пауза в игре / самоисключение',cls:'c2',opts:[['no','Нет',''],['yes','Да','реклама выкл.']]},
+ {id:'acEmail',t:'Почта в профиле',cls:'c3',opts:[['none','Нет','не указана'],['pending','Не подтв.','код не введён'],['confirmed','Подтв.','письма идут']]}
 ];
 const PRESETS={
  novice:{cash:0,cbOn:'on',cbState:'plus',mnOn:'on',lvl:0,att:0,bonus:'none',fs:'none',offers:'yes',raffle:1,picks:0,wheel:'free1'},
@@ -6133,7 +6221,7 @@ const SET={
   rfRender();rfBindBoard();
  },
  picks(v){rf.st.picks=v;rfRenderPicks()},
- ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},
+ ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},acEmail(v){if(!window.ACC)return;const A=ACC.get();ACC.set({emailState:v,email:v==='none'?'':A.email||'ivan.petrov@mail.ru'})},
  wheel(v){if(typeof fwBusy!=='undefined'&&fwBusy)return;
   if(v==='free1'){S.wheelDay='';S.wheelStreak=0}
   if(v==='free7'){S.wheelStreak=6;S.wheelDay=wsShift(today(),-1)}
@@ -6155,6 +6243,7 @@ function current(){
   offers:bonusModel.list('available').length?'yes':'no',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
+  acEmail:window.ACC?ACC.get().emailState:'confirmed',
   ...(()=>{const D=window.NTDEMO&&NTDEMO.ND;return D?{ntHour:D.hour,ntOnline:D.online?'yes':'no',ntHist:D.hist,ntAds:D.adlog,ntReact:D.react,ntSelf:D.self}:{}})(),
   readout:{
    series:(()=>{const n=QS[QUICK_IDS.includes($('#game').dataset.g)?$('#game').dataset.g:'coin']||0;return BonusEngine.mode==='orig'?`${n} из 10 · ${n>=3?'награда '+STB_LADDER[n]+' бонусов':'награды пока нет'}`:`${n} из 10 · до суперприза ${10-n}`})(),
@@ -6170,6 +6259,7 @@ function current(){
    raffle:`уровень ${rf.st.level} · ${rfNum(rf.st.points)} очков`,
    picks:rf.st.picks+' шт.',
    wheel:ws.spun?'крутил сегодня · таймер':'можно крутить',
+   acEmail:(()=>{const A=window.ACC?ACC.get():null;return !A?'':A.email?A.email+(A.emailState==='confirmed'?' · подтверждена':' · ждёт код'):'не указана'})(),
    ...(()=>{const t=window.NTDEMO?NTDEMO.summary():'';return {ntHour:t,ntOnline:'',ntHist:'',ntAds:'',ntReact:'',ntSelf:''}})()
   }
  };
@@ -6983,7 +7073,7 @@ function decide(ev){
  if(!NS.topics[ev.topic])return {k:'skip',t:'Не отправлено',r:'Тема выключена в настройках'};
  if(ev.ad&&ND.self==='yes')return {k:'skip',t:'Не отправлено',r:'Пауза в игре или самоисключение — реклама отключена'};
  if(ev.expired)return {k:'cancel',t:'Отменено',r:'Предложение уже неактуально'};
- const ch=Object.keys(CH).filter(c=>NS.ch[c]&&(c!=='sms'||!ev.ad));
+ const ch=Object.keys(CH).filter(c=>NS.ch[c]&&(c!=='sms'||!ev.ad)&&(c!=='email'||!window.ACC||ACC.emailOk()));
  if(ND.online)return {k:'inapp',t:'Показано на сайте',r:ev.ad?'Вы на сайте — без дублирующего push':'Вы на сайте — в колокольчике'};
  if(!ch.length)return {k:'skip',t:'Не отправлено',r:'Нет согласия ни на один канал'};
  if(ev.ad){const L=adLimit(),n7={none:0,today:1,week2:2}[ND.adlog];if(ND.adlog==='today')return {k:'skip',t:'Не отправлено',r:'Лимит: 1 за 24 часа — предложение уже было сегодня'};if(n7>=L.week)return {k:'skip',t:'Не отправлено',r:'Лимит: '+L.week+' за неделю'+(L.low?' (снижен — вы не открываете)':'')}}
@@ -7061,10 +7151,15 @@ function nsSummary(){
   const w=sendWindow(),L=adLimit();
   return ['clock','Предложения '+w.label,`Не чаще 1 в сутки и ${L.week} в неделю${L.low?' — снижено, вы их не открываете':''}. Тихие часы 21:00–10:00.`];
 }
+function emailRow(){const A=window.ACC?ACC.get():{email:'ivan.petrov@mail.ru',emailState:'confirmed'};
+  if(A.emailState==='confirmed'&&A.email)return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small>На почту ${ACC.maskEmail(A.email)}</small></span>${sw(NS.ch.email,'data-ns-ch="email"')}</div>`;
+  const pend=A.emailState==='pending'&&A.email;
+  return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small class="ns-need">${pend?'Почта не подтверждена — не отправляем':'Добавьте почту, чтобы получать письма'}</small></span><button type="button" class="ns-link" data-ns-email="${pend?'email-confirm':'email-add'}">${pend?'Подтвердить':'Добавить'}</button></div>`}
+window.nsSetChannel=(k,on)=>{NS.ch[k]=!!on;nsSave();nsRender()};
 function nsRender(){
   const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
   $('.ns-body',P).innerHTML=`<section class="ns-sum ${ic}"><b>${t}</b><span>${d}</span></section>
-  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:'На телефон и в браузер',email:'На почту ivan•••@mail.ru',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`).join('')}</div>
+  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>k==='email'?emailRow():`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:'На телефон и в браузер',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`).join('')}</div>
   ${on?'':'<p class="ns-warn">Все каналы выключены — уведомления будут только в колокольчике на сайте.</p>'}
   <h4>О чём</h4><div class="ns-card">${TOPICS.map(([k,n,s,ad])=>`<div class="ns-row"><span class="ns-rt"><b>${n}${ad?' <em>реклама</em>':''}</b><small>${s}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <h4>Когда</h4><div class="ns-card"><div class="ns-row"><span class="ns-rt"><b>Подбирать время по моим визитам</b><small>Дни и время заходов, реакции на уведомления, примерная локация и тип подключения</small></span>${sw(NS.personal,'data-ns-personal')}</div>
@@ -7084,6 +7179,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('#ntset'))return;
   if(e.target.closest('[data-ns-close]')){nsClose();return}
   let b;
+  if(b=e.target.closest('[data-ns-email]')){ACC.flow(b.dataset.nsEmail);return}
   if(b=e.target.closest('[data-ns-ch]')){NS.ch[b.dataset.nsCh]=!NS.ch[b.dataset.nsCh]}
   else if(b=e.target.closest('[data-ns-topic]')){NS.topics[b.dataset.nsTopic]=!NS.topics[b.dataset.nsTopic]}
   else if(e.target.closest('[data-ns-personal]')){NS.personal=!NS.personal;toast(NS.personal?'Время подбираем по вашим визитам':'Персонализация выключена — присылаем в выбранное время')}
@@ -7107,7 +7203,7 @@ function journalOpen(){if(typeof bpOpenModal!=='function')return;bonusModalView=
  window.addEventListener('pointerup',()=>{if(!d)return;if(d.moved)NT.dragged=true;setTimeout(()=>{NT.dragged=false},0);d=null;rail.classList.remove('dragging')});
  rail.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){rail.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});}
 window.NTDEMO={ND,NS,set(k,v){ND[k]=v;nsRender()},journal:journalOpen,summary:()=>nsSummary()[1]};
-window.nsOpen=nsOpen;
+window.nsOpen=nsOpen;window.nsRender=nsRender;
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-notif]')){e.preventDefault();e.stopPropagation();open();return}
   if(!e.target.closest('#notif'))return;
@@ -7159,7 +7255,8 @@ function wheelLine(){try{if(!wheelOpen())return {t:`Откроется при с
 function authView(){
  const c=cb(),w=wheelLine(),lvl=c?c.s.level:{id:0,name:'Старт'},next=c&&c.s.next;
 
- return `<div class="pf-card pf-acc"><span class="pf-ava">ИП</span><div class="pf-acc-main"><b>Иван Петров</b><small>+7 916 ••• 45 12 · ID 4821 3907</small><span class="pf-ok">${I.check}Аккаунт подтверждён</span></div></div>
+ const A=window.ACC?ACC.get():{phone:'+7 916 123-45-12',email:'',emailState:'confirmed'},em=A.emailState==='confirmed'&&A.email;
+ return `<button type="button" class="pf-card pf-acc" data-pf="account"><span class="pf-ava">ИП</span><span class="pf-acc-main"><b>Иван Петров</b><small>${window.ACC?ACC.maskPhone(A.phone):A.phone} · ID 4821 3907</small>${em?`<span class="pf-ok">${I.check}Аккаунт подтверждён</span>`:`<span class="pf-ok warn">${A.emailState==='pending'?'Подтвердите почту':'Добавьте почту'}</span>`}</span><i class="pf-chev">${I.chev}</i></button>
  <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div><div><small>Купончики</small><b>${n(S.cp||0)}</b></div></div>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  <h3 class="pf-h">Статистика за ${typeof wgMonth==='function'?wgMonth():'месяц'}</h3>
@@ -7174,7 +7271,7 @@ function authView(){
  <h3 class="pf-h">Ответственная игра</h3>
  <div class="pf-card pf-list">${row('limit','Лимиты на ставки','Не установлены','limits')}${row('clock','Напоминание о времени','Каждые 60 минут','time')}${row('pause','Перерыв от игры','От 1 дня до 6 месяцев','pause')}</div>
  <h3 class="pf-h">Настройки</h3>
- <div class="pf-card pf-list">${row('bell','Уведомления','Каналы, темы, время и пауза','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
+ <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return !A?'Телефон и почта':A.emailState==='confirmed'&&A.email?'Телефон и почта подтверждены':A.emailState==='pending'?'Почта не подтверждена':'Почта не указана'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('bell','Уведомления','Каналы, темы, время и пауза','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  ${about()}
  <button class="pf-out" type="button" data-pf="logout">${I.out}Выйти из аккаунта</button>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
@@ -7198,7 +7295,7 @@ function closeLogin(){$('#pfLogin').classList.remove('show')}
 function setAuth(v){PF.auth=v;$('#scr').classList.toggle('is-guest',!v);
  $$('.header-profile').forEach(b=>{b.setAttribute('aria-label',v?'Профиль':'Войти или зарегистрироваться');b.title=v?'Профиль':'Войти'});
  try{renderBonuses()}catch(e){}try{renderLossback()}catch(e){}try{renderPromos()}catch(e){}try{renderHeaderBalances()}catch(e){}try{if($('#fw').classList.contains('show'))openWheel()}catch(e){}render()}
-window.pfIsGuest=()=>!PF.auth;window.pfOpenLogin=openLogin;window.pfOpen=open;
+window.pfIsGuest=()=>!PF.auth;window.pfRender=()=>render();window.pfLoginNow=m=>loginNow(m);window.pfOpenLogin=openLogin;window.pfOpen=open;
 // ---- разметка
 $('#scr').insertAdjacentHTML('beforeend',`<div class="pf" id="pf" role="dialog" aria-modal="true" aria-label="Профиль" aria-hidden="true">
  <div class="pf-head"><button class="pf-back" type="button" data-pf="close" aria-label="Назад">${I.back}</button><h2>Профиль</h2><button class="pf-gear" type="button" data-pf="cfg" aria-label="Настройки прототипа">${I.gear}</button></div>
@@ -7223,7 +7320,9 @@ window.addEventListener('click',e=>{
   if(k==='logout'){PF.confirm=true;render();return}
   if(k==='logout-no'){PF.confirm=false;render();return}
   if(k==='logout-yes'){PF.confirm=false;try{closeWheel()}catch(_){}setAuth(false);toast('Вы вышли из аккаунта');return}
-  if(k==='login'||k==='register'){openLogin(k==='register'?'Регистрация займёт минуту — нужен только телефон':'');return}
+  if(k==='login'){openLogin('');return}
+  if(k==='register'){ACC.flow('register');return}
+  if(k==='account'){ACC.open();return}
   if(k==='deposit'){close();openSheet();return}
   if(k==='withdraw'){toast('Вывод на карту — в разработке (демо)');return}
   if(k==='cashback'){close();go('lossback');return}
@@ -7231,7 +7330,7 @@ window.addEventListener('click',e=>{
   if(k==='bonuses'){close();go('promo');setTimeout(()=>{try{selectBonusTab('bonuses')}catch(_){}},50);return}
   if(k==='notif'){close();try{nsOpen()}catch(_){}return}
   toast({limits:'Лимиты: день / неделя / месяц (демо)',time:'Напоминание о времени (демо)',pause:'Перерыв от игры (демо)',security:'Безопасность (демо)',rules:'Правила игр и акций (демо)',privacy:'Политика конфиденциальности (демо)',help:'Помощь и поддержка (демо)',contacts:'Контакты (демо)'}[k]||'Демо');return}
- const l=e.target.closest('[data-pfl]');if(l){const k=l.dataset.pfl;if(k==='close')closeLogin();else if(k==='code'||k==='register'){loginNow(k==='register'?'Аккаунт создан — добро пожаловать!':'')}return}
+ const l=e.target.closest('[data-pfl]');if(l){const k=l.dataset.pfl;if(k==='close')closeLogin();else if(k==='code'||k==='register'){closeLogin();ACC.flow(k==='register'?'register':'login-code')}return}
  if(e.target.id==='pfLogin')closeLogin();
 },true);
 function loginNow(msg){closeLogin();setAuth(true);toast(msg||'С возвращением, Иван!')}
@@ -7249,6 +7348,176 @@ window.addEventListener('click',e=>{if(e.target.closest('[data-pf-login]')){e.st
 const pfReset=resetProto;resetProto=function(){pfReset.apply(this,arguments);setAuth(true)};
 setInterval(()=>{if($('#pf').classList.contains('show')&&PF.auth&&!PF.confirm){const c=$('[data-pf-cash]');if(c)c.textContent=n(S.bal)+' ₽'}},1000);
 setAuth(true);
+})();
+
+</script>
+<script>
+/* ================= Личные данные: телефон, почта, регистрация =================
+   Экран «Личные данные» (из профиля) + пошаговые сценарии с подтверждением кодом:
+   добавить и подтвердить почту, сменить почту, сменить телефон, регистрация.
+   Демо: подходит любой код, кроме 0000 (так показываем ошибку). */
+(function(){
+const KEY='acCfg';
+const DEF={phone:'+7 916 123-45-12',email:'ivan.petrov@mail.ru',emailState:'confirmed',name:'Иван Петров',birth:'12.04.1990'};
+let AC;try{AC={...DEF,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){AC={...DEF}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(AC))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const digits=s=>String(s).replace(/\D/g,'');
+function fmtPhone(v){let d=digits(v);if(d[0]==='8')d='7'+d.slice(1);if(d[0]!=='7')d='7'+d;d=d.slice(0,11);const p=[d.slice(1,4),d.slice(4,7),d.slice(7,9),d.slice(9,11)];
+ let s='+7';if(p[0])s+=' '+p[0];if(p[1])s+=' '+p[1];if(p[2])s+='-'+p[2];if(p[3])s+='-'+p[3];return s}
+const nb=s=>String(s).replace(/ /g,'\u00a0');
+const maskPhone=p=>{const d=digits(p);return nb(d.length<11?p:`+7 ${d.slice(1,4)} ••• ${d.slice(7,9)} ${d.slice(9,11)}`)};
+const maskEmail=e=>{if(!e)return '';const[u,dm]=e.split('@');return (u.length>2?u.slice(0,2):u[0])+'•••@'+dm};
+const okEmail=e=>/^[^\s@]+@[^\s@]+\.[a-zа-я]{2,}$/i.test(e);
+const I={
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>',
+ phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18h3" stroke-linecap="round"/></svg>',
+ mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6" stroke-linecap="round"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h4M14 13h3" stroke-linecap="round"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>',
+ done:'<svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#2fbf7c26"/><path d="m15 24 6 6 12-13" stroke="#7fe0ae" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+/* ---------- публичный API для профиля, уведомлений и панели прототипа ---------- */
+window.ACC={get:()=>({...AC}),maskPhone,maskEmail,
+ set(p){Object.assign(AC,p);save();refresh()},
+ emailOk:()=>AC.emailState==='confirmed'&&!!AC.email,
+ open:accOpen,flow:start};
+
+/* ================= экран «Личные данные» ================= */
+function emailRow(){
+ if(!AC.email||AC.emailState==='none')return `<div class="ac-row"><span class="ac-ri warn">${I.mail}</span><span class="ac-rt"><b>Почта не указана</b><small>Нужна для чеков, результатов тиражей и восстановления доступа</small></span><button type="button" class="ac-act primary" data-ac="email-add">Добавить</button></div>`;
+ if(AC.emailState==='pending')return `<div class="ac-row"><span class="ac-ri warn">${I.mail}</span><span class="ac-rt"><b class="ac-em">${esc(AC.email)}</b><small class="ac-st warn">${I.warn}Не подтверждена</small></span><button type="button" class="ac-act primary" data-ac="email-confirm">Подтвердить</button></div>`;
+ return `<div class="ac-row"><span class="ac-ri">${I.mail}</span><span class="ac-rt"><b class="ac-em">${esc(AC.email)}</b><small class="ac-st ok">${I.check}Подтверждена</small></span><button type="button" class="ac-act" data-ac="email-change">Сменить</button></div>`;
+}
+function accRender(){const P=$('#acc');if(!P)return;
+ const em=AC.emailState==='confirmed'&&AC.email;
+ $('.ac-body',P).innerHTML=`<div class="ac-card ac-who"><span class="ac-ava">${AC.name.split(' ').map(w=>w[0]).join('')}</span><span class="ac-rt"><b>${esc(AC.name)}</b><small>Дата рождения ${AC.birth}</small><span class="ac-badge">${I.check}Личность подтверждена</span></span></div>
+ <h4>Контакты</h4>
+ <div class="ac-card ac-list">
+  <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small class="ac-st ok">${I.check}Подтверждён · логин</small></span><button type="button" class="ac-act" data-ac="phone-change">Сменить</button></div>
+  ${emailRow()}
+ </div>
+ ${em?'':`<p class="ac-warn">${AC.emailState==='pending'?'Мы отправили код на '+esc(AC.email)+'. Пока почта не подтверждена, канал E-mail в уведомлениях выключен.':'Без почты чеки и результаты тиражей приходят только в приложение и по SMS.'}</p>`}
+ <h4>Вход</h4>
+ <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b><small>Изменён 3 месяца назад</small></span><span class="ac-val">Изменить</span></button>
+  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>Из документа при подтверждении личности. Изменить — через поддержку</small></span></div></div>
+ <p class="ac-note">Номер и почту не показываем другим игрокам. Любое изменение подтверждаем кодом — без вас данные сменить нельзя. О смене сообщаем на старый контакт.</p>`}
+function accOpen(){accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
+function accClose(){const P=$('#acc');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
+function refresh(){accRender();try{window.pfRender&&pfRender()}catch(e){}try{window.nsRender&&nsRender()}catch(e){}}
+
+/* ================= пошаговые сценарии ================= */
+let F=null,timer=null;
+function flows(kind,arg){
+ const smsOld={kind:'code',len:4,title:'Подтвердите, что это вы',text:`Отправили SMS с кодом на ${maskPhone(AC.phone)}`,help:'Нет доступа к номеру?',helpAct:'support'};
+ const emailInput=(title,text,cta)=>({kind:'input',type:'email',title,text,label:'E-mail',ph:'name@mail.ru',value:'',cta:cta||'Получить код',
+  check:v=>!okEmail(v)?'Проверьте адрес — например, name@mail.ru':v.toLowerCase()===(AC.email||'').toLowerCase()&&AC.emailState==='confirmed'?'Это ваша текущая почта':'',
+  put:v=>F.data.email=v.trim()});
+ const emailCode={kind:'code',len:6,title:'Код из письма',text:()=>`Отправили письмо на ${esc(F.data.email)}. Если его нет — проверьте «Спам»`,help:'Изменить адрес',helpAct:'back'};
+ switch(kind){
+  case 'email-add':return {name:'Почта',steps:[emailInput('Добавьте почту','Пришлём на неё код. Потом — чеки, результаты тиражей и ссылку для восстановления доступа.'),emailCode],
+   done:()=>{AC.email=F.data.email;AC.emailState='confirmed';emailChannel(true);return ['Почта подтверждена',`Теперь на ${esc(AC.email)} приходят чеки и уведомления. Канал E-mail включён — его можно выключить в настройках уведомлений.`]},
+   abort:()=>{AC.email=F.data.email;AC.emailState='pending'}};
+  case 'email-confirm':F.data.email=AC.email;return {name:'Почта',steps:[{...emailCode,help:'Указать другой адрес',helpAct:'swap'}],
+   done:()=>{AC.emailState='confirmed';emailChannel(true);return ['Почта подтверждена',`Теперь на ${esc(AC.email)} приходят чеки и уведомления.`]}};
+  case 'email-change':return {name:'Смена почты',steps:[smsOld,emailInput('Новая почта','Старый адрес отвяжем, как только подтвердите новый.'),emailCode],
+   done:()=>{const old=AC.email;AC.email=F.data.email;AC.emailState='confirmed';return ['Почта изменена',`Новый адрес — ${esc(AC.email)}. На ${esc(maskEmail(old))} отправили письмо о смене: если это были не вы, там есть ссылка, чтобы всё отменить.`]}};
+  case 'phone-change':return {name:'Смена телефона',steps:[smsOld,
+   {kind:'input',type:'tel',title:'Новый номер',text:'Номер — это логин. После смены входите по новому номеру.',label:'Телефон',ph:'+7 900 000-00-00',value:'+7 ',cta:'Получить код',
+    check:v=>digits(v).length!==11?'Введите номер полностью — 10 цифр после +7':digits(v)===digits(AC.phone)?'Это ваш текущий номер':digits(v).endsWith('0000000')?'Этот номер уже привязан к другому аккаунту':'',put:v=>F.data.phone=fmtPhone(v)},
+   {kind:'code',len:4,title:'Код из SMS',text:()=>`Отправили код на новый номер ${nb(esc(F.data.phone))}`,help:'Изменить номер',helpAct:'back'}],
+   done:()=>{const old=AC.phone;AC.phone=F.data.phone;return ['Номер изменён',`Входите по номеру ${nb(esc(AC.phone))}. На ${maskPhone(old)} отправили SMS о смене${AC.emailState==='confirmed'?', на почту — письмо':''}.`]}};
+  case 'register':return {name:'Регистрация',reg:true,steps:[
+   {kind:'input',type:'tel',title:'Регистрация',text:'Займёт минуту. Номер станет логином — по нему входите и восстанавливаете доступ.',label:'Телефон',ph:'+7 900 000-00-00',value:'+7 ',cta:'Получить код',agree:true,
+    check:v=>digits(v).length!==11?'Введите номер полностью — 10 цифр после +7':!F.agree?'Подтвердите возраст и согласие с правилами':digits(v)==='79161234512'?'Номер уже зарегистрирован — войдите':'',put:v=>F.data.phone=fmtPhone(v)},
+   {kind:'code',len:4,title:'Код из SMS',text:()=>`Отправили код на ${nb(esc(F.data.phone))}`,help:'Изменить номер',helpAct:'back'},
+   {kind:'input',type:'password',title:'Придумайте пароль',text:'Не короче 8 символов, с буквами и цифрами. Можно входить и по коду из SMS.',label:'Пароль',ph:'',value:'',cta:'Дальше',
+    check:v=>v.length<8?'Не короче 8 символов':!/\d/.test(v)||!/[a-zа-я]/i.test(v)?'Добавьте буквы и цифры':'',put:()=>{}},
+   {...emailInput('Почта для чеков','Сюда придут чеки, результаты тиражей и ссылка для восстановления доступа. Можно добавить позже в профиле.'),skip:'Добавлю позже'},
+   emailCode],
+   done:()=>{AC.phone=F.data.phone;AC.name='Иван Петров';if(F.data.email){AC.email=F.data.email;AC.emailState='confirmed';emailChannel(true)}else{AC.email='';AC.emailState='none';emailChannel(false)}
+    return ['Аккаунт создан',F.data.email?`Телефон и почта подтверждены. Чтобы выводить выигрыши, подтвердите личность — это можно сделать позже.`:`Телефон подтверждён. Почту можно добавить в профиле → «Личные данные».`]},
+   finish:()=>{try{pfLoginNow('Аккаунт создан — добро пожаловать!')}catch(e){}}};
+  case 'login-code':return {name:'Вход',steps:[
+   {kind:'input',type:'tel',title:'Вход по коду',text:'Отправим SMS с кодом на номер аккаунта.',label:'Телефон',ph:'+7 900 000-00-00',value:AC.phone,cta:'Получить код',check:v=>digits(v).length!==11?'Введите номер полностью — 10 цифр после +7':'',put:v=>F.data.phone=fmtPhone(v)},
+   {kind:'code',len:4,title:'Код из SMS',text:()=>`Отправили код на ${nb(esc(F.data.phone))}`,help:'Изменить номер',helpAct:'back'}],
+   done:null,finish:()=>{try{pfLoginNow()}catch(e){}}};
+ }
+}
+function emailChannel(on){try{window.nsSetChannel&&nsSetChannel('email',on)}catch(e){}}
+function start(kind){F={kind,i:0,data:{},err:'',tries:3,agree:false,val:{}};const d=flows(kind);if(!d)return;F.def=d;
+ const P=$('#acf');P.classList.add('show');P.setAttribute('aria-hidden','false');step()}
+function stop(cancel){clearInterval(timer);const P=$('#acf');P.classList.remove('show');P.setAttribute('aria-hidden','true');
+ if(cancel&&F&&F.def.abort&&F.data.email&&F.i>=1&&!F.finished){F.def.abort();save();refresh();toast('Почта сохранена, но не подтверждена')}F=null}
+function step(){const P=$('#acf'),d=F.def,s=d.steps[F.i];clearInterval(timer);
+ $('.acf-prog',P).innerHTML=d.steps.length>1?`<span>${d.name}</span><span class="acf-dots">${d.steps.map((_,k)=>`<i class="${k<F.i?'on':k===F.i?'cur':''}"></i>`).join('')}</span>`:`<span>${d.name}</span>`;
+ const B=$('.acf-body',P);
+ if(s.kind==='input'){const v=F.val[F.i]!==undefined?F.val[F.i]:s.value;
+  B.innerHTML=`<h3>${s.title}</h3><p class="acf-text">${s.text}</p>
+  <form class="acf-form" novalidate><label class="acf-field${F.err?' err':''}"><span>${s.label}</span><input name="v" type="${s.type==='password'?'password':s.type==='email'?'email':'tel'}" inputmode="${s.type==='tel'?'tel':s.type==='email'?'email':'text'}" autocomplete="${s.type==='tel'?'tel':s.type==='email'?'email':'new-password'}" placeholder="${s.ph}" value="${esc(v)}"></label>
+   ${F.err?`<p class="acf-err">${F.err}</p>`:''}
+   ${s.type==='password'?`<div class="acf-meter"><i></i><i></i><i></i></div>`:''}
+   ${s.agree?`<label class="acf-agree"><input type="checkbox" ${F.agree?'checked':''} data-acf-agree><span>Мне есть 18 лет. Принимаю <u>правила</u> и <u>условия обработки данных</u></span></label>`:''}
+   <button class="pf-btn primary" type="submit">${s.cta}</button>${s.skip?`<button class="pf-btn ghost" type="button" data-acf="skip">${s.skip}</button>`:''}</form>`;
+  const inp=$('input[name=v]',B);setTimeout(()=>{inp.focus();try{inp.setSelectionRange(inp.value.length,inp.value.length)}catch(_){}},60);
+  inp.addEventListener('input',()=>{if(s.type==='tel'){inp.value=fmtPhone(inp.value)}F.val[F.i]=inp.value;if(s.type==='password')meter(inp.value)});if(s.type==='password')meter(inp.value);
+ }else if(s.kind==='code'){const text=typeof s.text==='function'?s.text():s.text;
+  B.innerHTML=`<h3>${s.title}</h3><p class="acf-text">${text}</p>
+  <label class="acf-code${F.err?' err':''}" style="--n:${s.len}"><input name="c" inputmode="numeric" autocomplete="one-time-code" maxlength="${s.len}" aria-label="Код из ${s.len===6?'письма':'SMS'}">${Array.from({length:s.len},()=>'<i></i>').join('')}</label>
+  ${F.err?`<p class="acf-err">${F.err}</p>`:''}
+  <p class="acf-resend" data-acf-resend></p>
+  <div class="acf-links"><button type="button" class="acf-link" data-acf="${s.helpAct}">${s.help}</button><button type="button" class="acf-link dim" data-acf="demo">Подставить код (демо)</button></div>`;
+  const inp=$('input[name=c]',B);setTimeout(()=>inp.focus(),60);paintCode(inp,s.len);
+  inp.addEventListener('input',()=>{inp.value=digits(inp.value).slice(0,s.len);if(F.err){F.err='';$('.acf-code',B).classList.remove('err');const e=$('.acf-err',B);if(e)e.remove()}paintCode(inp,s.len);if(inp.value.length===s.len)setTimeout(()=>submitCode(inp.value),180)});
+  resend(59);
+ }
+}
+function meter(v){const m=$('#acf .acf-meter');if(!m)return;const sc=(v.length>=8)+(/\d/.test(v)&&/[a-zа-я]/i.test(v))+(v.length>=12||/[^\w\sа-я]/i.test(v));m.className='acf-meter s'+sc;m.dataset.t=['','Слабый','Нормальный','Надёжный'][sc]||''}
+function paintCode(inp,len){const cells=$$('#acf .acf-code i');cells.forEach((c,k)=>{c.textContent=inp.value[k]||'';c.classList.toggle('cur',k===Math.min(inp.value.length,len-1))})}
+function resend(sec){let t=sec;const el=$('#acf [data-acf-resend]');const draw=()=>{if(!el)return;el.innerHTML=t>0?`Отправить код ещё раз через 0:${String(t).padStart(2,'0')}`:`<button type="button" class="acf-link" data-acf="resend">Отправить код ещё раз</button>`};draw();timer=setInterval(()=>{t--;draw();if(t<=0)clearInterval(timer)},1000)}
+function submitCode(v){const s=F.def.steps[F.i];if(/^0+$/.test(v)){F.tries--;F.err=F.tries>0?`Неверный код. Осталось попыток: ${F.tries}`:'Попытки закончились. Запросите новый код';step();return}
+ F.tries=3;F.err='';next()}
+function next(){const d=F.def;F.i++;
+ if(F.i<d.steps.length){step();return}
+ finish()}
+function finish(){const d=F.def;F.finished=true;clearInterval(timer);
+ if(!d.done){stop();save();d.finish&&d.finish();refresh();return}
+ const [t,txt]=d.done();save();refresh();
+ const P=$('#acf');$('.acf-prog',P).innerHTML=`<span>${d.name}</span>`;
+ $('.acf-body',P).innerHTML=`<div class="acf-done">${I.done}<h3>${t}</h3><p class="acf-text">${txt}</p><button class="pf-btn primary" type="button" data-acf="close-done">${d.reg?'Начать играть':'Готово'}</button></div>`;
+}
+/* ---------- разметка ---------- */
+$('#scr').insertAdjacentHTML('beforeend',`<div class="ac" id="acc" role="dialog" aria-modal="true" aria-label="Личные данные" aria-hidden="true">
+ <div class="ac-head"><button class="ac-back" type="button" data-ac="close" aria-label="Назад">${I.back}</button><h2>Личные данные</h2></div><div class="ac-body"></div></div>
+<div class="acf" id="acf" role="dialog" aria-modal="true" aria-label="Подтверждение" aria-hidden="true">
+ <div class="ac-head"><button class="ac-back" type="button" data-acf="back" aria-label="Назад">${I.back}</button><div class="acf-prog"></div><button class="ac-x" type="button" data-acf="close" aria-label="Закрыть">✕</button></div><div class="acf-body"></div></div>`);
+/* ---------- обработчики ---------- */
+document.addEventListener('click',e=>{
+ const a=e.target.closest('[data-ac]');
+ if(a&&e.target.closest('#acc')){const k=a.dataset.ac;
+  if(k==='close'){accClose();return}
+  if(k==='password'){toast('Смена пароля — через код из SMS (демо)');return}
+  start(k);return}
+ const f=e.target.closest('[data-acf]');
+ if(f&&e.target.closest('#acf')){const k=f.dataset.acf;
+  if(k==='close'){stop(true);return}
+  if(k==='close-done'){const d=F.def;stop();d.finish&&d.finish();return}
+  if(k==='back'){if(F.finished||F.i===0){stop(true);return}F.err='';F.i--;step();return}
+  if(k==='skip'){F.data.email='';F.err='';finish();return}
+  if(k==='demo'){const s=F.def.steps[F.i];const inp=$('#acf input[name=c]');inp.value='123456'.slice(0,s.len);inp.dispatchEvent(new Event('input'));return}
+  if(k==='resend'){F.tries=3;F.err='';toast('Код отправлен ещё раз');step();return}
+  if(k==='support'){toast('Поддержка поможет сменить номер по документу (демо)');return}
+  if(k==='swap'){F.def=flows('email-add');F.i=0;F.err='';step();return}
+  return}
+ if(e.target.closest('[data-acf-agree]')){F.agree=e.target.closest('[data-acf-agree]').checked;if(F.err){F.err='';$('#acf .acf-err')?.remove();$('#acf .acf-field')?.classList.remove('err')}}
+},true);
+document.addEventListener('submit',e=>{if(!e.target.closest('#acf'))return;e.preventDefault();const s=F.def.steps[F.i];const v=$('input[name=v]',e.target).value.trim();
+ const err=s.check(v);if(err){F.err=err;F.val[F.i]=v;step();return}F.err='';s.put(v);next()});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('#acf').classList.contains('show')){e.stopImmediatePropagation();stop(true)}else if($('#acc').classList.contains('show')){e.stopImmediatePropagation();accClose()}},true);
+/* сброс прототипа — исходные данные */
+if(typeof resetProto==='function'){const r=resetProto;resetProto=function(){AC={...DEF};save();r.apply(this,arguments);refresh()}}
 })();
 
 </script>
