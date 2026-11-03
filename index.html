@@ -2963,17 +2963,16 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
 .lp-slide[data-lp-slide="1"]{--c:#e59a5c}.lp-slide[data-lp-slide="2"]{--c:#b8d4ff}.lp-slide[data-lp-slide="3"]{--c:#ffcf4a}.lp-slide[data-lp-slide="4"]{--c:#b98cff}
 .lp-slide[data-lp-slide="5"]{--c:#ff4f6d}.lp-slide[data-lp-slide="6"]{--c:#3ee08f}.lp-slide[data-lp-slide="7"]{--c:#4f7bff}.lp-slide[data-lp-slide="8"]{--c:#e8f3ff}
 /* осколки за объектом */
-.lp-burst{position:absolute;inset:0;width:100%;height:100%;z-index:-1;color:var(--c);fill:currentColor}
+.lp-burst{position:absolute;inset:0;width:100%;height:100%;z-index:-1;color:var(--c);fill:currentColor;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 72%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 72%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-composite:intersect}
 .lp-burst .b1{fill:color-mix(in srgb,var(--c) 16%,#0a0b11)}
 .lp-burst .b2{fill:color-mix(in srgb,var(--c) 30%,#0a0b11)}
-/* название уровня — крупно, за объектом, во всю ширину */
-.lp-name{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%) skewX(-8deg);text-align:center;font-family:StoloHead,StoloText,'Roboto Flex',sans-serif;font-weight:800;
- font-size:min(104px,calc((var(--w) - 32px) / (var(--n) * .76)));line-height:1;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap;
- background:linear-gradient(180deg,#fff 0%,color-mix(in srgb,var(--c) 70%,#fff) 45%,var(--c) 75%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 #0008) drop-shadow(0 0 20px color-mix(in srgb,var(--c) 45%,transparent))}
+.lp-name{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible;font-family:StoloHead,StoloText,'Roboto Flex',sans-serif;font-weight:800}
+.lp-name text{stroke:color-mix(in srgb,var(--c) 30%,#05060a);stroke-width:5px;stroke-linejoin:round;paint-order:stroke fill;filter:drop-shadow(0 3px 6px #000a)}
+.lp-name.tilt text{font-style:italic}
 .lp-obj{position:relative;z-index:1;width:176px;height:176px;display:grid;place-items:center}
 .lp-big{width:176px;height:176px;object-fit:contain;filter:drop-shadow(0 12px 16px #000c);animation:lpFloat 4s ease-in-out infinite}
 .lp-slide.locked .lp-big{filter:grayscale(.75) brightness(.45) drop-shadow(0 12px 16px #000c);animation:none}
-.lp-slide.locked .lp-name{background:none;color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--c) 55%,#fff0);filter:none;opacity:.7}
+.lp-slide.locked .lp-name{opacity:.45;filter:grayscale(.6)}
 .lp-slide.locked .lp-burst{opacity:.45}
 .lp-lock{position:absolute;width:80px;height:80px;object-fit:contain;left:50%;top:50%;transform:translate(-50%,-44%);filter:drop-shadow(0 12px 20px #000c)}
 .lp-chip{position:absolute;z-index:2;bottom:8px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:14px;background:#0a0b11cc;border:1px solid #ffffff2e;font-size:12px;line-height:16px;font-weight:700;color:#fff;white-space:nowrap;backdrop-filter:blur(6px)}
@@ -3072,7 +3071,6 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 /* --- компактная карусель для новичка --- */
 .lp-hero.small .lp-slide{height:176px}
 .lp-hero.small .lp-obj,.lp-hero.small .lp-big{width:136px;height:136px}
-.lp-hero.small .lp-name{font-size:min(84px,calc((var(--w) - 32px) / (var(--n) * .76) * .8))}
 .lp-hero.small .lp-lock{width:64px;height:64px}
 .lp-hero.small .lp-arr{bottom:22px}
 /* --- Мины: кнопка просмотра и призы-иконки --- */
@@ -3097,6 +3095,7 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lp-tile.wide .lp-tile-more{position:relative;left:auto;bottom:auto;display:block;margin-top:8px}
 .lp-tile.wide[data-lv-mines] .lp-tile-t{max-width:64%}
 .lp-arr{width:36px;height:36px;border-radius:18px;bottom:22px}
+.lp-chip.up{top:8px;bottom:auto}
 
 </style>
 </head>
@@ -5741,14 +5740,21 @@ function lpBurst(id){let seed=id*9301+49297;const r=()=>(seed=(seed*9301+49297)%
  const sh=[];for(let i=0;i<5;i++){const a=(a0+40+i*72+r()*30)*Math.PI/180,d=120+r()*70,x=200+Math.cos(a)*d*1.3,y=120+Math.sin(a)*d*.75,z=14+r()*18,t=r()*6;
   sh.push(`<path d="M${(x+Math.cos(t)*z).toFixed(1)} ${(y+Math.sin(t)*z).toFixed(1)}L${(x+Math.cos(t+2.3)*z*.7).toFixed(1)} ${(y+Math.sin(t+2.3)*z*.7).toFixed(1)}L${(x+Math.cos(t+4)*z*.5).toFixed(1)} ${(y+Math.sin(t+4)*z*.5).toFixed(1)}Z" opacity="${(.35+r()*.4).toFixed(2)}"/>`)}
  return `<svg class="lp-burst" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="${P(1)}" class="b1"/><path d="${P(.6)}" class="b2"/>${sh.join('')}</svg>`}
+/* название уровня: дугой сверху, дугой снизу или с наклоном — чередуем */
+const lpNameKind=l=>['top','bottom','tilt'][(l.id-1)%3];
+function lpName(l){const k=lpNameKind(l),g='lpg'+l.id,t=l.name.toUpperCase();
+ const paths={top:'M84 124A96 96 0 0 1 276 124',bottom:'M74 84A106 106 0 0 0 286 84'};
+ const txt=k==='tilt'?`<text x="180" y="58" text-anchor="middle" transform="rotate(-7 180 58)" font-size="40">${t}</text>`
+  :`<path id="${g}p" d="${paths[k]}" fill="none"/><text font-size="${k==='top'?32:30}" letter-spacing="${k==='top'?3:2}"><textPath href="#${g}p" startOffset="50%" text-anchor="middle">${t}</textPath></text>`;
+ return `<svg class="lp-name ${k}" viewBox="0 0 360 224" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="var(--c)"/><stop offset="1" stop-color="color-mix(in srgb,var(--c) 70%,#000)"/></linearGradient></defs><g fill="url(#${g})">${txt}</g></svg>`}
 function lpHero(s,small){
  const L=LVL().slice(1);
  return `<div class="lp-hero${small?' small':''}">
   <div class="lp-rail" tabindex="0" role="region" aria-label="Уровни: листайте влево-вправо">${L.map(l=>{const st=lpState(l,s);
    return `<article class="lp-slide ${st}" data-lp-slide="${l.id}" aria-label="Уровень ${l.id}, ${l.name}" style="--n:${l.name.length}">
-    ${lpBurst(l.id)}<span class="lp-name" aria-hidden="true">${l.name}</span>
-    <span class="lp-obj">${lvArt(l,'lp-big')}${st==='locked'?`<img class="lp-lock" src="${LV_ART.lock}" alt="">`:''}</span>
-    <span class="lp-chip ${st}">${st==='cur'?'Твой уровень':st==='passed'?IC(ICD.check,12)+'Пройден':'Уровень '+l.id}</span>
+    ${lpBurst(l.id)}
+    <span class="lp-obj">${lvArt(l,'lp-big')}${st==='locked'?`<img class="lp-lock" src="${LV_ART.lock}" alt="">`:''}</span>${lpName(l)}
+    <span class="lp-chip ${st}${lpNameKind(l)==='bottom'?' up':''}">${st==='cur'?'Твой уровень':st==='passed'?IC(ICD.check,12)+'Пройден':'Уровень '+l.id}</span>
    </article>`}).join('')}</div>
   <button type="button" class="lp-arr l" data-lp-go="-1" aria-label="Предыдущий уровень">${IC('<path d="M19 12H5M11 6l-6 6 6 6"/>',20)}</button>
   <button type="button" class="lp-arr r" data-lp-go="1" aria-label="Следующий уровень">${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',20)}</button>
