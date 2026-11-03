@@ -6373,7 +6373,7 @@ const SET={
  cbOn(v){LV.cb=v==='on';lvSave()},
  cbState(v){if(!LV.cb)return;lossbackModel.setWeek(v)},
  mnOn(v){LV.mines=v==='on';lvSave();bonusModel.records.filter(b=>b.type==='mines').forEach(b=>{if(!LV.mines&&b.status==='active')b.status='demo-hidden';else if(LV.mines&&b.status==='demo-hidden')b.status='active'});if(!LV.mines)$('#mn')?.classList.remove('show')},
- lvl(id){const L=LossbackEngine.levels,l=L[id],n=L[id+1];lossbackModel.setTurnover(n?l.threshold+(n.threshold-l.threshold)*.4:l.threshold+20000);lbSelected=null},
+ lvl(id){const L=LossbackEngine.levels,l=L[id],n=L[id+1];lossbackModel.setTurnover(!id?0:n?l.threshold+(n.threshold-l.threshold)*.4:l.threshold+20000);lbSelected=null},
  att(n){if(!LV.mines)return;lvSetAttempts(n)},
  bonus(v){if(!bpWagerOn())return;
   const deps=bonusModel.records.filter(b=>b.type==='deposit');
