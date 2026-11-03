@@ -3046,6 +3046,38 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
 .lp-table b{color:#f3d27a}
 img.lp-art.xs{width:24px;height:24px;object-fit:contain}
 @media(prefers-reduced-motion:reduce){.lp-big{animation:none}.lp-bar i{transition:none}}
+/* --- правило подсчёта --- */
+.lp-rule{display:flex;align-items:flex-start;gap:4px;margin:0;font-size:12px;line-height:16px;color:#8f86a8}
+.lp-rule .ic{flex:none;margin-top:2px}
+/* --- новичок: стартовый блок --- */
+.lp-start{display:flex;flex-direction:column;gap:12px;margin-top:4px;padding:16px;border-radius:20px;border:1px solid #e59a5c40;background:radial-gradient(120% 120% at 0% 0%,#3d2617 0%,#1b1428 55%,#15131d 100%)}
+.lp-start-row{display:flex;align-items:center;gap:12px}
+.lp-start-art{position:relative;flex:none;width:96px;height:96px}
+.lp-start-art .lp-art{width:96px;height:96px;object-fit:contain;filter:grayscale(.5) brightness(.6) drop-shadow(0 8px 12px #000a)}
+.lp-start-lock{position:absolute;right:-4px;bottom:-4px;width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 4px 8px #000c)}
+.lp-start-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.lp-start-t small{font-size:12px;line-height:16px;color:var(--lp-sub)}
+.lp-start-t b{font-family:StoloHead,StoloText,sans-serif;font-size:24px;line-height:28px;font-weight:800}
+.lp-start-t>span{font-size:14px;line-height:20px;color:#cbbdd9}
+.lp-start+.lp-cta{margin-top:12px}
+.lp-tile-pct.sm{font-size:56px;line-height:72px;right:12px}
+.lp-tile-pct.sm i{font-size:28px}
+button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
+.lp-tile-more{position:absolute;left:12px;bottom:12px;z-index:1;font-size:12px;line-height:16px;font-weight:700;color:#7ef0c9}
+/* --- компактная карусель для новичка --- */
+.lp-hero.small .lp-slide{height:208px}
+.lp-hero.small .lp-obj,.lp-hero.small .lp-big{width:136px;height:136px}
+.lp-hero.small .lp-obj{margin-top:-40px}
+.lp-hero.small .lp-name{font-size:clamp(32px,11vw,48px);line-height:48px}
+.lp-hero.small .lp-lock{width:64px;height:64px}
+.lp-hero.small .lp-arr{top:84px}
+/* --- Мины: кнопка просмотра и призы-иконки --- */
+.cb-claim.ghost{background:#ffffff14!important;color:#e6f2f1!important;box-shadow:none!important}
+.mn-lad b{display:inline-flex;align-items:center;gap:2px}
+.mn-tk{width:16px;height:16px;object-fit:contain;vertical-align:middle}
+.mn-u{font-style:normal;font-size:10px;line-height:12px;font-weight:800;color:#9fd8cf}
+.mn-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin:4px 0 0;font-size:11px;line-height:16px;color:#7c8a92}
+.mn-legend span{display:inline-flex;align-items:center;gap:4px}
 
 </style>
 </head>
@@ -5637,12 +5669,12 @@ function lvTickets(){const t=Date.now();return bonusModel.records.filter(b=>b.ty
 function lvAddTicket(nominal,tag){bonusModel.records.push({id:'tk-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),type:'voucher',title:'Бесплатный билет '+nominal+' ₽',tag,nominal,total:1,used:0,game:null,status:'active',expiresAt:Date.now()+LV_TICKET_DAYS*LV_DAY,validForMs:LV_TICKET_DAYS*LV_DAY})}
 function lvMinesRec(){const t=Date.now();return bonusModel.records.find(b=>b.type==='mines'&&b.status==='active'&&b.used<b.total&&b.expiresAt>t)}
 function lvAttempts(){if(!LV.mines)return 0;const r=lvMinesRec();return r?r.total-r.used:0}
-function lvGrantAttempts(n){if(n<=0)return;const t=Date.now(),ms=LossbackEngine.ATTEMPT_DAYS*LV_DAY;let r=lvMinesRec();
+function lvGrantAttempts(n){if(n<=0)return;const t=Date.now(),ms=Math.max(LV_DAY,lossbackModel.snapshot().monthEnd-t);let r=lvMinesRec();
  if(r){r.total+=n;r.expiresAt=t+ms}else{r={id:'mines-'+t,type:'mines',title:'Попытки в «Минах»',tag:'Награда уровня месяца',total:n,used:0,game:null,status:'active',expiresAt:t+ms,validForMs:ms};bonusModel.records.push(r)}}
 function lvSetAttempts(n){bonusModel.records.filter(b=>b.type==='mines'&&['active','demo-hidden'].includes(b.status)).forEach(b=>b.status='completed');if(n)lvGrantAttempts(n)}
 function lvUseAttempt(){const r=lvMinesRec();if(!r)return false;r.used++;if(r.used>=r.total)r.status='completed';return true}
 /* новые уровни месяца: один раз за уровень — попытки в «Минах» */
-function lvClaim(start){const n=lossbackModel.claim(start);if(n){lvCreditBonus(n);toast(`+${lbNum(n)} Б кэшбека — на бонусный счёт`);try{confetti()}catch(e){}}
+function lvClaim(start){const n=lossbackModel.claim(start);if(n){lvCreditBonus(n);toast(BonusEngine.mode==='wager'?`+${lbNum(n)} Б кэшбека — бонус в «Промо», отыгрыш ×1`:`+${lbNum(n)} бонусов кэшбека на счёт`);try{confetti()}catch(e){}}
  renderLossback();return n}
 /* кэшбек приходит бонусами: в режиме «Бонусы Столото» — на их баланс, в режиме с отыгрышем — бонусом с отыгрышем ×1 */
 function lvCreditBonus(n){const m=BonusEngine.mode,t=Date.now(),ms=LossbackEngine.BONUS_DAYS*LV_DAY;
@@ -5656,7 +5688,9 @@ function lvLevelUps(){const fresh=lossbackModel.takeLevelUps(),ups=lossbackModel
  if(n&&typeof bpSync==='function')bpSync()}
 const LVL=()=>LossbackEngine.levels;
 const lvArt=(l,cls='')=>`<img class="lp-art ${cls}" src="${LV_ART[l.art]||LV_ART.lock}" alt="" draggable="false">`;
+const LV_RULE='Считаем игры, оплаченные рублями. Пополнения, бесплатные и бонусные игры не учитываются';
 const lvMonth=()=>new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now());
+function lvBonusNote(){const m=BonusEngine.mode;return m==='wager'?'Бонусом в «Промо»: играйте им, как рублями. Вывести — после отыгрыша ×1':m==='orig'?'Бонусами Столото: 1 Б = 1 ₽ при оплате игр. Вывести нельзя':'Бонусами на счёт: 1 Б = 1 ₽ при оплате игр. Вывести нельзя'}
 function lvTitle(){return LV.cb&&LV.mines?'Мой уровень':LV.mines?'Уровень месяца':'Кэшбек недели'}
 function lvMonthReset(s){return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(s.monthEnd)}
 const lvDays=t=>Math.max(0,Math.ceil((t-Date.now())/LV_DAY));
@@ -5679,9 +5713,9 @@ function lvWidget(s){
 
 /* ---------- экран «Мой уровень» ---------- */
 function lpState(l,s){return l.id===s.level.id?'cur':l.id<s.level.id?'passed':'locked'}
-function lpHero(s){
+function lpHero(s,small){
  const L=LVL().slice(1);
- return `<div class="lp-hero">
+ return `<div class="lp-hero${small?' small':''}">
   <div class="lp-rail" tabindex="0" role="region" aria-label="Уровни: листайте влево-вправо">${L.map(l=>{const st=lpState(l,s);
    return `<article class="lp-slide ${st}" data-lp-slide="${l.id}" aria-label="Уровень ${l.id}, ${l.name}">
     <span class="lp-name" aria-hidden="true">${l.name}</span>
@@ -5698,7 +5732,7 @@ function lpCard(s,l){
  if(st==='cur'){
   return `<section class="lp-card"><div class="lp-card-hd"><span>Уровень ${l.id}</span><span>покупки за ${month}</span><span>${nx?'Уровень '+nx.id:'Максимум'}</span></div>
    <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${nx?lbRub(nx.threshold):lbRub(l.threshold)}</b></div>
-   <div class="lp-card-ft">${LV.cb?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m6 6 6 6-6 6M12 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
+   <p class="lp-rule">${IC(ICD.info||'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',12)}${LV_RULE}</p><div class="lp-card-ft">${LV.cb?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m6 6 6 6-6 6M12 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
  }
  if(st==='passed')return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек '+l.pct+'%':'Мины +'+l.attempts}</span><p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
  return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
@@ -5707,7 +5741,7 @@ function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',time
 function lpPrivileges(s,l){
  const st=lpState(l,s),lock=st==='locked',L=LVL(),mines=L.find(x=>x.attempts);
  const tiles=[];
- if(LV.cb)tiles.push(`<div class="lp-tile wide${lock?' lock':''}"><span class="lp-tile-t"><b>Кэшбек бонусами ${l.pct}%</b><small>От проигрыша недели. Каждый понедельник</small></span><span class="lp-tile-pct" aria-hidden="true">${l.pct}<i>%</i></span>${lock?lpLock():''}</div>`);
+ if(LV.cb)tiles.push(`<div class="lp-tile wide${lock?' lock':''}"><span class="lp-tile-t"><b>Кэшбек бонусами ${l.pct}%</b><small>От проигрыша недели — бонусами, каждый понедельник</small></span><span class="lp-tile-pct" aria-hidden="true">${l.pct}<i>%</i></span>${lock?lpLock():''}</div>`);
  if(LV.mines)tiles.push(l.attempts?`<div class="lp-tile${lock?' lock':''}"><span class="lp-tile-t"><b>${l.attempts} ${lvAttWord(l.attempts)} в «Минах»</b><small>Один раз за уровень</small></span>${lvArt(mines,'lp-tile-art')}${lock?lpLock():''}</div>`
   :`<div class="lp-tile lock"><span class="lp-tile-t"><b>Игра «Мины»</b><small>С уровня «${mines.name}»</small></span>${lvArt(mines,'lp-tile-art dim')}${lpLock()}</div>`);
  const nx=L[l.id+1];
@@ -5716,22 +5750,37 @@ function lpPrivileges(s,l){
  return `<h3 class="lp-h">Привилегии уровня «${l.name}»</h3><div class="lp-tiles">${tiles.join('')}</div>`;
 }
 const lpLock=()=>`<span class="lp-tile-lock" aria-label="Закрыто">${IC(ICD.lock||'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',16)}</span>`;
-function lpDetail(s){const l=LVL()[lbSelected]||LVL()[1];return lpCard(s,l)+`<button type="button" class="lp-cta" data-lp-play>Играть</button>`+lpPrivileges(s,l)}
+function lpDetail(s){const l=LVL()[lbSelected]||LVL()[1];return lpCard(s,l)+(s.level.id?`<button type="button" class="lp-cta" data-lp-play>Играть</button>`:'')+lpPrivileges(s,l)}
 function lpWeek(s){
  if(!LV.cb)return '';const w=s.week,r=s.ready[0],pct=s.level.pct;let h='';
- if(r)h+=`<section class="lp-cb ready"><span class="lp-cb-t"><small>Кэшбек за ${lbRange(r)}</small><b>+${lbNum(r.cb)} Б</b><span>${r.pct}% от проигрыша ${lbRub(r.net)}</span></span><button type="button" class="lp-cb-go" data-lb-claim="${r.start}">Забрать</button></section>`;
+ if(r)h+=`<section class="lp-cb ready"><span class="lp-cb-t"><small>Кэшбек за ${lbRange(r)}</small><b>+${lbNum(r.cb)} Б</b><span>${r.pct}% от проигрыша ${lbRub(r.net)} · бонусами</span></span><button type="button" class="lp-cb-go" data-lb-claim="${r.start}">Забрать</button></section>`;
  h+=`<section class="lp-cb"><span class="lp-cb-pct${pct?'':' off'}"><b>${pct}<i>%</i></b><small>кэшбек</small></span><span class="lp-cb-t"><small>Эта неделя · ${lbRange(w)}</small>
   <b>${!pct?`С уровня «${LVL()[1].name}»`:w.cb?`≈ ${lbNum(w.cb)} Б`:'Пока 0 Б'}</b><span>${!pct?`Купите на ${lbRub(LVL()[1].threshold)} за месяц`:w.net?`Проигрыш ${lbRub(w.net)} × ${pct}%`:'Неделя в плюсе — кэшбек не понадобился'}</span></span></section>
-  <p class="lp-note">${IC(ICD.cal,12)}Начислим бонусами в ${lvWd(w.end)} · ${lvIn(w.end)}. Процент — по уровню на конец недели.</p>`;
+  <p class="lp-note">${IC(ICD.cal,12)}Начислим в ${lvWd(w.end)} · ${lvIn(w.end)}. Процент — по уровню на конец недели.</p><p class="lp-note">${IC(ICD.check,12)}${lvBonusNote()}</p>`;
  return `<h3 class="lp-h">Кэшбек недели</h3>`+h;
 }
 function lpMines(s){
- if(!LV.mines)return '';const att=lvAttempts(),rec=lvMinesRec();if(!att&&s.level.id<LossbackEngine.MINES_FROM&&!s.nextMines)return '';
+ if(!LV.mines)return '';const att=lvAttempts(),rec=lvMinesRec();
  return `<section class="lv-mines-card${att?'':' off'}">${lvMinesArt()}<div class="lv-mines-t"><b>Мины${att?` · ${att}`:''}</b><small>${att?`${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.nextMines?`+${s.nextMines.attempts} на уровне «${s.nextMines.name}»`:'Все попытки месяца получены'}</small></div>
-  <button type="button" class="cb-claim" data-lv-mines ${att?'':'disabled'}>${att?'Играть':'Нет попыток'}</button></section>`;
+  <button type="button" class="cb-claim${att?'':' ghost'}" data-lv-mines>${att?'Играть':'Посмотреть'}</button></section>`;
 }
 function lpHistory(s){if(!LV.cb)return '';const P=s.periods.slice(0,4);if(!P.length)return '';
  return `<h3 class="lp-h">Прошлые недели</h3><div class="lv-hist">${P.map(p=>`<div><span>${lbRange(p)}</span>${p.claimed?`<b class="ok">${p.pct}% · ${lbNum(p.paid)} Б ✓</b>`:p.cb?`<button type="button" data-lb-claim="${p.start}">Забрать ${lbNum(p.cb)} Б</button>`:p.pending?'<b>Считаем</b>':`<b class="no">${p.net?'Меньше 1 Б':'В плюсе'}</b>`}</div>`).join('')}</div>`}
+/* новичок: уровня ещё нет — сначала польза и что делать, карусель ниже */
+function lpStart(s){
+ const L=LVL(),b=L[1],m=L[LossbackEngine.MINES_FROM],top=L.at(-1);
+ const tiles=[];
+ if(LV.cb)tiles.push(`<div class="lp-tile"><span class="lp-tile-t"><b>Кэшбек ${b.pct}%</b><small>С «${b.name}»: от проигрыша недели — бонусами</small></span><span class="lp-tile-pct sm" aria-hidden="true">${b.pct}<i>%</i></span></div>`);
+ if(LV.mines)tiles.push(`<button type="button" class="lp-tile" data-lv-mines><span class="lp-tile-t"><b>Игра «Мины»</b><small>С «${m.name}» — от ${lbNum(m.threshold/1000)} тыс ₽</small></span>${lvArt(m,'lp-tile-art')}<span class="lp-tile-more">Как это ›</span></button>`);
+ if(LV.cb)tiles.push(`<div class="lp-tile wide"><span class="lp-tile-t"><b>До ${top.pct}% на «${top.name}»</b><small>Чем больше покупок за месяц, тем выше процент</small></span>${lvArt(top,'lp-tile-art')}</div>`);
+ return `<section class="lp-start"><div class="lp-start-row"><span class="lp-start-art">${lvArt(b)}<img class="lp-start-lock" src="${LV_ART.lock}" alt=""></span>
+  <span class="lp-start-t"><small>Уровень не начат</small><b>Откройте «${b.name}»</b><span>Первый уровень — от ${lbRub(b.threshold)} покупок за ${lvMonth()}</span></span></div>
+  <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${lbRub(b.threshold)}</b></div>
+  <p class="lp-rule">${IC('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',12)}${LV_RULE}</p></section>
+  <button type="button" class="lp-cta" data-lp-play>Играть</button>
+  <h3 class="lp-h">Что дадут уровни</h3><div class="lp-tiles">${tiles.join('')}</div>
+  <h3 class="lp-h">Все уровни</h3>`;
+}
 function renderLossback(){
  lvLevelUps();
  const s=lossbackModel.snapshot();if(lbSelected===null||!LVL()[lbSelected]||lbSelected===0)lbSelected=Math.max(1,s.level.id);
@@ -5740,7 +5789,7 @@ function renderLossback(){
  const h=$('#lossback .lb-title h2');if(h)h.textContent=lvTitle();
  const C=$('#lossbackContent');if(!C)return;
  if(!(LV.cb||LV.mines)){C.innerHTML='<p class="lb-month-note">Механики выключены в настройках прототипа.</p>';return}
- C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+lpWeek(s)+lpMines(s)+lpHistory(s)+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
+ C.innerHTML=(s.level.id?lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+lpWeek(s)+lpMines(s):lpStart(s)+lpHero(s,true)+`<div id="lpDetail">${lpDetail(s)}</div>`)+lpHistory(s)+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
  const rail=$('.lp-rail',C);
  requestAnimationFrame(()=>{if(rail.isConnected)lpScrollTo(lbSelected,false)});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lpPick(rail)})},{passive:true});
@@ -5760,7 +5809,7 @@ function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`Только за рубли. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} не идут. 1-го числа — с нуля`]];
  if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели','Проигрыш = покупки − выигрыши за пн–вс. Процент — по уровню на конец недели'],[ICD.check,'Приходит бонусами в понедельник',`Забрать — в карточке уровня. Бонусы действуют ${LossbackEngine.BONUS_DAYS} дней, рубли не начисляются`]);
- if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,`Попытки один раз за уровень в месяц, живут ${LossbackEngine.ATTEMPT_DAYS} дней`]);
+ if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца']);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>Мины</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
   <p class="cb-sheet-note">Пороги и проценты — демонстрационные.</p></div>`;
@@ -7729,7 +7778,7 @@ bpDescription=function(b){
 const _rules=bpRules;
 bpRules=function(b){
  if(b.type==='voucher')return [`Откройте любую быструю игру: «${QUICK().map(id=>GAMES[id].t||GAMES[id].n).join('», «')}». На экране игры появится плашка с билетом.`,`Нажмите «Поставить ${b.nominal} ₽» — ставка станет равна номиналу билета, рубли не спишутся. Билет тратится целиком на одну игру.`,`Выигрыш — ${bpFsWinTxt()}. Игра по бесплатному билету не идёт в уровень и в проигрыш недели.`,`Билет действует ${LossbackEngine.TICKET_DAYS} дней с получения. Оставшееся время — в карточке.`];
- if(b.type==='mines')return [`Одна попытка — один раунд на поле 5 × 5, где спрятаны ${MN.mines} мин.`,`Каждая открытая безопасная клетка повышает приз: ${MN.ladder.map(mnLabel).join(' → ')}.`,`Заберите приз в любой момент. Попали на мину — попытка сгорает без приза.`,`Призы приходят в «Промо → Активные бонусы». Попытки действуют ${LossbackEngine.ATTEMPT_DAYS} дней с получения.`];
+ if(b.type==='mines')return [`Одна попытка — один раунд на поле 5 × 5, где спрятаны ${MN.mines} мин.`,`Каждая открытая безопасная клетка повышает приз: ${MN.ladder.map(mnLabel).join(' → ')}.`,`Заберите приз в любой момент. Попали на мину — попытка сгорает без приза.`,`Призы приходят в «Промо → Активные бонусы». Попытки действуют до конца месяца.`];
  return _rules.apply(this,arguments);
 };
 const _action=bpAction;
@@ -7770,16 +7819,18 @@ const _gt=bpGameTickets;bpGameTickets=function(){_gt.apply(this,arguments);try{l
 document.addEventListener('click',e=>{const b=e.target.closest('[data-lv-stake]');if(!b)return;const root=$('#gBody');if(!lvSetStake(root,+b.dataset.lvStake))toast('Дождитесь результата текущей ставки');else{haptic&&haptic();lvGameBanner()}});
 
 /* ---------- мини-игра «Мины» ---------- */
-const MN={size:25,mines:5,ladder:[{k:'fs',n:1},{k:'fs',n:2},{k:'fs',n:3},{k:'fs',n:5},{k:'tk',n:100},{k:'tk',n:200},{k:'tk',n:300}]};
+const MN={size:25,mines:5,tkNominal:100,ladder:[{k:'fs',n:1},{k:'fs',n:2},{k:'fs',n:3},{k:'fs',n:5},{k:'tk',n:1},{k:'tk',n:2},{k:'tk',n:3}]};
 window.MN=MN;
-function mnLabel(p){return p.k==='fs'?p.n+' FS':p.n+' ₽'}
-function mnLong(p){return p.k==='fs'?`${p.n} FS в Рапидо`:`бесплатный билет ${p.n} ₽`}
+function mnLabel(p){return p.k==='fs'?p.n+' FS':p.n+' '+lbTicketWord(p.n)}
+function mnLong(p){return p.k==='fs'?`${p.n} FS в «Рапидо»`:`${p.n} ${p.n===1?'бесплатный билет':'бесплатных '+lbTicketWord(p.n)} в быстрые игры`}
+function mnChip(p){return p.k==='fs'?`${p.n}<i class="mn-u">FS</i>`:`${p.n}<img class="mn-tk" src="${LV_TICKET_IMG}" alt="${lbTicketWord(p.n)}">`}
 const st={phase:'idle',open:new Set(),mines:new Set(),step:0,last:null};
 const box=document.createElement('div');box.className='mn';box.id='mn';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-labelledby','mnT');
 box.innerHTML=`<div class="mn-in"><div class="mn-hd"><h3 id="mnT">Мины</h3><button class="mn-x" type="button" aria-label="Закрыть">✕</button></div>
  <p class="mn-sub">Открывайте клетки — каждая безопасная повышает приз. Заберите его в любой момент.</p>
  <div class="mn-att" id="mnAtt"></div>
  <ol class="mn-lad" id="mnLad" aria-label="Призы за открытые клетки"></ol>
+ <p class="mn-legend"><span><i class="mn-u">FS</i> — бесплатная игра в «Рапидо»</span><span><img class="mn-tk" src="${LV_TICKET_IMG}" alt=""> — бесплатный билет в быстрые игры</span></p>
  <div class="mn-grid" id="mnGrid" role="grid" aria-label="Поле 5 на 5"></div>
  <p class="mn-res" id="mnRes" role="status" aria-live="polite"></p>
  <div class="mn-act"><button class="mn-go" id="mnGo" type="button"></button><button class="mn-2" id="mn2" type="button"></button></div></div>`;
@@ -7789,13 +7840,13 @@ for(let i=0;i<MN.size;i++){const c=document.createElement('button');c.type='butt
 function mnRender(){
  const att=lvAttempts(),rec=lvMinesRec(),s=lossbackModel.snapshot(),p=st.phase;
  $('#mnAtt').innerHTML=`<span>${IC(ICD.mine)} Попыток: <b>${att}</b></span><small>${rec?'сгорят '+lbDate(rec.expiresAt):s.nextMines?`ещё ${s.nextMines.attempts} — на уровне «${s.nextMines.name}» (от ${lbRub(s.nextMines.threshold)} в месяц)`:'все попытки месяца получены'}</small>`;
- $('#mnLad').innerHTML=MN.ladder.map((x,i)=>`<li class="${i<st.step?'done':''}${i===st.step-1?' cur':''}${x.k==='tk'?' tk':''}"><small>${i+1}</small><b>${mnLabel(x)}</b></li>`).join('');
+ $('#mnLad').innerHTML=MN.ladder.map((x,i)=>`<li class="${i<st.step?'done':''}${i===st.step-1?' cur':''}${x.k==='tk'?' tk':''}"><small>${i+1}</small><b>${mnChip(x)}</b></li>`).join('');
  $$('.mn-c',G).forEach(c=>{const i=+c.dataset.i,o=st.open.has(i),m=st.mines.has(i),show=p==='boom'||p==='won';
   c.className='mn-c'+(o?' ok':'')+(m&&show?' mine':'')+(m&&p==='boom'&&i===st.last?' hit':'')+(p==='play'?' live':'');c.disabled=p!=='play'||o;
   c.innerHTML=o?'<i class="mn-gem"></i>':m&&show?`<img class="mn-bomb" src="${LV_MINE_IMG}" alt="Мина">`:''});
  const go=$('#mnGo'),b2=$('#mn2'),res=$('#mnRes'),cur=st.step?MN.ladder[st.step-1]:null;
  b2.hidden=false;
- if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин. Первая клетка — ${mnLabel(MN.ladder[0])}.`:`Попытки дают за уровни с «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}» — от ${lbRub(LossbackEngine.levels[LossbackEngine.MINES_FROM].threshold)} покупок в месяц.`;res.className='mn-res'}
+ if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин. Первая клетка — ${mnLabel(MN.ladder[0])}.`:`Попытки — с уровня «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}»`;res.className='mn-res'}
  if(p==='play'){go.disabled=!cur;go.textContent=cur?`Забрать ${mnLabel(cur)}`:'Откройте клетку';b2.hidden=true;const nx=MN.ladder[st.step];res.textContent=nx?`Следующая клетка — ${mnLabel(nx)}`:'';res.className='mn-res'}
  if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
  if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent=st.prize.k==='tk'?'Сыграть билетом':'Сыграть в Рапидо';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промо»`;res.className='mn-res good'}
@@ -7814,7 +7865,7 @@ function mnPick(i){
 function mnCollect(auto=false){
  if(st.phase!=='play'||!st.step)return;const p=MN.ladder[st.step-1];st.prize=p;
  if(p.k==='fs')bonusModel.records.push({id:'mn-fs-'+Date.now(),type:'tickets',fs:true,title:`${p.n} FS в Рапидо`,tag:'Приз из «Мин»',game:'rap',total:p.n,used:0,nominal:25,status:'active',expiresAt:Date.now()+7*DAY,validForMs:7*DAY});
- else lvAddTicket(p.n,'Приз из «Мин»');
+ else for(let k=0;k<p.n;k++)lvAddTicket(MN.tkNominal,'Приз из «Мин»');
  mnPlaceRest(-1);st.phase='won';bpSync();renderLossback();confetti();toast(auto?`Все призовые клетки открыты: ${mnLong(p)}`:`Приз: ${mnLong(p)}`);mnRender();
 }
 window.lvOpenMines=function(){if(!LV.mines){toast('«Мины» выключены в настройках прототипа');return}if(st.phase==='play'){box.classList.add('show');mnRender();return}st.phase='idle';st.open.clear();st.mines.clear();st.step=0;box.classList.add('show');mnRender();setTimeout(()=>$('#mnGo').focus(),50)};
