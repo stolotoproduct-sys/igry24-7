@@ -5756,7 +5756,7 @@ function lpWeek(s){
  if(r)h+=`<section class="lp-cb ready"><span class="lp-cb-t"><small>Кэшбек за ${lbRange(r)}</small><b>+${lbNum(r.cb)} Б</b><span>${r.pct}% от проигрыша ${lbRub(r.net)} · бонусами</span></span><button type="button" class="lp-cb-go" data-lb-claim="${r.start}">Забрать</button></section>`;
  h+=`<section class="lp-cb"><span class="lp-cb-pct${pct?'':' off'}"><b>${pct}<i>%</i></b><small>кэшбек</small></span><span class="lp-cb-t"><small>Эта неделя · ${lbRange(w)}</small>
   <b>${!pct?`С уровня «${LVL()[1].name}»`:w.cb?`≈ ${lbNum(w.cb)} Б`:'Пока 0 Б'}</b><span>${!pct?`Купите на ${lbRub(LVL()[1].threshold)} за месяц`:w.net?`Проигрыш ${lbRub(w.net)} × ${pct}%`:'Неделя в плюсе — кэшбек не понадобился'}</span></span></section>
-  <p class="lp-note">${IC(ICD.cal,12)}Начислим в ${lvWd(w.end)} · ${lvIn(w.end)}. Процент — по уровню на конец недели.</p>`;
+  <p class="lp-note">${IC(ICD.cal,12)}Начислим в ${lvWd(w.end)} · ${lvIn(w.end)}</p>`;
  return `<h3 class="lp-h">Кэшбек недели</h3>`+h;
 }
 function lpMines(s){
