@@ -3119,6 +3119,8 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lp-tabp .lp-h{margin-top:20px}
 .lp-mn-info{margin:12px 0 0;font-size:12px;line-height:16px;color:#b9afcf}
 .lp-tabs button{white-space:nowrap}.lp-tabs em{white-space:nowrap;flex:none}
+.lp-pv{justify-content:flex-start}.lp-pv small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;height:48px}
+.lp-pv-n,.lp-pv-art{flex:none;height:56px}
 
 </style>
 </head>
@@ -5798,9 +5800,9 @@ function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',time
 function lpPrivileges(s,l){
  const st=lpState(l,s),lock=st==='locked',L=LVL(),mines=L.find(x=>x.attempts),nx=L[l.id+1],t=[];
  if(LV.cb)t.push(`<div class="lp-pv${lock?' lock':''}"><b class="lp-pv-n">${l.pct}<i>%</i></b><small>Кэшбек бонусами</small></div>`);
- if(LV.mines)t.push(l.attempts?`<div class="lp-pv${lock?' lock':''}">${lvArt(mines,'lp-pv-art')}<small>+${l.attempts} ${lvAttWord(l.attempts)} в «Минах»</small></div>`
-  :`<div class="lp-pv lock">${lvArt(mines,'lp-pv-art dim')}<small>«Мины» — с уровня «${mines.name}»</small></div>`);
- t.push(nx?`<div class="lp-pv next" data-lp-select="${nx.id}" role="button" tabindex="0">${lvArt(nx,'lp-pv-art')}<small>Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}</small></div>`
+ if(LV.mines)t.push(l.attempts?`<div class="lp-pv${lock?' lock':''}">${lvArt(mines,'lp-pv-art')}<small>+${l.attempts} ${lvAttWord(l.attempts)} в «Минах»</small></div>`
+  :`<div class="lp-pv lock">${lvArt(mines,'lp-pv-art dim')}<small>«Мины» — с уровня «${mines.name}»</small></div>`);
+ t.push(nx?`<div class="lp-pv next" data-lp-select="${nx.id}" role="button" tabindex="0">${lvArt(nx,'lp-pv-art')}<small>Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}</small></div>`
   :`<div class="lp-pv next">${lvArt(l,'lp-pv-art')}<small>Максимальный уровень</small></div>`);
  return `<h3 class="lp-h">Привилегии уровня «${l.name}»</h3><div class="lp-pvs">${t.join('')}</div>`;
 }
