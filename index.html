@@ -5732,7 +5732,7 @@ function lpCard(s,l){
  if(st==='cur'){
   return `<section class="lp-card"><div class="lp-card-hd"><span>Уровень ${l.id}</span><span>покупки за ${month}</span><span>${nx?'Уровень '+nx.id:'Максимум'}</span></div>
    <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${nx?lbRub(nx.threshold):lbRub(l.threshold)}</b></div>
-   <p class="lp-rule">${IC(ICD.info||'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',12)}${LV_RULE}</p><div class="lp-card-ft">${LV.cb?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m6 6 6 6-6 6M12 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
+   <div class="lp-card-ft">${LV.cb?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m6 6 6 6-6 6M12 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
  }
  if(st==='passed')return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек '+l.pct+'%':'Мины +'+l.attempts}</span><p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
  return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
@@ -5807,7 +5807,7 @@ function lpScrollTo(id,smooth=true){const rail=$('.lp-rail');if(!rail)return;con
 /* правила */
 function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
- const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`Только за рубли. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} не идут. 1-го числа — с нуля`]];
+ const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
  if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели','Проигрыш = покупки − выигрыши за пн–вс. Процент — по уровню на конец недели'],[ICD.check,'Приходит бонусами в понедельник',`Забрать — в карточке уровня. Бонусы действуют ${LossbackEngine.BONUS_DAYS} дней, рубли не начисляются`]);
  if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца']);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
