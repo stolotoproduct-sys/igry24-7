@@ -5760,7 +5760,7 @@ function lpHero(s,small){
    return `<article class="lp-slide ${st}" data-lp-slide="${l.id}" aria-label="Уровень ${l.id}, ${l.name}" style="--n:${l.name.length}">
     ${lpBurst(l.id)}
     <span class="lp-obj">${lvArt(l,'lp-big')}${st==='locked'?`<img class="lp-lock" src="${LV_ART.lock}" alt="">`:''}</span>${lpName(l)}
-    <span class="lp-chip ${st}">${st==='cur'?'Твой уровень':st==='passed'?IC(ICD.check,12)+'Пройден':'Уровень '+l.id}</span>
+    <span class="lp-chip ${st}">${st==='cur'?'Твой уровень':st==='passed'?IC(ICD.check,12)+'Пройден':IC('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',12)+'Уровень '+l.id}</span>
    </article>`}).join('')}</div>
   <button type="button" class="lp-arr l" data-lp-go="-1" aria-label="Предыдущий уровень">${IC('<path d="M19 12H5M11 6l-6 6 6 6"/>',20)}</button>
   <button type="button" class="lp-arr r" data-lp-go="1" aria-label="Следующий уровень">${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',20)}</button>
