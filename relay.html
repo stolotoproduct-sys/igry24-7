@@ -1,0 +1,5 @@
+<!doctype html><meta charset="utf-8"><title>relay</title>
+<script>
+/* Служебная страница: отдаёт исходник прототипа родительскому окну (для загрузки файла в чат). */
+fetch('index.html?v='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{try{parent.postMessage({relay:'igry247',html:t},'*')}catch(e){}});
+</script>
