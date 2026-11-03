@@ -5756,7 +5756,7 @@ function lpWeek(s){
  if(r)h+=`<section class="lp-cb ready"><span class="lp-cb-t"><small>Кэшбек за ${lbRange(r)}</small><b>+${lbNum(r.cb)} Б</b><span>${r.pct}% от проигрыша ${lbRub(r.net)} · бонусами</span></span><button type="button" class="lp-cb-go" data-lb-claim="${r.start}">Забрать</button></section>`;
  h+=`<section class="lp-cb"><span class="lp-cb-pct${pct?'':' off'}"><b>${pct}<i>%</i></b><small>кэшбек</small></span><span class="lp-cb-t"><small>Эта неделя · ${lbRange(w)}</small>
   <b>${!pct?`С уровня «${LVL()[1].name}»`:w.cb?`≈ ${lbNum(w.cb)} Б`:'Пока 0 Б'}</b><span>${!pct?`Купите на ${lbRub(LVL()[1].threshold)} за месяц`:w.net?`Проигрыш ${lbRub(w.net)} × ${pct}%`:'Неделя в плюсе — кэшбек не понадобился'}</span></span></section>
-  <p class="lp-note">${IC(ICD.cal,12)}Начислим в ${lvWd(w.end)} · ${lvIn(w.end)}. Процент — по уровню на конец недели.</p><p class="lp-note">${IC(ICD.check,12)}${lvBonusNote()}</p>`;
+  <p class="lp-note">${IC(ICD.cal,12)}Начислим в ${lvWd(w.end)} · ${lvIn(w.end)}. Процент — по уровню на конец недели.</p>`;
  return `<h3 class="lp-h">Кэшбек недели</h3>`+h;
 }
 function lpMines(s){
@@ -5808,7 +5808,7 @@ function lpScrollTo(id,smooth=true){const rail=$('.lp-rail');if(!rail)return;con
 function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
- if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели','Проигрыш = покупки − выигрыши за пн–вс. Процент — по уровню на конец недели'],[ICD.check,'Приходит бонусами в понедельник',`Забрать — в карточке уровня. Бонусы действуют ${LossbackEngine.BONUS_DAYS} дней, рубли не начисляются`]);
+ if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели','Проигрыш = покупки − выигрыши за пн–вс. Процент — по уровню на конец недели'],[ICD.check,'Приходит бонусами в понедельник',`${lvBonusNote()}. Бонусы действуют ${LossbackEngine.BONUS_DAYS} дней`]);
  if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца']);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>Мины</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
