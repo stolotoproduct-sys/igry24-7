@@ -3121,6 +3121,9 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lp-tabs button{white-space:nowrap}.lp-tabs em{white-space:nowrap;flex:none}
 .lp-pv{justify-content:flex-start}.lp-pv small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;height:48px}
 .lp-pv-n,.lp-pv-art{flex:none;height:56px}
+.lp-w-top small.lp-w-left{flex:none;font-size:14px;line-height:20px;font-weight:600;color:var(--lp-sub)}
+.lp-w-bottom .lp-pct{font-size:12px;line-height:16px}
+.lp-w-next{display:inline-flex;align-items:center;gap:4px}.lp-w-next .ic{color:#c9a2ff}
 
 </style>
 </head>
@@ -5744,15 +5747,16 @@ const lvWd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'long',day:'numeric',mont
 function lvPerk(l){const p=[];if(LV.cb&&l.pct)p.push(`кэшбек ${l.pct}%`);if(LV.mines&&l.attempts)p.push(`+${l.attempts} в Минах`);return p.join(' · ')}
 
 /* ---------- виджет в лобби: одна карточка ---------- */
+const LV_TRI=IC('<path d="m3 6 6 6-6 6M9 6l6 6-6 6M15 6l6 6-6 6"/>',16);
 function lvWidget(s){
  const e=$('#lossbackEntry');if(!e)return;const on=LV.cb||LV.mines;e.hidden=!on;if(!on)return;
  const L=s.level,nx=s.next,att=lvAttempts(),ready=LV.cb?s.ready[0]:null;
  e.classList.add('lp-entry');e.classList.remove('lv-one');
  e.setAttribute('aria-label',`${lvTitle()}: ${L.id?'уровень '+L.id+' '+L.name:'стартовый уровень'}`);
  e.innerHTML=`<span class="lp-w-art${L.id?'':' off'}">${lvArt(L)}</span>
-  <span class="lp-w-main"><span class="lp-w-top"><strong>${L.name}</strong>${LV.cb&&L.pct?`<em class="lp-pct" title="Кэшбек недели">${L.pct}%</em>`:''}</span>
+  <span class="lp-w-main"><span class="lp-w-top"><strong>${L.name}</strong><small class="lp-w-left">${nx?'ещё '+lbRub(s.remaining):'максимум'}</small></span>
    <span class="lp-bar"><i style="width:${s.progress}%"></i></span>
-   <span class="lp-w-bottom"><span>${nx?`До «${nx.name}» ${lbRub(s.remaining)}`:'Максимальный уровень'}</span>${ready||att?'':nx&&LV.cb?`<b>→ ${nx.pct}%</b>`:nx&&nx.attempts&&LV.mines?`<b>+${nx.attempts} Мины</b>`:''}</span></span>
+   <span class="lp-w-bottom">${LV.cb?`<span>Кэшбек <em class="lp-pct">${L.pct}%</em></span>${nx?`<b class="lp-w-next">${LV_TRI}${nx.pct}%</b>`:''}`:`<span>${L.id?'Уровень '+L.id:'Старт'}</span>${nx&&nx.attempts?`<b class="lp-w-next">${LV_TRI}+${nx.attempts} в Минах</b>`:''}`}</span></span>
   ${ready?`<button type="button" class="lp-w-btn gold" data-lb-claim="${ready.start}">+${lbNum(ready.cb)} Б</button>`:att?`<button type="button" class="lp-w-btn" data-lv-mines>${IC(ICD.mine)}${att}</button>`:`<i class="lv-w-chev">${IC(ICD.chev)}</i>`}`;
 }
 
