@@ -2986,12 +2986,13 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
 /* --- карточка выбранного уровня --- */
 .lp-card{display:flex;flex-direction:column;gap:8px;padding:12px 16px;border-radius:16px;border:1px solid var(--lp-line);background:var(--lp-card)}
 .lp-card-hd,.lp-card-ft{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;line-height:16px;color:var(--lp-sub)}
-.lp-card-hd span:first-child{color:#fff;font-weight:600}
+.lp-card-hd{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.lp-card-hd span{white-space:nowrap}.lp-card-hd span:first-child{color:#fff;font-weight:600}.lp-card-hd span:nth-child(2){text-align:center}.lp-card-hd span:last-child{text-align:right}
 .lp-bar.big{height:24px;border-radius:12px}
 .lp-bar.big i{border-radius:12px}
 .lp-bar.big b{position:relative;display:block;text-align:center;font-size:12px;line-height:24px;font-weight:700;color:#fff;text-shadow:0 1px 2px #0008}
-.lp-card-ft{font-size:14px;line-height:20px;color:#fff}
-.lp-card-ft em{font-style:normal;font-weight:800;color:#f3d27a}
+.lp-card-ft{font-size:12px;line-height:16px;color:#fff}
+.lp-card-ft em{font-style:normal;font-size:14px;font-weight:800;color:#f3d27a}
 .lp-next{display:inline-flex;align-items:center;gap:4px;color:var(--lp-sub);font-weight:600}
 .lp-next .ic{color:#c9a2ff}
 .lp-center{align-items:center;text-align:center;padding:24px 16px 16px;position:relative;margin-top:16px}
@@ -5695,7 +5696,7 @@ function lpHero(s){
 function lpCard(s,l){
  const st=lpState(l,s),nx=s.next,month=lvMonth();
  if(st==='cur'){
-  return `<section class="lp-card"><div class="lp-card-hd"><span>Твой уровень ${l.id}</span><span>покупки за ${month}</span><span>${nx?'Уровень '+nx.id:'Максимум'}</span></div>
+  return `<section class="lp-card"><div class="lp-card-hd"><span>Уровень ${l.id}</span><span>покупки за ${month}</span><span>${nx?'Уровень '+nx.id:'Максимум'}</span></div>
    <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${nx?lbRub(nx.threshold):lbRub(l.threshold)}</b></div>
    <div class="lp-card-ft">${LV.cb?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m6 6 6 6-6 6M12 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
  }
