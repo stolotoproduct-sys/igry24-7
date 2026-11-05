@@ -2360,6 +2360,53 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 
 </style>
 <style>
+/* ===== Первый запуск: шторка «Настройте уведомления» + системное окно (демо) ===== */
+.npr{position:absolute;inset:0;z-index:110;pointer-events:none}
+.npr-bd{position:absolute;inset:0;background:#05060acc;opacity:0;transition:opacity .25s}
+.npr-sh{position:absolute;left:0;right:0;bottom:0;max-height:92%;overflow-y:auto;border-radius:24px 24px 0 0;background:#15131d;border-top:1px solid #ffffff14;transform:translateY(100%);transition:transform .32s cubic-bezier(.3,.8,.3,1);scrollbar-width:none}
+.npr.show{pointer-events:auto}.npr.show .npr-bd{opacity:1}.npr.show .npr-sh{transform:none}
+.npr-grab{width:32px;height:4px;border-radius:2px;background:#ffffff33;margin:8px auto 0}
+.npr-body{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));color:#f4efff;font-family:var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif)}
+.npr-art{position:relative;width:72px;height:72px;border-radius:36px;display:grid;place-items:center;color:#ffd36b;background:radial-gradient(closest-side,#4a2f73,#21173a);box-shadow:0 0 0 1px #ffffff14,0 8px 24px #a25be655}
+.npr-art svg{width:36px;height:36px;transform:rotate(-12deg)}
+.npr-art i{position:absolute;top:6px;right:6px;min-width:20px;height:20px;border-radius:10px;background:#ff3b5c;color:#fff;font:800 12px/20px var(--g4-font,sans-serif);font-style:normal;text-align:center;box-shadow:0 0 0 3px #15131d}
+.npr-art.off{color:#7f7690;background:#ffffff0f;box-shadow:none}.npr-art.off::after{content:'';position:absolute;width:44px;height:3px;border-radius:2px;background:#ff8fa3;transform:rotate(-45deg)}
+.npr-body h3{margin:0;font-size:20px;line-height:24px;font-weight:800;text-align:center}
+.npr-sub{margin:-4px 0 0;font-size:14px;line-height:20px;color:#cbbdd9;text-align:center}
+.npr-card{align-self:stretch}
+.npr-slot{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;line-height:20px;font-weight:600}
+.npr-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:#ffffff0d}
+.npr-seg button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#a99fc2;font:700 12px/16px var(--g4-font,sans-serif)}
+.npr-seg button[aria-checked="true"]{background:#a25be6;color:#fff}
+.npr-mail{align-self:stretch;display:flex;align-items:center;gap:12px;min-height:48px;padding:8px 12px;border-radius:12px;border:1px dashed #ffffff26;background:none;color:#fff;font:600 14px/20px var(--g4-font,sans-serif);text-align:left}
+.npr-mail span{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#f0aa2c1f;color:#ffd76a}.npr-mail span svg{width:18px;height:18px}
+.npr-mail b{flex:1;font-weight:600}.npr-mail em{font-style:normal;color:#c69cf0;font-weight:700}
+.npr-btns{align-self:stretch;display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.npr-btns .pf-btn{flex:none;width:100%}
+.npr-links{display:flex;justify-content:space-between}
+.npr-link{height:40px;padding:0 4px;border:0;background:none;color:#c69cf0;font:700 14px/20px var(--g4-font,sans-serif)}
+.npr-link.dim{color:#8f86a8;font-weight:600}
+/* системное окно телефона (демо) */
+.npos{position:absolute;inset:0;z-index:120;display:grid;place-items:center;background:#0008;opacity:0;pointer-events:none;transition:opacity .2s}
+.npos.show{opacity:1;pointer-events:auto}
+.npos-box{position:relative;width:270px;border-radius:14px;background:#2c2c2ef2;color:#fff;text-align:center;padding:16px 0 0;font-family:-apple-system,'SF Pro Text',Roboto,Inter,sans-serif;backdrop-filter:blur(20px)}
+.npos-ic{display:grid;place-items:center;width:40px;height:40px;margin:0 auto 8px;border-radius:10px;background:linear-gradient(180deg,#b06ff0,#8f45dc);color:#fff}.npos-ic svg{width:22px;height:22px}
+.npos-box b{display:block;padding:0 16px;font-size:16px;line-height:21px;font-weight:600}
+.npos-box small{display:block;padding:4px 16px 16px;font-size:13px;line-height:17px;color:#ffffffb3}
+.npos-btns{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ffffff26}
+.npos-btns button{height:44px;border:0;background:none;color:#0a84ff;font-size:16px}
+.npos-btns button+button{border-left:1px solid #ffffff26;font-weight:600}
+.npos-tag{position:absolute;left:0;right:0;top:calc(100% + 8px);font-style:normal;font-size:11px;line-height:14px;color:#ffffffa6}
+/* баннер в лобби */
+.np-banner{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;border:1px solid #f0aa2c40;background:linear-gradient(115deg,#2a1f12,#15131d 70%);color:#fff}
+.np-bi{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#f0aa2c1f;color:#ffd36b}.np-bi svg{width:22px;height:22px;transform:rotate(-12deg)}
+.np-bt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.np-bt b{font-size:14px;line-height:20px}.np-bt small{font-size:12px;line-height:16px;color:#a99fc2}
+.np-bb{flex:none;height:32px;padding:0 12px;border:0;border-radius:8px;background:#a25be6;color:#fff;font:700 12px/16px var(--g4-font,sans-serif)}
+.np-bx{flex:none;width:24px;height:24px;border:0;background:none;color:#7f7690;font-size:18px;line-height:24px}
+#lobby>.np-banner{width:calc(100% - 2*var(--lobby-gutter,16px));margin:0 var(--lobby-gutter,16px) var(--lobby-gap,12px);box-sizing:border-box}
+
+</style>
+<style>
 /* ===== Профиль игрока (сетка 4 px, Roboto Flex) ===== */
 .pf{position:absolute;inset:0;z-index:72;display:flex;flex-direction:column;background:#0a0b11;color:#f4efff;font-family:var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);transform:translateX(100%);transition:transform .32s cubic-bezier(.3,.8,.3,1);pointer-events:none}
 .pf.show{transform:none;pointer-events:auto}
@@ -5440,7 +5487,7 @@ charge=function(amount){
  if(consumeFreeBonus(game,amount))return true;
  const round=bonusModel.begin(S.bal,amount);
  if(!round){toast('Недостаточно рублей и бонусов для этой стоимости участия');openSheet();bpSync();return false}
- if(round.kind==='cash'){S.bal-=amount;S.spent+=amount;S.mb=(S.mb||0)+amount}
+ if(round.kind==='cash'){S.bal-=amount;S.spent+=amount;S.mb=(S.mb||0)+amount;if(window.NP)NP.afterBuy()}
  if(typeof lossbackModel!=='undefined')lossbackModel.begin(round);
  S.plays++;bpFunding.set(game,round);bpLastFunding.set(game,round.kind);renderBal(-1);bpSync();
  if(round.kind==='bonus')toast(`Списано ${bpNumber(amount)} Б · идёт отыгрыш`);
@@ -5856,7 +5903,7 @@ function renderLossback(){
  const h=$('#lossback .lb-title h2');if(h)h.textContent=lvTitle();
  const C=$('#lossbackContent');if(!C)return;
  if(!(LV.cb||LV.mines)){C.innerHTML='<p class="lb-month-note">Механики выключены в настройках прототипа.</p>';return}
- C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+(s.level.id?lpTabs(s):'')+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
+ if(window.NP)setTimeout(NP.refresh,0);C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+(s.level.id?lpTabs(s):'')+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
  const rail=$('.lp-rail',C);
  requestAnimationFrame(()=>{if(rail.isConnected)lpScrollTo(lbSelected,false)});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lpPick(rail)})},{passive:true});
@@ -6462,12 +6509,13 @@ const DM_GROUPS=[
  {id:'ntAds',t:'Уведомления: рекламных за неделю',cls:'c3',opts:[['none','0','можно'],['today','1','сегодня — лимит 24 ч'],['week2','2','лимит недели']]},
  {id:'ntReact',t:'Уведомления: реакция на предложения',cls:'c2',opts:[['yes','Открывает','обычная частота'],['no','Не открывает','частота снижена']]},
  {id:'ntSelf',t:'Пауза в игре / самоисключение',cls:'c2',opts:[['no','Нет',''],['yes','Да','реклама выкл.']]},
+ {id:'npPerm',t:'Push в телефоне (первый запуск)',cls:'c3',opts:[['default','Не спрашивали','новичок'],['granted','Разрешены','push работает'],['denied','Запрещены','отказал в окне']]},
  {id:'acEmail',t:'Почта в профиле',cls:'c3',opts:[['none','Нет','не указана'],['pending','Не подтв.','код не введён'],['confirmed','Подтв.','письма идут']]}
 ];
 const PRESETS={
- novice:{cash:0,cbOn:'on',cbState:'none',mnOn:'on',lvl:0,att:0,bonus:'none',fs:'none',offers:'yes',raffle:1,picks:0,wheel:'free1'},
- active:{cash:1250,cbOn:'on',cbState:'ready',mnOn:'on',lvl:3,att:0,bonus:'active',fs:'some',offers:'yes',raffle:4,picks:10,wheel:'free1'},
- vip:{cash:10000,cbOn:'on',cbState:'ready',mnOn:'on',lvl:6,att:10,bonus:'ready',fs:'all',offers:'no',raffle:49,picks:50,wheel:'spun'}
+ novice:{npPerm:'default',cash:0,cbOn:'on',cbState:'none',mnOn:'on',lvl:0,att:0,bonus:'none',fs:'none',offers:'yes',raffle:1,picks:0,wheel:'free1'},
+ active:{npPerm:'granted',cash:1250,cbOn:'on',cbState:'ready',mnOn:'on',lvl:3,att:0,bonus:'active',fs:'some',offers:'yes',raffle:4,picks:10,wheel:'free1'},
+ vip:{npPerm:'granted',cash:10000,cbOn:'on',cbState:'ready',mnOn:'on',lvl:6,att:10,bonus:'ready',fs:'all',offers:'no',raffle:49,picks:50,wheel:'spun'}
 };
 function busy(){if(typeof bpFunding!=='undefined'&&bpFunding.size){toast('Дождитесь результата текущего участия');return true}return false}
 
@@ -6519,6 +6567,7 @@ const SET={
   rfRender();rfBindBoard();
  },
  picks(v){rf.st.picks=v;rfRenderPicks()},
+ npPerm(v){window.NP&&NP.set(v)},
  ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},acEmail(v){if(!window.ACC)return;const A=ACC.get();ACC.set({emailState:v,email:v==='none'?'':A.email||'ivan.petrov@mail.ru'})},
  wheel(v){if(typeof fwBusy!=='undefined'&&fwBusy)return;
   if(v==='free1'){S.wheelDay='';S.wheelStreak=0}
@@ -6541,7 +6590,7 @@ function current(){
   offers:bonusModel.list('available').length?'yes':'no',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
-  acEmail:window.ACC?ACC.get().emailState:'confirmed',
+  acEmail:window.ACC?ACC.get().emailState:'confirmed',npPerm:window.NP?NP.state.perm:'granted',
   ...(()=>{const D=window.NTDEMO&&NTDEMO.ND;return D?{ntHour:D.hour,ntOnline:D.online?'yes':'no',ntHist:D.hist,ntAds:D.adlog,ntReact:D.react,ntSelf:D.self}:{}})(),
   readout:{
    series:(()=>{const n=QS[QUICK_IDS.includes($('#game').dataset.g)?$('#game').dataset.g:'coin']||0;return BonusEngine.mode==='orig'?`${n} из 10 · ${n>=3?'награда '+STB_LADDER[n]+' бонусов':'награды пока нет'}`:`${n} из 10 · до суперприза ${10-n}`})(),
@@ -6557,6 +6606,7 @@ function current(){
    raffle:`уровень ${rf.st.level} · ${rfNum(rf.st.points)} очков`,
    picks:rf.st.picks+' шт.',
    wheel:ws.spun?'крутил сегодня · таймер':'можно крутить',
+   npPerm:window.NP?{default:NP.eligible()?'шторка — после первой покупки или из колокольчика':'шторку уже показывали, ждём 7 дней',granted:'разрешены',denied:'отказ — больше не спрашиваем'}[NP.state.perm]:'',
    acEmail:(()=>{const A=window.ACC?ACC.get():null;return !A?'':A.email?A.email+(A.emailState==='confirmed'?' · подтверждена':' · ждёт код'):'не указана'})(),
    ...(()=>{const t=window.NTDEMO?NTDEMO.summary():'';return {ntHour:t,ntOnline:'',ntHist:'',ntAds:'',ntReact:'',ntSelf:''}})()
   }
@@ -7339,6 +7389,7 @@ function stbCheckout(o){
 const NT={read:new Set(),filter:'all'};
 const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z" fill="currentColor" stroke="none"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>';
 const ICO={
+  system:['#2c1846','#c88bff','<path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z" fill="currentColor"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
   cashback:['#3b2a12','#ffc94d','<path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v8M9.5 10.5h4a1.5 1.5 0 0 1 0 3h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'],
   bonus:['#2c1846','#c88bff','<rect x="4" y="10" width="16" height="10" rx="2" fill="currentColor" opacity=".45"/><rect x="3" y="7" width="18" height="4" rx="1.5" fill="currentColor"/><path d="M12 7v13M12 7C7 7 7 3 9.5 3.5S12 7 12 7Zm0 0c5 0 5-4 2.5-3.5S12 7 12 7Z" fill="none" stroke="currentColor" stroke-width="1.8"/>'],
   games:['#10283f','#5fb4ff','<rect x="3" y="7" width="18" height="11" rx="5" fill="currentColor" opacity=".35"/><path d="M8 10.5v4M6 12.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.5" r="1.3" fill="currentColor"/><circle cx="17.5" cy="13.8" r="1.3" fill="currentColor"/>'],
@@ -7382,6 +7433,8 @@ function decide(ev){
 }
 function items(){
   const L=[];
+  // 0. новичок: предложение настроить уведомления (пока push не разрешены)
+  if(window.NP&&NP.welcome())L.push({id:'np-welcome',topic:'system',type:'system',t:'Настройте уведомления',d:'Выберите, о чём сообщать: выигрыши, бонусы, напоминания. Займёт 10 секунд.',m:0,btn:'Настроить',act:()=>NP.open('bell')});
   // 1. результат тиража, в котором участвовали
   L.push({id:'draw-res',topic:'draw',type:'draw',t:'Тираж «Монетка» № 12 407: прогноз сыграл',d:'Ваш выигрыш +170 ₽ уже на балансе.',m:3,btn:'Открыть',act:()=>openGame('coin')});
   L.push({id:'draw-res2',topic:'draw',type:'draw',t:'Тираж «Весы» № 8 115 завершён',d:'Прогноз не сыграл. Результаты — в архиве игры.',m:65,read:true,act:()=>openGame('scale')});
@@ -7457,7 +7510,7 @@ window.nsSetChannel=(k,on)=>{NS.ch[k]=!!on;nsSave();nsRender()};
 function nsRender(){
   const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
   $('.ns-body',P).innerHTML=`<section class="ns-sum ${ic}"><b>${t}</b><span>${d}</span></section>
-  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>k==='email'?emailRow():`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:'На телефон и в браузер',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`).join('')}</div>
+  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>k==='email'?emailRow():`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:window.NP&&NP.state.perm==='denied'?'Выключены в телефоне — включите в его настройках':window.NP&&NP.state.perm==='default'?'Нужно разрешение телефона':'На телефон и в браузер',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`).join('')}</div>
   ${on?'':'<p class="ns-warn">Все каналы выключены — уведомления будут только в колокольчике на сайте.</p>'}
   <h4>О чём</h4><div class="ns-card">${TOPICS.map(([k,n,s,ad])=>`<div class="ns-row"><span class="ns-rt"><b>${n}${ad?' <em>реклама</em>':''}</b><small>${s}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <h4>Когда</h4><div class="ns-card"><div class="ns-row"><span class="ns-rt"><b>Подбирать время по моим визитам</b><small>Дни и время заходов, реакции на уведомления, примерная локация и тип подключения</small></span>${sw(NS.personal,'data-ns-personal')}</div>
@@ -7501,7 +7554,7 @@ function journalOpen(){if(typeof bpOpenModal!=='function')return;bonusModalView=
  window.addEventListener('pointerup',()=>{if(!d)return;if(d.moved)NT.dragged=true;setTimeout(()=>{NT.dragged=false},0);d=null;rail.classList.remove('dragging')});
  rail.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){rail.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});}
 window.NTDEMO={ND,NS,set(k,v){ND[k]=v;nsRender()},journal:journalOpen,summary:()=>nsSummary()[1]};
-window.nsOpen=nsOpen;window.nsRender=nsRender;
+window.nsOpen=nsOpen;window.nsRender=nsRender;window.ntBadge=badge;
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-notif]')){e.preventDefault();e.stopPropagation();open();return}
   if(!e.target.closest('#notif'))return;
@@ -7812,6 +7865,104 @@ document.addEventListener('submit',e=>{if(!e.target.closest('#acf'))return;e.pre
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('#acf').classList.contains('show')){e.stopImmediatePropagation();stop(true)}else if($('#acc').classList.contains('show')){e.stopImmediatePropagation();accClose()}},true);
 /* сброс прототипа — исходные данные */
 if(typeof resetProto==='function'){const r=resetProto;resetProto=function(){AC={...DEF};save();r.apply(this,arguments);refresh()}}
+})();
+
+</script>
+<script>
+/* ================= Первый запуск: приводим к настройкам уведомлений =================
+   Мягкий запрос (шторка) → системное окно телефона → тост. Системное окно одноразовое, поэтому
+   сначала спрашиваем сами и только по «Включить» вызываем его.
+   Входы: 1) после первой покупки за рубли; 2) приветственное сообщение в колокольчике;
+          3) баннер в лобби, когда человек пропустил важное (кэшбек ждёт); 4) точка на «Уведомления» в профиле.
+   Частота: «Не сейчас» — снова не раньше чем через 7 дней, не больше 3 раз. Отказ в системе — больше не спрашиваем. */
+(function(){
+const DAY=86400000,KEY='npState';
+const DEF={perm:'default',shown:0,last:0,bought:false,bannerOff:0};
+const NPS=(()=>{try{return Object.assign({...DEF},JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return {...DEF}}})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(NPS))}catch(e){}};
+const NSx=()=>window.NTDEMO&&NTDEMO.NS;
+const BELL='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z" fill="currentColor"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const MAIL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>';
+const COPY={
+ purchase:['Прислать результат тиража?','Сообщим, как только тираж завершится. Только важное — настройки можно поменять в любой момент.'],
+ bell:['Не пропускайте выигрыши','Выберите, о чём сообщать. Займёт 10 секунд — потом можно поменять в профиле.'],
+ missed:['Кэшбек ждал вас с понедельника','Включите уведомления — в следующий раз сообщим сразу, как начислим.'],
+ profile:['Настройте уведомления','Выберите, о чём сообщать: выигрыши, бонусы, напоминания.']};
+const TOP=[['draw','Результаты тиражей','Только ваши тиражи',true],['bonus','Бонусы, кэшбек и попытки','Когда что-то начислено',true],['ad','Акции и подарки','Не чаще 2 раз в неделю',false]];
+let src='bell',pick={draw:true,bonus:true,ad:false},slot='evening',view='prime';
+
+/* можно ли показать шторку сам по себе (не по нажатию человека) */
+function eligible(){return NPS.perm==='default'&&NPS.shown<3&&Date.now()-NPS.last>=7*DAY}
+function needs(){return NPS.perm!=='granted'}
+
+function mount(){if($('#npr'))return;
+ $('#scr').insertAdjacentHTML('beforeend',`<div class="npr" id="npr" aria-hidden="true"><div class="npr-bd" data-np="later"></div>
+  <section class="npr-sh" role="dialog" aria-modal="true" aria-labelledby="nprT"><div class="npr-grab"></div><div class="npr-body"></div></section></div>
+  <div class="npos" id="npos" aria-hidden="true"><div class="npos-box" role="alertdialog" aria-modal="true" aria-labelledby="nposT">
+   <span class="npos-ic">${BELL}</span><b id="nposT">«Столото» запрашивает разрешение на отправку уведомлений</b>
+   <small>Уведомления могут содержать текст, звуки и наклейки. Их можно выключить в настройках.</small>
+   <div class="npos-btns"><button type="button" data-np="os-deny">Не разрешать</button><button type="button" data-np="os-allow">Разрешить</button></div>
+   <i class="npos-tag">Системное окно телефона · демо</i></div></div>`)}
+
+function render(){const B=$('#npr .npr-body');if(!B)return;
+ if(view==='denied'){B.innerHTML=`<span class="npr-art off">${BELL}</span><h3 id="nprT">Уведомления выключены в телефоне</h3>
+  <p class="npr-sub">Больше не будем спрашивать. Включить можно в настройках телефона: Столото → Уведомления.</p>
+  ${emailRow()}
+  <div class="npr-btns"><button type="button" class="pf-btn primary" data-np="phone">Открыть настройки телефона</button><button type="button" class="npr-link" data-np="close">Понятно</button></div>`;return}
+ const [t,s]=COPY[src]||COPY.bell;
+ B.innerHTML=`<span class="npr-art">${BELL}<i>1</i></span><h3 id="nprT">${t}</h3><p class="npr-sub">${s}</p>
+  <div class="ns-card npr-card">${TOP.map(([k,n,d])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${d}</small></span><button type="button" class="ns-sw" role="switch" aria-checked="${pick[k]}" aria-label="${n}" data-np-t="${k}"><i></i></button></div>`).join('')}</div>
+  <div class="npr-slot"><span>Когда присылать</span><div class="npr-seg" role="radiogroup" aria-label="Когда присылать">${[['day','Днём'],['evening','Вечером']].map(([k,n])=>`<button type="button" role="radio" aria-checked="${slot===k}" data-np-s="${k}">${n}</button>`).join('')}</div></div>
+  ${emailRow()}
+  <div class="npr-btns"><button type="button" class="pf-btn primary" data-np="enable">Включить</button>
+   <div class="npr-links"><button type="button" class="npr-link" data-np="more">Настроить подробнее</button><button type="button" class="npr-link dim" data-np="later">Не сейчас</button></div></div>`}
+function emailRow(){if(!window.ACC||ACC.emailOk())return '';return `<button type="button" class="npr-mail" data-np="email"><span>${MAIL}</span><b>Чеки и результаты — на почту</b><em>Добавить</em></button>`}
+
+function open(from){mount();src=from||'bell';view=NPS.perm==='denied'?'denied':'prime';
+ /* по умолчанию — только важное; реклама выключена, пока человек сам её не включит */
+ pick={draw:true,bonus:true,ad:false};const N=NSx();slot=N&&N.slot==='day'?'day':'evening';
+ render();const P=$('#npr');P.classList.add('show');P.setAttribute('aria-hidden','false');
+ if(view==='prime'){NPS.shown++;NPS.last=Date.now();save()}refresh()}
+function close(){const P=$('#npr');if(!P)return;P.classList.remove('show');P.setAttribute('aria-hidden','true')}
+function osShow(on){const O=$('#npos');O.classList.toggle('show',on);O.setAttribute('aria-hidden',String(!on))}
+function apply(){const N=NSx();if(!N)return;N.topics.draw=pick.draw;N.topics.reminder=pick.draw;N.topics.bonus=pick.bonus;N.topics.expiry=pick.bonus;N.topics.comeback=pick.ad;N.slot=slot;
+ try{localStorage.setItem('ntSettings',JSON.stringify(N))}catch(e){}if(typeof nsRender==='function')nsRender()}
+function grant(v){NPS.perm=v;save();const N=NSx();if(N){N.ch.push=v==='granted';try{localStorage.setItem('ntSettings',JSON.stringify(N))}catch(e){}}if(typeof nsRender==='function')nsRender();refresh()}
+
+document.addEventListener('click',e=>{const ps=e.target.closest('#ntset [data-ns-ch="push"]');if(ps&&NPS.perm!=='granted'){e.stopImmediatePropagation();e.preventDefault();if(NPS.perm==='denied')toast('Push выключены в телефоне: Настройки → Столото → Уведомления');else{mount();src='settings';osShow(true)}}},true);
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-np-t]');if(t){const k=t.dataset.npT;pick[k]=!pick[k];t.setAttribute('aria-checked',String(pick[k]));return}
+ const s=e.target.closest('[data-np-s]');if(s){slot=s.dataset.npS;render();return}
+ const b=e.target.closest('[data-np]');if(!b)return;const a=b.dataset.np;
+ if(a==='enable'){apply();osShow(true)}
+ else if(a==='os-allow'){osShow(false);grant('granted');close();if(src==='settings'){toast('Push включены');return}toast(src==='purchase'?'Готово. Первое уведомление — результат этого тиража':'Готово. Уведомления включены')}
+ else if(a==='os-deny'){osShow(false);grant('denied');if(src==='settings'){toast('Push не разрешены — остаются e-mail и колокольчик');return}view='denied';render()}
+ else if(a==='more'){apply();close();if(typeof nsOpen==='function')nsOpen()}
+ else if(a==='later'){close();toast('Хорошо. Настроить можно в профиле → Уведомления')}
+ else if(a==='close')close();
+ else if(a==='phone')toast('Демо: здесь откроются настройки телефона');
+ else if(a==='email'){close();window.ACC&&ACC.flow('email-add')}
+ else if(a==='banner'){open('missed')}
+ else if(a==='banner-x'){NPS.bannerOff=Date.now();save();refresh()}
+});
+
+/* баннер в лобби: пропустил важное, а уведомления не включены */
+function banner(){const W=$('#lossbackEntry');if(!W)return;let B=$('#npBanner');
+ let ready=false;try{ready=LV.cb&&!!lossbackModel.snapshot().ready[0]}catch(e){}
+ const on=ready&&NPS.perm==='default'&&Date.now()-NPS.bannerOff>7*DAY;
+ if(!on){if(B)B.remove();return}
+ if(!B){W.insertAdjacentHTML('afterend',`<div class="np-banner" id="npBanner"><span class="np-bi">${BELL}</span><span class="np-bt"><b>Кэшбек ждал вас с понедельника</b><small>Включите уведомления — сообщим сразу</small></span><button type="button" class="np-bb" data-np="banner">Включить</button><button type="button" class="np-bx" data-np="banner-x" aria-label="Скрыть">×</button></div>`)}}
+/* точка на «Уведомления» в профиле */
+function dot(){$$('[data-pf="notif"]').forEach(r=>{let d=r.querySelector('.pf-dot.np');if(needs()&&NPS.perm!=='denied'){if(!d){const i=r.querySelector('.pf-chev')||r.lastElementChild;(i||r).insertAdjacentHTML('beforebegin','<span class="pf-dot np"></span>')}}else if(d)d.remove()})}
+function refresh(){banner();dot();if(typeof window.ntBadge==='function')window.ntBadge()}
+
+window.NP={open,eligible,needs,refresh,state:NPS,
+ welcome:()=>NPS.perm!=='granted',
+ /* после первой покупки за рубли */
+ afterBuy(){if(NPS.bought)return;NPS.bought=true;save();if(eligible())setTimeout(()=>open('purchase'),1400)},
+ set(v){Object.assign(NPS,{...DEF,perm:v,bought:v!=='default'});save();close();osShow&&$('#npos')&&osShow(false);grant(v)}};
+const mo=new MutationObserver(()=>{if($('[data-pf="notif"]')&&!document.querySelector('[data-pf="notif"] .pf-dot.np')&&needs()&&NPS.perm!=='denied')dot()});
+document.addEventListener('DOMContentLoaded',refresh);setTimeout(()=>{refresh();const p=$('#profile')||$('#scr');if(p)mo.observe(p,{childList:true,subtree:true})},300);
 })();
 
 </script>
