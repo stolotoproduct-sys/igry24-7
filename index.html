@@ -2357,19 +2357,19 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 /* почта не подтверждена — вместо переключателя действие */
 .ns-need{color:#ffd76a!important}
 .ns-link{flex:none;height:32px;padding:0 12px;border-radius:8px;border:0;background:#a25be6;color:#fff;font:700 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif)}
-/* тихие часы: ползунок 0–24 */
+/* тихие часы: шкала 00–24, ручки «с» (луна) и «до» (солнце) */
 .ns-qh{gap:8px}
-.qh-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;line-height:20px;color:#cbbdd9}
-.qh-head b{color:#fff;font-weight:700}.qh-head em{font-style:normal;font-size:12px;line-height:16px;color:#a99fc2}
-.qh-track{position:relative;height:28px}
-.qh-track::before{content:'';position:absolute;left:0;right:0;top:12px;height:4px;border-radius:2px;background:#ffffff1a}
-.qh-seg i{position:absolute;top:12px;height:4px;border-radius:2px;background:linear-gradient(90deg,#6a3fe0,#a25be6)}
-.qh-track input{position:absolute;inset:0;width:100%;height:28px;margin:0;background:none;-webkit-appearance:none;appearance:none;pointer-events:none}
-.qh-track input::-webkit-slider-runnable-track{height:28px;background:none}
-.qh-track input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:24px;height:24px;margin-top:2px;border-radius:12px;background:#fff;border:3px solid #a25be6;box-shadow:0 2px 6px #0008;cursor:grab}
-.qh-track input::-moz-range-thumb{pointer-events:auto;width:18px;height:18px;border-radius:12px;background:#fff;border:3px solid #a25be6;cursor:grab}
-.qh-track input::-moz-range-track{background:none}
-.qh-ticks{display:flex;justify-content:space-between;font-size:10px;line-height:12px;color:#7f7690}
+.qh-head{display:flex;justify-content:space-between;align-items:center;font-size:14px;line-height:20px;color:#cbbdd9}
+.qh-head>span{display:flex;align-items:center;gap:4px}
+.qh-head b{color:#fff;font-weight:700;margin-right:8px}.qh-head em{font-style:normal;font-size:12px;line-height:16px;color:#a99fc2}
+.qh-k{display:grid;place-items:center;width:16px;height:16px}.qh-k svg{width:14px;height:14px}.qh-k.moon{color:#c69cf0}.qh-k.sun{color:#ffd36b}
+.qh-track{position:relative;height:32px;margin:0 14px;touch-action:none;cursor:pointer}
+.qh-track::before{content:'';position:absolute;left:0;right:0;top:14px;height:4px;border-radius:2px;background:#ffffff1a}
+.qh-seg i{position:absolute;top:14px;height:4px;border-radius:2px;background:linear-gradient(90deg,#6a3fe0,#a25be6)}
+.qh-h{position:absolute;top:2px;width:28px;height:28px;margin-left:-14px;border-radius:14px;display:grid;place-items:center;padding:0;border:2px solid #a25be6;background:#1b1428;box-shadow:0 2px 8px #000a;cursor:grab;touch-action:none}
+.qh-h svg{width:16px;height:16px}.qh-h.moon{color:#c69cf0}.qh-h.sun{color:#ffd36b;border-color:#f0aa2c}
+.qh-h.on{cursor:grabbing;transform:scale(1.12)}.qh-h:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.qh-ticks{display:flex;justify-content:space-between;margin:0 6px;font-size:10px;line-height:12px;color:#7f7690}
 
 </style>
 <style>
@@ -7425,7 +7425,7 @@ const CH={push:'Push',email:'E-mail'};
 const PAUSES=[[0,'Нет'],[1,'1 день'],[7,'7 дней'],[30,'30 дней']];
 /* тихие часы: настраиваются (тумблер + ползунки), по умолчанию 21–10; могут переходить через полночь */
 const hh=h=>String(h%24).padStart(2,'0')+':00';
-const quiet=h=>{const q=NS.quiet;if(!q||!q.on||q.from===q.to)return false;return q.from<q.to?h>=q.from&&h<q.to:h>=q.from||h<q.to};
+const quiet=h=>{const q=NS.quiet;if(!q||!q.on)return false;const f=q.from,t=q.to%24;if(f===t)return false;return f<t?h>=f&&h<t:h>=f||h<t};
 const qLabel=()=>NS.quiet&&NS.quiet.on?hh(NS.quiet.from)+'–'+hh(NS.quiet.to):'выключены';
 const paused=()=>NS.pauseUntil>Date.now();
 const dShort=t=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(t);
@@ -7522,17 +7522,32 @@ function emailRow(){const A=window.ACC?ACC.get():{email:'ivan.petrov@mail.ru',em
   const pend=A.emailState==='pending'&&A.email;
   return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small class="ns-need">${pend?'Почта не подтверждена — не отправляем':'Добавьте почту, чтобы получать письма'}</small></span><button type="button" class="ns-link" data-ns-email="${pend?'email-confirm':'email-add'}">${pend?'Подтвердить':'Добавить'}</button></div>`}
 window.nsSetChannel=(k,on)=>{NS.ch[k]=!!on;nsSave();nsRender()};
-/* ползунок тихих часов: шкала 0–24, тихий интервал может переходить через полночь */
-function qhSeg(){const {from:f,to:t}=NS.quiet,p=h=>h/24*100;return (f<t?[[f,t]]:[[f,24],[0,t]]).map(([a,b])=>`<i style="left:${p(a)}%;width:${p(b)-p(a)}%"></i>`).join('')}
-function qhLen(){const {from:f,to:t}=NS.quiet;return (t-f+24)%24||24}
-function qhSlider(){const {from:f,to:t}=NS.quiet;return `<div class="ns-row col ns-qh"><div class="qh-head"><span>с <b id="qhFrom">${hh(f)}</b> до <b id="qhTo">${hh(t)}</b></span><em id="qhLen">${qhLen()} ч</em></div>
-  <div class="qh-track"><div class="qh-seg" id="qhSeg">${qhSeg()}</div><input type="range" min="0" max="23" step="1" value="${f}" data-qh="from" aria-label="Начало тихих часов"><input type="range" min="0" max="23" step="1" value="${t}" data-qh="to" aria-label="Конец тихих часов"></div>
+/* ползунок тихих часов: шкала 00–24, две разные ручки — «с» (луна) и «до» (солнце).
+   Ручка «до» может стоять на 24 = 00:00 следующего дня; интервал может переходить через полночь */
+const QH_MOON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor"/></svg>';
+const QH_SUN='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function qhSeg(){const {from:f,to:t}=NS.quiet,T=t%24,p=h=>h/24*100;return (f<T||T===0&&t===24?[[f,t===24?24:T]]:[[f,24],[0,T]]).map(([a,b])=>`<i style="left:${p(a)}%;width:${p(b)-p(a)}%"></i>`).join('')}
+function qhLen(){const {from:f,to:t}=NS.quiet;return ((t%24)-f+24)%24||24}
+function qhSlider(){const {from:f,to:t}=NS.quiet;return `<div class="ns-row col ns-qh"><div class="qh-head"><span><span class="qh-k moon">${QH_MOON}</span>с <b id="qhFrom">${hh(f)}</b><span class="qh-k sun">${QH_SUN}</span>до <b id="qhTo">${hh(t)}</b></span><em id="qhLen">${qhLen()} ч</em></div>
+  <div class="qh-track" id="qhTrack"><div class="qh-seg" id="qhSeg">${qhSeg()}</div>
+   <button type="button" class="qh-h moon" data-qh="from" style="left:${f/24*100}%" role="slider" aria-label="Начало тихих часов" aria-valuemin="0" aria-valuemax="23" aria-valuenow="${f}" aria-valuetext="${hh(f)}">${QH_MOON}</button>
+   <button type="button" class="qh-h sun" data-qh="to" style="left:${t/24*100}%" role="slider" aria-label="Конец тихих часов" aria-valuemin="0" aria-valuemax="24" aria-valuenow="${t}" aria-valuetext="${hh(t)}">${QH_SUN}</button></div>
   <div class="qh-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
   <p class="ns-hint">Ложитесь поздно? Сдвиньте ползунки — например, на 03:00–12:00</p></div>`}
-document.addEventListener('input',e=>{const r=e.target.closest('[data-qh]');if(!r)return;const k=r.dataset.qh,o=k==='from'?'to':'from';let v=+r.value;if(v===NS.quiet[o]){v=(v+(k==='from'?-1:1)+24)%24;r.value=v}
-  NS.quiet={...NS.quiet,[k]:v};const S=$('#qhSeg');if(S)S.innerHTML=qhSeg();$('#qhFrom').textContent=hh(NS.quiet.from);$('#qhTo').textContent=hh(NS.quiet.to);$('#qhLen').textContent=qhLen()+' ч';
-  const sub=$('#qhSub');if(sub)sub.textContent='Не присылаем с '+hh(NS.quiet.from)+' до '+hh(NS.quiet.to)+' по местному времени'});
-document.addEventListener('change',e=>{if(e.target.closest('[data-qh]')){nsSave();const s=$('#ntset .ns-sum');if(s){const [ic,t,d]=nsSummary();s.className='ns-sum '+ic;s.innerHTML='<b>'+t+'</b><span>'+d+'</span>'}}});
+function qhSet(k,v){const o=k==='from'?'to':'from';v=Math.round(v);v=k==='from'?Math.max(0,Math.min(23,v)):Math.max(0,Math.min(24,v));
+  if(v%24===NS.quiet[o]%24)return;NS.quiet={...NS.quiet,[k]:v};
+  const h=$('#qhTrack [data-qh="'+k+'"]');if(h){h.style.left=v/24*100+'%';h.setAttribute('aria-valuenow',v);h.setAttribute('aria-valuetext',hh(v))}
+  $('#qhSeg').innerHTML=qhSeg();$('#qhFrom').textContent=hh(NS.quiet.from);$('#qhTo').textContent=hh(NS.quiet.to);$('#qhLen').textContent=qhLen()+' ч';
+  const sub=$('#qhSub');if(sub)sub.textContent='Не присылаем с '+hh(NS.quiet.from)+' до '+hh(NS.quiet.to)+' по местному времени'}
+function qhDone(){nsSave();const s=$('#ntset .ns-sum');if(s){const [ic,t,d]=nsSummary();s.className='ns-sum '+ic;s.innerHTML='<b>'+t+'</b><span>'+d+'</span>'}}
+let qhDrag=null;
+document.addEventListener('pointerdown',e=>{const h=e.target.closest('#qhTrack [data-qh]');const tr=e.target.closest('#qhTrack');if(!tr)return;e.preventDefault();
+  const r=tr.getBoundingClientRect(),hour=x=>(x-r.left)/r.width*24;let k=h&&h.dataset.qh;
+  if(!k){const x=hour(e.clientX),df=Math.abs(x-NS.quiet.from),dt=Math.abs(x-NS.quiet.to);k=df<=dt?'from':'to';qhSet(k,x)}
+  qhDrag={k,hour};tr.querySelector('[data-qh="'+k+'"]').classList.add('on')});
+document.addEventListener('pointermove',e=>{if(qhDrag)qhSet(qhDrag.k,qhDrag.hour(e.clientX))});
+document.addEventListener('pointerup',()=>{if(!qhDrag)return;const b=$('#qhTrack .qh-h.on');if(b)b.classList.remove('on');qhDrag=null;qhDone()});
+document.addEventListener('keydown',e=>{const h=e.target.closest&&e.target.closest('#qhTrack [data-qh]');if(!h)return;const d={ArrowLeft:-1,ArrowDown:-1,ArrowRight:1,ArrowUp:1}[e.key];if(!d)return;e.preventDefault();const k=h.dataset.qh;let v=NS.quiet[k]+d;if(v%24===NS.quiet[k==='from'?'to':'from']%24)v+=d;qhSet(k,v);qhDone()});
 function nsRender(){
   const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
   $('.ns-body',P).innerHTML=`<section class="ns-sum ${ic}"><b>${t}</b><span>${d}</span></section>
