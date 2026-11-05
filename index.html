@@ -2420,6 +2420,89 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 
 </style>
 <style>
+/* ===== Вывод средств (сетка 4 px, на базе .ac) ===== */
+.wd{z-index:76}
+.wd .ac-body{padding-bottom:0}
+.wd .ac-body>.wd-foot{margin-top:auto}
+.wd-bal{display:flex;flex-direction:column;gap:4px;padding:16px}
+.wd-bal small{font-size:12px;line-height:16px;color:#a99fc2}
+.wd-bal b{font-size:32px;line-height:40px;font-weight:800;font-variant-numeric:tabular-nums}
+.wd-bal p{margin:4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
+.wd-pend{align-self:flex-start;height:24px;padding:0 8px;border-radius:12px;background:#f0aa2c1f;color:#ffd76a;font-size:12px;line-height:24px;font-weight:600}
+.wd-id{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;background:#f0aa2c14;border:1px solid #f0aa2c33}
+.wd-amt{display:flex;align-items:center;gap:8px;height:64px;padding:0 16px;border-radius:16px;border:1px solid #ffffff1f;background:#15131d}
+.wd-amt:focus-within{border-color:#a25be6}
+.wd-amt.err{border-color:#ff3b5c}
+.wd-amt input{flex:1;min-width:0;height:100%;border:0;background:none;outline:none;color:#fff;font:800 32px/40px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);font-variant-numeric:tabular-nums}
+.wd-amt input::placeholder{color:#4b4560}
+.wd-amt span{font-size:24px;line-height:32px;font-weight:700;color:#8f86a8}
+.wd-chips{display:flex;gap:8px;margin-top:-4px}
+.wd-chips button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid #ffffff1f;background:#ffffff0f;color:#fff;font:600 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.wd-hint{margin:-4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
+.wd-err{margin:-4px 0 0}
+.wd-err .acf-link{font-size:12px;line-height:16px}
+.wd-m{cursor:pointer}
+.wd-radio{flex:none;width:20px;height:20px;border-radius:10px;border:2px solid #ffffff33}
+.wd-m.on .wd-radio{border:6px solid #a25be6}
+.wd-chev{flex:none;width:20px;height:20px;color:#7f7690}.wd-chev svg{width:20px;height:20px}
+.wd-hl{min-height:64px}
+.wd-foot{position:sticky;bottom:0;display:flex;flex-direction:column;gap:4px;margin:0 -16px;padding:12px 16px 24px;background:linear-gradient(#0a0b1100,#0a0b11 24%)}
+.wd-foot .pf-btn{flex:none;width:100%}
+.pf-btn:disabled{opacity:.4;box-shadow:none;cursor:default}
+/* банки */
+.wd-search{display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-radius:12px;border:1px solid #ffffff1f;background:#15131d;color:#7f7690}
+.wd-search svg{width:20px;height:20px;flex:none}
+.wd-search input{flex:1;min-width:0;border:0;background:none;outline:none;color:#fff;font:500 16px/24px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif)}
+.wd-bank{min-height:56px;cursor:pointer}
+.wd-bl{flex:none;width:32px;height:32px;border-radius:16px;display:grid;place-items:center;background:var(--c);color:#111;font-size:14px;line-height:20px;font-weight:800;text-shadow:0 0 2px #fff8}
+.wd-ok{flex:none;width:20px;height:20px;color:#a25be6}.wd-ok svg{width:20px;height:20px}
+.wd-empty{margin:0;padding:24px 16px;text-align:center;font-size:14px;line-height:20px;color:#8f86a8}
+/* проверка */
+.wd-sum{padding:4px 16px}
+.wd-sr{display:flex;justify-content:space-between;gap:16px;padding:12px 0;font-size:14px;line-height:20px}
+.wd-sr+.wd-sr{border-top:1px solid #ffffff0f}
+.wd-sr span{color:#a99fc2}.wd-sr b{font-weight:600;text-align:right}
+.wd-sr.big b{font-size:20px;line-height:24px;font-weight:800}
+/* статус */
+.wd-st{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:32px;text-align:center}
+.wd-st>svg{width:80px;height:80px;margin-bottom:8px}
+.wd-st h3{margin:0;font-size:24px;line-height:32px;font-weight:800}
+.wd-spin{width:80px;height:80px;margin-bottom:8px;border-radius:40px;border:6px solid #a25be633;border-top-color:#a25be6;animation:wdspin 1s linear infinite;display:grid;place-items:center}
+.wd-spin.fail{animation:none;border-color:#ff3b5c33;color:#ff8fa3}.wd-spin.fail svg{width:40px;height:40px}
+@keyframes wdspin{to{transform:rotate(360deg)}}
+.wd-tl{list-style:none;margin:0;padding:16px;display:flex;flex-direction:column;gap:0}
+.wd-tl li{position:relative;display:flex;gap:12px;padding-bottom:16px}
+.wd-tl li:last-child{padding-bottom:0}
+.wd-tl li:not(:last-child)::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:2px;background:#ffffff1a}
+.wd-tl li.on:not(:last-child)::before{background:#2fbf7c}
+.wd-tl i{flex:none;width:24px;height:24px;border-radius:12px;border:2px solid #ffffff33;display:grid;place-items:center;color:#0a0b11;z-index:1;background:#15131d}
+.wd-tl li.on i{border:0;background:#2fbf7c}.wd-tl i svg{width:14px;height:14px}
+.wd-tl li.cur i{border-color:#a25be6;box-shadow:0 0 0 4px #a25be633}
+.wd-tl span{display:flex;flex-direction:column;gap:2px;padding-top:2px}
+.wd-tl b{font-size:14px;line-height:20px;font-weight:600;color:#8f86a8}
+.wd-tl li.on b,.wd-tl li.cur b{color:#fff}
+.wd-tl small{font-size:12px;line-height:16px;color:#8f86a8}
+.wd-demo{margin:0;text-align:center;font-size:12px;line-height:16px;color:#5f5872}
+/* личность */
+.wd-lims{display:grid;grid-template-columns:repeat(3,1fr)}
+.wd-lims div{display:flex;flex-direction:column;gap:2px;padding:12px;text-align:center}
+.wd-lims div+div{border-left:1px solid #ffffff0f}
+.wd-lims div.on{background:#a25be61f}
+.wd-lims small{font-size:12px;line-height:16px;color:#a99fc2}
+.wd-lims b{font-size:16px;line-height:24px;font-weight:800}
+.wd-opt{cursor:pointer}
+.wd-tag{flex:none;height:24px;padding:0 8px;border-radius:12px;background:#ffffff0f;color:#c69cf0;font-size:12px;line-height:24px;font-weight:700}
+/* история */
+.wd-hr{cursor:default;align-items:flex-start}
+.wd-hr .ac-rt b{font-size:16px;line-height:24px;font-weight:700}
+.wd-why{color:#ff8fa3!important}
+.wd-s{flex:none;height:24px;padding:0 8px;border-radius:12px;font-size:12px;line-height:24px;font-weight:600}
+.wd-s.ok{background:#2fbf7c26;color:#7fe0ae}.wd-s.proc{background:#f0aa2c1f;color:#ffd76a}.wd-s.fail{background:#ff3b5c1f;color:#ff8fa3}
+.wd h3{margin:0;font-size:24px;line-height:32px;font-weight:800}
+.wd-id .ac-act{height:32px}
+
+</style>
+<style>
 /* ===== Профиль игрока (сетка 4 px, Roboto Flex) ===== */
 .pf{position:absolute;inset:0;z-index:72;display:flex;flex-direction:column;background:#0a0b11;color:#f4efff;font-family:var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);transform:translateX(100%);transition:transform .32s cubic-bezier(.3,.8,.3,1);pointer-events:none}
 .pf.show{transform:none;pointer-events:auto}
@@ -2607,6 +2690,7 @@ button.ac-row{cursor:pointer}
 .acf-done svg{width:80px;height:80px;margin-bottom:8px}
 .acf-done .pf-btn{flex:none;width:100%;margin-top:16px}
 .ac-rt b.ac-em{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-badge.warn{background:#f0aa2c1f;color:#ffd76a}
 
 </style>
 <style>
@@ -6501,7 +6585,8 @@ rfRender();rfBindBoard();
 (function(){
 const DAY=86400000;
 const DM_GROUPS=[
- {id:'cash',t:'Рублёвый баланс',cls:'c4',opts:[[0,'0 ₽','пусто'],[50,'50 ₽','на 1 игру'],[1250,'1 250','₽ старт'],[10000,'10 000','₽ много']]},
+ {id:'cash',t:'Рублёвый баланс',cls:'c5',opts:[[0,'0 ₽','пусто'],[50,'50 ₽','на 1 игру'],[1250,'1 250','₽ старт'],[10000,'10 000','₽ много'],[48000,'48 000','₽ выигрыш']]},
+ {id:'wdId',t:'Вывод: подтверждение личности',cls:'c3',opts:[['none','Нет','до 15 000 ₽ за раз'],['simple','Госуслуги','до 60 000 ₽'],['full','Полная','до 600 000 ₽']]},
  {id:'cbOn',t:'Кэшбек недели',cls:'c2',opts:[['on','Есть','% бонусами'],['off','Нет','механика выключена']]},
  {id:'cbState',t:'Кэшбек: прошлая неделя',cls:'c4',opts:[['none','Нет','первая неделя'],['plus','Плюс','кэшбека нет'],['ready','Готов','забрать бонусы'],['got','Получен','уже начислен']]},
  {id:'mnOn',t:'«Мины» за уровень',cls:'c2',opts:[['on','Есть','попытки за покупки'],['off','Нет','механика выключена']]},
@@ -6581,6 +6666,7 @@ const SET={
  },
  picks(v){rf.st.picks=v;rfRenderPicks()},
  npPerm(v){window.NP&&NP.set(v)},
+ wdId(v){window.WD&&WD.setId(v)},
  ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},acEmail(v){if(!window.ACC)return;const A=ACC.get();ACC.set({emailState:v,email:v==='none'?'':A.email||'ivan.petrov@mail.ru'})},
  wheel(v){if(typeof fwBusy!=='undefined'&&fwBusy)return;
   if(v==='free1'){S.wheelDay='';S.wheelStreak=0}
@@ -6603,12 +6689,13 @@ function current(){
   offers:bonusModel.list('available').length?'yes':'no',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
-  acEmail:window.ACC?ACC.get().emailState:'confirmed',npPerm:window.NP?NP.state.perm:'granted',
+  acEmail:window.ACC?ACC.get().emailState:'confirmed',wdId:window.WD?WD.state.id:'none',npPerm:window.NP?NP.state.perm:'granted',
   ...(()=>{const D=window.NTDEMO&&NTDEMO.ND;return D?{ntHour:D.hour,ntOnline:D.online?'yes':'no',ntHist:D.hist,ntAds:D.adlog,ntReact:D.react,ntSelf:D.self}:{}})(),
   readout:{
    series:(()=>{const n=QS[QUICK_IDS.includes($('#game').dataset.g)?$('#game').dataset.g:'coin']||0;return BonusEngine.mode==='orig'?`${n} из 10 · ${n>=3?'награда '+STB_LADDER[n]+' бонусов':'награды пока нет'}`:`${n} из 10 · до суперприза ${10-n}`})(),
    bmode:{none:'выключены',wager:'с отыгрышем',orig:'Столото, 1 = 1 ₽'}[BonusEngine.mode],stb:BonusEngine.mode==='orig'?rfNum(S.stb||0)+' бонусов':'только в режиме Столото',
    cash:rfNum(S.bal)+' ₽',
+   wdId:window.WD?{none:'не подтверждена',simple:'Госуслуги',full:'полная'}[WD.state.id]+' · за раз до '+rfNum(WD.lim[WD.state.id].one)+' ₽':'',
    cbOn:LV.cb?'включён':'выключен',mnOn:LV.mines?'включены':'выключены',
    cbState:(()=>{if(!LV.cb)return 'выключен';const s=lossbackModel.snapshot(),r=s.ready[0],p=s.periods[0];return r?r.pct+'% · '+r.cb+' Б · забрать':!p?'истории нет':p.claimed?p.paid+' Б получено':p.net?'меньше 1 Б':'неделя в плюсе'})(),
    lvl:(()=>{const s=lossbackModel.snapshot();return `${s.level.name} · ${rfNum(s.turnover)} ₽${s.level.pct&&LV.cb?' · '+s.level.pct+'%':''}`})(),
@@ -7714,7 +7801,7 @@ window.addEventListener('click',e=>{
   if(k==='register'){ACC.flow('register');return}
   if(k==='account'){ACC.open();return}
   if(k==='deposit'){close();openSheet();return}
-  if(k==='withdraw'){toast('Вывод на карту — в разработке (демо)');return}
+  if(k==='withdraw'){window.WD&&WD.open();return}
   if(k==='cashback'){close();go('lossback');return}
   if(k==='wheel'){close();openWheel();return}
   if(k==='bonuses'){close();go('promo');setTimeout(()=>{try{selectBonusTab('bonuses')}catch(_){}},50);return}
@@ -7783,7 +7870,7 @@ function emailRow(){
 }
 function accRender(){const P=$('#acc');if(!P)return;
  const em=AC.emailState==='confirmed'&&AC.email;
- $('.ac-body',P).innerHTML=`<div class="ac-card ac-who"><span class="ac-ava">${AC.name.split(' ').map(w=>w[0]).join('')}</span><span class="ac-rt"><b>${esc(AC.name)}</b><small>Дата рождения ${AC.birth}</small><span class="ac-badge">${I.check}Личность подтверждена</span></span></div>
+ $('.ac-body',P).innerHTML=`<div class="ac-card ac-who"><span class="ac-ava">${AC.name.split(' ').map(w=>w[0]).join('')}</span><span class="ac-rt"><b>${esc(AC.name)}</b><small>Дата рождения ${AC.birth}</small>${(()=>{const k=window.WD?WD.state.id:'full';return k==='none'?`<span class="ac-badge warn">${I.warn}Личность не подтверждена</span>`:`<span class="ac-badge">${I.check}${k==='simple'?'Подтверждена через Госуслуги':'Личность подтверждена'}</span>`})()}</span></div>
  <h4>Контакты</h4>
  <div class="ac-card ac-list">
   <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small class="ac-st ok">${I.check}Подтверждён · логин</small></span><button type="button" class="ac-act" data-ac="phone-change">Сменить</button></div>
@@ -7792,7 +7879,7 @@ function accRender(){const P=$('#acc');if(!P)return;
  ${em?'':`<p class="ac-warn">${AC.emailState==='pending'?'Мы отправили код на '+esc(AC.email)+'. Пока почта не подтверждена, канал E-mail в уведомлениях выключен.':'Без почты чеки и результаты тиражей приходят только в приложение и по SMS.'}</p>`}
  <h4>Вход</h4>
  <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b><small>Изменён 3 месяца назад</small></span><span class="ac-val">Изменить</span></button>
-  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>Из документа при подтверждении личности. Изменить — через поддержку</small></span></div></div>
+  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>Из документа при подтверждении личности. Изменить — через поддержку</small></span></div>${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
  <p class="ac-note">Номер и почту не показываем другим игрокам. Любое изменение подтверждаем кодом — без вас данные сменить нельзя. О смене сообщаем на старый контакт.</p>`}
 function accOpen(){accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
 function accClose(){const P=$('#acc');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
@@ -7885,6 +7972,7 @@ $('#scr').insertAdjacentHTML('beforeend',`<div class="ac" id="acc" role="dialog"
  <div class="ac-head"><button class="ac-back" type="button" data-acf="back" aria-label="Назад">${I.back}</button><div class="acf-prog"></div><button class="ac-x" type="button" data-acf="close" aria-label="Закрыть">✕</button></div><div class="acf-body"></div></div>`);
 /* ---------- обработчики ---------- */
 document.addEventListener('click',e=>{
+ if(e.target.closest('[data-ac-wd]')){accClose();WD.open();setTimeout(()=>document.querySelector('#wd [data-wd="id"]')?.click(),50);return}
  const a=e.target.closest('[data-ac]');
  if(a&&e.target.closest('#acc')){const k=a.dataset.ac;
   if(k==='close'){accClose();return}
@@ -8006,6 +8094,191 @@ window.NP={open,eligible,needs,refresh,state:NPS,
  set(v){Object.assign(NPS,{...DEF,perm:v,bought:v!=='default'});save();close();osShow&&$('#npos')&&osShow(false);grant(v)}};
 const mo=new MutationObserver(()=>{if($('[data-pf="notif"]')&&!document.querySelector('[data-pf="notif"] .pf-dot.np')&&needs()&&NPS.perm!=='denied')dot()});
 document.addEventListener('DOMContentLoaded',refresh);setTimeout(()=>{refresh();const p=$('#profile')||$('#scr');if(p)mo.observe(p,{childList:true,subtree:true})},300);
+})();
+
+</script>
+<script>
+/* ================= Вывод средств =================
+   Профиль → «Вывести». Один экран: сумма + куда (СБП / карта / счёт), дальше проверка, код из SMS и статус.
+   Правила (как у Столото и ЦУПИС-букмекеров):
+   — выводим только на свои карты и счета, получатель = владелец аккаунта;
+   — лимиты зависят от подтверждения личности: без него до 15 000 ₽ за раз, Госуслуги — до 60 000 ₽, полная — до 600 000 ₽;
+   — налог с выигрышей от 15 000 ₽ удержан при начислении, в выводе его нет;
+   — бонусы и купончики не выводятся;
+   — заявку не предлагаем «отменить и играть дальше»: деньги ушли — значит ушли. */
+(function(){
+const KEY='wdState',DAY=86400000,MIN=100;
+const LIM={none:{one:15000,month:40000,t:'Личность не подтверждена'},simple:{one:60000,month:200000,t:'Подтверждена через Госуслуги'},full:{one:600000,month:3000000,t:'Личность подтверждена полностью'}};
+const ETA={sbp:'Обычно сразу',card:'До 15 минут',acc:'1–3 рабочих дня'};
+const BANKS=['Т-Банк','Сбербанк','ВТБ','Альфа-Банк','Газпромбанк','Райффайзенбанк','Совкомбанк','Озон Банк','МТС Банк','Почта Банк','Россельхозбанк','Яндекс Банк'];
+const BC=['#ffdd2d','#21a038','#0a2896','#ef3124','#0050a0','#fff200','#e5322d','#005bff','#e30611','#2f2a95','#00843d','#fc3f1d'];
+const ago=d=>Date.now()-d*DAY;
+const DEF={id:'none',method:'sbp',bank:'Т-Банк',card:{pay:'МИР',last:'4417'},acc:null,hist:[
+ {id:'w3',sum:3000,to:'СБП · Т-Банк',at:ago(8),st:'done'},
+ {id:'w2',sum:1200,to:'Карта МИР •• 4417',at:ago(24),st:'done'},
+ {id:'w1',sum:2000,to:'Карта •• 9902',at:ago(34),st:'fail',why:'Карта оформлена на другого человека. Деньги вернулись на баланс'}]};
+let W;try{W={...structuredClone(DEF),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){W=structuredClone(DEF)}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(W))}catch(e){}};
+const n=v=>Math.round(v||0).toLocaleString('ru-RU');
+const rub=v=>n(v)+' ₽';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MON=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+const dt=t=>{const d=new Date(t);return d.getDate()+' '+MON[d.getMonth()]};
+const phone=()=>window.ACC?ACC.maskPhone(ACC.get().phone):'+7 916 ••• 45 12';
+const I={
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+ sbp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4l5 3v10l-5 3z"/><path d="M9 7l11-3-5 8 5 8-11-3"/></svg>',
+ card:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4" stroke-linecap="round"/></svg>',
+ bank:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9 12 4l9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h4M14 13h3" stroke-linecap="round"/></svg>',
+ video:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg>',
+ hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6L4 8.7"/><path d="M4 4v4.7h4.7M12 8v4l3 2"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>',
+ done:'<svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#2fbf7c26"/><path d="m15 24 6 6 12-13" stroke="#7fe0ae" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+/* ---------- расчёты ---------- */
+const lim=()=>LIM[W.id];
+const monthStart=()=>{const d=new Date();return new Date(d.getFullYear(),d.getMonth(),1).getTime()};
+const usedMonth=()=>W.hist.filter(h=>h.st!=='fail'&&h.at>=monthStart()).reduce((s,h)=>s+h.sum,0);
+const leftMonth=()=>Math.max(0,lim().month-usedMonth());
+const maxNow=()=>Math.min(S.bal,lim().one,leftMonth());
+const pending=()=>W.hist.filter(h=>h.st==='proc').reduce((s,h)=>s+h.sum,0);
+const toLabel=m=>m==='sbp'?`СБП · ${W.bank}`:m==='card'?`Карта ${W.card.pay} •• ${W.card.last}`:W.acc?`Счёт •• ${W.acc.slice(-4)}`:'Банковский счёт';
+/* что не так с суммой: [текст, действие] */
+function problem(a){
+ if(!a)return null;
+ if(a<MIN)return ['Минимум — '+rub(MIN)];
+ if(a>S.bal)return ['На балансе '+rub(S.bal)];
+ if(a>lim().one)return W.id==='full'?['Больше '+rub(lim().one)+' — на банковский счёт по заявлению в поддержке','help']:[`${W.id==='none'?'Без подтверждения личности':'С подтверждением через Госуслуги'} за раз — до ${rub(lim().one)}`,'id'];
+ if(a>leftMonth())return [`В этом месяце можно вывести ещё ${rub(leftMonth())}`,W.id==='full'?null:'id'];
+ return null}
+
+/* ---------- состояние экрана ---------- */
+const V={stack:['main'],amt:0,q:'',code:'',tries:3,err:'',cur:null,tm:[]};
+const view=()=>V.stack[V.stack.length-1];
+const TITLE={main:'Вывод средств',banks:'Банк для СБП',card:'Новая карта',acc:'Счёт в банке',confirm:'Проверьте вывод',code:'Подтверждение',status:'Вывод',id:'Поднять лимит',gos:'Госуслуги',hist:'История выводов'};
+
+function mainView(){const a=V.amt,p=problem(a),l=lim(),pend=pending();
+ const meth=(k,ico,t,sub,extra='')=>`<div class="ac-row wd-m${W.method===k?' on':''}" data-wd-m="${k}" role="radio" tabindex="0" aria-checked="${W.method===k}"><span class="ac-ri">${I[ico]}</span><span class="ac-rt"><b>${t}</b><small>${sub}</small></span>${extra}<i class="wd-radio"></i></div>`;
+ return `<div class="ac-card wd-bal"><small>Можно вывести</small><b>${rub(S.bal)}</b>${pend?`<span class="wd-pend">${rub(pend)} в обработке</span>`:''}<p>Бонусы и купончики не выводятся — ими можно играть</p></div>
+ ${W.id==='none'?`<div class="wd-id"><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>До ${rub(l.one)} за раз</b><small>Через Госуслуги — до ${rub(LIM.simple.one)}</small></span><button type="button" class="ac-act primary" data-wd="id">Подтвердить</button></div>`:''}
+ <h4>Сумма</h4>
+ <div class="wd-amt${p?' err':''}"><input id="wdAmt" inputmode="numeric" autocomplete="off" placeholder="0" value="${a?n(a):''}" aria-label="Сумма вывода"><span>₽</span></div>
+ <div class="wd-chips">${[1000,5000].filter(v=>v<maxNow()).map(v=>`<button type="button" data-wd-a="${v}">${rub(v)}</button>`).join('')}<button type="button" data-wd-a="${maxNow()}">${maxNow()<S.bal?'Максимум':'Всё'} · ${rub(maxNow())}</button></div>
+ ${p?`<p class="acf-err wd-err">${p[0]}${p[1]==='id'?` <button type="button" class="acf-link" data-wd="id">Поднять лимит</button>`:p[1]==='help'?` <button type="button" class="acf-link" data-wd="help">Написать</button>`:''}</p>`:`<p class="wd-hint">От ${rub(MIN)} · за раз до ${rub(l.one)} · в этом месяце осталось ${rub(leftMonth())}</p>`}
+ <h4>Куда</h4>
+ <div class="ac-card ac-list" role="radiogroup" aria-label="Куда вывести">
+  ${meth('sbp','sbp','СБП · '+esc(W.bank),phone()+' · сразу',`<button type="button" class="ac-act" data-wd="banks">Банк</button>`)}
+  ${meth('card','card',`Карта ${W.card.pay} •• ${W.card.last}`,ETA.card)}
+  ${W.acc?meth('acc','bank','Счёт •• '+W.acc.slice(-4),ETA.acc+' · для крупных сумм'):`<button type="button" class="ac-row" data-wd="acc"><span class="ac-ri">${I.bank}</span><span class="ac-rt"><b>Банковский счёт</b><small>${ETA.acc} · для крупных сумм</small></span><span class="ac-val">Добавить</span></button>`}
+  <button type="button" class="ac-row" data-wd="card"><span class="ac-ri">${I.plus}</span><span class="ac-rt"><b>Другая карта</b><small>Только оформленная на вас</small></span><i class="wd-chev">${I.chev}</i></button>
+ </div>
+ <p class="ac-note">Без комиссии. Выводим только на ваши карты и счета — получатель ${esc(window.ACC?ACC.get().name:'Иван Петров')}. Налог с выигрышей от 15 000 ₽ уже удержан при начислении.</p>
+ <button type="button" class="ac-card ac-row wd-hl" data-wd="hist"><span class="ac-ri">${I.hist}</span><span class="ac-rt"><b>История выводов</b><small>${W.hist.some(h=>h.st==='proc')?'Есть заявка в обработке':'Последний — '+(W.hist[0]?rub(W.hist[0].sum)+', '+dt(W.hist[0].at):'ещё не было')}</small></span><i class="wd-chev">${I.chev}</i></button>
+ <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="next" ${!a||p?'disabled':''}>${a&&!p?'Вывести '+rub(a):'Введите сумму'}</button></div>`}
+
+function banksView(){const q=V.q.trim().toLowerCase();const list=BANKS.map((b,i)=>[b,i]).filter(([b])=>!q||b.toLowerCase().includes(q));
+ return `<p class="acf-text">Переведём по номеру ${phone()} в банк, который выберете. Номер менять нельзя — он привязан к аккаунту.</p>
+ <label class="wd-search">${I.search}<input id="wdQ" placeholder="Найти банк" value="${esc(V.q)}" autocomplete="off"></label>
+ <div class="ac-card ac-list">${list.length?list.map(([b,i])=>`<button type="button" class="ac-row wd-bank" data-wd-bank="${esc(b)}"><span class="wd-bl" style="--c:${BC[i]}">${b[0]}</span><span class="ac-rt"><b>${b}</b>${b===W.bank?'<small>Выбран</small>':''}</span>${b===W.bank?`<i class="wd-ok">${I.check}</i>`:''}</button>`).join(''):'<p class="wd-empty">Такого банка нет в СБП</p>'}</div>`}
+
+const field=(lab,id,ph,val,mode)=>`<label class="acf-field${V.err&&V.errf===id?' err':''}"><span>${lab}</span><input id="${id}" inputmode="${mode||'numeric'}" placeholder="${ph}" value="${esc(val||'')}" autocomplete="off"></label>`;
+function cardView(){return `<p class="acf-text">Карта должна быть оформлена на вас. Чужую карту банк отклонит — деньги вернутся на баланс.</p>
+ <form class="acf-form" data-wd-form="card">${field('Номер карты','wdCard','0000 0000 0000 0000',V.f?.card)}${V.err?`<p class="acf-err">${V.err}</p>`:''}<button class="pf-btn primary" type="submit">Сохранить карту</button></form>`}
+function accView(){return `<p class="acf-text">Для сумм больше лимита карты и СБП. Реквизиты — в приложении банка, раздел «Реквизиты счёта». Счёт должен быть открыт на вас.</p>
+ <form class="acf-form" data-wd-form="acc">${field('БИК банка','wdBik','044525974',V.f?.bik)}${field('Номер счёта','wdAcc','40817 810 0 0000 0000000',V.f?.acc)}${V.err?`<p class="acf-err">${V.err}</p>`:''}<button class="pf-btn primary" type="submit">Сохранить счёт</button></form>`}
+
+function confirmView(){const a=V.amt,m=W.method;
+ const r=(k,v,c='')=>`<div class="wd-sr${c}"><span>${k}</span><b>${v}</b></div>`;
+ return `<div class="ac-card wd-sum">${r('Сумма',rub(a))}${r('Комиссия','0 ₽')}${r('Получите',rub(a),' big')}</div>
+ <div class="ac-card wd-sum">${r('Куда',esc(toLabel(m)))}${m==='sbp'?r('Номер',phone()):''}${r('Получатель',esc(window.ACC?ACC.get().name:'Иван Петров'))}${r('Срок',ETA[m])}</div>
+ <p class="ac-note">После подтверждения сумма сразу спишется с баланса. Если банк не примет перевод, деньги вернутся на баланс в течение дня.</p>
+ <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="send">Подтвердить кодом из SMS</button></div>`}
+
+function codeView(){return `<h3>Код из SMS</h3><p class="acf-text">Отправили код на ${phone()}. Он подтверждает вывод ${rub(V.amt)}.</p>
+ <label class="acf-code${V.err?' err':''}" style="--n:4"><input id="wdCode" inputmode="numeric" autocomplete="one-time-code" maxlength="4" aria-label="Код из SMS" value="${V.code}">${[0,1,2,3].map(k=>`<i class="${k===Math.min(V.code.length,3)?'cur':''}">${V.code[k]||''}</i>`).join('')}</label>
+ ${V.err?`<p class="acf-err">${V.err}</p>`:''}
+ <div class="acf-links"><button type="button" class="acf-link dim" data-wd="demo">Подставить код (демо)</button></div>`}
+
+const STEPS=[['Списали с баланса',''],['Проверяем заявку','Обычно до минуты'],['Отправили в банк',''],['Деньги на счёте','']];
+function statusView(){const h=W.hist.find(x=>x.id===V.cur);if(!h)return '';const s=h.step||0,done=h.st==='done',fail=h.st==='fail';
+ return `<div class="wd-st">${done?I.done:`<span class="wd-spin${fail?' fail':''}">${fail?I.warn:''}</span>`}
+  <h3>${done?'Деньги у вас':fail?'Банк не принял перевод':'Выводим '+rub(h.sum)}</h3>
+  <p class="acf-text">${done?`${rub(h.sum)} зачислены: ${esc(h.to)}.`:fail?esc(h.why):`${esc(h.to)} · ${ETA[h.m]||''}. Пришлём уведомление, когда деньги дойдут — экран можно закрыть.`}</p></div>
+ ${fail?'':`<ol class="ac-card wd-tl">${STEPS.map(([t,sub],k)=>`<li class="${k<s||done?'on':k===s?'cur':''}"><i>${k<s||done?I.check:''}</i><span><b>${t}</b>${k===s&&!done&&sub?`<small>${sub}</small>`:''}${k===0?`<small>${dt(h.at)}, ${new Date(h.at).toTimeString().slice(0,5)}</small>`:''}</span></li>`).join('')}</ol>`}
+ <p class="wd-demo">Демо: шаги ускорены</p>
+ <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="close">${done?'Готово':'Закрыть'}</button>${done||fail?'':`<button type="button" class="pf-btn ghost" data-wd="hist">История выводов</button>`}</div>`}
+
+function idView(){const opt=(k,ico,t,sub,tag)=>`<button type="button" class="ac-card ac-row wd-opt" data-wd-id="${k}"><span class="ac-ri">${I[ico]}</span><span class="ac-rt"><b>${t}</b><small>${sub}</small></span><span class="wd-tag">${tag}</span></button>`;
+ return `<p class="acf-text">По закону без подтверждения личности выводить можно только небольшие суммы. Данные проверяем один раз.</p>
+ <div class="ac-card wd-lims">${['none','simple','full'].map(k=>`<div class="${W.id===k?'on':''}"><small>${{none:'Сейчас',simple:'Госуслуги',full:'Полная'}[k]}</small><b>${rub(LIM[k].one)}</b><small>за раз</small></div>`).join('')}</div>
+ ${W.id==='none'?opt('simple','id','Через Госуслуги','Нужна подтверждённая учётная запись. Паспорт загружать не нужно','2 мин'):''}
+ ${opt('full','video','Видеозвонок с паспортом','Или в любом пункте продаж Столото. Снимает лимиты до 600 000 ₽','10 мин')}
+ <p class="ac-note">Имя и дату рождения возьмём из документа — они должны совпадать с данными аккаунта.</p>`}
+
+function gosView(){return `<div class="wd-st"><span class="wd-spin"></span><h3>${V.gk==='simple'?'Получаем данные с Госуслуг':'Видеозвонок с оператором'}</h3><p class="acf-text">${V.gk==='simple'?'Откроется сайт Госуслуг: войдите и разрешите передать ФИО, дату рождения и паспорт. Потом вернём сюда.':'Подключаем оператора. Держите паспорт под рукой.'}</p><p class="wd-demo">Демо: через пару секунд — готово</p></div>`}
+
+function histView(){const st={proc:['В обработке','proc'],done:['Зачислено','ok'],fail:['Не прошло','fail']};
+ return W.hist.length?`<div class="ac-card ac-list">${W.hist.map(h=>`<button type="button" class="ac-row wd-hr" data-wd-h="${h.id}"><span class="ac-rt"><b>${rub(h.sum)}</b><small>${esc(h.to)} · ${dt(h.at)}</small>${h.st==='fail'?`<small class="wd-why">${esc(h.why)}</small>`:''}</span><span class="wd-s ${st[h.st][1]}">${st[h.st][0]}</span></button>`).join('')}</div>
+ <p class="ac-note">Чеки о выводе приходят на почту. Справка для налоговой — в поддержке.</p>`:'<p class="wd-empty">Выводов ещё не было</p>'}
+
+function render(){const P=$('#wd');if(!P)return;const v=view();
+ $('.ac-head h2',P).textContent=TITLE[v];
+ const R={main:mainView,banks:banksView,card:cardView,acc:accView,confirm:confirmView,code:codeView,status:statusView,id:idView,gos:gosView,hist:histView}[v];
+ const B=$('.ac-body',P);B.innerHTML=R();B.dataset.v=v;
+ if(v==='main'){const i=$('#wdAmt');i.addEventListener('input',()=>{const d=+i.value.replace(/\D/g,'').slice(0,9)||0;V.amt=d;const pos=i.value.length-i.selectionStart;render();const j=$('#wdAmt');j.focus();const L=j.value.length;try{j.setSelectionRange(L-pos,L-pos)}catch(e){}})}
+ if(v==='banks'){const i=$('#wdQ');i.addEventListener('input',()=>{V.q=i.value;render();const j=$('#wdQ');j.focus();j.setSelectionRange(j.value.length,j.value.length)})}
+ if(v==='code'){const i=$('#wdCode');setTimeout(()=>i.focus(),60);i.addEventListener('input',()=>{V.code=i.value.replace(/\D/g,'').slice(0,4);V.err='';render();if(V.code.length===4)setTimeout(submitCode,180)})}
+ if(v==='card'||v==='acc'){B.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{const d=i.value.replace(/\D/g,'');i.value=i.id==='wdCard'?d.slice(0,19).replace(/(\d{4})(?=\d)/g,'$1 '):i.id==='wdAcc'?d.slice(0,20).replace(/^(\d{5})(\d{3})(\d)(\d{4})?(\d*)$/,(m,a,b,c,e,f)=>[a,b,c,e,f].filter(Boolean).join(' ')):d.slice(0,9)}))}
+}
+function go(v){V.err='';V.stack.push(v);render();$('#wd .ac-body').scrollTop=0}
+function back(){if(['status','gos'].includes(view())){close();return}if(V.stack.length<2){close();return}V.stack.pop();V.err='';if(view()==='code')V.stack.pop();render()}
+function open(){if(window.pfIsGuest&&pfIsGuest()){pfOpenLogin('Вывод доступен после входа');return}V.stack=['main'];V.amt=0;V.err='';render();const P=$('#wd');P.classList.add('show');P.setAttribute('aria-hidden','false')}
+function close(){const P=$('#wd');P.classList.remove('show');P.setAttribute('aria-hidden','true');try{pfRender()}catch(e){}}
+function submitCode(){if(V.code==='0000'){V.tries--;V.code='';V.err=V.tries>0?`Неверный код. Осталось попыток: ${V.tries}`:'Попытки закончились. Запросите новый код';render();return}
+ V.tries=3;const h={id:'w'+Date.now(),sum:V.amt,to:toLabel(W.method),m:W.method,at:Date.now(),st:'proc',step:1};
+ W.hist.unshift(h);S.bal-=V.amt;try{renderBal()}catch(e){}save();V.cur=h.id;V.stack=['main','status'];render();run(h)}
+function run(h){V.tm.forEach(clearTimeout);const t=W.method==='acc'?2200:1400;
+ V.tm=[setTimeout(()=>{h.step=2;save();if(view()==='status')render()},t),setTimeout(()=>{h.step=3;save();if(view()==='status')render()},t*2),
+  setTimeout(()=>{h.st='done';h.step=4;save();if(view()==='status')render();else if(view()==='hist')render();toast(`${rub(h.sum)} зачислены — ${h.to}`)},t*3)]}
+function setId(k){W.id=k;save();try{window.ACC&&ACC.set({})}catch(e){}if($('#wd.show'))render()}
+
+$('#scr').insertAdjacentHTML('beforeend',`<div class="ac wd" id="wd" role="dialog" aria-modal="true" aria-label="Вывод средств" aria-hidden="true">
+ <div class="ac-head"><button class="ac-back" type="button" data-wd="back" aria-label="Назад">${I.back}</button><h2>Вывод средств</h2></div><div class="ac-body"></div></div>`);
+
+document.addEventListener('click',e=>{if(!e.target.closest('#wd'))return;
+ const m=e.target.closest('[data-wd-m]');if(m&&!e.target.closest('[data-wd="banks"]')){W.method=m.dataset.wdM;save();render();return}
+ const a=e.target.closest('[data-wd-a]');if(a){V.amt=+a.dataset.wdA;render();return}
+ const b=e.target.closest('[data-wd-bank]');if(b){W.bank=b.dataset.wdBank;W.method='sbp';V.q='';save();back();return}
+ const g=e.target.closest('[data-wd-id]');if(g){V.gk=g.dataset.wdId;go('gos');setTimeout(()=>{if(view()!=='gos')return;setId(V.gk);V.stack=V.stack.filter(x=>x!=='gos'&&x!=='id');render();toast(V.gk==='simple'?'Готово: за раз до 60 000 ₽':'Готово: за раз до 600 000 ₽')},2200);return}
+ const h=e.target.closest('[data-wd-h]');if(h){const x=W.hist.find(r=>r.id===h.dataset.wdH);if(x&&x.st==='proc'){V.cur=x.id;go('status')}return}
+ const k=e.target.closest('[data-wd]');if(!k)return;const c=k.dataset.wd;
+ if(c==='back')back();
+ else if(c==='close')close();
+ else if(c==='next'){if(W.method==='acc'&&!W.acc){go('acc');return}go('confirm')}
+ else if(c==='send'){V.code='';V.tries=3;toast('Код отправлен на '+phone());go('code')}
+ else if(c==='demo'){V.code='1234';render();setTimeout(submitCode,180)}
+ else if(c==='help')toast('Поддержка поможет оформить заявление (демо)');
+ else if(['banks','card','acc','id','hist'].includes(c)){V.f={};go(c)}
+});
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-wd-form]');if(!f)return;e.preventDefault();const k=f.dataset.wdForm;
+ if(k==='card'){const d=$('#wdCard').value.replace(/\D/g,'');V.f={card:$('#wdCard').value};
+  if(d.length<16){V.err='Введите номер полностью — 16 цифр';V.errf='wdCard';render();return}
+  W.card={pay:d[0]==='2'?'МИР':d[0]==='4'?'Visa':'Карта',last:d.slice(-4)};W.method='card'}
+ else{const bik=$('#wdBik').value.replace(/\D/g,''),acc=$('#wdAcc').value.replace(/\D/g,'');V.f={bik:$('#wdBik').value,acc:$('#wdAcc').value};
+  if(bik.length!==9){V.err='БИК — 9 цифр';V.errf='wdBik';render();return}
+  if(acc.length!==20||!acc.startsWith('408')){V.err='Номер личного счёта — 20 цифр, начинается с 408';V.errf='wdAcc';render();return}
+  W.acc=acc;W.method='acc'}
+ save();V.err='';V.stack.pop();if(view()==='main'&&V.amt&&!problem(V.amt)&&k==='acc'){go('confirm');return}render()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#wd.show')){e.stopImmediatePropagation();back()}},true);
+
+window.WD={open,state:W,setId,lim:LIM};
+/* профиль → «Вывести» */
+if(typeof resetProto==='function'){const r=resetProto;resetProto=function(){W=structuredClone(DEF);window.WD.state=W;save();r.apply(this,arguments)}}
 })();
 
 </script>
