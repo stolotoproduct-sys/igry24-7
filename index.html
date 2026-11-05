@@ -2357,6 +2357,19 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 /* почта не подтверждена — вместо переключателя действие */
 .ns-need{color:#ffd76a!important}
 .ns-link{flex:none;height:32px;padding:0 12px;border-radius:8px;border:0;background:#a25be6;color:#fff;font:700 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif)}
+/* тихие часы: ползунок 0–24 */
+.ns-qh{gap:8px}
+.qh-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;line-height:20px;color:#cbbdd9}
+.qh-head b{color:#fff;font-weight:700}.qh-head em{font-style:normal;font-size:12px;line-height:16px;color:#a99fc2}
+.qh-track{position:relative;height:28px}
+.qh-track::before{content:'';position:absolute;left:0;right:0;top:12px;height:4px;border-radius:2px;background:#ffffff1a}
+.qh-seg i{position:absolute;top:12px;height:4px;border-radius:2px;background:linear-gradient(90deg,#6a3fe0,#a25be6)}
+.qh-track input{position:absolute;inset:0;width:100%;height:28px;margin:0;background:none;-webkit-appearance:none;appearance:none;pointer-events:none}
+.qh-track input::-webkit-slider-runnable-track{height:28px;background:none}
+.qh-track input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:24px;height:24px;margin-top:2px;border-radius:12px;background:#fff;border:3px solid #a25be6;box-shadow:0 2px 6px #0008;cursor:grab}
+.qh-track input::-moz-range-thumb{pointer-events:auto;width:18px;height:18px;border-radius:12px;background:#fff;border:3px solid #a25be6;cursor:grab}
+.qh-track input::-moz-range-track{background:none}
+.qh-ticks{display:flex;justify-content:space-between;font-size:10px;line-height:12px;color:#7f7690}
 
 </style>
 <style>
@@ -7401,7 +7414,7 @@ const ago=m=>m<1?'сейчас':m<60?m+' мин':m<1440?Math.round(m/60)+' ч':m
 const num=n=>Math.round(n).toLocaleString('ru-RU');
 const tab=id=>()=>{go('promo');setTimeout(()=>{try{selectBonusTab(id)}catch(e){}},50)};
 /* ---------- настройки пользователя (согласие, темы, время, частота, пауза, персонализация) ---------- */
-const NS_DEF={ch:{push:true,email:true,sms:false},topics:{draw:true,bonus:true,expiry:true,comeback:true},slot:'evening',ad:'2w',personal:true,pauseUntil:0};
+const NS_DEF={ch:{push:true,email:true,sms:false},topics:{draw:true,bonus:true,expiry:true,comeback:true},slot:'evening',ad:'2w',personal:true,pauseUntil:0,quiet:{on:true,from:21,to:10}};
 const NS=(()=>{try{return Object.assign(JSON.parse(JSON.stringify(NS_DEF)),JSON.parse(localStorage.getItem('ntSettings')||'{}'))}catch(e){return JSON.parse(JSON.stringify(NS_DEF))}})();
 const nsSave=()=>{try{localStorage.setItem('ntSettings',JSON.stringify(NS))}catch(e){}};
 /* демо-сигналы для проверки логики (меняются в настройках прототипа) */
@@ -7410,7 +7423,10 @@ const TOPICS=[['draw','Результаты тиражей','Только тир
 const SLOTS={morning:['Утро','10–13',10],day:['День','13–17',13],evening:['Вечер','17–21',17]};
 const CH={push:'Push',email:'E-mail'};
 const PAUSES=[[0,'Нет'],[1,'1 день'],[7,'7 дней'],[30,'30 дней']];
-const quiet=h=>h>=21||h<10;
+/* тихие часы: настраиваются (тумблер + ползунки), по умолчанию 21–10; могут переходить через полночь */
+const hh=h=>String(h%24).padStart(2,'0')+':00';
+const quiet=h=>{const q=NS.quiet;if(!q||!q.on||q.from===q.to)return false;return q.from<q.to?h>=q.from&&h<q.to:h>=q.from||h<q.to};
+const qLabel=()=>NS.quiet&&NS.quiet.on?hh(NS.quiet.from)+'–'+hh(NS.quiet.to):'выключены';
 const paused=()=>NS.pauseUntil>Date.now();
 const dShort=t=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(t);
 /* окно отправки: по визитам (если хватает истории и персонализация включена), иначе выбранное время */
@@ -7427,7 +7443,7 @@ function decide(ev){
  if(!ch.length)return {k:'skip',t:'Не отправлено',r:'Нет согласия ни на один канал'};
  if(ev.ad){const L=adLimit(),n7={none:0,today:1,week2:2}[ND.adlog];if(ND.adlog==='today')return {k:'skip',t:'Не отправлено',r:'Лимит: 1 за 24 часа — предложение уже было сегодня'};if(n7>=L.week)return {k:'skip',t:'Не отправлено',r:'Лимит: '+L.week+' за неделю'+(L.low?' (снижен — вы не открываете)':'')}}
  const w=sendWindow(),names=ch.map(c=>CH[c]).join(' + ');
- if(quiet(ND.hour))return {k:'later',t:'Отложено',r:names+' в '+(ev.ad?w.from:10)+':00 — тихие часы 21–10'};
+ if(quiet(ND.hour))return {k:'later',t:'Отложено',r:names+' в '+hh(ev.ad?Math.max(w.from,NS.quiet.to):NS.quiet.to)+' — тихие часы '+qLabel()};
  if(ev.ad&&ND.hour<w.from)return {k:'later',t:'Отложено',r:names+' в '+w.from+':00 — '+(w.auto?'окно по вашим визитам':'выбранное время')};
  return {k:'send',t:'Отправлено',r:names+' · '+String(ND.hour).padStart(2,'0')+':05'};
 }
@@ -7499,13 +7515,24 @@ function nsSummary(){
   if(paused())return ['pause','На паузе до '+dShort(NS.pauseUntil),'Не присылаем ничего, кроме входа и безопасности.'];
   if(ND.self==='yes')return ['shield','Рекламные сообщения выключены','У вас пауза в игре. Результаты тиражей и бонусы приходят.'];
   const w=sendWindow(),L=adLimit();
-  return ['clock','Предложения '+w.label,`Не чаще 1 в сутки и ${L.week} в неделю${L.low?' — снижено, вы их не открываете':''}. Тихие часы 21:00–10:00.`];
+  return ['clock','Предложения '+w.label,`Не чаще 1 в сутки и ${L.week} в неделю${L.low?' — снижено, вы их не открываете':''}. Тихие часы: ${qLabel()}.`];
 }
 function emailRow(){const A=window.ACC?ACC.get():{email:'ivan.petrov@mail.ru',emailState:'confirmed'};
   if(A.emailState==='confirmed'&&A.email)return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small>На почту ${ACC.maskEmail(A.email)}</small></span>${sw(NS.ch.email,'data-ns-ch="email"')}</div>`;
   const pend=A.emailState==='pending'&&A.email;
   return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small class="ns-need">${pend?'Почта не подтверждена — не отправляем':'Добавьте почту, чтобы получать письма'}</small></span><button type="button" class="ns-link" data-ns-email="${pend?'email-confirm':'email-add'}">${pend?'Подтвердить':'Добавить'}</button></div>`}
 window.nsSetChannel=(k,on)=>{NS.ch[k]=!!on;nsSave();nsRender()};
+/* ползунок тихих часов: шкала 0–24, тихий интервал может переходить через полночь */
+function qhSeg(){const {from:f,to:t}=NS.quiet,p=h=>h/24*100;return (f<t?[[f,t]]:[[f,24],[0,t]]).map(([a,b])=>`<i style="left:${p(a)}%;width:${p(b)-p(a)}%"></i>`).join('')}
+function qhLen(){const {from:f,to:t}=NS.quiet;return (t-f+24)%24||24}
+function qhSlider(){const {from:f,to:t}=NS.quiet;return `<div class="ns-row col ns-qh"><div class="qh-head"><span>с <b id="qhFrom">${hh(f)}</b> до <b id="qhTo">${hh(t)}</b></span><em id="qhLen">${qhLen()} ч</em></div>
+  <div class="qh-track"><div class="qh-seg" id="qhSeg">${qhSeg()}</div><input type="range" min="0" max="23" step="1" value="${f}" data-qh="from" aria-label="Начало тихих часов"><input type="range" min="0" max="23" step="1" value="${t}" data-qh="to" aria-label="Конец тихих часов"></div>
+  <div class="qh-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  <p class="ns-hint">Ложитесь поздно? Сдвиньте ползунки — например, на 03:00–12:00</p></div>`}
+document.addEventListener('input',e=>{const r=e.target.closest('[data-qh]');if(!r)return;const k=r.dataset.qh,o=k==='from'?'to':'from';let v=+r.value;if(v===NS.quiet[o]){v=(v+(k==='from'?-1:1)+24)%24;r.value=v}
+  NS.quiet={...NS.quiet,[k]:v};const S=$('#qhSeg');if(S)S.innerHTML=qhSeg();$('#qhFrom').textContent=hh(NS.quiet.from);$('#qhTo').textContent=hh(NS.quiet.to);$('#qhLen').textContent=qhLen()+' ч';
+  const sub=$('#qhSub');if(sub)sub.textContent='Не присылаем с '+hh(NS.quiet.from)+' до '+hh(NS.quiet.to)+' по местному времени'});
+document.addEventListener('change',e=>{if(e.target.closest('[data-qh]')){nsSave();const s=$('#ntset .ns-sum');if(s){const [ic,t,d]=nsSummary();s.className='ns-sum '+ic;s.innerHTML='<b>'+t+'</b><span>'+d+'</span>'}}});
 function nsRender(){
   const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
   $('.ns-body',P).innerHTML=`<section class="ns-sum ${ic}"><b>${t}</b><span>${d}</span></section>
@@ -7514,7 +7541,8 @@ function nsRender(){
   <h4>О чём</h4><div class="ns-card">${TOPICS.map(([k,n,s,ad])=>`<div class="ns-row"><span class="ns-rt"><b>${n}${ad?' <em>реклама</em>':''}</b><small>${s}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <h4>Когда</h4><div class="ns-card"><div class="ns-row"><span class="ns-rt"><b>Подбирать время по моим визитам</b><small>Дни и время заходов, реакции на уведомления, примерная локация и тип подключения</small></span>${sw(NS.personal,'data-ns-personal')}</div>
    <div class="ns-row col"><span class="ns-rt"><b>${NS.personal?'Если истории мало — присылать':'Присылать'}</b></span><div class="ns-chips">${Object.entries(SLOTS).map(([k,[n,r]])=>`<button type="button" class="ns-chip${NS.slot===k?' on':''}" data-ns-slot="${k}">${n}<small>${r}</small></button>`).join('')}</div></div>
-   <div class="ns-row"><span class="ns-rt"><b>Тихие часы</b><small>21:00–10:00 по местному времени</small></span><span class="ns-val">ночью не беспокоим</span></div></div>
+   <div class="ns-row"><span class="ns-rt"><b>Тихие часы</b><small id="qhSub">${NS.quiet.on?'Не присылаем с '+hh(NS.quiet.from)+' до '+hh(NS.quiet.to)+' по местному времени':'Присылаем в любое время суток'}</small></span>${sw(NS.quiet.on,'data-ns-quiet')}</div>
+   ${NS.quiet.on?qhSlider():''}</div>
   <h4>Как часто — предложения</h4><div class="ns-card"><div class="ns-row col"><div class="ns-chips two">${[['1w','1 в неделю'],['2w','До 2 в неделю']].map(([k,n])=>`<button type="button" class="ns-chip${NS.ad===k?' on':''}" data-ns-ad="${k}">${n}<small>не чаще 1 в сутки</small></button>`).join('')}</div><small class="ns-hint">Если вы не открываете предложения, присылаем реже. Результаты тиражей и бонусы — без лимита.</small></div></div>
   <h4>Пауза</h4><div class="ns-card"><div class="ns-row col"><div class="ns-chips four">${PAUSES.map(([d,n])=>`<button type="button" class="ns-chip${(d?paused()&&Math.round((NS.pauseUntil-NS.pausedAt)/864e5)===d:!paused())?' on':''}" data-ns-pause="${d}">${n}</button>`).join('')}</div></div></div>
   <p class="ns-note">Проигрыш и попытки отыграться не бывают поводом для сообщений. При самоисключении или паузе в игре рекламные сообщения отключаются.</p>`;
@@ -7532,6 +7560,7 @@ document.addEventListener('click',e=>{
   if(b=e.target.closest('[data-ns-email]')){ACC.flow(b.dataset.nsEmail);return}
   if(b=e.target.closest('[data-ns-ch]')){NS.ch[b.dataset.nsCh]=!NS.ch[b.dataset.nsCh]}
   else if(b=e.target.closest('[data-ns-topic]')){NS.topics[b.dataset.nsTopic]=!NS.topics[b.dataset.nsTopic]}
+  else if(e.target.closest('[data-ns-quiet]')){NS.quiet={...NS.quiet,on:!NS.quiet.on};toast(NS.quiet.on?'Тихие часы: '+qLabel():'Тихие часы выключены — присылаем в любое время')}
   else if(e.target.closest('[data-ns-personal]')){NS.personal=!NS.personal;toast(NS.personal?'Время подбираем по вашим визитам':'Персонализация выключена — присылаем в выбранное время')}
   else if(b=e.target.closest('[data-ns-slot]'))NS.slot=b.dataset.nsSlot;
   else if(b=e.target.closest('[data-ns-ad]'))NS.ad=b.dataset.nsAd;
