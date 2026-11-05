@@ -2430,14 +2430,16 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .wd-bal p{margin:4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
 .wd-pend{align-self:flex-start;height:24px;padding:0 8px;border-radius:12px;background:#f0aa2c1f;color:#ffd76a;font-size:12px;line-height:24px;font-weight:600}
 .wd-id{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;background:#f0aa2c14;border:1px solid #f0aa2c33}
-.wd-amt{display:flex;align-items:center;gap:8px;height:64px;padding:0 16px;border-radius:16px;border:1px solid #ffffff1f;background:#15131d}
+/* поле суммы — как поле пополнения (Input) */
+.wd-af{gap:4px}
+.wd-amt{display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-radius:12px;border:1px solid #ffffff1f;background:#15131d}
 .wd-amt:focus-within{border-color:#a25be6}
-.wd-amt.err{border-color:#ff3b5c}
-.wd-amt input{flex:1;min-width:0;height:100%;border:0;background:none;outline:none;color:#fff;font:800 32px/40px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);font-variant-numeric:tabular-nums}
+.wd-af.err .wd-amt{border-color:#ff3b5c}
+.wd-af .wd-amt input{padding:0;border-radius:0;flex:1;min-width:0;height:100%;border:0;background:none;outline:none;color:#fff;font:500 16px/24px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);font-variant-numeric:tabular-nums}
 .wd-amt input::placeholder{color:#4b4560}
-.wd-amt span{font-size:24px;line-height:32px;font-weight:700;color:#8f86a8}
-.wd-chips{display:flex;gap:8px;margin-top:-4px}
-.wd-chips button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid #ffffff1f;background:#ffffff0f;color:#fff;font:600 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.wd-amt i{font-style:normal;font-size:16px;line-height:24px;color:#a99fc2}
+.wd-chips{display:flex;gap:8px}
+.wd-chips button{flex:1;height:32px;padding:0 12px;border-radius:16px;border:1px solid #ffffff1f;background:#ffffff0f;color:#fff;font:600 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);cursor:pointer}
 .wd-hint{margin:-4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
 .wd-err{margin:-4px 0 0}
 .wd-err .acf-link{font-size:12px;line-height:16px}
@@ -2500,6 +2502,130 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .wd-s.ok{background:#2fbf7c26;color:#7fe0ae}.wd-s.proc{background:#f0aa2c1f;color:#ffd76a}.wd-s.fail{background:#ff3b5c1f;color:#ff8fa3}
 .wd h3{margin:0;font-size:24px;line-height:32px;font-weight:800}
 .wd-id .ac-act{height:32px}
+.wd-chips button.on{border-color:#a25be6;background:#a25be629;color:#fff}
+.wd-chips button:disabled{opacity:.4}
+.wd-hint,.wd-err{margin:-8px 0 0}
+.wd .acf-resend{margin:8px 0 0}
+
+</style>
+<style>
+/* ===== Покер 2.0 — стилистика макета 89×4: чёрный фон, зелёное сукно, золото ===== */
+#game.p2-game{background:#050505}
+.g-body.p2-body{padding:0 0 0;background:#050505;color:#fff}
+.p2{display:flex;flex-direction:column;gap:12px;padding:4px 0 16px}
+/* суперприз */
+.p2-top{display:flex;align-items:center;gap:12px;padding:0 16px}
+.p2-logo{flex:none;width:56px;height:56px}
+.p2-sp{flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:56px;padding:0 12px 0 8px;border-radius:12px;border:1px solid #c99a3c99;background:linear-gradient(180deg,#2a2112,#16120b)}
+.p2-sp .l{flex:1;min-width:0;display:flex;flex-direction:column}
+.p2-sp .l small{font-size:18px;line-height:22px;font-weight:800;background:linear-gradient(180deg,#ffe7a3,#d9a441);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p2-sp .l b{font-size:18px;line-height:22px;font-weight:800;white-space:nowrap;background:linear-gradient(180deg,#ffe7a3,#d9a441);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p2-sp .sep{flex:none;width:1px;height:44px;background:#c99a3c66}
+.p2-sp .r{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:80px}
+.p2-sp .r small{font-size:11px;line-height:14px;color:#a8925f;white-space:nowrap}
+.p2-sp .r b{font-size:16px;line-height:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.p2-sp .r b.live{display:flex;align-items:center;gap:6px;font-size:14px}
+.p2-sp .r b.live em{width:8px;height:8px;border-radius:4px;background:#ff3b30;box-shadow:0 0 0 3px #ff3b3033;animation:p2blink 1s infinite}
+@keyframes p2blink{50%{opacity:.3}}
+/* стол */
+.p2-table{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:268px;padding:16px 0 20px;border-radius:24px;background:radial-gradient(ellipse 80% 70% at 50% 40%,#1e7a45,#0f4d2a 70%,#0a3a1f);box-shadow:inset 0 0 40px #0006}
+.p2-board{display:flex;gap:8px}
+.p2-msg{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:0 24px}
+.p2-msg b{font-size:16px;line-height:20px;font-weight:800}
+.p2-msg small{font-size:13px;line-height:18px;color:#ffffffa6}
+.p2-msg.big{margin-top:44px}
+.p2-stack{position:relative;width:96px;height:96px}
+.p2-stack img{position:absolute;width:62px;height:92px;border-radius:7px;box-shadow:0 6px 14px #0008}
+.p2-stack img:first-child{left:8px;top:6px;transform:rotate(-10deg)}
+.p2-stack img:nth-child(2){left:30px;top:0;transform:rotate(8deg)}
+.p2-stack span{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);height:22px;padding:0 8px;border-radius:11px;background:linear-gradient(180deg,#ffe7a3,#d9a441);color:#2a1a00;font-size:12px;line-height:22px;font-weight:800;box-shadow:0 2px 6px #0007}
+/* карта */
+.p2c{position:relative;flex:none;width:54px;height:84px;border-radius:6px;perspective:400px;font-size:16px}
+.p2c.slot{border:1px solid #ffffff2e;background:#00000022}
+.p2c .bk,.p2c .fc-wrap{position:absolute;inset:0;border-radius:6px;backface-visibility:hidden;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
+.p2c .bk{background:#7a0d14 center/100% 100%;box-shadow:0 2px 6px #0007}
+.p2c .fc-wrap{transform:rotateY(180deg);background:#fff;color:#111;box-shadow:0 2px 6px #0006;overflow:hidden}
+.p2c.open .bk{transform:rotateY(-180deg)}
+.p2c.open .fc-wrap{transform:none}
+.p2c .fc-wrap.red{color:#d0021b}
+.p2c .tl,.p2c .br{position:absolute;display:flex;flex-direction:column;align-items:center;font-size:13px;line-height:13px;font-weight:800;letter-spacing:-.04em}
+.p2c .tl i,.p2c .br i{font-style:normal;font-size:11px;line-height:12px}
+.p2c .tl{left:4px;top:4px}.p2c .br{right:4px;bottom:4px;transform:rotate(180deg)}
+.p2c .ctr{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:30px;line-height:30px}
+.p2c .ctr.fc{display:flex;flex-direction:column;align-items:center;justify-content:center;width:30px;height:46px;border-radius:4px;border:1.5px solid #c99a3c;background:linear-gradient(180deg,#fff6dd,#f3dfaa);font-size:18px;line-height:18px;font-weight:900}
+.p2c .ctr.fc i{font-style:normal;font-size:14px;line-height:14px}
+.p2c.hl .fc-wrap{box-shadow:0 0 0 2px #ffd56a,0 0 14px #ffc94a}
+.p2c.dim{opacity:.45}
+.p2c.xs{width:27px;height:42px;border-radius:3px}
+.p2c.xs .fc-wrap{border-radius:3px}
+.p2c.xs .tl{left:2px;top:2px;font-size:8px;line-height:8px}.p2c.xs .tl i{font-size:7px;line-height:8px}
+.p2c.xs .br{display:none}
+.p2c.xs .ctr{font-size:15px;line-height:15px;top:58%}
+.p2c.xs .ctr.fc{width:15px;height:22px;font-size:9px;line-height:9px;border-width:1px;border-radius:2px}.p2c.xs .ctr.fc i{font-size:7px;line-height:7px}
+/* билеты на трансляции */
+.p2-tix{display:flex;gap:12px;width:100%;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.p2-tix::-webkit-scrollbar{display:none}
+.p2-pair{position:relative;flex:none;display:flex;gap:4px;padding:4px;border-radius:10px;border:1px solid transparent;background:none;cursor:pointer;scroll-snap-align:start}
+.p2-pair:disabled{cursor:default;opacity:.85}
+.p2-pair.open{border-color:#ffffff33;background:#00000026}
+.p2-pair.win{border-color:#d9a441;background:#d9a44122}
+.p2-pair em{position:absolute;left:50%;top:-11px;transform:translateX(-50%);z-index:2;height:20px;padding:0 8px;border-radius:10px;background:#3a3a3a;color:#ddd;font-style:normal;font-size:11px;line-height:20px;font-weight:800;white-space:nowrap}
+.p2-pair.win em{background:linear-gradient(180deg,#ffe7a3,#d9a441);color:#2a1a00}
+.p2-hint{margin:0;font-size:13px;line-height:18px;font-weight:600;color:#ffffffd9}
+/* выбор билетов */
+.p2-qty{display:flex;gap:8px;padding:0 16px}
+.p2-qty button{flex:1;height:32px;border-radius:8px;border:0;background:#2a2a2c;color:#fff;font:700 14px/20px inherit;cursor:pointer}
+.p2-qty button.on{background:linear-gradient(180deg,#f7d98a,#c99a3c);color:#2a1a00}
+.p2-step{display:flex;align-items:center;gap:12px;padding:0 16px}
+.p2-step>button{flex:none;width:36px;height:36px;border-radius:8px;border:0;background:#2a2a2c;color:#fff;font:700 20px/20px inherit;cursor:pointer}
+.p2-step>button:disabled{opacity:.35}
+.p2-step>div{flex:1;display:flex;align-items:center;height:32px;padding:0 12px;border-radius:8px;border:1px solid #ffffff1f;background:#121214}
+.p2-step i{font-style:normal;font-size:12px;color:#ffffff59}
+.p2-step b{flex:1;text-align:center;font-size:14px;line-height:20px;font-weight:700}
+.p2-bought{display:flex;align-items:center;gap:12px;margin:0 16px;padding:10px 12px 10px 14px;border-radius:12px;border:1px solid #d9a44199;background:linear-gradient(180deg,#24200f,#141209)}
+.p2-bought>span:first-child{flex:1;display:flex;flex-direction:column;gap:2px}
+.p2-bought b{font-size:13px;line-height:18px;font-weight:800}
+.p2-bought small{font-size:11px;line-height:14px;color:#ffffff8c}
+.p2-mini{position:relative;flex:none;width:44px;height:40px}
+.p2-mini img{position:absolute;width:26px;height:40px;border-radius:3px}
+.p2-mini img:first-child{left:2px;transform:rotate(-8deg)}.p2-mini img:last-child{left:16px;transform:rotate(8deg)}
+/* как играть */
+.p2-info{margin-top:4px;padding:16px;border-radius:20px 20px 0 0;background:#232325}
+.p2-info h3{margin:0;font-size:18px;line-height:24px;font-weight:800}
+.p2-info>p{margin:4px 0 12px;font-size:13px;line-height:18px;color:#ffffffb3}
+.p2-th{display:flex;justify-content:space-between;padding:12px 0 8px;border-top:1px solid #ffffff1a;font-size:11px;line-height:14px;color:#ffffff73}
+.p2-row{display:flex;flex-direction:column;gap:6px;padding:8px 0}
+.p2-rh{display:flex;justify-content:space-between;gap:8px}
+.p2-rh b{font-size:14px;line-height:18px;font-weight:800}
+.p2-rh em{font-style:normal;font-size:14px;line-height:18px;font-weight:800}
+.p2-rh em.sp{background:linear-gradient(180deg,#ffe7a3,#d9a441);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p2-rb{display:flex;align-items:center;gap:12px}
+.p2-ex{flex:none;display:flex;gap:4px;width:151px}
+.p2-rb small{font-size:12px;line-height:16px;color:#ffffffa6}
+.p2-note{margin:8px 0 0;font-size:11px;line-height:15px;color:#ffffff73}
+/* низ */
+.p2-foot{position:sticky;bottom:0;z-index:4;padding:12px 16px 20px;background:linear-gradient(#05050500,#050505 30%)}
+.p2-pay{display:flex;align-items:center;justify-content:space-between;width:100%;height:52px;padding:0 20px;border:0;border-radius:14px;background:#ffd400;color:#1a1400;font:800 17px/24px inherit;cursor:pointer;box-shadow:0 6px 18px #ffd40033}
+.p2-pay:disabled{background:#3a3a3c;color:#ffffff59;box-shadow:none}
+.p2-gold{width:100%;height:52px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7d98a,#c99a3c);color:#2a1a00;font:800 17px/24px inherit;cursor:pointer;box-shadow:0 0 22px #e9b44666}
+.p2-gold:disabled{opacity:.45;box-shadow:none}
+.p2-dark{width:100%;height:48px;border:0;border-radius:14px;background:#2a2a2c;color:#fff;font:800 16px/24px inherit;cursor:pointer}
+/* итог */
+#p2ResHost{position:absolute;inset:0;z-index:20;pointer-events:none}
+.p2-res{position:absolute;inset:0;display:flex;align-items:flex-end;background:#000a;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);pointer-events:auto;animation:p2fade .25s}
+@keyframes p2fade{from{opacity:0}}
+.p2-sheet{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 16px 24px;border-radius:24px 24px 0 0;background:linear-gradient(180deg,#2b2b2d,#121214);animation:p2up .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes p2up{from{transform:translateY(40%)}}
+.p2-x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;background:none;color:#ffffff80;font-size:24px;cursor:pointer}
+.p2-cap{font-size:16px;line-height:20px;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.p2-cn{margin-top:-10px;font-size:20px;line-height:26px;font-weight:800;background:linear-gradient(180deg,#ffe7a3,#d9a441);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p2-rb5,.p2-rh2{display:flex;gap:8px}
+.p2-rb5 .p2c,.p2-rh2 .p2c{width:58px;height:86px}
+.p2-sum{display:flex;flex-direction:column;align-items:center;gap:2px;margin:4px 0;padding:12px 40px;border-radius:16px;background:#ffffff14}
+.p2-sum small{font-size:13px;line-height:18px;color:#ffffffb3}
+.p2-sum b{font-size:28px;line-height:34px;font-weight:900;background:linear-gradient(180deg,#ffe7a3,#d9a441);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p2-body .bp-funding-note{display:none}
+#game.p2-game .gsnd{display:none!important}
 
 </style>
 <style>
@@ -8134,6 +8260,7 @@ const I={
  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
  id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h4M14 13h3" stroke-linecap="round"/></svg>',
  video:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6" stroke-linecap="round"/></svg>',
  hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6L4 8.7"/><path d="M4 4v4.7h4.7M12 8v4l3 2"/></svg>',
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>',
@@ -8166,20 +8293,20 @@ function mainView(){const a=V.amt,p=problem(a),l=lim(),pend=pending();
  const meth=(k,ico,t,sub,extra='')=>`<div class="ac-row wd-m${W.method===k?' on':''}" data-wd-m="${k}" role="radio" tabindex="0" aria-checked="${W.method===k}"><span class="ac-ri">${I[ico]}</span><span class="ac-rt"><b>${t}</b><small>${sub}</small></span>${extra}<i class="wd-radio"></i></div>`;
  return `<div class="ac-card wd-bal"><small>Можно вывести</small><b>${rub(S.bal)}</b>${pend?`<span class="wd-pend">${rub(pend)} в обработке</span>`:''}<p>Бонусы и купончики не выводятся — ими можно играть</p></div>
  ${W.id==='none'?`<div class="wd-id"><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>До ${rub(l.one)} за раз</b><small>Через Госуслуги — до ${rub(LIM.simple.one)}</small></span><button type="button" class="ac-act primary" data-wd="id">Подтвердить</button></div>`:''}
- <h4>Сумма</h4>
- <div class="wd-amt${p?' err':''}"><input id="wdAmt" inputmode="numeric" autocomplete="off" placeholder="0" value="${a?n(a):''}" aria-label="Сумма вывода"><span>₽</span></div>
- <div class="wd-chips">${[1000,5000].filter(v=>v<maxNow()).map(v=>`<button type="button" data-wd-a="${v}">${rub(v)}</button>`).join('')}<button type="button" data-wd-a="${maxNow()}">${maxNow()<S.bal?'Максимум':'Всё'} · ${rub(maxNow())}</button></div>
+ <label class="acf-field wd-af${p?' err':''}"><span>Сумма вывода</span><span class="wd-amt"><input id="wdAmt" inputmode="numeric" autocomplete="off" placeholder="0" value="${a?n(a):''}"><i>₽</i></span></label>
  ${p?`<p class="acf-err wd-err">${p[0]}${p[1]==='id'?` <button type="button" class="acf-link" data-wd="id">Поднять лимит</button>`:p[1]==='help'?` <button type="button" class="acf-link" data-wd="help">Написать</button>`:''}</p>`:`<p class="wd-hint">От ${rub(MIN)} · за раз до ${rub(l.one)} · в этом месяце осталось ${rub(leftMonth())}</p>`}
+ <div class="wd-chips">${[1000,5000].map(v=>`<button type="button" class="${a===v?'on':''}" data-wd-a="${v}" ${v>maxNow()?'disabled':''}>${rub(v)}</button>`).join('')}<button type="button" class="${a&&a===maxNow()?'on':''}" data-wd-a="${maxNow()}">${maxNow()<S.bal?'Максимум':'Всё'}</button></div>
  <h4>Куда</h4>
  <div class="ac-card ac-list" role="radiogroup" aria-label="Куда вывести">
-  ${meth('sbp','sbp','СБП · '+esc(W.bank),phone()+' · сразу',`<button type="button" class="ac-act" data-wd="banks">Банк</button>`)}
+  ${meth('sbp','sbp','СБП',`${esc(W.bank)} · ${phone()} · сразу`)}
+  ${W.method==='sbp'?`<button type="button" class="ac-row wd-subrow" data-wd="banks"><span class="ac-ri">${I.bank}</span><span class="ac-rt"><b>Банк получателя</b><small>${esc(W.bank)}</small></span><i class="wd-chev">${I.chev}</i></button>`:''}
   ${meth('card','card',`Карта ${W.card.pay} •• ${W.card.last}`,ETA.card)}
-  ${W.acc?meth('acc','bank','Счёт •• '+W.acc.slice(-4),ETA.acc+' · для крупных сумм'):`<button type="button" class="ac-row" data-wd="acc"><span class="ac-ri">${I.bank}</span><span class="ac-rt"><b>Банковский счёт</b><small>${ETA.acc} · для крупных сумм</small></span><span class="ac-val">Добавить</span></button>`}
+  ${W.acc?meth('acc','doc','Счёт •• '+W.acc.slice(-4),ETA.acc+' · для крупных сумм'):`<button type="button" class="ac-row" data-wd="acc"><span class="ac-ri">${I.doc}</span><span class="ac-rt"><b>Банковский счёт</b><small>${ETA.acc} · для крупных сумм</small></span><i class="wd-chev">${I.chev}</i></button>`}
   <button type="button" class="ac-row" data-wd="card"><span class="ac-ri">${I.plus}</span><span class="ac-rt"><b>Другая карта</b><small>Только оформленная на вас</small></span><i class="wd-chev">${I.chev}</i></button>
  </div>
  <p class="ac-note">Без комиссии. Выводим только на ваши карты и счета — получатель ${esc(window.ACC?ACC.get().name:'Иван Петров')}. Налог с выигрышей от 15 000 ₽ уже удержан при начислении.</p>
  <button type="button" class="ac-card ac-row wd-hl" data-wd="hist"><span class="ac-ri">${I.hist}</span><span class="ac-rt"><b>История выводов</b><small>${W.hist.some(h=>h.st==='proc')?'Есть заявка в обработке':'Последний — '+(W.hist[0]?rub(W.hist[0].sum)+', '+dt(W.hist[0].at):'ещё не было')}</small></span><i class="wd-chev">${I.chev}</i></button>
- <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="next" ${!a||p?'disabled':''}>${a&&!p?'Вывести '+rub(a):'Введите сумму'}</button></div>`}
+ <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="next" ${!a||p?'disabled':''}>${a?'Вывести '+rub(a):'Введите сумму'}</button></div>`}
 
 function banksView(){const q=V.q.trim().toLowerCase();const list=BANKS.map((b,i)=>[b,i]).filter(([b])=>!q||b.toLowerCase().includes(q));
  return `<p class="acf-text">Переведём по номеру ${phone()} в банк, который выберете. Номер менять нельзя — он привязан к аккаунту.</p>
@@ -8202,6 +8329,7 @@ function confirmView(){const a=V.amt,m=W.method;
 function codeView(){return `<h3>Код из SMS</h3><p class="acf-text">Отправили код на ${phone()}. Он подтверждает вывод ${rub(V.amt)}.</p>
  <label class="acf-code${V.err?' err':''}" style="--n:4"><input id="wdCode" inputmode="numeric" autocomplete="one-time-code" maxlength="4" aria-label="Код из SMS" value="${V.code}">${[0,1,2,3].map(k=>`<i class="${k===Math.min(V.code.length,3)?'cur':''}">${V.code[k]||''}</i>`).join('')}</label>
  ${V.err?`<p class="acf-err">${V.err}</p>`:''}
+ <p class="acf-resend" id="wdRs">${V.rs>0?'Отправить код ещё раз через 0:'+String(V.rs).padStart(2,'0'):'<button type="button" class="acf-link" data-wd="resend">Отправить код ещё раз</button>'}</p>
  <div class="acf-links"><button type="button" class="acf-link dim" data-wd="demo">Подставить код (демо)</button></div>`}
 
 const STEPS=[['Списали с баланса',''],['Проверяем заявку','Обычно до минуты'],['Отправили в банк',''],['Деньги на счёте','']];
@@ -8213,11 +8341,11 @@ function statusView(){const h=W.hist.find(x=>x.id===V.cur);if(!h)return '';const
  <p class="wd-demo">Демо: шаги ускорены</p>
  <div class="wd-foot"><button type="button" class="pf-btn primary" data-wd="close">${done?'Готово':'Закрыть'}</button>${done||fail?'':`<button type="button" class="pf-btn ghost" data-wd="hist">История выводов</button>`}</div>`}
 
-function idView(){const opt=(k,ico,t,sub,tag)=>`<button type="button" class="ac-card ac-row wd-opt" data-wd-id="${k}"><span class="ac-ri">${I[ico]}</span><span class="ac-rt"><b>${t}</b><small>${sub}</small></span><span class="wd-tag">${tag}</span></button>`;
+function idView(){const opt=(k,ico,t,sub)=>`<button type="button" class="ac-row wd-opt" data-wd-id="${k}"><span class="ac-ri">${I[ico]}</span><span class="ac-rt"><b>${t}</b><small>${sub}</small></span><i class="wd-chev">${I.chev}</i></button>`;
  return `<p class="acf-text">По закону без подтверждения личности выводить можно только небольшие суммы. Данные проверяем один раз.</p>
  <div class="ac-card wd-lims">${['none','simple','full'].map(k=>`<div class="${W.id===k?'on':''}"><small>${{none:'Сейчас',simple:'Госуслуги',full:'Полная'}[k]}</small><b>${rub(LIM[k].one)}</b><small>за раз</small></div>`).join('')}</div>
- ${W.id==='none'?opt('simple','id','Через Госуслуги','Нужна подтверждённая учётная запись. Паспорт загружать не нужно','2 мин'):''}
- ${opt('full','video','Видеозвонок с паспортом','Или в любом пункте продаж Столото. Снимает лимиты до 600 000 ₽','10 мин')}
+ <div class="ac-card ac-list">${W.id==='none'?opt('simple','id','Через Госуслуги','2 минуты · паспорт загружать не нужно'):''}
+ ${opt('full','video','Видеозвонок с паспортом','10 минут · или в пункте продаж')}</div>
  <p class="ac-note">Имя и дату рождения возьмём из документа — они должны совпадать с данными аккаунта.</p>`}
 
 function gosView(){return `<div class="wd-st"><span class="wd-spin"></span><h3>${V.gk==='simple'?'Получаем данные с Госуслуг':'Видеозвонок с оператором'}</h3><p class="acf-text">${V.gk==='simple'?'Откроется сайт Госуслуг: войдите и разрешите передать ФИО, дату рождения и паспорт. Потом вернём сюда.':'Подключаем оператора. Держите паспорт под рукой.'}</p><p class="wd-demo">Демо: через пару секунд — готово</p></div>`}
@@ -8251,7 +8379,7 @@ $('#scr').insertAdjacentHTML('beforeend',`<div class="ac wd" id="wd" role="dialo
  <div class="ac-head"><button class="ac-back" type="button" data-wd="back" aria-label="Назад">${I.back}</button><h2>Вывод средств</h2></div><div class="ac-body"></div></div>`);
 
 document.addEventListener('click',e=>{if(!e.target.closest('#wd'))return;
- const m=e.target.closest('[data-wd-m]');if(m&&!e.target.closest('[data-wd="banks"]')){W.method=m.dataset.wdM;save();render();return}
+ const m=e.target.closest('[data-wd-m]');if(m){W.method=m.dataset.wdM;save();render();return}
  const a=e.target.closest('[data-wd-a]');if(a){V.amt=+a.dataset.wdA;render();return}
  const b=e.target.closest('[data-wd-bank]');if(b){W.bank=b.dataset.wdBank;W.method='sbp';V.q='';save();back();return}
  const g=e.target.closest('[data-wd-id]');if(g){V.gk=g.dataset.wdId;go('gos');setTimeout(()=>{if(view()!=='gos')return;setId(V.gk);V.stack=V.stack.filter(x=>x!=='gos'&&x!=='id');render();toast(V.gk==='simple'?'Готово: за раз до 60 000 ₽':'Готово: за раз до 600 000 ₽')},2200);return}
@@ -8260,7 +8388,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('#wd'))return;
  if(c==='back')back();
  else if(c==='close')close();
  else if(c==='next'){if(W.method==='acc'&&!W.acc){go('acc');return}go('confirm')}
- else if(c==='send'){V.code='';V.tries=3;toast('Код отправлен на '+phone());go('code')}
+ else if(c==='send'||c==='resend'){V.code='';V.tries=3;V.err='';toast('Код отправлен на '+phone());clearInterval(V.ri);V.rs=59;V.ri=setInterval(()=>{V.rs--;const r=$('#wdRs');if(r&&view()==='code')r.innerHTML=V.rs>0?'Отправить код ещё раз через 0:'+String(V.rs).padStart(2,'0'):'<button type="button" class="acf-link" data-wd="resend">Отправить код ещё раз</button>';if(V.rs<=0)clearInterval(V.ri)},1000);if(c==='send')go('code');else render()}
  else if(c==='demo'){V.code='1234';render();setTimeout(submitCode,180)}
  else if(c==='help')toast('Поддержка поможет оформить заявление (демо)');
  else if(['banks','card','acc','id','hist'].includes(c)){V.f={};go(c)}
@@ -8279,6 +8407,205 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#wd.show')){e.st
 window.WD={open,state:W,setId,lim:LIM};
 /* профиль → «Вывести» */
 if(typeof resetProto==='function'){const r=resetProto;resetProto=function(){W=structuredClone(DEF);window.WD.state=W;save();r.apply(this,arguments)}}
+})();
+
+</script>
+<script>
+/* «Покер 2.0» — ассеты из макета (логотип 89×4 и рубашка карты), webp 2x */
+const PK2_ART={
+logo:"data:image/webp;base64,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",
+back:"data:image/webp;base64,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"
+};
+
+</script>
+<script>
+/* ================= Покер 2.0 (классические игры) =================
+   Механика: билет «Рапидо», показанный картами. Покупаете N билетов — это N пар карт.
+   На трансляции открываются 5 карт стола, затем вы открываете свои пары: комбинация — лучшая из 7 карт.
+   Категория выигрыша приходит из тиража (как в Рапидо), карты её только показывают:
+   первая категория — пара, суперприз — стрит-флеш. Карты в разных парах могут повторяться.
+   Верх (назад, балансы), оплата (charge → бонусы, уровень, кэшбек) и выплаты — общие с лобби. */
+(function(){
+document.head.insertAdjacentHTML('beforeend',`<style>.p2c .bk{background-image:url(${PK2_ART.back})}</style>`);
+const ID='pk2',PRICE=100,BUY_MS=40000,QTY=[5,10,15,25,50],MAXQ=50;
+const SUITS2=['♠','♥','♦','♣'],RNM={11:'J',12:'Q',13:'K',14:'A'};
+const rn=r=>RNM[r]||String(r),red=s=>s==='♥'||s==='♦';
+/* таблица выигрышей: категория best7 → [название, описание, выигрыш за билет 100 ₽, пример] */
+const C=(r,s)=>({r,s});
+const PT=[
+ [8,'Стрит-флеш','5 карт одной масти подряд','sp',[C(10,'♠'),C(11,'♠'),C(12,'♠'),C(13,'♠'),C(14,'♠')]],
+ [7,'Каре','4 карты одного номинала',40000,[C(9,'♠'),C(9,'♥'),C(9,'♦'),C(9,'♣')]],
+ [6,'Фулл-хаус','Сет и пара',5000,[C(13,'♠'),C(13,'♥'),C(13,'♦'),C(4,'♣'),C(4,'♥')]],
+ [5,'Флеш','5 карт одной масти',2000,[C(2,'♥'),C(6,'♥'),C(9,'♥'),C(11,'♥'),C(13,'♥')]],
+ [4,'Стрит','5 карт подряд',1000,[C(5,'♣'),C(6,'♦'),C(7,'♠'),C(8,'♥'),C(9,'♣')]],
+ [3,'Сет','3 карты одного номинала',500,[C(7,'♠'),C(7,'♥'),C(7,'♣')]],
+ [2,'Две пары','Две пары разных номиналов',200,[C(12,'♠'),C(12,'♦'),C(5,'♣'),C(5,'♥')]],
+ [1,'Пара','2 карты одного номинала',100,[C(14,'♦'),C(14,'♣')]]];
+const NAME=c=>c>=9?'Флеш-рояль':c===0?'Ничего':(PT.find(p=>p[0]===c)||[0,'Ничего'])[1];
+const prizeOf=(c,sp)=>{if(c>=8)return sp;const p=PT.find(x=>x[0]===c);return p?p[3]:0};
+/* шансы категорий одного билета (как у тиража «Рапидо», RTP ~61%) */
+const ODDS={real:[[8,.00002],[7,.0001],[6,.001],[5,.003],[4,.006],[3,.02],[2,.06],[1,.18]],
+ win:[[8,.01],[7,.02],[6,.05],[5,.08],[4,.1],[3,.16],[2,.2],[1,.3]],lose:[]};
+function rollCat(){const t=ODDS[(typeof PCFG!=='undefined'&&PCFG.luck)||'real']||ODDS.real;let r=Math.random();for(const [c,p] of t){if((r-=p)<0)return c}return 0}
+
+/* ---------- оценка руки ---------- */
+function ev5(h){const rs=h.map(c=>c.r).sort((a,b)=>b-a),cnt={};rs.forEach(r=>cnt[r]=(cnt[r]||0)+1);
+ const gr=Object.entries(cnt).map(([r,n])=>[+r,n]).sort((a,b)=>b[1]-a[1]||b[0]-a[0]);
+ const fl=h.every(c=>c.s===h[0].s);let st=false,hi=rs[0];
+ if(gr.length===5){if(rs[0]-rs[4]===4)st=true;else if(rs.join()==='14,5,4,3,2'){st=true;hi=5}}
+ const c0=gr[0][1],c1=gr[1]?gr[1][1]:0;
+ const cat=st&&fl?(hi===14?9:8):c0===4?7:c0===3&&c1===2?6:fl?5:st?4:c0===3?3:c0===2&&c1===2?2:c0===2?1:0;
+ const k=st?[hi]:gr.map(g=>g[0]);let sc=cat;for(let i=0;i<5;i++)sc=sc*15+(k[i]||0);return {cat,sc}}
+function b7(cs){let b=null;for(let a=0;a<7;a++)for(let c=a+1;c<7;c++){const f=cs.filter((_,i)=>i!==a&&i!==c),e=ev5(f);if(!b||e.sc>b.sc)b={...e,cards:f}}return b}
+/* какие карты образуют комбинацию — их подсвечиваем */
+function comboCards(b){const rc={};b.cards.forEach(c=>rc[c.r]=(rc[c.r]||0)+1);return [4,5,6,8,9].includes(b.cat)?b.cards:b.cat===0?[]:b.cards.filter(c=>rc[c.r]>=2)}
+const key=c=>c.r+c.s;
+const DECK=SUITS2.flatMap(s=>Array.from({length:13},(_,i)=>C(i+2,s)));
+const rndi=n=>Math.floor(Math.random()*n),pk=a=>a[rndi(a.length)];
+
+/* ---------- раздача под исход тиража ---------- */
+function boardFor(T){
+ const take=(pool,n)=>{const p=pool.slice(),o=[];while(o.length<n&&p.length)o.push(p.splice(rndi(p.length),1)[0]);return o};
+ const fill=(b)=>{while(b.length<5){const c=pk(DECK);if(!b.some(x=>key(x)===key(c)))b.push(c)}return shuffleA(b)};
+ if(T>=8){const s=pk(SUITS2),lo=T>=9?10:2+rndi(9),run=Array.from({length:5},(_,i)=>C(lo+i>14?lo+i-13:lo+i,s));return fill(take(run,3))}
+ if(T>=6){const r=2+rndi(13),ss=shuffleA(SUITS2.slice());return fill([C(r,ss[0]),C(r,ss[1])])}
+ if(T===5){const s=pk(SUITS2);return fill(take(DECK.filter(c=>c.s===s),3))}
+ if(T===4){const lo=2+rndi(9);return fill(take(Array.from({length:5},(_,i)=>C(lo+i,pk(SUITS2))),3))}
+ return fill([])}
+function shuffleA(a){for(let i=a.length-1;i>0;i--){const j=rndi(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+function buckets(board){const rest=DECK.filter(c=>!board.some(b=>key(b)===key(c))),B={};
+ for(let i=0;i<rest.length;i++)for(let j=i+1;j<rest.length;j++){let c=b7([...board,rest[i],rest[j]]).cat;if(c===9)c=8;(B[c]=B[c]||[]).push([rest[i],rest[j]])}return B}
+function deal(targets){const T=Math.max(0,...targets);let board,B;
+ for(let k=0;k<40;k++){board=boardFor(T);B=buckets(board);const paired=board.some((c,i)=>board.findIndex(x=>x.r===c.r)!==i);if(B[T]&&(T>=6||!paired))break}
+ const cats=Object.keys(B).map(Number).sort((a,b)=>a-b);
+ const tickets=targets.map(t=>{let c=cats.filter(x=>x<=t).pop();if(c===undefined)c=cats[0];const hole=pk(B[c]);const b=b7([...board,...hole]);return {hole,cat:b.cat>=9?9:b.cat,best:b,open:false}});
+ return {board,tickets}}
+
+/* ---------- состояние (живёт и при закрытой игре) ---------- */
+const P={no:9876,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:12500000,draw:null,view:'buy',resOpen:false,seen:false};
+let root=null;
+const mounted=()=>root&&root.isConnected&&$('#game').dataset.g===ID;
+
+function card(c,o={}){const face=c?`<span class="tl">${rn(c.r)}<i>${c.s}</i></span>${c.r>10&&c.r<14?`<span class="ctr fc">${rn(c.r)}<i>${c.s}</i></span>`:`<span class="ctr">${c.s}</span>`}<span class="br">${rn(c.r)}<i>${c.s}</i></span>`:'';
+ return `<div class="p2c${o.open?' open':''}${o.cls?' '+o.cls:''}"${o.attr||''}><div class="bk"></div><div class="fc-wrap${c&&red(c.s)?' red':''}">${face}</div></div>`}
+const slot='<div class="p2c slot"></div>';
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+const timer=()=>{const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+
+function topHTML(){const live=P.phase==='live'||P.view!=='buy';
+ return `<div class="p2-top"><img class="p2-logo" src="${PK2_ART.logo}" alt="89×4"><div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live&&P.view==='live'?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
+  <div class="r">${P.view==='live'?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Трансляция<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div></div></div>`}
+
+function tableHTML(){
+ if(P.view==='live'){const d=P.draw;
+  return `<div class="p2-table live"><div class="p2-board">${d.board.map((c,i)=>card(c,{open:i<d.shown,cls:'bd'})).join('')}</div>
+   ${d.mine?`<div class="p2-tix" id="p2Tix">${d.tickets.map((t,i)=>`<button type="button" class="p2-pair${t.open?' open':''}${t.open&&t.cat?' win':''}" data-p2-t="${i}" ${d.shown<5?'disabled':''} aria-label="Билет ${i+1}">${t.open?`<em>${NAME(t.cat)}</em>`:''}${card(t.hole[0],{open:t.open})}${card(t.hole[1],{open:t.open})}</button>`).join('')}</div>
+   <p class="p2-hint">${d.shown<5?'Открываем карты стола…':d.tickets.every(t=>t.open)?'Все билеты открыты':'Жми на карту, чтобы открыть'}</p>`
+   :`<div class="p2-msg"><b>${d.shown<5?'Идёт трансляция':'Тираж состоялся'}</b><small>${d.shown<5?'Открываем карты стола':'Купите билеты на следующий тираж'}</small></div>`}</div>`}
+ const n=P.qty,bought=P.bought;
+ return `<div class="p2-table"><div class="p2-board">${slot.repeat(5)}</div>
+  ${n||bought?`<div class="p2-msg"><b>Ваш набор карт${bought?'':' (билеты)'}</b><small>Карты откроются на трансляции</small></div>
+   <div class="p2-stack"><img src="${PK2_ART.back}" alt=""><img src="${PK2_ART.back}" alt=""><span>×${bought+n}</span></div>`
+  :`<div class="p2-msg big"><b>Выбери количество билетов</b><small>Одна пара карт — один билет · ${PRICE} ₽</small></div>`}</div>`}
+
+function buyHTML(){if(P.view!=='buy')return '';
+ return `<div class="p2-qty">${QTY.map(q=>`<button type="button" class="${P.qty===q?'on':''}" data-p2-q="${q}">${q}</button>`).join('')}</div>
+ <div class="p2-step"><button type="button" data-p2-s="-1" aria-label="Меньше" ${P.qty<=0?'disabled':''}>−</button><div><i>0</i><b>Билеты: ${P.qty}</b><i>${MAXQ}</i></div><button type="button" data-p2-s="1" aria-label="Больше" ${P.qty+P.bought>=MAXQ?'disabled':''}>+</button></div>
+ ${P.bought?`<div class="p2-bought"><span><b>Куплено ${P.bought} ${plural(P.bought)} на тираж № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до начала трансляции</small></span><span class="p2-mini"><img src="${PK2_ART.back}" alt=""><img src="${PK2_ART.back}" alt=""></span></div>`:''}`}
+const plural=n=>{const a=n%10,b=n%100;return a===1&&b!==11?'билет':a>=2&&a<=4&&(b<12||b>14)?'билета':'билетов'};
+
+function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p>Покупайте билеты, смотрите трансляцию, собирайте комбинации и выигрывайте призы. Каждый билет — пара карт; комбинация — лучшая из ваших двух и пяти карт стола.</p>
+ <div class="p2-th"><span>Комбинация</span><span>Выигрыш за билет</span></div>
+ ${PT.map(([c,n,d,v,ex],i)=>`<div class="p2-row"><div class="p2-rh"><b>${i+1}. ${n}</b><em class="${v==='sp'?'sp':''}">${v==='sp'?'Суперприз':fmt(v)+' ₽'}</em></div><div class="p2-rb"><span class="p2-ex">${ex.map(x=>card(x,{open:true,cls:'xs'})).join('')}</span><small>${d}</small></div></div>`).join('')}
+ <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p></div>`}
+
+function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE;return `<div class="p2-foot"><button type="button" class="p2-pay" data-p2="pay" ${P.qty?'':'disabled'}><span>${P.bought?'Докупить':'Оплатить'}</span><b>${fmt(sum)} ₽</b></button></div>`}
+ if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
+ return ''}
+
+function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
+ const best=d.tickets.slice().sort((a,b)=>b.best.sc-a.best.sc)[0],won=d.total>0,hl=best?comboCards(best.best).map(key):[];
+ return `<div class="p2-res show" role="dialog" aria-modal="true" aria-labelledby="p2ResT"><div class="p2-sheet"><button type="button" class="p2-x" data-p2="close" aria-label="Закрыть">×</button>
+  <small class="p2-cap" id="p2ResT">${won?'Лучшая комбинация':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?NAME(best.cat):'Без выигрыша'}</b>
+  <div class="p2-rb5">${d.board.map(c=>card(c,{open:true,cls:won?(hl.includes(key(c))?'hl':'dim'):''})).join('')}</div>
+  ${best?`<div class="p2-rh2">${best.hole.map(c=>card(c,{open:true,cls:won?(hl.includes(key(c))?'hl':'dim'):''})).join('')}</div>`:''}
+  <div class="p2-sum"><small>Общий выигрыш</small><b>${won?'+ '+bpLabel(d.total):'0 ₽'}</b><small>${d.tickets.length} ${plural(d.tickets.length)}${won?' · выиграли '+d.tickets.filter(t=>t.cat).length:''}</small></div>
+  <button type="button" class="p2-gold" data-p2="again">Играть ещё</button><button type="button" class="p2-dark" data-p2="tickets">Смотреть билеты</button></div></div>`}
+const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
+
+function render(){if(!mounted())return;const sc=root.scrollTop;
+ root.innerHTML=`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;
+ const host=$('#p2ResHost');if(host)host.innerHTML=resHTML()}
+function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t)t.textContent=timer()}
+
+/* ---------- покупка ---------- */
+function buy(){const n=P.qty;if(!n)return;const cost=n*PRICE;
+ const prev=bpFunding.get(ID);if(prev)bpFunding.delete(ID);
+ const ok=charge(cost);const r=bpFunding.get(ID);
+ if(prev)bpFunding.set(ID,prev);
+ if(!ok)return;
+ P.rounds.push({round:r,n});P.bought+=n;P.qty=Math.min(P.qty,MAXQ-P.bought);if(!P.qty)P.qty=0;
+ SFX&&SFX.click&&SFX.click();toast(`Куплено ${n} ${plural(n)} на тираж № ${String(P.no).padStart(5,'0')}`);render()}
+
+/* ---------- тираж ---------- */
+async function runDraw(){
+ const mine=P.bought>0,targets=Array.from({length:P.bought},rollCat);
+ const d=deal(mine?targets:[0]);d.no=P.no;d.mine=mine;d.shown=0;if(!mine)d.tickets=[];
+ /* выигрыши по билетам и раскладка по оплатам (у докупки — своя оплата) */
+ d.wins=d.tickets.map(t=>t.cat?prizeOf(t.cat>=9?8:t.cat,P.sp):0);d.total=d.wins.reduce((a,b)=>a+b,0);
+ let k=0;d.parts=P.rounds.map(x=>{const s=d.wins.slice(k,k+x.n).reduce((a,b)=>a+b,0);k+=x.n;return {round:x.round,win:s}});
+ P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.next=Date.now()+BUY_MS+9000;P.qty=P.qty||10;P.resOpen=false;
+ const watching=mounted();
+ if(watching||!mine){P.view=watching?'live':P.view;render()}
+ for(let i=0;i<5;i++){await wait(i?700:500);d.shown=i+1;if(P.view==='live'&&mounted()){const el=$$('.p2-board .p2c',root)[i];if(el){el.classList.add('open');SFX&&SFX.flip&&SFX.flip()}}}
+ settle(d);
+ if(P.view==='live'&&mounted())render();
+ if(!mine){await wait(2500);if(P.view==='live'&&P.draw===d){P.view='buy';render()}}
+ else if(!watching){toast(d.total?`Покер 2.0: +${bpLabel(d.total)} · ${NAME(Math.max(...d.tickets.map(t=>t.cat)))}`:'Покер 2.0: тираж без выигрыша');d.tickets.forEach(t=>t.open=true)}
+ P.phase='buy'}
+/* выплата: каждая оплата получает выигрыш своих билетов и закрывается */
+function settle(d){if(d.paid)return;d.paid=true;
+ for(const p of d.parts||[]){if(!p.round)continue;bpFunding.set(ID,p.round);if(p.win)pay(p.win,false,ID);bpFinishRound(ID)}
+ if(d.tickets.some(t=>t.cat>=8))P.sp=12500000;else P.sp+=d.tickets.length*7}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+function openTicket(i){const d=P.draw;if(!d||d.shown<5)return;const t=d.tickets[i];if(!t||t.open)return;t.open=true;
+ const el=$(`[data-p2-t="${i}"]`,root);if(el){el.classList.add('open');if(t.cat)el.classList.add('win');el.insertAdjacentHTML('afterbegin',`<em>${NAME(t.cat)}</em>`);$$('.p2c',el).forEach(c=>c.classList.add('open'))}
+ SFX&&SFX.flip&&SFX.flip();
+ if(d.tickets.every(x=>x.open))setTimeout(()=>{if(P.draw===d&&mounted()){P.resOpen=true;render();if(d.total){confetti&&confetti();SFX&&SFX.win&&SFX.win()}}},600);
+ else{const f=$('.p2-hint',root);if(f)f.textContent='Жми на карту, чтобы открыть'}}
+
+/* глобальный цикл тиражей */
+setInterval(()=>{if(P.phase==='buy'&&Date.now()>=P.next)runDraw();else tick()},250);
+
+/* ---------- игра в лобби ---------- */
+GAMES[ID]={n:'Покер 2.0',img:'c_pk2',sub:'Билет «Рапидо» в картах',c:'#d9a441',bb:'#1d4a2c',sec:'classic',bg:'#050505',acc:'linear-gradient(180deg,#f7d98a,#d9a441)',accs:'rgba(233,180,70,.5)'};
+const sec=SECTIONS.find(s=>s.id==='classic');if(sec&&!sec.ids.includes(ID))sec.ids.unshift(ID);
+IMG.c_pk2=PK2_ART.logo;
+/* обложка в лобби: сукно, две рубашки и логотип — рисуем один раз в canvas */
+(async()=>{try{const ld=src=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src});const [lg,bk]=await Promise.all([ld(PK2_ART.logo),ld(PK2_ART.back)]);
+ const W=392,H=440,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ const g=x.createRadialGradient(W/2,H*.38,10,W/2,H*.38,W*.8);g.addColorStop(0,'#2f8a4f');g.addColorStop(.6,'#155b31');g.addColorStop(1,'#0a2c18');x.fillStyle=g;x.fillRect(0,0,W,H);
+ const card=(cx,cy,r)=>{x.save();x.translate(cx,cy);x.rotate(r);x.shadowColor='#0009';x.shadowBlur=16;x.shadowOffsetY=6;x.drawImage(bk,-54,-84,108,168);x.restore()};
+ card(140,300,-.2);card(252,292,.18);x.shadowColor='#000a';x.shadowBlur=20;x.drawImage(lg,96,24,200,200);
+ IMG.c_pk2=c.toDataURL('image/webp',.82);const el=document.querySelectorAll('[data-game="pk2"] .im');el.forEach(e=>e.style.backgroundImage=`url(${IMG.c_pk2})`)}catch(e){}})();
+GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add('p2-game');$('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
+ const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game');r.classList.remove('p2-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
+ if(P.view==='live'&&P.draw&&P.draw.paid&&!P.draw.mine)P.view='buy';
+ render()};
+try{renderLobby()}catch(e){}
+
+document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2ResHost'))return;
+ const q=e.target.closest('[data-p2-q]');if(q){P.qty=Math.min(+q.dataset.p2Q,MAXQ-P.bought);render();return}
+ const s=e.target.closest('[data-p2-s]');if(s){P.qty=Math.max(0,Math.min(MAXQ-P.bought,P.qty+ +s.dataset.p2S));render();return}
+ const t=e.target.closest('[data-p2-t]');if(t){openTicket(+t.dataset.p2T);return}
+ const a=e.target.closest('[data-p2]');if(!a)return;const k=a.dataset.p2;
+ if(k==='pay')buy();
+ else if(k==='result'){const d=P.draw;d.tickets.forEach(x=>x.open=true);P.resOpen=true;render();if(d.total){confetti&&confetti();SFX&&SFX.win&&SFX.win()}}
+ else if(k==='again'){P.resOpen=false;P.view='buy';render()}
+ else if(k==='tickets'||k==='close'){P.resOpen=false;if(P.draw)P.draw.tickets.forEach(x=>x.open=true);render()}
+});
+window.PK2=P;
 })();
 
 </script>
