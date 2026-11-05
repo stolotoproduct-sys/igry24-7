@@ -6039,14 +6039,14 @@ const LV_BI='<i class="lv-bi" role="img" aria-label=" бонусов">Б</i>';
 const LV_TRI=IC('<path d="m3 6 6 6-6 6M9 6l6 6-6 6M15 6l6 6-6 6"/>',16);
 function lvWidget(s){
  const e=$('#lossbackEntry');if(!e)return;const on=LV.cb||LV.mines;e.hidden=!on;if(!on)return;
- const L=s.level,nx=s.next,att=lvAttempts(),ready=lvUnseen();
+ const L=s.level,nx=s.next,att=lvAttempts();
  e.classList.add('lp-entry');e.classList.remove('lv-one');
  e.setAttribute('aria-label',`${lvTitle()}: ${L.id?'уровень '+L.id+' '+L.name:'стартовый уровень'}`);
  e.innerHTML=`<span class="lp-w-art${L.id?'':' off'}">${lvArt(L)}</span>
   <span class="lp-w-main"><span class="lp-w-top"><strong>${L.name}</strong><small class="lp-w-left">${nx?'ещё '+lbRub(s.remaining):'максимум'}</small></span>
    <span class="lp-bar"><i style="width:${s.progress}%"></i></span>
    <span class="lp-w-bottom">${LV.cb?`<span>Кэшбек <em class="lp-pct">${L.pct}%</em></span>${nx?`<b class="lp-w-next">${LV_TRI}${nx.pct}%</b>`:''}`:`<span>${L.id?'Уровень '+L.id:'Старт'}</span>${nx&&nx.attempts?`<b class="lp-w-next">${LV_TRI}+${nx.attempts} в Минах</b>`:''}`}</span></span>
-  ${ready?`<span class="lp-w-btn gold lp-w-new" aria-label="Кэшбек начислен">+${lbNum(ready.amount)} Б</span>`:att?`<button type="button" class="lp-w-btn" data-lv-mines>${IC(ICD.mine)}${att}</button>`:`<i class="lv-w-chev">${IC(ICD.chev)}</i>`}`;
+  ${att?`<button type="button" class="lp-w-btn" data-lv-mines>${IC(ICD.mine)}${att}</button>`:`<i class="lv-w-chev">${IC(ICD.chev)}</i>`}`;
 }
 
 /* ---------- экран «Мой уровень» ---------- */
