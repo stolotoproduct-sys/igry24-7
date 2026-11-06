@@ -6138,10 +6138,10 @@ function lpPrivileges(s,l){
  const wd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'short',day:'numeric',month:'short',timeZone:'Europe/Moscow'}).format(t);
  if(LV.cb){const w=s.week;
   t.push(row(lock?' lock':'',`<b class="lp-pv-n">${l.pct}<i>%</i></b>`,`Кэшбек ${l.pct}%`,
-   cur?`За ${lvMon(w.start)} — начислим ${lvDay(w.end)}`:'Бонусами, 1-го числа за прошлый месяц'))}
+   'От проигрыша за месяц, бонусами'))}
  if(LV.mines){
   if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
-   t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)} · до ${lbDate(rec.expiresAt)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
+   t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
     :row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены',`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`))}
   else if(l.attempts)t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),'«Мины»',`+${l.attempts} ${lvAttWord(l.attempts)} до конца месяца`));
   else t.push(row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`,`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`));
@@ -6193,7 +6193,7 @@ function renderLossback(){
  const h=$('#lossback .lb-title h2');if(h)h.textContent=lvTitle();
  const C=$('#lossbackContent');if(!C)return;
  if(!(LV.cb||LV.mines)){C.innerHTML='<p class="lb-month-note">Механики выключены в настройках прототипа.</p>';return}
- if(window.NP)setTimeout(NP.refresh,0);C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
+ if(window.NP)setTimeout(NP.refresh,0);C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+`<p class="lp-reset">${IC(ICD.cal,12)}${LV.cb?`${lvMonthReset(s)} начислим кэшбек за ${lvMonth()}, а уровень${LV.mines?' и попытки «Мин»':''} обнулятся`:`Уровень${LV.mines?' и попытки «Мин»':''} обнулятся ${lvMonthReset(s)}`}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
  const rail=$('.lp-rail',C);
  requestAnimationFrame(()=>{if(rail.isConnected)lpScrollTo(lbSelected,false)});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lpPick(rail)})},{passive:true});
