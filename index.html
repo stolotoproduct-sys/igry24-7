@@ -6005,9 +6005,7 @@ window.lvLastGet=()=>LV_LAST;
 const lvNid=L=>'cb-credit-'+L.start;
 const lvRead=L=>!!(window.ntIsRead&&ntIsRead(lvNid(L)));
 const lvUnseen=()=>LV.cb&&LV_LAST&&!lvRead(LV_LAST)?LV_LAST:null;
-/* в этот заход карточка остаётся на экране, даже если уведомление уже отмечено прочитанным */
-let lvShowNow=null;
-const lvCard=()=>lvUnseen()||(LV.cb&&LV_LAST&&lvShowNow===LV_LAST.start&&cur==='lossback'?LV_LAST:null);
+
 const lvWhere=()=>BonusEngine.mode==='wager'?'бонусом в «Промо»':'на бонусный счёт';
 let lvBooting=true;
 function lvAutoCredit(){if(!LV.cb)return;const s=lossbackModel.snapshot();
@@ -6109,8 +6107,7 @@ const lpLock=()=>`<span class="lp-tile-lock" aria-label="Закрыто">${IC(IC
 function lpDetail(s){const l=LVL()[lbSelected]||LVL()[0];return lpCard(s,l)+(l.id?lpPrivileges(s,l):lpGive())}
 let lpTab=null;
 function lpWeek(s,bare){
- if(!LV.cb)return '';const w=s.week,un=lvCard(),pct=s.level.pct;let h='';
- if(un)h+=`<section class="lp-cb ready"><span class="lp-cb-t"><small>Начислено за ${lbRange(un)}</small><b>+${lbNum(un.amount)}${LV_BI}</b><span>${un.pct}% кэшбека · ${lvWhere()}</span></span><button type="button" class="lp-cb-go" data-lp-play>Играть</button></section>`;
+ if(!LV.cb)return '';const w=s.week,pct=s.level.pct;let h='';
  h+=`<section class="lp-cb"><span class="lp-cb-pct${pct?'':' off'}"><b>${pct}<i>%</i></b><small>кэшбек</small></span><span class="lp-cb-t"><small>Эта неделя · ${lbRange(w)}</small>
   <b>${!pct?`С уровня «${LVL()[1].name}»`:w.cb?`≈ ${lbNum(w.cb)}${LV_BI}`:'Пока 0'+LV_BI}</b>${!pct?`<span>Купите на ${lbRub(LVL()[1].threshold)} за месяц</span>`:''}</span></section>
   <p class="lp-note">${IC(ICD.cal,12)}Начислим сами в ${lvWd(w.end)} · ${lvIn(w.end)} — пришлём уведомление</p>`;
@@ -6121,8 +6118,8 @@ function lpMines(s){
  return `<section class="lv-mines-card${att?'':' off'}">${lvMinesArt()}<div class="lv-mines-t"><b>Мины${att?` · ${att}`:''}</b><small>${att?`${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.nextMines?`+${s.nextMines.attempts} на уровне «${s.nextMines.name}»`:'Все попытки месяца получены'}</small></div>
   <button type="button" class="cb-claim${att?'':' ghost'}" data-lv-mines>${att?'Играть':'Посмотреть'}</button></section>`;
 }
-function lpHistory(s){const L=LV_LAST;if(!LV.cb||!L||!lvRead(L)||lvCard())return '';
- return `<div class="lv-hist lp-last"><div><span>Начислено · ${lbRange(L)}</span><b class="ok">+${lbNum(L.amount)} Б</b></div></div>`}
+/* истории и карточки «Начислено» на экране нет: о начислении сообщает только уведомление */
+function lpHistory(s){return ''}
 /* «Старт»: что дадут уровни */
 function lpGive(){
  const L=LVL(),b=L[1],m=L[LossbackEngine.MINES_FROM],top=L.at(-1);
@@ -6135,13 +6132,13 @@ function lpGive(){
 function lpMinesInfo(){if(typeof MN==='undefined')return '';
  return `<p class="lp-mn-info">На поле ${MN.mines} мин из ${MN.size} клеток. Каждая безопасная клетка повышает приз: ${MN.ladder.map(x=>x.k==='fs'?x.n+' FS':x.n+' '+lbTicketWord(x.n)).join(' → ')}. Попытки действуют до конца месяца</p>`}
 function lpTabs(s){
- const both=LV.cb&&LV.mines,att=lvAttempts(),r=lvCard();
+ const both=LV.cb&&LV.mines,att=lvAttempts(),r=null;
  if(!both)return LV.cb?lpWeek(s)+lpHistory(s):lpMines(s);
  if(!lpTab)lpTab=r?'cb':att?'mn':'cb';
  return `<div class="lv-tabs lp-tabs" role="tablist"><button type="button" role="tab" data-lp-tab="cb" aria-selected="${lpTab==='cb'}">Кэшбек${r?`<em>+${lbNum(r.amount)} Б</em>`:''}</button><button type="button" role="tab" data-lp-tab="mn" aria-selected="${lpTab==='mn'}">Мины${att?`<em>${att}</em>`:''}</button></div>
   <div class="lp-tabp" role="tabpanel">${lpTab==='cb'?lpWeek(s,true)+lpHistory(s):lpMines(s)+lpMinesInfo()}</div>`}
 function renderLossback(){
- lvLevelUps();lvAutoCredit();if(cur!=='lossback')lvShowNow=null;
+ lvLevelUps();lvAutoCredit();
  const s=lossbackModel.snapshot();if(lbSelected===null||!LVL()[lbSelected])lbSelected=s.level.id;
  lvWidget(s);
  $$('.header-profile').forEach(e=>{let badge=e.querySelector('.lb-profile-level');if(!badge){badge=document.createElement('span');badge.className='lb-profile-level';e.appendChild(badge)}badge.hidden=!(LV.mines||LV.cb)||!s.level.id;badge.textContent=s.level.id;badge.setAttribute('aria-label','Уровень '+s.level.id)});
@@ -6153,8 +6150,6 @@ function renderLossback(){
  requestAnimationFrame(()=>{if(rail.isConnected)lpScrollTo(lbSelected,false)});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lpPick(rail)})},{passive:true});
  lpMarks();
- /* игрок увидел начисление на странице уровня — дальше виджет без «+N Б» */
- if(!lvBooting&&cur==='lossback'&&lvUnseen()&&(lpTab==='cb'||!LV.mines)&&s.level.id){lvShowNow=LV_LAST.start;window.ntMarkRead&&ntMarkRead(lvNid(LV_LAST));setTimeout(()=>{try{lvWidget(lossbackModel.snapshot());window.NP&&NP.refresh()}catch(e){}},0)}
 }
 function lpMarks(){$$('[data-lp-select]').forEach(b=>{if(b.closest('.lp-dots'))b.setAttribute('aria-pressed',String(+b.dataset.lpSelect===lbSelected))});
  $$('.lp-slide').forEach(sl=>sl.classList.toggle('sel',+sl.dataset.lpSlide===lbSelected));
