@@ -3397,6 +3397,23 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lv-bi{display:inline-grid;place-items:center;width:1.6em;height:1.6em;margin-left:.3em;border-radius:50%;box-sizing:border-box;border:.16em solid #56d86f;background:#093c23;color:#70ed85;-webkit-text-fill-color:#70ed85;font:800 .7em/1 var(--g4-font,StoloText,sans-serif);font-style:normal;vertical-align:middle;position:relative;top:-.08em;transform:rotate(-12deg)}
 .lp-last b{white-space:nowrap}
 
+/* привилегии — горизонтальные строки (заменяют плитки и табы «Кэшбек / Мины») */
+.lp-pvs{display:flex;flex-direction:column;gap:0;border-radius:16px;border:1px solid var(--lp-line);background:var(--lp-card);overflow:hidden}
+.lp-pv{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;min-height:72px;padding:12px 16px;border:0;border-radius:0;background:none;text-align:left}
+.lp-pv+.lp-pv{border-top:1px solid var(--lp-line)}
+.lp-pv.tap{cursor:pointer}
+.lp-pv.lock>*{opacity:.55}
+.lp-pv .lp-pv-art{flex:none;width:48px;height:48px}
+.lp-pv-pct{flex:none;width:48px;height:48px;border-radius:24px;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#4a2f73,#21173a);border:2px solid #e8bd88}
+.lp-pv-pct b{font-family:StoloHead,StoloText,sans-serif;font-size:18px;line-height:20px;font-weight:800;color:#f3d27a}.lp-pv-pct b i{font-style:normal;font-size:12px}
+.lp-pv-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lp-pv-t b{font-size:14px;line-height:20px;font-weight:700;color:#fff}
+.lp-pv-t small{display:block;height:auto;font-size:12px;line-height:16px;color:var(--lp-sub);-webkit-line-clamp:unset}
+.lp-pv-v{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:0}
+.lp-pv-v b{display:flex;align-items:center;gap:4px;font-size:16px;line-height:24px;font-weight:800;white-space:nowrap}
+.lp-pv .cb-claim{flex:none;min-width:88px}
+.lp-pv-chev{flex:none;width:20px;height:20px;color:#7f7690}.lp-pv-chev svg{width:20px;height:20px}
+
 </style>
 </head>
 <body>
@@ -6094,13 +6111,26 @@ function lpCard(s,l){
  return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
 }
 function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now()).replace(/ь$/,'е').replace(/й$/,'е').replace(/т$/,'те')}
+/* привилегии: горизонтальные строки; у текущего уровня — живые данные (кэшбек недели, попытки, сколько до следующего) */
 function lpPrivileges(s,l){
- const st=lpState(l,s),lock=st==='locked',L=LVL(),mines=L.find(x=>x.attempts),nx=L[l.id+1],t=[];
- if(LV.cb)t.push(`<div class="lp-pv${lock?' lock':''}"><b class="lp-pv-n">${l.pct}<i>%</i></b><small>Кэшбек бонусами</small></div>`);
- if(LV.mines)t.push(l.attempts?`<div class="lp-pv${lock?' lock':''}">${lvArt(mines,'lp-pv-art')}<small>+${l.attempts} ${lvAttWord(l.attempts)} в «Минах»</small></div>`
-  :`<div class="lp-pv lock">${lvArt(mines,'lp-pv-art dim')}<small>«Мины» — с уровня «${mines.name}»</small></div>`);
- t.push(nx?`<div class="lp-pv next" data-lp-select="${nx.id}" role="button" tabindex="0">${lvArt(nx,'lp-pv-art')}<small>Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}</small></div>`
-  :`<div class="lp-pv next">${lvArt(l,'lp-pv-art')}<small>Максимальный уровень</small></div>`);
+ const st=lpState(l,s),cur=st==='cur',lock=st==='locked',L=LVL(),mines=L.find(x=>x.attempts),nx=L[l.id+1],t=[];
+ const row=(cls,ic,title,sub,end,attr='')=>`<div class="lp-pv${cls}"${attr}>${ic}<span class="lp-pv-t"><b>${title}</b>${sub?`<small>${sub}</small>`:''}</span>${end||''}</div>`;
+ const chev=`<span class="lp-pv-chev">${IC(ICD.chev,20)}</span>`;
+ const wd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'short',day:'numeric',month:'short',timeZone:'Europe/Moscow'}).format(t);
+ if(LV.cb){const w=s.week;
+  t.push(row(lock?' lock':'',`<span class="lp-pv-pct"><b>${l.pct}<i>%</i></b></span>`,`Кэшбек ${l.pct}%`,
+   cur?`Начислим в ${wd(w.end)}`:'Бонусами, каждый понедельник',
+   cur?`<span class="lp-pv-v"><b>≈ ${lbNum(w.cb||0)}${LV_BI}</b></span>`:''))}
+ if(LV.mines){
+  if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
+   t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)} · до ${lbDate(rec.expiresAt)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
+    :row(' tap',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки месяца получены',chev,' data-lv-mines role="button" tabindex="0"'))}
+  else if(l.attempts)t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),'«Мины»',`+${l.attempts} ${lvAttWord(l.attempts)} до конца месяца`));
+  else t.push(row(' lock',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`));
+ }
+ t.push(nx?row(' tap',lvArt(nx,'lp-pv-art'),`Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}`,
+   cur?`Ещё ${lbRub(Math.max(0,nx.threshold-s.turnover))} покупок`:`От ${lbRub(nx.threshold)} за месяц`,chev,` data-lp-select="${nx.id}" role="button" tabindex="0"`)
+  :row('',lvArt(l,'lp-pv-art'),'Максимальный уровень','Выше уже некуда'));
  return `<h3 class="lp-h">Привилегии уровня «${l.name}»</h3><div class="lp-pvs">${t.join('')}</div>`;
 }
 const lpLock=()=>`<span class="lp-tile-lock" aria-label="Закрыто">${IC(ICD.lock||'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',16)}</span>`;
@@ -6145,7 +6175,7 @@ function renderLossback(){
  const h=$('#lossback .lb-title h2');if(h)h.textContent=lvTitle();
  const C=$('#lossbackContent');if(!C)return;
  if(!(LV.cb||LV.mines)){C.innerHTML='<p class="lb-month-note">Механики выключены в настройках прототипа.</p>';return}
- if(window.NP)setTimeout(NP.refresh,0);C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+(s.level.id?lpTabs(s):'')+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
+ if(window.NP)setTimeout(NP.refresh,0);C.innerHTML=lpHero(s)+`<div id="lpDetail">${lpDetail(s)}</div>`+`<p class="lp-reset">${IC(ICD.cal,12)}Уровень считается по покупкам за ${lvMonth()} и обнулится ${lvMonthReset(s)}</p><button type="button" class="lv-more" data-lb-rules>${IC(ICD.chev)}Как работает уровень</button>`;
  const rail=$('.lp-rail',C);
  requestAnimationFrame(()=>{if(rail.isConnected)lpScrollTo(lbSelected,false)});
  let frame=0;rail.addEventListener('scroll',()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=0;if(rail.isConnected)lpPick(rail)})},{passive:true});
@@ -6165,7 +6195,7 @@ function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
  if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели',`Проигрыш = покупки − выигрыши за пн–вс. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами в понедельник',`Пришлём уведомление — забирать не нужно. ${lvBonusNote()}${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
- if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца']);
+ if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца'+(typeof MN!=='undefined'?`. На поле ${MN.mines} мин из ${MN.size} клеток, каждая безопасная клетка повышает приз: ${MN.ladder.map(x=>x.k==='fs'?x.n+' FS':x.n+' '+lbTicketWord(x.n)).join(' → ')}`:'')]);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>Мины</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
   <p class="cb-sheet-note">Пороги и проценты — демонстрационные.</p></div>`;
