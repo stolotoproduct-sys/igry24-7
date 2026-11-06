@@ -3204,6 +3204,16 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
 /* демо «Мин»: без попыток играем без призов */
 .mn-hd h3 .mn-demo{display:inline-block;vertical-align:middle;margin-left:8px;height:24px;padding:0 8px;border-radius:12px;background:#ffffff1a;-webkit-text-fill-color:#fff;color:#fff;font-size:12px;line-height:24px;font-weight:700;letter-spacing:0;text-transform:none}
 .mn.demo .mn-att{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}.mn.demo .mn-att span{white-space:nowrap}.mn.demo .mn-att small{text-align:left;max-width:none}
+/* «Мины» в один экран: поле сжимается под высоту, кнопки не наезжают */
+.mn-in{padding:24px 16px 16px;gap:8px}
+.mn-hd h3{font-size:24px;line-height:32px}
+.mn-sub{font-size:12px;line-height:16px}
+.mn-legend{margin:0}
+.mn-gw{flex:1 1 0;min-height:120px;container-type:size;display:grid;place-items:center}
+.mn-gw .mn-grid{width:min(100cqw,100cqh);height:min(100cqw,100cqh);grid-template-rows:repeat(5,1fr);gap:6px}
+.mn-gw .mn-c{aspect-ratio:auto;min-width:0;min-height:0}
+.mn-act{margin-top:0}
+.mn-res{min-height:20px}
 
 </style>
 <style>
@@ -8747,11 +8757,11 @@ function mnChip(p){return p.k==='fs'?`${p.n}<i class="mn-u">FS</i>`:`${p.n}<img 
 const st={phase:'idle',open:new Set(),mines:new Set(),step:0,last:null};
 const box=document.createElement('div');box.className='mn';box.id='mn';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-labelledby','mnT');
 box.innerHTML=`<div class="mn-in"><div class="mn-hd"><h3 id="mnT">Мины</h3><button class="mn-x" type="button" aria-label="Закрыть">✕</button></div>
- <p class="mn-sub">Открывайте клетки — каждая безопасная повышает приз. Заберите его в любой момент.</p>
+ <p class="mn-sub">Каждая безопасная клетка повышает приз. Забрать можно в любой момент</p>
  <div class="mn-att" id="mnAtt"></div>
  <ol class="mn-lad" id="mnLad" aria-label="Призы за открытые клетки"></ol>
  <p class="mn-legend"><span><i class="mn-u">FS</i> — бесплатная игра в «Рапидо»</span><span><img class="mn-tk" src="${LV_TICKET_IMG}" alt=""> — бесплатный билет ${MN.tkNominal} ₽ в быстрые игры</span></p>
- <div class="mn-grid" id="mnGrid" role="grid" aria-label="Поле 5 на 5"></div>
+ <div class="mn-gw"><div class="mn-grid" id="mnGrid" role="grid" aria-label="Поле 5 на 5"></div></div>
  <p class="mn-res" id="mnRes" role="status" aria-live="polite"></p>
  <div class="mn-act"><button class="mn-go" id="mnGo" type="button"></button><button class="mn-2" id="mn2" type="button"></button></div></div>`;
 $('#scr').appendChild(box);
