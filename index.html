@@ -3428,10 +3428,16 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 /* плашка кэшбека с подсказкой «до N%» */
 .lp-badge{gap:6px;padding-right:4px;white-space:nowrap}
 .lp-q{flex:none;width:20px;height:20px;border-radius:10px;border:0;background:#e8bd8833;color:#f3d27a;font:800 12px/20px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);text-align:center;cursor:pointer;padding:0}
-.lp-tip{position:absolute;z-index:5;top:22px;left:12px;right:12px;display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:12px;background:#241b35;border:1px solid #e8bd8855;box-shadow:0 12px 32px #000a;text-align:left;font-size:12px;line-height:16px;color:#cbbdd9}
-.lp-tip[hidden]{display:none}
-.lp-tip b{font-size:14px;line-height:20px;color:#fff}
-.lp-tip small{color:var(--lp-sub)}
+.lp-pop{position:absolute;inset:0;z-index:78;display:none;place-items:center;padding:24px;background:#05040ab3;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.lp-pop.show{display:grid}
+.lp-pop-c{position:relative;width:100%;max-width:328px;display:flex;flex-direction:column;align-items:center;gap:16px;padding:48px 24px 24px;border-radius:24px;background:#15131d;border:1px solid #ffffff1a;text-align:center;color:#fff}
+.lp-pop-x{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:16px;border:0;background:#ffffff14;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.lp-pop-x svg{width:20px;height:20px}
+.lp-pop h3{margin:0;font-size:20px;line-height:24px;font-weight:800}
+.lp-pop em{font-style:normal;color:#f3d27a}
+.lp-pop p{margin:0;font-size:14px;line-height:20px;color:#e6e0f0}
+.lp-pop p em{display:block;font-weight:700}
+.lp-pop-go{width:100%;height:48px;border-radius:24px;border:0;background:linear-gradient(#ffe07a,#f0aa2c);color:#2a1700;font:800 16px/24px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);cursor:pointer}
 
 </style>
 </head>
@@ -6133,13 +6139,23 @@ function lpCard(s,l){
  if(st==='passed')return `<section class="lp-card lp-center">${!l.id?'<span class="lp-badge">Старт</span>':LV.cb?lpBadge(l.pct):`<span class="lp-badge">Мины +${l.attempts}</span>`}<p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
  return `<section class="lp-card lp-center">${LV.cb?lpBadge(l.pct):`<span class="lp-badge">+${l.attempts} в Минах</span>`}<p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
 }
-/* плашка «Кэшбек бонусами до N%» с подсказкой: что значит «до» */
-function lpBadge(pct){const ex=LossbackEngine.cashback(2000,pct);
- return `<span class="lp-badge">Кэшбек бонусами до ${pct}%<button type="button" class="lp-q" data-lp-tip aria-label="Что значит «до ${pct}%»" aria-expanded="false">?</button></span>
- <div class="lp-tip" role="tooltip" hidden><b>До ${pct}% от проигрыша за месяц</b>Проигрыш = покупки − выигрыши за календарный месяц. Например: покупки 5&nbsp;000&nbsp;₽, выигрыши 3&nbsp;000&nbsp;₽ → 2&nbsp;000&nbsp;₽ × ${pct}% = ${lbNum(ex)}&nbsp;Б.<small>Если за месяц выиграли больше, чем потратили, кэшбека нет. Начисляем бонусами 1-го числа следующего месяца.</small></div>`}
-document.addEventListener('click',e=>{const q=e.target.closest('[data-lp-tip]');const open=$('.lp-tip:not([hidden])');
- if(q){e.stopPropagation();const tip=q.closest('.lp-card').querySelector('.lp-tip');const on=tip.hidden;if(open&&open!==tip)open.hidden=true;tip.hidden=!on;q.setAttribute('aria-expanded',String(on));return}
- if(open&&!e.target.closest('.lp-tip')){open.hidden=true;const b=open.parentElement.querySelector('[data-lp-tip]');if(b)b.setAttribute('aria-expanded','false')}},true);
+/* плашка «Кэшбек бонусами до N%»: по «?» — окно с объяснением и крестиком */
+function lpBadge(pct){return `<span class="lp-badge">Кэшбек бонусами до ${pct}%<button type="button" class="lp-q" data-lp-tip="${pct}" aria-label="Что значит «до ${pct}%»" aria-haspopup="dialog">?</button></span>`}
+function lpTipOpen(pct){const ex=LossbackEngine.cashback(2000,pct);let w=$('#lpPop');
+ if(!w){w=document.createElement('div');w.id='lpPop';w.className='lp-pop';w.setAttribute('role','dialog');w.setAttribute('aria-modal','true');w.setAttribute('aria-labelledby','lpPopT');$('#scr').appendChild(w)}
+ w.innerHTML=`<div class="lp-pop-c"><button type="button" class="lp-pop-x" data-lp-pop-x aria-label="Закрыть">${IC('<path d="M6 6l12 12M18 6 6 18"/>',20)}</button>
+  <h3 id="lpPopT"><em>Кэшбек до ${pct}%</em> бонусами</h3>
+  <p><em>Как считается?</em>От проигрыша за месяц:<br>покупки − выигрыши</p>
+  <p><em>Пример</em>Покупки 5&nbsp;000&nbsp;₽, выигрыши 3&nbsp;000&nbsp;₽<br>2&nbsp;000&nbsp;₽ × ${pct}% = ${lbNum(ex)}&nbsp;Б</p>
+  <p><em>Когда начисляется?</em>1-го числа следующего месяца — сами, забирать не нужно</p>
+  <p><em>Почему «до»?</em>Если за месяц выиграли больше, чем потратили, кэшбека нет</p>
+  <button type="button" class="lp-pop-go" data-lp-pop-more>Как работает уровень</button></div>`;
+ w.classList.add('show');setTimeout(()=>w.querySelector('.lp-pop-x').focus(),30)}
+function lpTipClose(){const w=$('#lpPop');if(w)w.classList.remove('show')}
+document.addEventListener('click',e=>{const q=e.target.closest('[data-lp-tip]');if(q){e.stopPropagation();lpTipOpen(+q.dataset.lpTip);return}
+ if(e.target.closest('[data-lp-pop-x]')||e.target.id==='lpPop'){lpTipClose();return}
+ if(e.target.closest('[data-lp-pop-more]')){lpTipClose();lbOpenDetails();return}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lpTipClose()});
 function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now()).replace(/ь$/,'е').replace(/й$/,'е').replace(/т$/,'те')}
 /* привилегии: горизонтальные строки; у текущего уровня — живые данные (когда начислим кэшбек, попытки, сколько до следующего) */
 function lpPrivileges(s,l){
