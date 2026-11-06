@@ -2594,6 +2594,9 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 /* билеты на трансляции */
 .p2-tix{display:flex;gap:12px;width:100%;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none;scroll-snap-type:x mandatory}
 .p2-tix::-webkit-scrollbar{display:none}
+.p2-tix{touch-action:pan-x pan-y;overscroll-behavior-x:contain;cursor:grab}
+.p2-tix.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.p2-tix.drag .p2-pair{pointer-events:none}
 .p2-pair{position:relative;flex:none;display:flex;gap:4px;padding:4px;border-radius:10px;border:1px solid transparent;background:none;cursor:pointer;scroll-snap-align:start}
 .p2-pair:disabled{cursor:default;opacity:.85}
 .p2-pair.open{border-color:#ffffff33;background:#00000026}
@@ -8703,8 +8706,8 @@ function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
   <button type="button" class="p2-gold" data-p2="again">Играть ещё</button><button type="button" class="p2-dark" data-p2="tickets">Смотреть билеты</button></div></div>`}
 const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
 
-function render(){if(!mounted())return;const sc=root.scrollTop;
- root.innerHTML=`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;
+function render(){if(!mounted())return;const sc=root.scrollTop,tx=$('#p2Tix',root)?.scrollLeft||0;
+ root.innerHTML=`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();const d=P.draw;if(d&&P.view==='live'&&d.shown>=5&&!d.dealt)setTimeout(()=>d.dealt=true,900)}
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%'}
 
@@ -8768,7 +8771,13 @@ GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add
  render()};
 try{renderLobby()}catch(e){}
 
-document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2ResHost'))return;
+/* лента билетов: колесо мыши и перетаскивание мышью (на десктопе нет свайпа) */
+document.addEventListener('wheel',e=>{const t=root&&e.target.closest&&e.target.closest('#p2Tix');if(!t||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;if(t.scrollWidth<=t.clientWidth)return;e.preventDefault();t.scrollLeft+=e.deltaY},{passive:false});
+let drag=null,dragged=0;
+document.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;const t=root&&e.target.closest('#p2Tix');if(!t)return;drag={t,x:e.clientX,l:t.scrollLeft};dragged=0});
+document.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;if(Math.abs(dx)>5){dragged=1;drag.t.classList.add('drag')}if(dragged)drag.t.scrollLeft=drag.l-dx});
+document.addEventListener('pointerup',()=>{if(drag){drag.t.classList.remove('drag');drag=null;setTimeout(()=>dragged=0,0)}});
+document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2ResHost'))return;if(dragged&&e.target.closest('#p2Tix')){e.stopPropagation();return}
  const q=e.target.closest('[data-p2-q]');if(q){P.qty=Math.min(+q.dataset.p2Q,MAXQ-P.bought);render();return}
  const s=e.target.closest('[data-p2-s]');if(s){P.qty=Math.max(0,Math.min(MAXQ-P.bought,P.qty+ +s.dataset.p2S));render();return}
  const t=e.target.closest('[data-p2-t]');if(t){openTicket(+t.dataset.p2T);return}
