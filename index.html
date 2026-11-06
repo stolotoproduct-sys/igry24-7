@@ -7875,8 +7875,7 @@ function nsRender(){
   <small class="ns-hint">В колокольчик на сайте приходят всегда.</small>
   <h4>Предложения и акции</h4><div class="ns-card">${TOPICS.filter(t=>t[3]).map(([k,n,sub])=>`<div class="ns-row"><span class="ns-rt"><b>${n} <em>реклама</em></b><small>${sub}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <h4>Как часто</h4><div class="ns-card">${Object.entries(AD_N).map(([c,opts])=>`<div class="ns-row col"><span class="ns-rt"><b>${CH[c]}</b><small>${NS.ch[c]?'Дней в неделю, не больше':'Канал выключен выше'}</small></span><div class="ns-chips${opts.length===4?' four':''}">${opts.map(n=>`<button type="button" class="ns-chip${(NS.adN||{})[c]===n?' on':''}" data-ns-adn="${c}:${n}"${NS.ch[c]?'':' disabled'}>${n===opts.at(-1)&&n>1?'до '+n:n}<small>${n===1?'день':n<5?'дня':'дней'}</small></button>`).join('')}</div></div>`).join('')}
-   <small class="ns-hint" style="padding:0 16px 12px;display:block">Не чаще одного сообщения в день в каждом канале. Результаты тиражей приходят сразу и в лимит не входят.</small></div>
-  <p class="ns-note">Проигрыш и попытки отыграться не бывают поводом для сообщений. При самоисключении или паузе в игре рекламные сообщения отключаются.</p>`;
+   <small class="ns-hint" style="padding:0 16px 12px;display:block">Не чаще одного сообщения в день в каждом канале. Результаты тиражей приходят сразу и в лимит не входят.</small></div>`;
 }
 function nsOpen(){nsRender();const P=$('#ntset');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.nt-back',P).focus()}
 function nsClose(){const P=$('#ntset');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
