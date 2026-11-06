@@ -3417,6 +3417,7 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lp-pv .cb-claim{flex:none;min-width:88px}
 .lp-pv-chev{flex:none;width:20px;height:20px;color:#7f7690}.lp-pv-chev svg{width:20px;height:20px}
 .lp-pv .lp-pv-n{flex:none;width:48px;height:auto;font-size:28px;line-height:32px;text-align:center}.lp-pv .lp-pv-n i{font-size:18px}
+.lp-pv.off>:not(.cb-claim){opacity:.55}
 
 </style>
 </head>
@@ -6128,9 +6129,9 @@ function lpPrivileges(s,l){
  if(LV.mines){
   if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
    t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)} · до ${lbDate(rec.expiresAt)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
-    :row('',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены',`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`))}
+    :row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены',`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`))}
   else if(l.attempts)t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),'«Мины»',`+${l.attempts} ${lvAttWord(l.attempts)} до конца месяца`));
-  else t.push(row('',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`,`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`));
+  else t.push(row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`,`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`));
  }
  t.push(nx?row(' tap',lvArt(nx,'lp-pv-art'),`Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}`,
    cur?`Ещё ${lbRub(Math.max(0,nx.threshold-s.turnover))} покупок`:`От ${lbRub(nx.threshold)} за месяц`,chev,` data-lp-select="${nx.id}" role="button" tabindex="0"`)
