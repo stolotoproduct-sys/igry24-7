@@ -6124,7 +6124,7 @@ function lpCard(s,l){
  if(st==='cur'){
   return `<section class="lp-card"><div class="lp-card-hd"><span>${l.id?'Уровень '+l.id:l.name}</span><span>покупки за ${month}</span><span>${nx?'Уровень '+nx.id:'Максимум'}</span></div>
    <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${nx?lbRub(nx.threshold):lbRub(l.threshold)}</b></div>
-   <div class="lp-card-ft">${LV.cb?(l.pct?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Кэшбек — с уровня «${nx.name}»</span>`):`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
+   <div class="lp-card-ft">${LV.cb?(l.pct?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Кэшбек — с уровня «${nx.name}»</span>`):`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m3 6 6 6-6 6M9 6l6 6-6 6M15 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
  }
  if(st==='passed')return `<section class="lp-card lp-center"><span class="lp-badge">${!l.id?'Старт':LV.cb?'Кэшбек '+l.pct+'%':'Мины +'+l.attempts}</span><p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
  return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
