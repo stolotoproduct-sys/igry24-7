@@ -3425,6 +3425,13 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lp-pv-chev{flex:none;width:20px;height:20px;color:#7f7690}.lp-pv-chev svg{width:20px;height:20px}
 .lp-pv .lp-pv-n{flex:none;width:48px;height:auto;font-size:28px;line-height:32px;text-align:center}.lp-pv .lp-pv-n i{font-size:18px}
 .lp-pv.off>:not(.cb-claim){opacity:.55}
+/* плашка кэшбека с подсказкой «до N%» */
+.lp-badge{gap:6px;padding-right:4px;white-space:nowrap}
+.lp-q{flex:none;width:20px;height:20px;border-radius:10px;border:0;background:#e8bd8833;color:#f3d27a;font:800 12px/20px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);text-align:center;cursor:pointer;padding:0}
+.lp-tip{position:absolute;z-index:5;top:22px;left:12px;right:12px;display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:12px;background:#241b35;border:1px solid #e8bd8855;box-shadow:0 12px 32px #000a;text-align:left;font-size:12px;line-height:16px;color:#cbbdd9}
+.lp-tip[hidden]{display:none}
+.lp-tip b{font-size:14px;line-height:20px;color:#fff}
+.lp-tip small{color:var(--lp-sub)}
 
 </style>
 </head>
@@ -6123,9 +6130,16 @@ function lpCard(s,l){
    <div class="lp-bar big" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(s.progress)}"><i style="width:${s.progress}%"></i><b>${lbNum(s.turnover)} / ${nx?lbRub(nx.threshold):lbRub(l.threshold)}</b></div>
    <div class="lp-card-ft">${LV.cb?(l.pct?`<span>Кэшбек бонусами <em>${l.pct}%</em></span>`:`<span>Кэшбек — с уровня «${nx.name}»</span>`):`<span>Попыток за уровень <em>${l.attempts}</em></span>`}${nx?`<span class="lp-next">${IC('<path d="m3 6 6 6-6 6M9 6l6 6-6 6M15 6l6 6-6 6"/>',16)}${LV.cb?nx.pct+'%':'+'+nx.attempts}</span>`:''}</div></section>`;
  }
- if(st==='passed')return `<section class="lp-card lp-center"><span class="lp-badge">${!l.id?'Старт':LV.cb?'Кэшбек '+l.pct+'%':'Мины +'+l.attempts}</span><p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
- return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
+ if(st==='passed')return `<section class="lp-card lp-center">${!l.id?'<span class="lp-badge">Старт</span>':LV.cb?lpBadge(l.pct):`<span class="lp-badge">Мины +${l.attempts}</span>`}<p>Уровень пройден в ${lvMonthPrep()}.</p><b>Сейчас у вас «${s.level.name}»${LV.cb?' — '+s.level.pct+'%':''}</b></section>`;
+ return `<section class="lp-card lp-center">${LV.cb?lpBadge(l.pct):`<span class="lp-badge">+${l.attempts} в Минах</span>`}<p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
 }
+/* плашка «Кэшбек бонусами до N%» с подсказкой: что значит «до» */
+function lpBadge(pct){const ex=LossbackEngine.cashback(2000,pct);
+ return `<span class="lp-badge">Кэшбек бонусами до ${pct}%<button type="button" class="lp-q" data-lp-tip aria-label="Что значит «до ${pct}%»" aria-expanded="false">?</button></span>
+ <div class="lp-tip" role="tooltip" hidden><b>До ${pct}% от проигрыша за месяц</b>Проигрыш = покупки − выигрыши за календарный месяц. Например: покупки 5&nbsp;000&nbsp;₽, выигрыши 3&nbsp;000&nbsp;₽ → 2&nbsp;000&nbsp;₽ × ${pct}% = ${lbNum(ex)}&nbsp;Б.<small>Если за месяц выиграли больше, чем потратили, кэшбека нет. Начисляем бонусами 1-го числа следующего месяца.</small></div>`}
+document.addEventListener('click',e=>{const q=e.target.closest('[data-lp-tip]');const open=$('.lp-tip:not([hidden])');
+ if(q){e.stopPropagation();const tip=q.closest('.lp-card').querySelector('.lp-tip');const on=tip.hidden;if(open&&open!==tip)open.hidden=true;tip.hidden=!on;q.setAttribute('aria-expanded',String(on));return}
+ if(open&&!e.target.closest('.lp-tip')){open.hidden=true;const b=open.parentElement.querySelector('[data-lp-tip]');if(b)b.setAttribute('aria-expanded','false')}},true);
 function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now()).replace(/ь$/,'е').replace(/й$/,'е').replace(/т$/,'те')}
 /* привилегии: горизонтальные строки; у текущего уровня — живые данные (когда начислим кэшбек, попытки, сколько до следующего) */
 function lpPrivileges(s,l){
