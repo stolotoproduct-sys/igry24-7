@@ -3623,7 +3623,7 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
     <div class="cfg-row"><div><b>Вибрация (haptic)</b><small>Отклик при нажатиях и выигрышах (нужен включённый звук)</small></div><button class="sw" role="switch" data-sw="hap" aria-label="Вибрация"><i></i></button></div>
     <div class="cfg-t">Демо-счёт</div>
     <button id="lbNearLevel" class="cfg-lnk" type="button">Уровень: 100 ₽ покупок до следующего</button>
-    <button id="lbCloseWeek" class="cfg-lnk" type="button">Кэшбек: завершить демо-неделю и посчитать бонусы</button>
+    <button id="lbCloseWeek" class="cfg-lnk" type="button">Кэшбек: завершить демо-месяц и начислить бонусы</button>
     <button id="ntJournal" class="cfg-lnk" type="button">Уведомления: журнал отправки — что и когда уйдёт</button>
     <button id="tmFinishDemo" class="cfg-lnk" type="button">Турниры: завершить текущий и проверить приз</button>
     <button id="bpWagerScenario" class="cfg-lnk" type="button">Бонусы: 0 ₽ и 500 Б — проверить отыгрыш</button>
@@ -5879,7 +5879,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)bpTickTime
 <script>
 /* Единая программа «Уровень».
    Уровень — по покупкам за рубли в календарном месяце (Москва), 1-го числа обнуляется.
-   У каждого уровня свой процент кэшбека: процент от проигрыша недели возвращается бонусами в понедельник.
+   У каждого уровня свой процент кэшбека: процент от проигрыша за календарный месяц возвращается бонусами 1-го числа следующего месяца.
    С уровня «Платина» (5 000 ₽) за каждый новый уровень — попытки в «Минах», один раз за месяц.
    Рубли этот движок не начисляет. */
 (function(root){
@@ -5900,7 +5900,9 @@ const MAX_PCT=levels.at(-1).pct;
 /* не идут в уровень (в кэшбеке учитываются как обычные покупки) */
 const EXCLUDED={fly:'Crash Games'};
 const ATTEMPT_DAYS=7,BONUS_DAYS=14;
-function weekStart(now){const local=new Date(now+OFFSET),day=(local.getUTCDay()+6)%7;return Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate()-day)-OFFSET}
+/* период кэшбека — календарный месяц по Москве (имена week* оставлены для совместимости) */
+function weekStart(now){const d=new Date(now+OFFSET);return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1)-OFFSET}
+const prevStart=s=>weekStart(s-1);
 const monthKey=t=>{const d=new Date(t+OFFSET);return d.getUTCFullYear()*12+d.getUTCMonth()};
 const monthEnd=t=>{const d=new Date(t+OFFSET);return Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,1)-OFFSET};
 const levelOf=v=>levels.reduce((a,b)=>v>=b.threshold?b:a,levels[0]);
@@ -5911,13 +5913,13 @@ function create(now=Date.now(),seed=true){
  const mk=()=>monthKey(Date.now());
  const got=()=>{const k=mk();if(!granted.has(k))granted.set(k,new Set());return granted.get(k)};
  const curT=()=>months.get(mk())||0;
- const make=start=>({start,end:start+WEEK,stakes:0,wins:0,pending:0,claimed:false,paid:0,pct:null,top:levelOf(curT()).pct});
- /* процент недели — самый высокий уровень, который был в эту неделю: обнуление 1-го числа не съедает кэшбек */
+ const make=start=>({start,end:monthEnd(start),stakes:0,wins:0,pending:0,claimed:false,paid:0,pct:null,top:levelOf(curT()).pct});
+ /* процент месяца — уровень, которого игрок достиг за месяц (внутри месяца уровень не падает) */
  const touch=p=>{if(p&&p.pct===null)p.top=Math.max(p.top||0,levelOf(curT()).pct)};
- /* демо: 3 400 ₽ за месяц — «Золото», 5%; прошлая неделя — проигрыш 1 600 ₽ → 80 Б ждут */
+ /* демо: 3 400 ₽ за месяц — «Золото», 5%; прошлый месяц — проигрыш 1 600 ₽ → 80 Б */
  months.set(monthKey(now),seed?3400:0);
  periods.set(current,Object.assign(make(current),seed?{stakes:1800,wins:600}:{}));
- if(seed)periods.set(current-WEEK,{...make(current-WEEK),stakes:2400,wins:800,pct:5});
+ if(seed)periods.set(prevStart(current),{...make(prevStart(current)),stakes:2400,wins:800,pct:5});
  if(seed)for(const l of levels)if(l.attempts&&l.threshold<=curT())got().add(l.id);
  function advance(time){touch(periods.get(current));const key=weekStart(time);if(key>current){const prev=periods.get(current);if(prev&&prev.pct===null)prev.pct=prev.top||0;current=key;if(!periods.has(current))periods.set(current,make(current))}}
  const net=p=>Math.max(0,p.stakes-p.wins);
@@ -5942,17 +5944,17 @@ function create(now=Date.now(),seed=true){
    return {turnover,level,next,nextMines,granted:[...got()],monthEnd:monthEnd(time),remaining:next?Math.max(0,next.threshold-turnover):0,
     progress:next?Math.min(100,Math.max(0,(turnover-level.threshold)/(next.threshold-level.threshold)*100)):100,
     week:{...p,net:net(p),pct:pctOf(p),cb:cashback(net(p),pctOf(p))},periods:closed,ready:closed.filter(x=>!x.claimed&&!x.pending&&x.cb>0)}},
-  /* забрать кэшбек за закрытую неделю: возвращает сумму бонусов или 0. Один раз за неделю */
+  /* начислить кэшбек за закрытый месяц: возвращает сумму бонусов или 0. Один раз за месяц */
   claim(start,time=Date.now()){advance(time);const p=periods.get(Number(start));if(!p||p.end>time||p.pending||p.claimed)return 0;const n=cashback(net(p),pctOf(p));if(!n)return 0;p.claimed=true;p.paid=n;return n},
   /* демо: покупки за месяц; уровни до него считаются уже выданными */
   setTurnover(n){months.set(mk(),Math.max(0,Math.round(n)));periods.get(current).top=levelOf(curT()).pct;const g=got();g.clear();const lv=levelOf(curT());for(const l of levels)if(l.attempts&&l.id<=lv.id)g.add(l.id);fresh.length=0;ups.length=0;lastLevel=lv.id;return lv},
   /* демо: прошлая неделя — в плюсе / кэшбек ждёт / кэшбек уже начислен */
-  setWeek(kind){const prev=current-WEEK,cur=periods.get(current);for(const k of[...periods.keys()])if(k!==current)periods.delete(k);
+  setWeek(kind){const prev=prevStart(current),cur=periods.get(current);for(const k of[...periods.keys()])if(k!==current)periods.delete(k);
    Object.assign(cur,{stakes:kind==='none'?0:1200,wins:kind==='none'?0:500,pending:0,claimed:false,paid:0,pct:null,top:levelOf(curT()).pct});if(kind==='none')return;const pc=levelOf(curT()).pct||3;
    if(kind==='plus')periods.set(prev,{...make(prev),stakes:1500,wins:2400});
    else if(kind==='got'){const p={...make(prev),stakes:3000,wins:900,pct:pc};p.claimed=true;p.paid=cashback(net(p),pc);periods.set(prev,p)}
    else periods.set(prev,{...make(prev),stakes:3000,wins:900})},
-  closeDemoWeek(){const p=periods.get(current);if(p.pending)return false;const key=current-WEEK;const old=periods.get(key);if(old&&!old.claimed&&cashback(net(old),pctOf(old)))return false;
+  closeDemoWeek(){const p=periods.get(current);if(p.pending)return false;const key=prevStart(current);const old=periods.get(key);if(old&&!old.claimed&&cashback(net(old),pctOf(old)))return false;
    periods.delete(current);p.start=key;p.end=current;p.pct=pctOf(p);periods.set(key,p);periods.set(current,make(current));return true}
  };
  return api;
@@ -5977,7 +5979,7 @@ window.LV_ART={
 
 </script>
 <script>
-/* Программа «Уровень»: покупки за месяц → уровень → процент кэшбека за неделю (бонусами) и попытки в «Минах».
+/* Программа «Уровень»: покупки за месяц → уровень → процент кэшбека за месяц (бонусами, 1-го числа) и попытки в «Минах».
    Бесплатные билеты остаются только как призы «Мин». */
 let lossbackModel=LossbackEngine.create(),lbSelected=null;
 /* настройки прототипа: механики можно выключать по отдельности */
@@ -6028,8 +6030,8 @@ function lvUseAttempt(){const r=lvMinesRec();if(!r)return false;r.used++;if(r.us
 /* новые уровни месяца: один раз за уровень — попытки в «Минах» */
 function lvClaim(start){const n=lossbackModel.claim(start);if(n){lvCreditBonus(n);toast(BonusEngine.mode==='wager'?`+${lbNum(n)} Б кэшбека — бонус в «Промо», отыгрыш ×1`:`+${lbNum(n)} бонусов кэшбека на счёт`);try{confetti()}catch(e){}}
  renderLossback();return n}
-/* автоначисление: в понедельник закрытая неделя начисляется сама, игрок узнаёт из уведомления.
-   Храним одну запись «последнее начисление» (сумма, неделя, увидел ли игрок) — каждую неделю она перезаписывается */
+/* автоначисление: 1-го числа закрытый месяц начисляется сам, игрок узнаёт из уведомления.
+   Храним одну запись «последнее начисление» (сумма, месяц, увидел ли игрок) — каждый месяц она перезаписывается */
 let LV_LAST=(()=>{try{return JSON.parse(localStorage.getItem('lvLast')||'null')}catch(e){return null}})();
 const lvLastSave=()=>{try{localStorage.setItem('lvLast',JSON.stringify(LV_LAST))}catch(e){}};
 window.lvLastGet=()=>LV_LAST;
@@ -6044,12 +6046,12 @@ function lvAutoCredit(){if(!LV.cb)return;const s=lossbackModel.snapshot();
  for(const p of s.ready.slice().reverse()){const n=lossbackModel.claim(p.start);if(!n)continue;lvCreditBonus(n);
   LV_LAST={amount:n,pct:p.pct,start:p.start,end:p.end,at:Date.now()};lvLastSave();window.ntMarkRead&&ntMarkRead(lvNid(LV_LAST),false);
   /* push или письмо уходит по настройкам уведомлений; в открытом приложении — тост */
-  if(!lvBooting)toast(`Кэшбек за неделю начислен: +${lbNum(n)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`)}}
-/* демо-панель: состояние прошлой недели */
+  if(!lvBooting)toast(`Кэшбек за ${lvMon(LV_LAST.start)} начислен: +${lbNum(n)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`)}}
+/* демо-панель: состояние прошлого месяца */
 window.lvDemoWeek=function(v){LV_LAST=null;lvLastSave();lossbackModel.setWeek(v==='got'?'ready':v);lvBooting=true;lvAutoCredit();if(v==='got'&&LV_LAST&&window.ntMarkRead)ntMarkRead(lvNid(LV_LAST));lpTab=null;renderLossback();lvBooting=false};
 /* кэшбек приходит бонусами: в режиме «Бонусы Столото» — на их баланс, в режиме с отыгрышем — бонусом с отыгрышем ×1 */
 function lvCreditBonus(n){const m=BonusEngine.mode,t=Date.now(),ms=LossbackEngine.BONUS_DAYS*LV_DAY;
- if(m==='wager')bonusModel.records.push({id:'cb-'+t,type:'deposit',fsw:true,cbk:true,title:'Кэшбек недели',tag:'Кэшбек уровня · отыгрыш ×1',percent:0,min:0,cap:0,multiplier:1,game:null,status:'active',used:0,turnover:0,amount:n,remaining:n,pending:0,target:n,ready:false,expiresAt:t+ms,validForMs:ms});
+ if(m==='wager')bonusModel.records.push({id:'cb-'+t,type:'deposit',fsw:true,cbk:true,title:'Кэшбек месяца',tag:'Кэшбек уровня · отыгрыш ×1',percent:0,min:0,cap:0,multiplier:1,game:null,status:'active',used:0,turnover:0,amount:n,remaining:n,pending:0,target:n,ready:false,expiresAt:t+ms,validForMs:ms});
  else{S.stb=(S.stb||0)+n;try{stbRender()}catch(e){}}
  if(typeof bpSync==='function')bpSync();try{renderHeaderBalances()}catch(e){}}
 /* новые уровни: поздравление; с «Платины» — попытки в «Минах» */
@@ -6062,10 +6064,12 @@ const lvArt=(l,cls='')=>`<img class="lp-art ${cls}" src="${LV_ART[l.art]||LV_ART
 const LV_RULE='Считаем игры, оплаченные рублями. Пополнения, бесплатные и бонусные игры не учитываются';
 const lvMonth=()=>new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now());
 function lvBonusNote(){const m=BonusEngine.mode;return m==='wager'?'Бонусом в «Промо»: играйте им, как рублями. Вывести — после отыгрыша ×1':m==='orig'?'Бонусами Столото: 1 Б = 1 ₽ при оплате игр. Вывести нельзя':'Бонусами на счёт: 1 Б = 1 ₽ при оплате игр. Вывести нельзя'}
-function lvTitle(){return LV.cb&&LV.mines?'Мой уровень':LV.mines?'Уровень месяца':'Кэшбек недели'}
+function lvTitle(){return LV.cb&&LV.mines?'Мой уровень':LV.mines?'Уровень месяца':'Кэшбек месяца'}
 function lvMonthReset(s){return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(s.monthEnd)}
 const lvDays=t=>Math.max(0,Math.ceil((t-Date.now())/LV_DAY));
 const lvIn=t=>{const d=lvDays(t);return d<=1?'завтра':`через ${d} ${lvWord(d,'день','дня','дней')}`};
+const lvMon=t=>new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(t);
+const lvDay=t=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(t);
 const lvWd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'long',day:'numeric',month:'short',timeZone:'Europe/Moscow'}).format(t);
 function lvPerk(l){const p=[];if(LV.cb&&l.pct)p.push(`кэшбек ${l.pct}%`);if(LV.mines&&l.attempts)p.push(`+${l.attempts} в Минах`);return p.join(' · ')}
 
@@ -6126,7 +6130,7 @@ function lpCard(s,l){
  return `<section class="lp-card lp-center"><span class="lp-badge">${LV.cb?'Кэшбек бонусами '+l.pct+'%':'+'+l.attempts+' в Минах'}</span><p>Покупки за ${month} должны достигнуть</p><b class="lp-goal">${lbRub(l.threshold)}</b><small>осталось ${lbRub(Math.max(0,l.threshold-s.turnover))}</small></section>`;
 }
 function lvMonthPrep(){return new Intl.DateTimeFormat('ru-RU',{month:'long',timeZone:'Europe/Moscow'}).format(Date.now()).replace(/ь$/,'е').replace(/й$/,'е').replace(/т$/,'те')}
-/* привилегии: горизонтальные строки; у текущего уровня — живые данные (кэшбек недели, попытки, сколько до следующего) */
+/* привилегии: горизонтальные строки; у текущего уровня — живые данные (когда начислим кэшбек, попытки, сколько до следующего) */
 function lpPrivileges(s,l){
  const st=lpState(l,s),cur=st==='cur',lock=st==='locked',L=LVL(),mines=L.find(x=>x.attempts),nx=L[l.id+1],t=[];
  const row=(cls,ic,title,sub,end,attr='')=>`<div class="lp-pv${cls}"${attr}>${ic}<span class="lp-pv-t"><b>${title}</b>${sub?`<small>${sub}</small>`:''}</span>${end||''}</div>`;
@@ -6134,8 +6138,7 @@ function lpPrivileges(s,l){
  const wd=t=>new Intl.DateTimeFormat('ru-RU',{weekday:'short',day:'numeric',month:'short',timeZone:'Europe/Moscow'}).format(t);
  if(LV.cb){const w=s.week;
   t.push(row(lock?' lock':'',`<b class="lp-pv-n">${l.pct}<i>%</i></b>`,`Кэшбек ${l.pct}%`,
-   cur?`Начислим в ${wd(w.end)}`:'Бонусами, каждый понедельник',
-   cur?`<span class="lp-pv-v"><b>≈ ${lbNum(w.cb||0)}${LV_BI}</b></span>`:''))}
+   cur?`За ${lvMon(w.start)} — начислим ${lvDay(w.end)}`:'Бонусами, 1-го числа за прошлый месяц'))}
  if(LV.mines){
   if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
    t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)} · до ${lbDate(rec.expiresAt)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
@@ -6169,7 +6172,7 @@ function lpHistory(s){return ''}
 function lpGive(){
  const L=LVL(),b=L[1],m=L[LossbackEngine.MINES_FROM],top=L.at(-1);
  const tiles=[];
- if(LV.cb)tiles.push(`<div class="lp-tile wide lp-grow"><span class="lp-tile-t"><b>Кэшбек от ${b.pct}% до ${top.pct}%</b><small>От проигрыша недели — бонусами. Чем выше уровень, тем больше процент</small></span><span class="lp-grow-n" aria-hidden="true"><em>${b.pct}%</em>${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',16)}<b>${top.pct}<i>%</i></b></span></div>`);
+ if(LV.cb)tiles.push(`<div class="lp-tile wide lp-grow"><span class="lp-tile-t"><b>Кэшбек от ${b.pct}% до ${top.pct}%</b><small>От проигрыша за месяц — бонусами. Чем выше уровень, тем больше процент</small></span><span class="lp-grow-n" aria-hidden="true"><em>${b.pct}%</em>${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',16)}<b>${top.pct}<i>%</i></b></span></div>`);
  if(LV.mines)tiles.push(`<button type="button" class="lp-tile wide" data-lv-mines><span class="lp-tile-t"><b>Игра «Мины»</b><small>С уровня «${m.name}» — от ${lbNum(m.threshold)} ₽ покупок</small></span>${lvArt(m,'lp-tile-art')}<span class="lp-tile-more">Как это ›</span></button>`);
  
  return tiles.length?`<h3 class="lp-h">Что дадут уровни</h3><div class="lp-tiles">${tiles.join('')}</div>`:'';
@@ -6209,7 +6212,7 @@ function lpScrollTo(id,smooth=true){const rail=$('.lp-rail');if(!rail)return;con
 function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
- if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша недели',`Проигрыш = покупки − выигрыши за пн–вс. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами в понедельник',`Пришлём уведомление — забирать не нужно. ${lvBonusNote()}${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
+ if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша за месяц',`Проигрыш = покупки − выигрыши за календарный месяц. Процент — по уровню, которого вы достигли за этот месяц. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами 1-го числа',`Пришлём уведомление — забирать не нужно. ${lvBonusNote()}${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
  if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца'+(typeof MN!=='undefined'?`. На поле ${MN.mines} мин из ${MN.size} клеток, каждая безопасная клетка повышает приз: ${MN.ladder.map(x=>x.k==='fs'?x.n+' FS':x.n+' '+lbTicketWord(x.n)).join(' → ')}`:'')]);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>Мины</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
@@ -6233,7 +6236,7 @@ document.addEventListener('click',e=>{
 function lvSeed(){}
 const lbResetProto=resetProto;resetProto=function(){lbResetProto();lossbackModel=LossbackEngine.create();LV_LAST=null;lvLastSave();lbSelected=null;lpTab=null;lvSeed();lvBooting=true;renderLossback();lvBooting=false};
 $('#lbNearLevel').onclick=()=>{if(bpFunding.size){toast('Дождитесь завершения текущих участий');return}const s=lossbackModel.snapshot(),next=s.next||LVL()[1];lossbackModel.setTurnover(next.threshold-100);lbSelected=null;renderLossback();$('#cfg').classList.remove('show');go('lossback');toast(`Демо: 100 ₽ покупок до уровня «${next.name}»`)};
-$('#lbCloseWeek').onclick=()=>{const ok=lossbackModel.closeDemoWeek();$('#cfg').classList.remove('show');go('lossback');renderLossback();toast(ok?'Демо: неделя закрыта, кэшбек начислен автоматически':'Дождитесь результатов игр этой недели')};
+$('#lbCloseWeek').onclick=()=>{const ok=lossbackModel.closeDemoWeek();$('#cfg').classList.remove('show');go('lossback');renderLossback();toast(ok?'Демо: месяц закрыт, кэшбек начислен автоматически':'Дождитесь результатов игр этого месяца')};
 setInterval(()=>{const p=lossbackModel.snapshot();if(p.week.start!==lbRenderedWeek){lbRenderedWeek=p.week.start;renderLossback()}},10000);
 let lbRenderedWeek=lossbackModel.snapshot().week.start;
 lvSeed();renderLossback();lvBooting=false;
@@ -6777,8 +6780,8 @@ const DAY=86400000;
 const DM_GROUPS=[
  {id:'cash',t:'Рублёвый баланс',cls:'c5',opts:[[0,'0 ₽','пусто'],[50,'50 ₽','на 1 игру'],[1250,'1 250','₽ старт'],[10000,'10 000','₽ много'],[48000,'48 000','₽ выигрыш']]},
  {id:'wdId',t:'Вывод: подтверждение личности',cls:'c3',opts:[['none','Нет','до 15 000 ₽ за раз'],['simple','Госуслуги','до 60 000 ₽'],['full','Полная','до 600 000 ₽']]},
- {id:'cbOn',t:'Кэшбек недели',cls:'c2',opts:[['on','Есть','% бонусами'],['off','Нет','механика выключена']]},
- {id:'cbState',t:'Кэшбек: прошлая неделя (начисляется сам)',cls:'c4',opts:[['none','Нет','первая неделя'],['plus','Плюс','кэшбека нет'],['ready','Начислен','ещё не видел'],['got','Начислен','уже видел']]},
+ {id:'cbOn',t:'Кэшбек месяца',cls:'c2',opts:[['on','Есть','% бонусами'],['off','Нет','механика выключена']]},
+ {id:'cbState',t:'Кэшбек: прошлый месяц (начисляется сам)',cls:'c4',opts:[['none','Нет','первый месяц'],['plus','Плюс','кэшбека нет'],['ready','Начислен','ещё не видел'],['got','Начислен','уже видел']]},
  {id:'mnOn',t:'«Мины» за уровень',cls:'c2',opts:[['on','Есть','попытки за покупки'],['off','Нет','механика выключена']]},
  {id:'lvl',t:'Уровень (покупки за месяц)',cls:'c5',opts:LossbackEngine.levels.map(l=>[l.id,l.id?l.name:'Старт',l.threshold?(l.threshold>=1000?(l.threshold/1000)+' тыс ₽':l.threshold+' ₽')+(l.pct?' · '+l.pct+'%':''):'0 ₽'])},
  {id:'att',t:'Попытки в «Минах»',cls:'c4',opts:[[0,'0','нет попыток'],[1,'1','последняя'],[5,'5','за уровень'],[15,'15','максимум']]},
@@ -7738,7 +7741,7 @@ function items(){
   // 2. начислены бонусы, промокод или попытки
   try{
     const cl=window.lvLastGet&&lvLastGet();
-    if(LV.cb&&cl)L.push({id:'cb-credit-'+cl.start,topic:'bonus',type:'bonus',t:`Кэшбек за неделю начислен: ${num(cl.amount)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`,d:`${cl.pct}% кэшбека за ${lbRange(cl)} — ${BonusEngine.mode==='wager'?'бонусом в «Промо»':'на бонусный счёт'}. Забирать не нужно.`,m:Math.max(0,Math.round((Date.now()-cl.at)/60000)),btn:'Посмотреть',act:()=>go('lossback')});
+    if(LV.cb&&cl)L.push({id:'cb-credit-'+cl.start,topic:'bonus',type:'bonus',t:`Кэшбек за ${lvMon(cl.start)} начислен: ${num(cl.amount)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`,d:`${cl.pct}% кэшбека за ${lvMon(cl.start)} — ${BonusEngine.mode==='wager'?'бонусом в «Промо»':'на бонусный счёт'}. Забирать не нужно.`,m:Math.max(0,Math.round((Date.now()-cl.at)/60000)),btn:'Посмотреть',act:()=>go('lossback')});
     if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,topic:'bonus',type:'bonus',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Попытки за уровень. Призы — FS и бесплатные билеты.',m:5,btn:'Играть',act:()=>lvOpenMines()})}
   }catch(e){}
   const mode=(window.BonusEngine&&BonusEngine.mode)||'wager';
@@ -7754,7 +7757,7 @@ function items(){
 }
 /* журнал отправки (демо): что система сделала бы с каждым поводом прямо сейчас */
 function journal(){
-  const evs=[{topic:'draw',t:'Результат тиража',d:'«Монетка» № 12 407'},{topic:'bonus',t:'Кэшбек / попытки',d:'Кэшбек недели бонусами, «Мины»'},{topic:'expiry',t:'Срок бонуса',d:'Одно напоминание'},{topic:'comeback',ad:true,t:'Давно не заходили',d:'Одно рекламное сообщение'},{topic:'comeback',ad:true,expired:true,t:'Старое предложение',d:'Срок акции прошёл'}];
+  const evs=[{topic:'draw',t:'Результат тиража',d:'«Монетка» № 12 407'},{topic:'bonus',t:'Кэшбек / попытки',d:'Кэшбек месяца бонусами, «Мины»'},{topic:'expiry',t:'Срок бонуса',d:'Одно напоминание'},{topic:'comeback',ad:true,t:'Давно не заходили',d:'Одно рекламное сообщение'},{topic:'comeback',ad:true,expired:true,t:'Старое предложение',d:'Срок акции прошёл'}];
   return evs.map(e=>({...e,res:decide(e)}));
 }
 const isRead=i=>i.read||NT.read.has(i.id);
@@ -7952,7 +7955,7 @@ function about(){return `<h3 class="pf-h">О компании</h3>
 function guestView(){return `<div class="pf-card pf-guest"><span class="pf-ava g">${I.user}</span><b>Вы не вошли</b><p>Войдите, чтобы играть, получать кэшбек, крутить колесо удачи и забирать бонусы.</p>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="login">Войти</button><button class="pf-btn" type="button" data-pf="register">Регистрация</button></div></div>
  <h3 class="pf-h">Что вы получите</h3>
- <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша недели — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Рубли, фриспины и купончики</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Фриспины, турниры и призы</small></span></div></div>
+ <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша за месяц — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Рубли, фриспины и купончики</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Фриспины, турниры и призы</small></span></div></div>
  ${about()}
  <div class="pf-card pf-list">${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
@@ -8211,7 +8214,7 @@ const MAIL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const COPY={
  purchase:['Прислать результат тиража?','Сообщим, как только тираж завершится. Только важное — настройки можно поменять в любой момент.'],
  bell:['Не пропускайте выигрыши','Выберите, о чём сообщать. Займёт 10 секунд — потом можно поменять в профиле.'],
- missed:['Кэшбек начислен в понедельник','Включите уведомления — в следующий раз сообщим сразу, как начислим.'],
+ missed:['Кэшбек за месяц уже начислен','Включите уведомления — в следующий раз сообщим сразу, как начислим.'],
  profile:['Настройте уведомления','Выберите, о чём сообщать: выигрыши, бонусы, напоминания.']};
 const TOP=[['draw','Результаты тиражей','Только ваши тиражи',true],['bonus','Бонусы, кэшбек и попытки','Когда что-то начислено',true],['ad','Акции и подарки','Не чаще 2 раз в неделю',false]];
 let src='bell',pick={draw:true,bonus:true,ad:false},slot='evening',view='prime';
@@ -8678,7 +8681,7 @@ window.PK2=P;
 
 </script>
 <script>
-/* «Мины» (попытки за уровень месяца) и бесплатные билеты в быстрых играх (кэшбек недели и призы «Мин").
+/* «Мины» (попытки за уровень месяца) и бесплатные билеты в быстрых играх (призы «Мин").
    Подключается последним: оборачивает карточки бонусов, оплату быстрых игр и подписи кнопок. */
 (function(){
 const DAY=86400000;
@@ -8707,7 +8710,7 @@ bpDescription=function(b){
 };
 const _rules=bpRules;
 bpRules=function(b){
- if(b.type==='voucher')return [`Откройте любую быструю игру: «${QUICK().map(id=>GAMES[id].t||GAMES[id].n).join('», «')}». На экране игры появится плашка с билетом.`,`Нажмите «Поставить ${b.nominal} ₽» — ставка станет равна номиналу билета, рубли не спишутся. Билет тратится целиком на одну игру.`,`Выигрыш — ${bpFsWinTxt()}. Игра по бесплатному билету не идёт в уровень и в проигрыш недели.`,`Билет действует ${LossbackEngine.TICKET_DAYS} дней с получения. Оставшееся время — в карточке.`];
+ if(b.type==='voucher')return [`Откройте любую быструю игру: «${QUICK().map(id=>GAMES[id].t||GAMES[id].n).join('», «')}». На экране игры появится плашка с билетом.`,`Нажмите «Поставить ${b.nominal} ₽» — ставка станет равна номиналу билета, рубли не спишутся. Билет тратится целиком на одну игру.`,`Выигрыш — ${bpFsWinTxt()}. Игра по бесплатному билету не идёт в уровень и в проигрыш месяца.`,`Билет действует ${LossbackEngine.TICKET_DAYS} дней с получения. Оставшееся время — в карточке.`];
  if(b.type==='mines')return [`Одна попытка — один раунд на поле 5 × 5, где спрятаны ${MN.mines} мин.`,`Каждая открытая безопасная клетка повышает приз: ${MN.ladder.map(mnLabel).join(' → ')}.`,`Заберите приз в любой момент. Попали на мину — попытка сгорает без приза.`,`Призы приходят в «Промо → Активные бонусы». Попытки действуют до конца месяца.`];
  return _rules.apply(this,arguments);
 };
