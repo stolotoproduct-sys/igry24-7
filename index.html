@@ -6963,6 +6963,8 @@ const html=`<section class="dm" aria-label="Состояние игрока">
 </section>`;
 const panel=$('#cfg .in'),title=$('h3',panel);
 title.insertAdjacentHTML('afterend',html);
+/* «Контур MVP» — первым в настройках */
+{const mt=[...$$('.cfg-t',panel)].find(e=>e.textContent.trim()==='Контур MVP');if(mt){const parts=[mt];let n=mt.nextElementSibling;while(n&&!n.classList.contains('cfg-t')){parts.push(n);n=n.nextElementSibling}let at=title;parts.forEach(p=>{at.after(p);at=p})}}
 /* old one-off scenarios move into a collapsible block so nothing is lost */
 const oldTitle=[...$$('.cfg-t',panel)].find(e=>e.textContent.trim()==='Демо-счёт');
 if(oldTitle){const det=document.createElement('details');det.className='cfg-d dm-old';det.innerHTML='<summary>Готовые сценарии</summary>';
@@ -7738,7 +7740,8 @@ const CH={push:'Push',email:'E-mail'};
 const PAUSES=[[0,'Нет'],[1,'1 день'],[7,'7 дней'],[30,'30 дней']];
 /* тихие часы: настраиваются (тумблер + ползунки), по умолчанию 21–10; могут переходить через полночь */
 const hh=h=>String(h%24).padStart(2,'0')+':00';
-const quiet=h=>{const q=NS.quiet;if(!q||!q.on)return false;const f=q.from,t=q.to%24;if(f===t)return false;return f<t?h>=f&&h<t:h>=f||h<t};
+const quiet=h=>false;/* тихие часы — не в MVP 1 */
+const quietOld=h=>{const q=NS.quiet;if(!q||!q.on)return false;const f=q.from,t=q.to%24;if(f===t)return false;return f<t?h>=f&&h<t:h>=f||h<t};
 const qLabel=()=>NS.quiet&&NS.quiet.on?hh(NS.quiet.from)+'–'+hh(NS.quiet.to):'выключены';
 const paused=()=>false; /* пауза — не в MVP 1 */
 const dShort=t=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(t);
@@ -7823,14 +7826,14 @@ function close(){const P=$('#notif');P.classList.remove('show');P.setAttribute('
 $('#scr').insertAdjacentHTML('beforeend',`<div class="nt" id="notif" role="dialog" aria-modal="true" aria-label="Уведомления" aria-hidden="true">
  <div class="nt-head"><button class="nt-back" type="button" data-nt-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 5-7 7 7 7"/></svg></button><h2>Уведомления</h2><button class="nt-readall" type="button" data-nt-readall>Прочитать все</button></div>
  <div class="nt-chips" role="tablist"></div><div class="nt-list"></div>
- <button type="button" class="nt-foot" data-ns-open>Настроить: каналы, темы, тихие часы</button></div>`);
+ <button type="button" class="nt-foot" data-ns-open>Настроить: каналы, темы, частота</button></div>`);
 /* ---------- экран настроек уведомлений ---------- */
 const sw=(on,attr)=>`<button type="button" class="ns-sw" role="switch" aria-checked="${on}" ${attr}><i></i></button>`;
 function nsSummary(){
   if(ND.self==='yes')return ['shield','Рекламные сообщения выключены','У вас пауза в игре. Результаты тиражей и бонусы приходят.'];
-  const L=adLimit(),q='Тихие часы: '+qLabel()+'.';
+  const L=adLimit(),q=`Push до ${L.push} дн./нед., e-mail до ${L.email} дн./нед., не чаще 1 в день.`;
   if(!NS.topics.comeback)return ['clock','Только важное','Результаты, бонусы и сроки. Предложения выключены. '+q];
-  return ['clock','Важное и предложения',`Предложения: ${[L.push?'push до '+L.push+' дн./нед.':'',L.email?'e-mail до '+L.email+' дн./нед.':''].filter(Boolean).join(', ')||'каналы выключены'} — не чаще 1 в день в канале. ${q}`];
+  return ['clock','Важное и предложения',q];
 }
 function emailRow(){const A=window.ACC?ACC.get():{email:'ivan.petrov@mail.ru',emailState:'confirmed'};
   if(A.emailState==='confirmed'&&A.email)return `<div class="ns-row"><span class="ns-rt"><b>E-mail</b><small>На почту ${ACC.maskEmail(A.email)}</small></span>${sw(NS.ch.email,'data-ns-ch="email"')}</div>`;
@@ -7870,10 +7873,9 @@ function nsRender(){
   ${on?'':'<p class="ns-warn">Все каналы выключены — уведомления будут только в колокольчике на сайте.</p>'}
   <h4>Важное</h4><div class="ns-card">${TOPICS.filter(t=>!t[3]).map(([k,n,sub])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${sub}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <small class="ns-hint">В колокольчик на сайте приходят всегда.</small>
-  <h4>Предложения и акции</h4><div class="ns-card">${TOPICS.filter(t=>t[3]).map(([k,n,sub])=>`<div class="ns-row"><span class="ns-rt"><b>${n} <em>реклама</em></b><small>${sub}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}
-   ${NS.topics.comeback?Object.entries(AD_N).map(([c,opts])=>`<div class="ns-row col"><span class="ns-rt"><b>${CH[c]} — как часто</b><small>${NS.ch[c]?'Дней в неделю, не больше':'Канал выключен выше'}</small></span><div class="ns-chips${opts.length===4?' four':''}">${opts.map(n=>`<button type="button" class="ns-chip${(NS.adN||{})[c]===n?' on':''}" data-ns-adn="${c}:${n}"${NS.ch[c]?'':' disabled'}>${n===opts.at(-1)&&n>1?'до '+n:n}<small>${n===1?'день':n<5?'дня':'дней'}</small></button>`).join('')}</div></div>`).join('')+'<small class="ns-hint" style="padding:0 16px 12px;display:block">Не чаще одного сообщения в день в каждом канале. Пишем, только когда есть повод.</small>':''}</div>
-  <h4>Тихие часы</h4><div class="ns-card"><div class="ns-row"><span class="ns-rt"><b>Не беспокоить ночью</b><small id="qhSub">${NS.quiet.on?'Не присылаем с '+hh(NS.quiet.from)+' до '+hh(NS.quiet.to)+' по местному времени':'Присылаем в любое время суток'}</small></span>${sw(NS.quiet.on,'data-ns-quiet')}</div>
-   ${NS.quiet.on?qhSlider():''}</div>
+  <h4>Предложения и акции</h4><div class="ns-card">${TOPICS.filter(t=>t[3]).map(([k,n,sub])=>`<div class="ns-row"><span class="ns-rt"><b>${n} <em>реклама</em></b><small>${sub}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
+  <h4>Как часто</h4><div class="ns-card">${Object.entries(AD_N).map(([c,opts])=>`<div class="ns-row col"><span class="ns-rt"><b>${CH[c]}</b><small>${NS.ch[c]?'Дней в неделю, не больше':'Канал выключен выше'}</small></span><div class="ns-chips${opts.length===4?' four':''}">${opts.map(n=>`<button type="button" class="ns-chip${(NS.adN||{})[c]===n?' on':''}" data-ns-adn="${c}:${n}"${NS.ch[c]?'':' disabled'}>${n===opts.at(-1)&&n>1?'до '+n:n}<small>${n===1?'день':n<5?'дня':'дней'}</small></button>`).join('')}</div></div>`).join('')}
+   <small class="ns-hint" style="padding:0 16px 12px;display:block">Не чаще одного сообщения в день в каждом канале. Результаты тиражей приходят сразу и в лимит не входят.</small></div>
   <p class="ns-note">Проигрыш и попытки отыграться не бывают поводом для сообщений. При самоисключении или паузе в игре рекламные сообщения отключаются.</p>`;
 }
 function nsOpen(){nsRender();const P=$('#ntset');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.nt-back',P).focus()}
