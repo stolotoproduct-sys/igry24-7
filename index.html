@@ -3201,9 +3201,6 @@ img.mn-bomb{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 3px 6px
 .mn-c.mine:not(.hit) img.mn-bomb{opacity:.75}
 @keyframes mnPop{from{transform:scale(.4)}}
 @media(prefers-reduced-motion:reduce){img.mn-bomb{animation:none}}
-/* демо «Мин»: без попыток играем без призов */
-.mn-hd h3 .mn-demo{display:inline-block;vertical-align:middle;margin-left:8px;height:24px;padding:0 8px;border-radius:12px;background:#ffffff1a;-webkit-text-fill-color:#fff;color:#fff;font-size:12px;line-height:24px;font-weight:700;letter-spacing:0;text-transform:none}
-.mn.demo .mn-att{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}.mn.demo .mn-att span{white-space:nowrap}.mn.demo .mn-att small{text-align:left;max-width:none}
 /* «Мины» в один экран: поле сжимается под высоту, кнопки не наезжают */
 .mn-in{padding:24px 16px 16px;gap:8px}
 .mn-hd h3{font-size:24px;line-height:32px}
@@ -6142,9 +6139,9 @@ function lpPrivileges(s,l){
  if(LV.mines){
   if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
    t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
-    :row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены',`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`))}
+    :row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены'))}
   else if(l.attempts)t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),'«Мины»',`+${l.attempts} ${lvAttWord(l.attempts)} до конца месяца`));
-  else t.push(row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`,`<button type="button" class="cb-claim ghost" data-lv-mines>Демо</button>`));
+  else t.push(row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`));
  }
  t.push(nx?row(' tap',lvArt(nx,'lp-pv-art'),`Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}`,
    cur?`Ещё ${lbRub(Math.max(0,nx.threshold-s.turnover))} покупок`:`От ${lbRub(nx.threshold)} за месяц`,chev,` data-lp-select="${nx.id}" role="button" tabindex="0"`)
@@ -8770,25 +8767,21 @@ box.innerHTML=`<div class="mn-in"><div class="mn-hd"><h3 id="mnT">Мины</h3><
 $('#scr').appendChild(box);
 const G=$('#mnGrid',box);
 for(let i=0;i<MN.size;i++){const c=document.createElement('button');c.type='button';c.className='mn-c';c.dataset.i=i;c.setAttribute('aria-label','Клетка '+(i+1));G.appendChild(c)}
-const mnWhere=s=>s.nextMines?`Достигните уровня «${s.nextMines.name}» — и сыграйте по-настоящему`:'Новые попытки — в следующем месяце';
 function mnRender(){
- const att=lvAttempts(),rec=lvMinesRec(),s=lossbackModel.snapshot(),p=st.phase,demo=st.demo;
- box.classList.toggle('demo',!!demo);$('#mnT').innerHTML=demo?'Мины <span class="mn-demo">Демо</span>':'Мины';
- $('#mnAtt').innerHTML=demo?`<span>${IC(ICD.mine)} Демо · без призов</span><small>${mnWhere(s)}</small>`:`<span>${IC(ICD.mine)} Попыток: <b>${att}</b></span><small>${rec?'сгорят '+lbDate(rec.expiresAt):s.nextMines?`ещё ${s.nextMines.attempts} — на уровне «${s.nextMines.name}» (от ${lbRub(s.nextMines.threshold)} в месяц)`:'все попытки месяца получены'}</small>`;
+ const att=lvAttempts(),rec=lvMinesRec(),s=lossbackModel.snapshot(),p=st.phase;
+ $('#mnAtt').innerHTML=`<span>${IC(ICD.mine)} Попыток: <b>${att}</b></span><small>${rec?'сгорят '+lbDate(rec.expiresAt):s.nextMines?`ещё ${s.nextMines.attempts} — на уровне «${s.nextMines.name}» (от ${lbRub(s.nextMines.threshold)} в месяц)`:'все попытки месяца получены'}</small>`;
  $('#mnLad').innerHTML=MN.ladder.map((x,i)=>`<li class="${i<st.step?'done':''}${i===st.step-1?' cur':''}${x.k==='tk'?' tk':''}"><small>${i+1}</small><b>${mnChip(x)}</b></li>`).join('');
  $$('.mn-c',G).forEach(c=>{const i=+c.dataset.i,o=st.open.has(i),m=st.mines.has(i),show=p==='boom'||p==='won';
   c.className='mn-c'+(o?' ok':'')+(m&&show?' mine':'')+(m&&p==='boom'&&i===st.last?' hit':'')+(p==='play'?' live':'');c.disabled=p!=='play'||o;
   c.innerHTML=o?'<i class="mn-gem"></i>':m&&show?`<img class="mn-bomb" src="${LV_MINE_IMG}" alt="Мина">`:''});
  const go=$('#mnGo'),b2=$('#mn2'),res=$('#mnRes'),cur=st.step?MN.ladder[st.step-1]:null;
  b2.hidden=false;
- if(p==='idle'){go.disabled=false;go.textContent=att?'Начать попытку':'Сыграть в демо';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин из ${MN.size} клеток. Первая клетка — ${mnLabel(MN.ladder[0])}.`:'Попыток нет — попробуйте демо, без призов';res.className='mn-res'}
+ if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин из ${MN.size} клеток. Первая клетка — ${mnLabel(MN.ladder[0])}.`:`На поле ${MN.mines} мин из ${MN.size} клеток. Попытки — с уровня «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}»`;res.className='mn-res'}
  if(p==='play'){go.disabled=!cur;go.textContent=cur?`Забрать ${mnLabel(cur)}`:'Откройте клетку';b2.hidden=true;const nx=MN.ladder[st.step];res.textContent=nx?`Следующая клетка — ${mnLabel(nx)}`:'';res.className='mn-res'}
- if(p==='boom'&&demo){go.disabled=false;go.textContent='Ещё раз в демо';b2.hidden=false;b2.textContent='Как получить попытки';res.textContent='Мина! В демо это не страшно';res.className='mn-res bad'}
- else if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
- if(p==='won'&&demo){go.disabled=false;go.textContent='Ещё раз в демо';b2.textContent='Как получить попытки';res.textContent=`Могли бы получить ${mnLong(st.prize)}`;res.className='mn-res good'}
- else if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent=st.prize.k==='tk'?'Сыграть билетом':'Сыграть в Рапидо';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промо»`;res.className='mn-res good'}
+ if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
+ if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent=st.prize.k==='tk'?'Сыграть билетом':'Сыграть в Рапидо';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промо»`;res.className='mn-res good'}
 }
-function mnStart(){st.demo=!lvAttempts();if(!st.demo&&!lvUseAttempt()){toast('Нет попыток');return}st.phase='play';st.open.clear();st.mines.clear();st.step=0;st.last=null;st.prize=null;bpSync();renderLossback();mnRender();haptic&&haptic()}
+function mnStart(){if(!lvUseAttempt()){toast('Нет попыток');return}st.phase='play';st.open.clear();st.mines.clear();st.step=0;st.last=null;st.prize=null;bpSync();renderLossback();mnRender();haptic&&haptic()}
 function mnPlaceRest(except){const pool=[...Array(MN.size).keys()].filter(i=>!st.open.has(i)&&i!==except&&!st.mines.has(i));while(st.mines.size<MN.mines&&pool.length){st.mines.add(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}}
 function mnPick(i){
  if(st.phase!=='play'||st.open.has(i))return;
@@ -8801,12 +8794,11 @@ function mnPick(i){
 }
 function mnCollect(auto=false){
  if(st.phase!=='play'||!st.step)return;const p=MN.ladder[st.step-1];st.prize=p;
- if(st.demo){mnPlaceRest(-1);st.phase='won';SFX.price&&SFX.price();mnRender();return}
  if(p.k==='fs')bonusModel.records.push({id:'mn-fs-'+Date.now(),type:'tickets',fs:true,title:`${p.n} FS в Рапидо`,tag:'Приз из «Мин»',game:'rap',total:p.n,used:0,nominal:25,status:'active',expiresAt:Date.now()+7*DAY,validForMs:7*DAY});
  else for(let k=0;k<p.n;k++)lvAddTicket(MN.tkNominal,'Приз из «Мин»');
  mnPlaceRest(-1);st.phase='won';bpSync();renderLossback();confetti();toast(auto?`Все призовые клетки открыты: ${mnLong(p)}`:`Приз: ${mnLong(p)}`);mnRender();
 }
-window.lvOpenMines=function(){if(!LV.mines){toast('«Мины» выключены в настройках прототипа');return}if(st.phase==='play'){box.classList.add('show');mnRender();return}st.phase='idle';st.demo=!lvAttempts();st.open.clear();st.mines.clear();st.step=0;box.classList.add('show');mnRender();setTimeout(()=>$('#mnGo').focus(),50)};
+window.lvOpenMines=function(){if(!LV.mines){toast('«Мины» выключены в настройках прототипа');return}if(st.phase==='play'){box.classList.add('show');mnRender();return}st.phase='idle';st.open.clear();st.mines.clear();st.step=0;box.classList.add('show');mnRender();setTimeout(()=>$('#mnGo').focus(),50)};
 function mnClose(){if(st.phase==='play'&&st.step){mnCollect()}box.classList.remove('show');if(st.phase!=='play'){st.phase='idle'}}
 G.addEventListener('click',e=>{const c=e.target.closest('.mn-c');if(c)mnPick(+c.dataset.i)});
 $('.mn-x',box).onclick=mnClose;
@@ -8814,8 +8806,8 @@ box.addEventListener('click',e=>{if(e.target===box)mnClose()});
 box.addEventListener('keydown',e=>{if(e.key==='Escape')mnClose()});
 $('#mnGo').onclick=()=>{if(st.phase==='play')mnCollect();else mnStart()};
 $('#mn2').onclick=()=>{
- if(st.phase==='boom'&&!st.demo){mnClose();return}
- if(st.phase==='won'&&!st.demo){const p=st.prize;box.classList.remove('show');st.phase='idle';if(p.k==='tk')openGame(QUICK()[0]);else openGame('rap');return}
+ if(st.phase==='boom'){mnClose();return}
+ if(st.phase==='won'){const p=st.prize;box.classList.remove('show');st.phase='idle';if(p.k==='tk')openGame(QUICK()[0]);else openGame('rap');return}
  box.classList.remove('show');lbOpenDetails(true,'level')};
 
 /* сброс прототипа — поле закрывается */
