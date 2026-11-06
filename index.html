@@ -2684,6 +2684,10 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .p2-sheet.won .p2-sum b{animation:p2pop .6s .2s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes p2pop{from{transform:scale(.4);opacity:0}}
 
+/* хедер как на главной «Игр 24/7» */
+#game.p2-game>.g-head{display:none}
+#game .p2-hdr{position:relative;background:#050505;padding-bottom:12px}
+
 </style>
 <style>
 /* ===== Профиль игрока (сетка 4 px, Roboto Flex) ===== */
@@ -8755,8 +8759,11 @@ IMG.c_pk2=PK2_ART.logo;
  const card=(cx,cy,r)=>{x.save();x.translate(cx,cy);x.rotate(r);x.shadowColor='#0009';x.shadowBlur=16;x.shadowOffsetY=6;x.drawImage(bk,-54,-84,108,168);x.restore()};
  card(140,300,-.2);card(252,292,.18);x.shadowColor='#000a';x.shadowBlur=20;x.drawImage(lg,96,24,200,200);
  IMG.c_pk2=c.toDataURL('image/webp',.82);const el=document.querySelectorAll('[data-game="pk2"] .im');el.forEach(e=>e.style.backgroundImage=`url(${IMG.c_pk2})`)}catch(e){}})();
-GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add('p2-game');$('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
- const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game');r.classList.remove('p2-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
+function hdrMount(){const src=$('#lobby .app-header');if(!src||$('#game .p2-hdr'))return;const h=src.cloneNode(true);h.classList.add('p2-hdr');h.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+ const hb=h.querySelector('.header-home');if(hb){hb.classList.add('p2-back');hb.removeAttribute('aria-disabled');hb.setAttribute('aria-label','Назад');hb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>';hb.onclick=e=>{e.stopPropagation();$('#gBack').click()}}
+ $('#game').insertAdjacentElement('afterbegin',h)}
+GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add('p2-game');hdrMount();$('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
+ const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
  if(P.view==='live'&&P.draw&&P.draw.paid&&!P.draw.mine)P.view='buy';
  render()};
 try{renderLobby()}catch(e){}
