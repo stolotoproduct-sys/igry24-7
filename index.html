@@ -2423,6 +2423,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .np-bb{flex:none;height:32px;padding:0 12px;border:0;border-radius:8px;background:#a25be6;color:#fff;font:700 12px/16px var(--g4-font,sans-serif)}
 .np-bx{flex:none;width:24px;height:24px;border:0;background:none;color:#7f7690;font-size:18px;line-height:24px}
 #lobby>.np-banner{width:calc(100% - 2*var(--lobby-gutter,16px));margin:0 var(--lobby-gutter,16px) var(--lobby-gap,12px);box-sizing:border-box}
+.npr-slot.npr-freq{flex-direction:column;align-items:stretch;gap:8px}.npr-freq small{font-size:12px;line-height:16px;font-weight:400;color:#8f86a8}
 
 </style>
 <style>
@@ -8253,8 +8254,8 @@ const COPY={
  bell:['Не пропускайте выигрыши','Выберите, о чём сообщать. Займёт 10 секунд — потом можно поменять в профиле.'],
  missed:['Кэшбек за месяц уже начислен','Включите уведомления — в следующий раз сообщим сразу, как начислим.'],
  profile:['Настройте уведомления','Выберите, о чём сообщать: выигрыши, бонусы, напоминания.']};
-const TOP=[['draw','Результаты тиражей','Только ваши тиражи',true],['bonus','Бонусы, кэшбек и попытки','Когда что-то начислено',true],['ad','Акции и подарки','Push до 2 дней в неделю, не чаще 1 в день',false]];
-let src='bell',pick={draw:true,bonus:true,ad:false},slot='evening',view='prime';
+const TOP=[['draw','Результаты тиражей','Только ваши тиражи',true],['bonus','Бонусы, кэшбек и попытки','Когда что-то начислено',true],['ad','Предложения и акции','Реклама — только с вашего согласия',false]];
+let src='bell',pick={draw:true,bonus:true,ad:false},slot='evening',freq=2,view='prime';
 
 /* можно ли показать шторку сам по себе (не по нажатию человека) */
 function eligible(){return NPS.perm==='default'&&NPS.shown<3&&Date.now()-NPS.last>=7*DAY}
@@ -8277,7 +8278,7 @@ function render(){const B=$('#npr .npr-body');if(!B)return;
  const [t,s]=COPY[src]||COPY.bell;
  B.innerHTML=`<span class="npr-art">${BELL}<i>1</i></span><h3 id="nprT">${t}</h3><p class="npr-sub">${s}</p>
   <div class="ns-card npr-card">${TOP.map(([k,n,d])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${d}</small></span><button type="button" class="ns-sw" role="switch" aria-checked="${pick[k]}" aria-label="${n}" data-np-t="${k}"><i></i></button></div>`).join('')}</div>
-  <div class="npr-slot"><span>Когда присылать</span><div class="npr-seg" role="radiogroup" aria-label="Когда присылать">${[['day','Днём'],['evening','Вечером']].map(([k,n])=>`<button type="button" role="radio" aria-checked="${slot===k}" data-np-s="${k}">${n}</button>`).join('')}</div></div>
+  <div class="npr-slot npr-freq"><span>Push — раз в неделю</span><div class="ns-nums" role="radiogroup" aria-label="Push: раз в неделю">${[1,2,3,5].map(n=>`<button type="button" role="radio" aria-checked="${freq===n}" class="ns-num${freq===n?' on':''}" data-np-f="${n}">${n}</button>`).join('')}</div><small>Не больше одного в день. Результаты тиражей — сразу</small></div>
   ${emailRow()}
   <div class="npr-btns"><button type="button" class="pf-btn primary" data-np="enable">Включить</button>
    <div class="npr-links"><button type="button" class="npr-link" data-np="more">Настроить подробнее</button><button type="button" class="npr-link dim" data-np="later">Не сейчас</button></div></div>`}
@@ -8285,19 +8286,19 @@ function emailRow(){if(!window.ACC||ACC.emailOk())return '';return `<button type
 
 function open(from){mount();src=from||'bell';view=NPS.perm==='denied'?'denied':'prime';
  /* по умолчанию — только важное; реклама выключена, пока человек сам её не включит */
- pick={draw:true,bonus:true,ad:false};const N=NSx();slot=N&&N.slot==='day'?'day':'evening';
+ pick={draw:true,bonus:true,ad:false};const N=NSx();slot=N&&N.slot==='day'?'day':'evening';freq=(N&&N.adN&&N.adN.push)||2;
  render();const P=$('#npr');P.classList.add('show');P.setAttribute('aria-hidden','false');
  if(view==='prime'){NPS.shown++;NPS.last=Date.now();save()}refresh()}
 function close(){const P=$('#npr');if(!P)return;P.classList.remove('show');P.setAttribute('aria-hidden','true')}
 function osShow(on){const O=$('#npos');O.classList.toggle('show',on);O.setAttribute('aria-hidden',String(!on))}
-function apply(){const N=NSx();if(!N)return;N.topics.draw=pick.draw;N.topics.bonus=pick.bonus;N.topics.expiry=pick.bonus;N.topics.comeback=pick.ad;N.slot=slot;
+function apply(){const N=NSx();if(!N)return;N.topics.draw=pick.draw;N.topics.bonus=pick.bonus;N.topics.expiry=pick.bonus;N.topics.comeback=pick.ad;N.adN={...(N.adN||{push:2,email:1}),push:freq};
  try{localStorage.setItem('ntSettings',JSON.stringify(N))}catch(e){}if(typeof nsRender==='function')nsRender()}
 function grant(v){NPS.perm=v;save();const N=NSx();if(N){N.ch.push=v==='granted';try{localStorage.setItem('ntSettings',JSON.stringify(N))}catch(e){}}if(typeof nsRender==='function')nsRender();refresh()}
 
 document.addEventListener('click',e=>{const ps=e.target.closest('#ntset [data-ns-ch="push"]');if(ps&&NPS.perm!=='granted'){e.stopImmediatePropagation();e.preventDefault();if(NPS.perm==='denied')toast('Push выключены в телефоне: Настройки → Столото → Уведомления');else{mount();src='settings';osShow(true)}}},true);
 document.addEventListener('click',e=>{
  const t=e.target.closest('[data-np-t]');if(t){const k=t.dataset.npT;pick[k]=!pick[k];t.setAttribute('aria-checked',String(pick[k]));return}
- const s=e.target.closest('[data-np-s]');if(s){slot=s.dataset.npS;render();return}
+ const s=e.target.closest('[data-np-f]');if(s){freq=+s.dataset.npF;render();return}
  const b=e.target.closest('[data-np]');if(!b)return;const a=b.dataset.np;
  if(a==='enable'){apply();osShow(true)}
  else if(a==='os-allow'){osShow(false);grant('granted');close();if(src==='settings'){toast('Push включены');return}toast(src==='purchase'?'Готово. Первое уведомление — результат этого тиража':'Готово. Уведомления включены')}
