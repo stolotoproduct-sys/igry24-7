@@ -2370,6 +2370,11 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .qh-h svg{width:16px;height:16px}.qh-h.moon{color:#c69cf0}.qh-h.sun{color:#ffd36b;border-color:#f0aa2c}
 .qh-h.on{cursor:grabbing;transform:scale(1.12)}.qh-h:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .qh-ticks{display:flex;justify-content:space-between;margin:0 6px;font-size:10px;line-height:12px;color:#7f7690}
+.ns-freq{display:flex;flex-direction:column;gap:6px;padding:0 16px 12px;margin-top:-4px}
+.ns-freq small{font-size:12px;line-height:16px;color:#8f86a8}
+.ns-nums{display:flex;gap:8px}
+.ns-num{flex:1;height:32px;border-radius:10px;border:1px solid #2a2b35;background:#111018;color:#fff;font:600 14px/20px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.ns-num.on{border-color:#a25be6;background:#a25be6}
 
 </style>
 <style>
@@ -7866,11 +7871,11 @@ document.addEventListener('pointerdown',e=>{const h=e.target.closest('#qhTrack [
 document.addEventListener('pointermove',e=>{if(qhDrag)qhSet(qhDrag.k,qhDrag.hour(e.clientX))});
 document.addEventListener('pointerup',()=>{if(!qhDrag)return;const b=$('#qhTrack .qh-h.on');if(b)b.classList.remove('on');qhDrag=null;qhDone()});
 document.addEventListener('keydown',e=>{const h=e.target.closest&&e.target.closest('#qhTrack [data-qh]');if(!h)return;const d={ArrowLeft:-1,ArrowDown:-1,ArrowRight:1,ArrowUp:1}[e.key];if(!d)return;e.preventDefault();const k=h.dataset.qh;let v=NS.quiet[k]+d;if(v%24===NS.quiet[k==='from'?'to':'from']%24)v+=d;qhSet(k,v);qhDone()});
-const freqRow=c=>{const opts=AD_N[c];if(!opts||!NS.ch[c]||(c==='email'&&window.ACC&&!ACC.emailOk()))return '';return `<div class="ns-row col ns-freq"><span class="ns-rt"><small>Не чаще — дней в неделю</small></span><div class="ns-chips${opts.length===4?' four':''}">${opts.map(n=>`<button type="button" class="ns-chip${(NS.adN||{})[c]===n?' on':''}" data-ns-adn="${c}:${n}">${n===opts.at(-1)&&n>1?'до '+n:n}<small>${n===1?'день':n<5?'дня':'дней'}</small></button>`).join('')}</div></div>`};
+const freqRow=c=>{const opts=AD_N[c];if(!opts||!NS.ch[c]||(c==='email'&&window.ACC&&!ACC.emailOk()))return '';return `<div class="ns-freq">${c==='email'?'<small>Раз в неделю</small>':''}<div class="ns-nums" role="radiogroup" aria-label="${CH[c]}: раз в неделю">${opts.map(n=>`<button type="button" role="radio" aria-checked="${(NS.adN||{})[c]===n}" class="ns-num${(NS.adN||{})[c]===n?' on':''}" data-ns-adn="${c}:${n}">${n}</button>`).join('')}</div></div>`};
 function nsRender(){
   const P=$('#ntset');if(!P)return;const [ic,t,d]=nsSummary(),on=Object.values(NS.ch).some(Boolean);
-  $('.ns-body',P).innerHTML=`  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>k==='email'?emailRow()+freqRow('email'):`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:window.NP&&NP.state.perm==='denied'?'Выключены в телефоне — включите в его настройках':window.NP&&NP.state.perm==='default'?'Нужно разрешение телефона':'На телефон и в браузер',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`+freqRow(k)).join('')}</div>
-  <small class="ns-hint">Не чаще одного сообщения в день в каждом канале. Результаты тиражей приходят сразу и в лимит не входят.</small>
+  $('.ns-body',P).innerHTML=`  <h4>Куда присылать</h4><div class="ns-card">${Object.entries(CH).map(([k,n])=>k==='email'?emailRow()+freqRow('email'):`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${{push:window.NP&&NP.state.perm==='denied'?'Выключены в телефоне — включите в его настройках':NS.ch.push?'Раз в неделю':'На телефон и в браузер',sms:'Только важное: результаты и бонусы'}[k]}</small></span>${sw(NS.ch[k],'data-ns-ch="'+k+'"')}</div>`+freqRow(k)).join('')}</div>
+  <small class="ns-hint">Не больше одного сообщения в день. Результаты тиражей — сразу.</small>
   ${on?'':'<p class="ns-warn">Все каналы выключены — уведомления будут только в колокольчике на сайте.</p>'}
   <h4>Важное</h4><div class="ns-card">${TOPICS.filter(t=>!t[3]).map(([k,n,sub])=>`<div class="ns-row"><span class="ns-rt"><b>${n}</b><small>${sub}</small></span>${sw(NS.topics[k],'data-ns-topic="'+k+'"')}</div>`).join('')}</div>
   <small class="ns-hint">В колокольчик на сайте приходят всегда.</small>
