@@ -2486,6 +2486,50 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 
 </style>
 <style>
+/* ===== MVP 1–2 без «Промо» ===== */
+.no-promo #lobby .l-banner,.no-promo #lobby .reward-bonuses{display:none!important}
+.no-promo #lobby .home-rewards{grid-template-columns:1fr}
+/* широкое колесо удачи: колесо слева, текст и кнопка справа */
+.no-promo #lobby .reward-wheel::after{inset:0;background:linear-gradient(90deg,transparent 30%,#27083ecc 62%,#25063f)}
+.no-promo #lobby .reward-wheel .reward-art{left:72px;top:-16px;width:136px;height:136px}
+.no-promo #lobby .reward-wheel .reward-copy{inset:0 16px 0 auto;width:156px;justify-content:center;align-items:stretch;gap:8px;text-align:left}
+.no-promo #lobby .reward-wheel .reward-copy strong{font-size:20px;line-height:24px}
+.no-promo #lobby .reward-wheel .reward-claim,.no-promo #lobby .reward-wheel .reward-sub{height:32px;border-radius:16px;font-size:14px;line-height:20px}
+
+/* ===== Профиль → «Бонусы и промокоды» ===== */
+#pfb{z-index:74}
+#pfb .pf-h small{margin-left:4px;color:#a99fc2;font-weight:600}
+.pbn-code label{display:block;margin-bottom:12px;font-size:16px;line-height:24px;font-weight:700}
+.pbn-code>div{display:flex;gap:8px}
+.pbn-code input{flex:1;min-width:0;height:44px;padding:0 12px;border-radius:12px;border:1px solid #ffffff1f;background:#0a0b11;color:#fff;font-family:inherit;font-size:14px;line-height:20px;font-weight:600;text-transform:uppercase}
+.pbn-code input::placeholder{text-transform:none;color:#7f7690}
+.pbn-code button{flex:none;height:44px;padding:0 16px;border:0;border-radius:12px;background:linear-gradient(180deg,#b06ff0,#8f45dc);color:#fff;font-family:inherit;font-size:14px;line-height:20px;font-weight:700;cursor:pointer}
+.pbn-msg{margin:8px 0 0;font-size:12px;line-height:16px;color:#a99fc2;min-height:16px}
+.pbn-msg.err{color:#ff8fa3}.pbn-msg.ok{color:#70ed85}
+.pbn-card{display:flex;align-items:center;gap:12px;margin:0 0 8px;padding:12px;border-radius:16px;background:#15131d;border:1px solid #ffffff14}
+.pbn-card.on{border-color:#a25be666;background:linear-gradient(160deg,#251a36,#15131d)}
+.pbn-art{flex:none;width:48px;height:48px;border-radius:12px;object-fit:cover}
+.pbn-art.gift{display:grid;place-items:center;background:#ffffff0f;font-size:24px}
+.pbn-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pbn-main b{font-size:14px;line-height:20px;font-weight:700}
+.pbn-main small{font-size:12px;line-height:16px;color:#a99fc2}
+.pbn-exp{align-self:flex-start;white-space:nowrap;height:20px;padding:0 8px;display:flex;align-items:center;border-radius:10px;background:#ffffff0f;color:#d9d3e6;font-size:12px;line-height:16px}
+.pbn-exp.soon{background:#e9966226;color:#ffd5b5}
+.pbn-btn{flex:none;height:32px;padding:0 12px;border:0;border-radius:8px;background:#a25be6;color:#fff;font-family:inherit;font-size:12px;line-height:16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.pbn-btn.ghost{background:#ffffff14}
+.pbn-empty{display:flex;flex-direction:column;gap:4px}.pbn-empty small{color:#a99fc2;font-size:12px;line-height:16px}
+.pbn-hist{padding:4px 16px}
+.pbn-h{display:flex;align-items:center;gap:12px;padding:12px 0}
+.pbn-h+.pbn-h{border-top:1px solid #ffffff0f}
+.pbn-h span{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pbn-h b{font-size:14px;line-height:20px;font-weight:600}
+.pbn-h small{font-size:12px;line-height:16px;color:#a99fc2}
+.pbn-h em{flex:none;font-style:normal;font-size:12px;line-height:16px;font-weight:700;color:#a99fc2}
+.pbn-h em.on{color:#70ed85}.pbn-h em.off{color:#ff8fa3}
+.pbn-note{margin:8px 0 0;font-size:12px;line-height:16px;color:#7f7690}
+
+</style>
+<style>
 /* ===== Вывод средств (сетка 4 px, на базе .ac) ===== */
 .wd{z-index:76}
 .wd .ac-body{padding-bottom:0}
@@ -9133,6 +9177,83 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-df-play]')){bpCloseModal();go('lobby');return}
 });
 DF.SCN=SCN;window.DF=DF;
+})();
+
+</script>
+<script>
+/* ===== MVP 1–2: без раздела «Промо». Промокоды и все выданные бонусы — в профиле:
+   «Бонусы и промокоды» → ввод промокода, «Доступные» (с игрой и сроком), «История». Промо возвращается с MVP 3. ===== */
+(function(){
+const promoOn=()=>PCFG.mvp==='3';window.promoOn=promoOn;
+const D=86400000,now=()=>Date.now();
+const n=v=>Number(v).toLocaleString('ru-RU');
+const dShort=t=>new Date(t).toLocaleDateString('ru-RU',{day:'numeric',month:'short'}).replace('.','');
+const left=t=>{const ms=t-now();if(ms<=0)return 'истёк';const d=Math.floor(ms/D);if(d>=1)return d+' '+(d%10===1&&d%100!==11?'день':d%10>=2&&d%10<=4&&(d%100<10||d%100>=20)?'дня':'дней');const h=Math.max(1,Math.floor(ms/3600000));return h+' ч'};
+const word=k=>k%10===1&&k%100!==11?'игра':k%10>=2&&k%10<=4&&(k%100<10||k%100>=20)?'игры':'игр';
+const gName=g=>g&&GAMES[g]?GAMES[g].n:'';
+
+/* промокоды MVP: бесплатные игры в быстрых играх (без пополнения и отыгрыша) */
+const CODES={COIN5:{game:'coin',total:5,days:7},HILO3:{game:'hilo',total:3,days:3},SHELL10:{game:'shell',total:10,days:14}};
+const used=new Set();
+const HIST=[
+ {t:'Колесо удачи · «Где шарик?»: 3 бесплатные игры',s:'Использован',at:now()-2*D},
+ {t:'Промокод WELCOME · «Монетка»: 5 бесплатных игр',s:'Использован',at:now()-6*D},
+ {t:'Промокод SPRING · «Весы»: 3 бесплатные игры',s:'Истёк',at:now()-12*D}];
+const log=(t,s)=>HIST.unshift({t,s,at:now()});
+
+function mk(id,code,game,total,days,status,src){return {id,type:'tickets',fs:true,code,title:`«${gName(game)}»: ${total} бесплатн${total===1?'ая игра':total<5?'ые игры':'ых игр'}`,tag:src,game,total,used:0,nominal:GAMES[game].price,status,expiresAt:now()+days*D,validForMs:days*D}}
+/* стартовый набор: промокод, который уже пришёл письмом (ещё не активирован), и бесплатные игры с колеса */
+function seed(){if(typeof bonusModel==='undefined'||bonusModel.get('pb-chet'))return;
+ bonusModel.records.push(mk('pb-chet','CHET7','coin',7,6,'available','Промокод CHET7 · из письма'));
+ const w=mk('pb-wheel',null,'scale',3,2,'active','Колесо удачи');w.used=1;bonusModel.records.push(w)}
+
+const inMvp=g=>{if(!g)return true;const m=MVPS[PCFG.mvp];return SECTIONS.some(s=>m.sec.includes(s.id)&&s.ids.includes(g))};
+function items(){const t=now();return bonusModel.records.filter(b=>inMvp(b.game)&&['tickets','voucher'].includes(b.type)&&['available','active'].includes(b.status)&&b.used<b.total&&b.expiresAt>t)
+ .sort((a,b)=>(a.status==='active'?0:1)-(b.status==='active'?0:1)||a.expiresAt-b.expiresAt)}
+function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status==='active',soon=b.expiresAt-now()<2*D;
+ const art=g?`<img class="pbn-art" src="${IMG[g.img]}" alt="">`:`<span class="pbn-art gift">🎟</span>`;
+ const what=b.type==='voucher'?`Бесплатный билет ${n(b.nominal)} ₽`:act?`${rest} из ${b.total} ${word(b.total)} · ${gName(b.game)}`:b.title;
+ return `<div class="pbn-card${act?' on':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b><small>${b.tag||'Бонус'}${b.type==='voucher'?' · любая быстрая игра':''}</small>
+  <span class="pbn-exp${soon?' soon':''}">До ${dShort(b.expiresAt)} · осталось ${left(b.expiresAt)}</span></div>
+  <button type="button" class="pbn-btn${act?'':' ghost'}" data-pbn-go="${b.id}">${act?'Играть':'Активировать'}</button></div>`}
+function render(){const P=$('#pfb');if(!P)return;seed();const L=items();
+ $('.pf-body',P).innerHTML=`<form class="pf-card pbn-code" id="pbnForm"><label for="pbnCode">Есть промокод?</label><div><input id="pbnCode" placeholder="Например, COIN5" autocomplete="off" maxlength="20"><button type="submit">Активировать</button></div><p class="pbn-msg" id="pbnMsg" role="status"></p></form>
+ <h3 class="pf-h">Доступные бонусы <small>${L.length}</small></h3>
+ ${L.length?L.map(card).join(''):'<div class="pf-card pbn-empty"><b>Пока нет бонусов</b><small>Крутите колесо удачи и вводите промокоды — бонусы появятся здесь</small></div>'}
+ <h3 class="pf-h">История</h3>
+ <div class="pf-card pbn-hist">${HIST.map(h=>`<div class="pbn-h"><span><b>${h.t}</b><small>${dShort(h.at)}</small></span><em class="${h.s==='Истёк'?'off':h.s==='Активирован'?'on':''}">${h.s}</em></div>`).join('')}</div>
+ <p class="pbn-note">Бонусы без пополнения и отыгрыша: бесплатные игры засчитываются автоматически, выигрыш — в рубли.</p>`;
+ $('#pbnForm').onsubmit=e=>{e.preventDefault();redeem($('#pbnCode').value)}}
+function redeem(v){const code=String(v||'').trim().toUpperCase(),m=$('#pbnMsg');m.className='pbn-msg';
+ if(!code){m.textContent='Введите промокод';m.classList.add('err');return}
+ const c=CODES[code];if(!c){m.textContent='Промокод не найден. Проверьте написание.';m.classList.add('err');return}
+ if(used.has(code)){m.textContent='Этот промокод уже активирован';m.classList.add('err');return}
+ used.add(code);const b=mk('pc-'+code,code,c.game,c.total,c.days,'active','Промокод '+code);bonusModel.records.push(b);
+ log(`Промокод ${code} · ${b.title}`,'Активирован');try{bpSync()}catch(e){}render();
+ const m2=$('#pbnMsg');m2.textContent=`Готово — ${b.title}. Действует ${c.days} ${c.days===1?'день':c.days<5?'дня':'дней'}`;m2.classList.add('ok');toast('Промокод активирован')}
+
+function open(){render();const P=$('#pfb');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.pf-body',P).scrollTop=0;$('.pf-back',P).focus()}
+function close(){const P=$('#pfb');P.classList.remove('show');P.setAttribute('aria-hidden','true');try{$('#pf').classList.contains('show')&&window.PF_render&&PF_render()}catch(e){}}
+$('#scr').insertAdjacentHTML('beforeend',`<section class="pf" id="pfb" aria-hidden="true" aria-label="Бонусы и промокоды"><div class="pf-head"><button class="pf-back" type="button" data-pbn-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Бонусы и промокоды</h2></div><div class="pf-body"></div></section>`);
+
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-pbn-close]')){close();return}
+ const gbtn=e.target.closest('[data-pbn-go]');if(gbtn){const b=bonusModel.get(gbtn.dataset.pbnGo);if(!b)return;
+  if(b.status==='available'){b.status='active';b.expiresAt=now()+b.validForMs;log(`${b.code?'Промокод '+b.code+' · ':''}${b.title}`,'Активирован');try{bpSync()}catch(_){}render();toast('Бонус активирован');return}
+  close();try{$('#pf').classList.remove('show')}catch(_){}if(b.game){go('lobby');openGame(b.game)}else go('lobby');return}
+ /* «Мои бонусы» в профиле: в MVP 1–2 открывает этот экран вместо «Промо» */
+ const pf=e.target.closest('#pf [data-pf="bonuses"]');if(pf&&!promoOn()){e.preventDefault();e.stopImmediatePropagation();open()}
+},true);
+
+/* MVP 1–2: всё, что вело в «Промо», ведёт в «Бонусы и промокоды» */
+const _go=window.go;window.go=function(to,...a){if(to==='promo'&&!promoOn()){open();return}return _go.call(this,to,...a)};
+try{go=window.go}catch(e){}
+function gate(){const off=!promoOn();$('#scr').classList.toggle('no-promo',off);
+ const r=$('#pf .pf-row[data-pf="bonuses"]');if(r&&off){const B=$('b',r);if(B.textContent!=='Бонусы и промокоды')B.textContent='Бонусы и промокоды';const s=$('small',r),t=`Доступно: ${items().length} · ввести промокод`;if(s&&s.textContent!==t)s.textContent=t}}
+const _sm=window.setMvp;if(_sm){window.setMvp=function(m){_sm(m);gate()};try{setMvp=window.setMvp}catch(e){}}
+new MutationObserver(gate).observe(document.getElementById('pf'),{childList:true,subtree:true});
+seed();gate();
+window.PB={open,close,redeem,items,HIST};
 })();
 
 </script>
