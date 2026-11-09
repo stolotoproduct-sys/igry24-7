@@ -2610,7 +2610,9 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
  background:radial-gradient(circle,var(--c) 0 15px,#ffffffd9 15px 16px,var(--c) 16px 19px,transparent 19.5px),repeating-conic-gradient(var(--c) 0 22.5deg,#fff 22.5deg 45deg);
  box-shadow:0 3px 0 var(--d),0 6px 10px #0009;transition:transform .15s,box-shadow .15s}
 .p2-qty button:active{transform:translateY(2px)}
-.p2-qty button.on{transform:translateY(-4px);box-shadow:0 3px 0 var(--d),0 0 0 2px #ffd56a,0 0 18px #ffc94acc}
+.p2-qty:has(.on) button:not(.on){opacity:.5;filter:saturate(.55) brightness(.85)}
+.p2-qty button.on{transform:translateY(-6px) scale(1.1);box-shadow:0 3px 0 var(--d),0 0 0 3px #ffe27a,0 0 0 5px #ffb80055,0 0 28px 6px #ffc94acc;animation:p2chip 1.4s ease-in-out infinite}
+@keyframes p2chip{50%{box-shadow:0 3px 0 var(--d),0 0 0 3px #fff1b0,0 0 0 6px #ffc40077,0 0 40px 10px #ffd56aee}}
 .p2-step{display:flex;align-items:center;gap:12px;padding:0 16px}
 .p2-step>button{flex:none;width:36px;height:36px;border-radius:8px;border:0;background:#2a2a2c;color:#fff;font:700 20px/20px inherit;cursor:pointer}
 .p2-step>button:disabled{opacity:.35}
