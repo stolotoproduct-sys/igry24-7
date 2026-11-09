@@ -9365,7 +9365,7 @@ function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status=
  const art=g?`<img class="pbn-art" src="${IMG[g.img]}" alt="">`:`<span class="pbn-art gift">🎟</span>`;
  const what=b.type==='voucher'?`Бесплатный билет ${n(b.nominal)} ₽`:act?`${rest} из ${b.total} ${word(b.total)} · ${gName(b.game)}`:b.title;
  const fr=b.fresh;b.fresh=0;
- return `<div class="pbn-card${act?' on':''}${fr?' fresh':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b><small>${b.tag||'Бонус'}${b.type==='voucher'?' · любая быстрая игра':''}</small>
+ return `<div class="pbn-card${act?' on':''}${fr?' fresh':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b>
   <span class="pbn-exp${soon?' soon':''}">До ${dShort(b.expiresAt)} · осталось ${left(b.expiresAt)}</span></div>
   <button type="button" class="pbn-btn${act?'':' ghost'}" data-pbn-go="${b.id}">${act?'Играть':'Активировать'}</button></div>`}
 function tabs(){return `<div class="pbn-tabs" role="tablist">${[['active','Активные'],['hist','История'],['about','Всё о промокодах']].map(([k,t])=>`<button type="button" role="tab" class="${TAB===k?'on':''}" aria-selected="${TAB===k}" data-pbn-tab="${k}">${t}</button>`).join('')}</div>`}
