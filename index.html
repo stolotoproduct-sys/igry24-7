@@ -8691,10 +8691,15 @@ function boardFor(T){
 function shuffleA(a){for(let i=a.length-1;i>0;i--){const j=rndi(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function buckets(board){const rest=DECK.filter(c=>!board.some(b=>key(b)===key(c))),B={};
  for(let i=0;i<rest.length;i++)for(let j=i+1;j<rest.length;j++){let c=b7([...board,rest[i],rest[j]]).cat;if(c===9)c=8;(B[c]=B[c]||[]).push([rest[i],rest[j]])}return B}
-function deal(targets){const T=Math.max(0,...targets);let board,B;
- for(let k=0;k<40;k++){board=boardFor(T);B=buckets(board);const paired=board.some((c,i)=>board.findIndex(x=>x.r===c.r)!==i);if(B[T]&&(T>=6||!paired))break}
- const cats=Object.keys(B).map(Number).sort((a,b)=>a-b);
- const tickets=targets.map(t=>{let c=cats.filter(x=>x<=t).pop();if(c===undefined)c=cats[0];const hole=pk(B[c]);const b=b7([...board,...hole]);return {hole,cat:b.cat>=9?9:b.cat,best:b,open:false}});
+/* стол подбираем так, чтобы как можно больше билетов получили ровно свою категорию тиража:
+   перебираем варианты и берём лучший (лишний выигрыш штрафуем сильнее, чем недобор) */
+function pickCat(cats,t){if(cats.includes(t))return t;const lo=cats.filter(x=>x<t).pop();return lo!==undefined?lo:cats.find(x=>x>t)}
+function cost(cats,targets){let s=0;for(const t of targets){const c=pickCat(cats,t);s+=c===t?0:c>t?3*(c-t)+2:(t-c)*(t>=5?40:2)}return s}
+function deal(targets){const uniq=[...new Set(targets)].sort((a,b)=>b-a),T=uniq[0]||0;let best=null;const t0=Date.now();
+ for(let k=0;k<36;k++){if(best&&Date.now()-t0>250)break;const tt=k<24?T:uniq[Math.min(uniq.length-1,1+(k%3))]||T;const board=boardFor(tt),B=buckets(board),cats=Object.keys(B).map(Number).sort((a,b)=>a-b),sc=cost(cats,targets);
+  if(!best||sc<best.sc)best={board,B,cats,sc};if(sc<=1)break}
+ const {board,B,cats}=best;
+ const tickets=targets.map(t=>{const c=pickCat(cats,t);const hole=pk(B[c]);const b=b7([...board,...hole]);return {hole,cat:b.cat>=9?9:b.cat,best:b,open:false}});
  return {board,tickets}}
 
 /* ---------- состояние (живёт и при закрытой игре) ---------- */
