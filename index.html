@@ -2444,6 +2444,48 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 
 </style>
 <style>
+/* ===== Пополнение с бонусом: состояния ===== */
+.df-card{position:relative}
+.df-ic{flex:none;width:28px;height:28px;align-self:flex-start;color:#c9a6ff}
+.df-ic svg{display:block;width:100%;height:100%}
+.df-spin{animation:dfspin 1s linear infinite}
+@keyframes dfspin{to{transform:rotate(1turn)}}
+.df-st{display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:12px;background:#ffffff0f}
+.df-st b{font-size:14px;line-height:20px;font-weight:800;color:#fff}
+.df-st span{font-size:12px;line-height:16px;color:#cbbbdc}
+.df-card.df-warn{border-color:#ffb02e66}
+.df-card.df-warn .df-ic{color:#ffb02e}
+.df-card.df-warn .df-st{background:#ffb02e14}
+.df-card.df-off{background:#1c1b22!important;border-color:#ffffff14}
+.df-card.df-off .bp-mini-top>:first-child{filter:grayscale(1);opacity:.5}
+.df-card.df-off .bp-mini-amt{color:#ffffff80}
+.df-card.df-off .df-ic{color:#ffffff59}
+.df-retry{height:4px;border-radius:2px;background:#ffffff14;overflow:hidden}
+.df-retry i{display:block;height:100%;width:100%;background:#ffb02e;transform-origin:left;animation:dfbar linear forwards}
+@keyframes dfbar{from{transform:scaleX(0)}}
+.df-ok{width:100%}
+/* согласие в шторке пополнения */
+.df-agree{display:flex;align-items:flex-start;gap:12px;margin:12px 0 0;font-size:13px;line-height:18px;color:inherit;cursor:pointer}
+.df-agree[hidden]{display:none}
+.df-agree input{flex:none;width:20px;height:20px;margin:0;accent-color:#a25be6;cursor:pointer}
+.df-link{padding:0;border:0;background:none;color:#c9a6ff;font:inherit;text-decoration:underline;cursor:pointer}
+/* «Бонус начислен» */
+.df-got{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.df-got-art{width:72px;height:72px;display:flex;align-items:center;justify-content:center;color:#c9a6ff}
+.df-got-art .bp-symbol{width:64px;height:64px}
+.df-got-art .bp-game-icon{width:64px;height:64px;border-radius:16px}
+.df-got-v{font-size:32px;line-height:40px;font-weight:900;color:#fff}
+.df-got-t{font-size:14px;line-height:20px;color:#cbbbdc}
+.df-got-l{width:100%;margin:8px 0 0;padding:0;list-style:none;border-radius:12px;background:#ffffff0f}
+.df-got-l li{display:flex;justify-content:space-between;gap:12px;padding:12px;font-size:13px;line-height:18px}
+.df-got-l li+li{border-top:1px solid #ffffff14}
+.df-got-l span{color:#cbbbdc;text-align:left}
+.df-got-l b{color:#fff;text-align:right}
+.df-got-n{margin:4px 0 8px;font-size:12px;line-height:16px;color:#cbbbdc}
+.df-got .bp-actions{width:100%}
+
+</style>
+<style>
 /* ===== Вывод средств (сетка 4 px, на базе .ac) ===== */
 .wd{z-index:76}
 .wd .ac-body{padding-bottom:0}
@@ -5691,6 +5733,7 @@ const bpInfoIco='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy=
 /* компактная карточка: крупно — что получаете, мелко — где/за что, одна строка состояния, одна кнопка */
 const bpTicketWord=n=>{const a=n%10,h=n%100;return a===1&&h!==11?'билет':a>=2&&a<=4&&(h<12||h>14)?'билета':'билетов'};
 function bpCard(b,preview=false){
+ if(b.ended&&window.DF)return DF.endedCard(b);
  preview=preview===true;
  const active=b.status==='active',tickets=bpIsTickets(b);
  const pct=active?Math.min(100,Math.floor((tickets?b.used/b.total:b.turnover/Math.max(1,b.target))*100)):0;
@@ -5757,8 +5800,8 @@ document.addEventListener('click',e=>{
 });
 function renderBonuses(){
  const panel=$('#panel-bonuses');if(!panel)return;
- const active=bonusModel.list('active'),available=bonusModel.list('available'),positions={};$$('.bp-rail',panel).forEach(e=>positions[e.dataset.rail]=e.scrollLeft);
- panel.innerHTML=bpWgTip()+[['active','Активные бонусы',active],['available','Доступные',available]].map(([key,title,items])=>`<section class="bp-section"><div class="bp-section-head"><h3>${title}<small>${items.length+(key==='available'&&typeof wheelOpen==='function'?1:0)}</small></h3><button class="bp-all" data-bp-all="${key}" aria-label="Все ${title.toLowerCase()}">Все<span>›</span></button></div>${key==='active'&&!items.length?`<div class="bp-empty-wrap">${bpEnd(true)}</div>`:`<div class="bp-rail" data-rail="${key}" tabindex="0" role="region" aria-label="${title}: горизонтальная лента">${key==='available'?bpWheelCard():''}${items.map(bpCard).join('')}${key==='active'?bpEnd():!items.length?'<article class="bp-card bp-end"><h4>Все бонусы активированы</h4><p>Ваши предложения находятся в активных бонусах.</p></article>':''}</div>`}</section>`).join('');
+ const active=bonusModel.list('active'),available=bonusModel.list('available'),positions={},flow=window.DF?DF.cards():[];$$('.bp-rail',panel).forEach(e=>positions[e.dataset.rail]=e.scrollLeft);
+ panel.innerHTML=bpWgTip()+[['active','Активные бонусы',active],['available','Доступные',available]].map(([key,title,items])=>`<section class="bp-section"><div class="bp-section-head"><h3>${title}<small>${items.length+(key==='active'?flow.length:0)+(key==='available'&&typeof wheelOpen==='function'?1:0)}</small></h3><button class="bp-all" data-bp-all="${key}" aria-label="Все ${title.toLowerCase()}">Все<span>›</span></button></div>${key==='active'&&!items.length&&!flow.length?`<div class="bp-empty-wrap">${bpEnd(true)}</div>`:`<div class="bp-rail" data-rail="${key}" tabindex="0" role="region" aria-label="${title}: горизонтальная лента">${key==='available'?bpWheelCard():flow.join('')}${items.map(bpCard).join('')}${key==='active'?bpEnd():!items.length?'<article class="bp-card bp-end"><h4>Все бонусы активированы</h4><p>Ваши предложения находятся в активных бонусах.</p></article>':''}</div>`}</section>`).join('');
  panel.insertAdjacentHTML('beforeend',bpPromoForm());
  $$('.bp-rail',panel).forEach(e=>{e.scrollLeft=positions[e.dataset.rail]||0;bpBindRail(e)});
  if(bonusModalView?.type==='list'){const body=$('#bpModalBody'),top=body.scrollTop;bpRenderList(bonusModalView.kind);body.scrollTop=top}
@@ -5778,7 +5821,7 @@ function bpAction(id){const b=bonusModel.get(id);if(!b)return;if(b.ready){const 
  if(b.status!=='available')return;if(b.type==='tickets'){bonusModel.activate(id);bpCloseModal();bpSync();toast(`${b.total} бесплатных билетов активированы`);return}
  bpCloseModal();openSheet(id);
 }
-function bpDepositOptions(){return bonusModel.list('available').filter(b=>b.type!=='tickets')}
+function bpDepositOptions(){return bonusModel.list('available').filter(b=>b.type!=='tickets'&&b.type!=='weekly'&&!b.ended)}
 openSheet=function(id){
  const options=bpDepositOptions();selectedDepositBonus=typeof id==='string'&&options.some(b=>b.id===id)?id:options[0]?.id||null;
  const selected=bonusModel.get(selectedDepositBonus);if(selected&&depA<selected.min)depA=selected.min;
@@ -5792,7 +5835,7 @@ function bpRenderDeposit(){
  $('#bpDepositSelected').innerHTML=b?`<div class="bp-deposit-selected-top"><strong>${b.title}</strong>${b.game?`<img src="${IMG[GAMES[b.game].img]}" alt="${GAMES[b.game].n}">`:''}</div>${bpTimer(b)}<p>${b.type==='deposit'?`Будет начислено <b>${bpNumber(value)} Б</b> · отыгрыш ×${b.multiplier}<br>Цель отыгрыша: ${bpNumber(value*b.multiplier)} Б`:`Будет начислено <b>${b.total} билетов</b> по ${b.nominal} ₽ · ${bpWagerOn()?'выигрыш с отыгрышем ×'+BonusEngine.FS_WAGER:'без отыгрыша'}`}<br>Минимальное пополнение: ${bpNumber(b.min)} ₽</p><button data-bp-detail="${b.id}">Подробнее об условиях</button>`:'';
  $('#bpDepositSummary').innerHTML=`<span>На рублёвый баланс</span><b>+${valid?bpNumber(depA):'0'} ₽</b>`;
  $('#bpDepositError').textContent=b&&(b.status!=='available'||b.expiresAt<=Date.now())?'Срок акции истёк — выберите другой бонус':!valid?'Введите целую сумму от 1 до 100 000 ₽':b&&depA<b.min?`Для этого бонуса пополните минимум на ${bpNumber(b.min)} ₽`:'';
- $('#depBtn').disabled=!eligible;$('#depBtn').textContent=b?`Пополнить на ${valid?bpNumber(depA):'0'} ₽ и активировать`:`Пополнить на ${valid?bpNumber(depA):'0'} ₽`;
+ const ag=window.DF?DF.agreeUI(b):true;$('#depBtn').disabled=!eligible||!ag;$('#depBtn').textContent=b?`Пополнить на ${valid?bpNumber(depA):'0'} ₽ и активировать`:`Пополнить на ${valid?bpNumber(depA):'0'} ₽`;
 }
 $('#bpDepositOffer').onchange=e=>{selectedDepositBonus=e.target.value||null;bpRenderDeposit()};
 $('#bpDepositAmount').oninput=e=>{depA=Number(e.target.value);bpRenderDeposit()};
@@ -5806,6 +5849,7 @@ function bpConfirmDeposit(replaceId=null){
   $('#bpModalBody').innerHTML=`<div class="bp-replace"><p class="bp-detail-intro">Можно отыгрывать только один бонус. Этот бонус будет отменён:</p>${bpCard(old,true)}<p class="bp-replace-warning">Сгорят <b>${bpNumber(old.remaining)} Б</b> и весь прогресс отыгрыша.</p><p class="bp-detail-intro">При пополнении на <b>${bpNumber(depA)} ₽</b> активируется «${b.title}». Рубли и бесплатные участия сохранятся.</p>${old.pending?'<p class="bp-detail-intro">Сначала дождитесь результатов уже начатых игр на бонусы.</p>':''}<div class="bp-actions bp-replace-actions"><button class="bp-secondary" id="bpReplaceBack">Назад</button><button class="bp-primary" id="bpReplaceConfirm" ${old.pending?'disabled':''}>Активировать</button></div></div>`;
   $('#bpReplaceBack').onclick=bpCloseModal;$('#bpReplaceConfirm').onclick=()=>bpConfirmDeposit(old.id);return;
  }
+ if(b&&window.DF&&DF.handles(b)){bpCloseModal();DF.start(b,depA,replaceId);return}
  const activated=b?bonusModel.activate(b.id,depA,replaceId):null;if(b&&!activated){toast('Не удалось активировать бонус. Проверьте условия и результаты игр.');return}
  bpCloseModal();
  if(!S.firstDep)S.firstDep=depA;pay(depA,1);$('#sheet').classList.remove('show');selectedDepositBonus=null;bpSync();toast(activated?'Счёт пополнен, бонус активирован':'Демо-счёт пополнен');
@@ -6880,7 +6924,8 @@ const DM_GROUPS=[
  {id:'bmode',t:'Бонусная система',cls:'c3',opts:[['none','Нет бонусов','только рубли и FS'],['wager','Отыгрыш','депозит ×'+BonusEngine.DEP_WAGER+' · FS ×'+BonusEngine.FS_WAGER],['orig','Оригинальные','бонусы Столото']]},
  {id:'series',t:'Серия в быстрых играх 1 из 3',cls:'c5',opts:[[0,'0','старт'],[2,'2','шаг до 3'],[3,'3','можно забрать'],[6,'6','середина'],[9,'9','шаг до 10']]},
  {id:'stb',t:'Бонусы Столото',cls:'c3',opts:[[0,'0','нет'],[300,'300','бонусов'],[2000,'2 000','бонусов']]},
- {id:'bonus',t:'Бонус с отыгрышем',cls:'c4',opts:[['none','Нет','без бонуса'],['active','20%','отыгрыша'],['almost','94%','почти'],['ready','Готов','перевести']]},
+ {id:'bonus',t:'Бонус с отыгрышем',cls:'c5',opts:[['none','Нет','без бонуса'],['active','20%','отыгрыша'],['almost','94%','почти'],['ready','Готов','перевести'],['expired','Истёк','срок вышел']]},
+ {id:'depScn',t:'Пополнение с бонусом: что случится',cls:'c4',opts:[['ok','Успех','до минуты'],['slow','Задержка','дольше минуты'],['err','Ошибка','повтор сам'],['budget','Бюджет','закончился'],['noel','Не подходит','кошелёк, аудитория'],['refund0','Возврат','до начисления'],['refund','Возврат','после начисления']]},
  {id:'fs',t:'Бесплатные участия (FS)',cls:'c3',opts:[['none','Нет','ни одного'],['some','3 FS','в Рапидо'],['all','Везде','по 5 в играх']]},
  {id:'offers',t:'Доступные предложения',cls:'c2',opts:[['yes','Есть','в «Доступных»'],['no','Нет','всё разобрано']]},
  {id:'raffle',t:'Розыгрыш: уровень',cls:'c5',opts:[[1,'1','старт'],[4,'4','60 до приза'],[24,'24','60 до приза'],[49,'49','60 до приза'],[99,'99','60 до 100']]},
@@ -6925,8 +6970,9 @@ const SET={
  att(n){if(!LV.mines)return;lvSetAttempts(n)},
  bonus(v){if(!bpWagerOn())return;
   const deps=bonusModel.records.filter(b=>b.type==='deposit');
-  deps.filter(b=>b.status==='active').forEach(b=>Object.assign(b,{status:'available',amount:0,remaining:0,turnover:0,target:0,ready:false,pending:0,expiresAt:Date.now()+4*DAY}));
+  deps.filter(b=>b.status==='active'&&!b.fsw).forEach(b=>Object.assign(b,{status:'available',amount:0,remaining:0,turnover:0,target:0,ready:false,pending:0,expiresAt:Date.now()+4*DAY}));
   if(v!=='none'){const b=bonusModel.get('welcome')||deps[0];if(b){const m=b.multiplier||BonusEngine.DEP_WAGER,amount=500,target=amount*m;
+   if(v==='expired'){Object.assign(b,{status:'expired',amount,target,multiplier:m,turnover:1800,remaining:500,ready:false,pending:0,seen:false,flow:null});return}
    const st={active:{turnover:1000,remaining:500},almost:{turnover:Math.round(target*.94),remaining:450},ready:{turnover:target,remaining:650,ready:true}}[v];
    Object.assign(b,{status:'active',amount,target,multiplier:m,pending:0,ready:false,expiresAt:Date.now()+2*DAY+19*3600000},st)}}
  },
@@ -6938,7 +6984,7 @@ const SET={
  },
  offers(v){
   if(v==='no')bonusModel.records.filter(b=>b.status==='available').forEach(b=>b.status='demo-hidden');
-  else{bonusModel.records.forEach(b=>{if(b.status==='demo-hidden'||(b.status==='expired'&&b.type!=='tickets'))Object.assign(b,{status:'available',expiresAt:Date.now()+4*DAY})});
+  else{bonusModel.records.forEach(b=>{if(b.status==='demo-hidden'||(b.status==='expired'&&b.type!=='tickets'&&!b.fsw))Object.assign(b,{status:'available',expiresAt:Date.now()+4*DAY})});
    if(!bonusModel.list('available').length){const o=BonusEngine.offers.find(x=>x.type==='deposit');bonusModel.records.push({...o,id:o.id+'-'+Date.now(),status:'available',used:0,turnover:0,amount:0,remaining:0,pending:0,target:0,ready:false,expiresAt:Date.now()+4*DAY,validForMs:7*DAY})}}
  },
  raffle(L){
@@ -6951,6 +6997,7 @@ const SET={
  },
  picks(v){rf.st.picks=v;rfRenderPicks()},
  npPerm(v){window.NP&&NP.set(v)},
+ depScn(v){if(!window.DF)return;DF.scn=v;bonusModel.records.forEach(b=>{if(b.ended&&b.status==='available')b.ended=false});try{bpSync()}catch(e){}},
  wdId(v){window.WD&&WD.setId(v)},
  ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},acEmail(v){if(!window.ACC)return;const A=ACC.get();ACC.set({emailState:v,email:v==='none'?'':A.email||'ivan.petrov@mail.ru'})},
  wheel(v){if(typeof fwBusy!=='undefined'&&fwBusy)return;
@@ -6969,9 +7016,9 @@ function current(){
   bmode:BonusEngine.mode,stb:S.stb,series:QS[QUICK_IDS.includes($('#game').dataset.g)?$('#game').dataset.g:'coin']||0,
   cash:S.bal,cbOn:LV.cb?'on':'off',mnOn:LV.mines?'on':'off',lvl:lossbackModel.snapshot().level.id,att:lvAttempts(),
   cbState:(()=>{const L=window.lvLastGet&&lvLastGet();if(L)return window.ntIsRead&&ntIsRead('cb-credit-'+L.start)?'got':'ready';return lossbackModel.snapshot().periods[0]?'plus':'none'})(),
-  bonus:!w?'none':w.ready?'ready':w.target&&w.turnover/w.target>=.9?'almost':'active',
+  bonus:!w?(bonusModel.records.some(b=>b.status==='expired'&&b.type==='deposit'&&!b.fsw&&!b.seen&&b.amount)?'expired':'none'):w.ready?'ready':w.target&&w.turnover/w.target>=.9?'almost':'active',
   fs:!fsLeft?'none':fsRecs.some(b=>String(b.id).startsWith('demo-fs-'))?'all':'some',
-  offers:bonusModel.list('available').length?'yes':'no',
+  offers:bonusModel.list('available').length?'yes':'no',depScn:window.DF?DF.scn:'ok',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
   acEmail:window.ACC?ACC.get().emailState:'confirmed',wdId:window.WD?WD.state.id:'none',npPerm:window.NP?NP.state.perm:'granted',
@@ -6988,6 +7035,7 @@ function current(){
    bonus:w?`${rfNum(w.remaining)} Б · ${rfNum(w.turnover)} / ${rfNum(w.target)} Б`:'нет',
    fs:fsLeft?fsLeft+' шт.':'нет',
    offers:bonusModel.list('available').length+' шт.',
+   depScn:window.DF?{ok:'бонус придёт через пару секунд',slow:'сначала «задерживается», потом начислим',err:'ошибка, затем автоповтор',budget:'бонус не начислен, акция завершена',noel:'бонус не начислен — не подошло',refund0:'пополнение вернули до бонуса',refund:'бонус начислен, потом на проверке'}[DF.scn]:'',
    raffle:`уровень ${rf.st.level} · ${rfNum(rf.st.points)} очков`,
    picks:rf.st.picks+' шт.',
    wheel:ws.spun?'крутил сегодня · таймер':'можно крутить',
@@ -7843,6 +7891,7 @@ function items(){
     if(LV.cb&&cl)L.push({id:'cb-credit-'+cl.start,topic:'bonus',type:'bonus',t:`Кэшбек за ${lvMon(cl.start)} начислен: ${num(cl.amount)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`,d:`${cl.pct}% кэшбека за ${lvMon(cl.start)} — ${BonusEngine.mode==='wager'?'бонусом в «Промо»':'на бонусный счёт'}. Забирать не нужно.`,m:Math.max(0,Math.round((Date.now()-cl.at)/60000)),btn:'Посмотреть',act:()=>go('lossback')});
     if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,topic:'bonus',type:'bonus',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Попытки за уровень. Призы — FS и бесплатные билеты.',m:5,btn:'Играть',act:()=>lvOpenMines()})}
   }catch(e){}
+  try{if(window.DF)DF.notes().forEach(x=>L.push(x))}catch(e){}
   const mode=(window.BonusEngine&&BonusEngine.mode)||'wager';
   try{const r=bonusModel.list('active').find(x=>x.ready);if(r)L.push({id:'bonus-ready-'+r.id,topic:'bonus',type:'bonus',t:'Бонус отыгран',d:`Заберите +${num(r.remaining)} ₽ в Промо.`,m:0,btn:'Забрать',act:()=>go('promo')})}catch(e){}
   // 3. срок бонуса — одно напоминание
@@ -8978,6 +9027,107 @@ document.addEventListener('click',e=>{
 /* программа уровней — при первом открытии страницы уровня по нажатию игрока */
 if(typeof window.go==='function'){const og=window.go;window.go=function(to,...a){const r=og.call(this,to,...a);if(to==='lossback'&&!ACC.level&&Date.now()-lastTap<800)setTimeout(()=>open('level',null,null),150);return r}}
 window.PC={open,accepted:id=>!!ACC[id],reset:()=>{for(const k in ACC)delete ACC[k];save()}};
+})();
+
+</script>
+<script>
+/* ===== Пополнение с бонусом: согласие с условиями → «начисляем» → начислен / задержка / ошибка с повтором /
+   бюджет закончился / не подошло / возврат пополнения. Сценарий выбирается в настройках прототипа. ===== */
+(function(){
+const DF={scn:'ok',log:[]};
+const SCN={ok:'Успех',slow:'Задержка',err:'Ошибка',budget:'Бюджет',noel:'Не подходит',refund:'Возврат после',refund0:'Возврат до'};
+const n=v=>bpNumber(v),now=()=>Date.now();
+const dDate=t=>new Date(t).toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+const valueTxt=(b,a)=>b.type==='deposit'?`+${n(bpOfferValue(b,a))} Б`:`${b.total} ${bpTicketWord(b.total)}`;
+const ICO={
+ load:'<svg viewBox="0 0 24 24" class="df-spin" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-dasharray="40 60" stroke-linecap="round"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20z" fill="currentColor"/><path d="M12 9v5" stroke="#1b1827" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.4" fill="#1b1827"/></svg>',
+ off:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m6 6 12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+ eye:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'};
+
+/* какие предложения ведёт этот флоу: бонус к пополнению и билеты за пополнение */
+DF.handles=b=>b&&(b.type==='deposit'||b.type==='depositTickets')&&!b.fsw;
+
+/* ---------- согласие с условиями в шторке пополнения ---------- */
+let agreeFor=null,agreed=false;
+DF.agreeUI=function(b){let el=$('#dfAgree');
+ if(!el){$('#bpDepositSummary').insertAdjacentHTML('beforebegin','<label class="df-agree" id="dfAgree"><input type="checkbox" id="dfAgreeBox"><span></span></label>');el=$('#dfAgree');
+  $('#dfAgreeBox').onchange=e=>{agreed=e.target.checked;bpRenderDeposit()}}
+ if(!b||!DF.handles(b)){el.hidden=true;agreeFor=null;return true}
+ if(agreeFor!==b.id){agreeFor=b.id;agreed=false}
+ el.hidden=false;$('#dfAgreeBox').checked=agreed;
+ $('span',el).innerHTML=`Принимаю <button type="button" class="df-link" data-bp-detail="${b.id}">условия акции</button> «${b.title}»`;
+ return agreed};
+
+/* ---------- запуск после «Пополнить» ---------- */
+const T={ok:{credit:3000},slow:{late:4000,credit:10000},err:{fail:2500,credit:9000},budget:{end:2500},noel:{end:2500},refund:{credit:3000,review:8000},refund0:{cancel:2500}};
+DF.start=function(b,amount,replaceId){const scn=DF.scn,t=T[scn]||T.ok;
+ if(!S.firstDep)S.firstDep=amount;pay(amount,1);$('#sheet').classList.remove('show');selectedDepositBonus=null;agreeFor=null;
+ b.status='flow';b.flow={state:'pending',amount,replaceId,scn,at:now(),value:bpOfferValue(b,amount),tries:1};
+ sync();toast(`Счёт пополнен на ${n(amount)} ₽ · начисляем бонус`);
+ const f=b.flow,later=(ms,fn)=>setTimeout(()=>{if(b.flow===f)fn()},ms);
+ if(t.late)later(t.late,()=>{f.state='late';sync()});
+ if(t.fail)later(t.fail,()=>{f.state='failed';f.tries=1;sync();note(b,'fail',`Бонус пока не начислен`,`Не получилось начислить «${b.title}». Повторим автоматически — ничего делать не нужно.`)});
+ if(t.credit)later(t.credit,()=>credit(b));
+ if(t.end)later(t.end,()=>{f.state=scn==='budget'?'ended':'noel';if(scn==='budget')b.ended=true;sync();
+  note(b,f.state,'Бонус не начислен',scn==='budget'?`Бонусы по акции «${b.title}» закончились. Пополнение ${n(amount)} ₽ зачислено полностью.`:`Пополнение не подошло под условия «${b.title}». Деньги зачислены полностью.`)});
+ if(t.cancel)later(t.cancel,()=>{f.state='cancelled';S.bal=Math.max(0,S.bal-amount);renderBal(-1);sync();
+  note(b,'cancel','Бонус отменён',`Пополнение ${n(amount)} ₽ вернулось на карту до начисления бонуса. Акция снова доступна.`)});
+ if(t.review)later(t.review,()=>{if(b.status!=='active')return;f.state='review';b.status='flow';sync();
+  note(b,'review','Бонус на проверке',`Пополнение ${n(amount)} ₽ возвращено. Бонус заморожен до проверки — ваши деньги не спишем.`)});
+};
+function credit(b){const f=b.flow;b.status='available';
+ const a=bonusModel.activate(b.id,f.amount,f.replaceId);
+ if(!a){f.state='failed';b.status='flow';sync();return}
+ if(f.scn!=='refund')b.flow=null;else f.state='credited';
+ sync();note(b,'credit',`Бонус начислен: ${valueTxt(b,f.amount)}`,`По акции «${b.title}». Действует до ${dDate(b.expiresAt)}.`,'Играть',()=>go('lobby'));
+ if(typeof confetti==='function')try{confetti()}catch(e){}
+ bpOpenModal('Бонус начислен');bonusModalView={type:'df'};
+ const dep=b.type==='deposit';
+ $('#bpModalBody').innerHTML=`<div class="df-got"><div class="df-got-art">${bpGameArt(b)}</div><b class="df-got-v">${valueTxt(b,f.amount)}</b><span class="df-got-t">«${b.title}»</span>
+  <ul class="df-got-l"><li><span>Действует</span><b>до ${dDate(b.expiresAt)}</b></li>${dep?`<li><span>Отыгрыш</span><b>×${b.multiplier} · ${n(b.target)} Б</b></li><li><span>Где играть</span><b>быстрые игры</b></li>`:`<li><span>Билеты</span><b>по ${n(b.nominal)} ₽ в «${GAMES[b.game].n}»</b></li>`}<li><span>Пополнение</span><b>${n(f.amount)} ₽ на рублёвом балансе</b></li></ul>
+  <p class="df-got-n">${dep?'Бонус лежит отдельно от ваших денег. После отыгрыша его можно перевести в рубли.':'Билеты уже в игре — выигрыш придёт по правилам бонуса.'}</p>
+  <div class="bp-actions"><button class="bp-secondary" data-df-close>Позже</button><button class="bp-primary" data-df-play>${dep?'Играть':'В игру'}</button></div></div>`}
+
+/* ---------- карточки в «Активных» ---------- */
+DF.cards=function(){const out=[];
+ for(const b of bonusModel.records){const f=b.flow;
+  if(f&&b.status==='flow')out.push(card(b,f));
+  else if(f&&['ended','noel','cancelled'].includes(f.state))out.push(card(b,f));
+  else if(b.status==='expired'&&b.type==='deposit'&&!b.fsw&&!b.seen&&b.amount)out.push(card(b,{state:'expired'}))}
+ return out};
+function card(b,f){
+ const V={pending:['load','info','Начисляем бонус','Обычно до минуты. Пополнение уже на счёте.'],
+  late:['load','warn','Начисление задерживается','Бонус придёт автоматически — ничего делать не нужно. Пополнение уже на счёте.'],
+  failed:['warn','warn','Пока не начислили','Произошла ошибка на нашей стороне. Повторим автоматически.'],
+  review:['eye','warn','Бонус на проверке','Пополнение возвращено, поэтому бонус заморожен. Сотрудник проверит операцию — ваши деньги не спишем.'],
+  ended:['off','off','Бонус не начислен','Акция завершилась — бонусы закончились раньше срока. Пополнение зачислено полностью.'],
+  noel:['off','off','Бонус не начислен','Пополнение не подошло под условия: акция недоступна для этого кошелька. Деньги зачислены полностью.'],
+  cancelled:['off','off','Бонус отменён','Пополнение вернулось на карту до начисления. Акция снова доступна.'],
+  expired:['off','off','Срок бонуса истёк','Отыгрыш не завершён вовремя — бонус сгорел. Рубли и выигрыши за рубли остались.']}[f.state];
+ const [ic,tone,head,txt]=V,done=['ended','noel','cancelled','expired'].includes(f.state);
+ const amt=f.state==='expired'?`${n(b.amount)} Б`:valueTxt(b,f.amount);
+ return `<article class="bp-card bp-mini df-card df-${tone}${done?' df-done':''}" data-df="${b.id}">
+  <div class="bp-mini-top">${bpGameArt(b)}<div class="bp-mini-head"><b class="bp-mini-amt">${amt}</b><span class="bp-mini-sub">${b.title}</span></div><span class="df-ic">${ICO[ic]}</span></div>
+  <div class="df-st"><b>${head}</b><span>${txt}</span></div>
+  ${done?`<div class="bp-actions"><button class="bp-secondary df-ok" data-df-ok="${b.id}">Понятно</button></div>`:f.state==='failed'?`<div class="df-retry"><i style="animation-duration:${(T.err.credit-T.err.fail)/1000}s"></i></div>`:''}</article>`}
+/* предложение, по которому закончился бюджет */
+DF.endedCard=b=>`<article class="bp-card bp-mini deposit df-card df-off df-done" data-bonus-id="${b.id}">
+  <div class="bp-mini-top">${bpGameArt(b)}<div class="bp-mini-head"><b class="bp-mini-amt">${b.type==='deposit'?'+'+b.percent+'%':b.total+' '+bpTicketWord(b.total)}</b><span class="bp-mini-sub">${b.title}</span></div><span class="df-ic">${ICO.off}</span></div>
+  <div class="df-st"><b>Акция завершена</b><span>Бонусы закончились раньше срока. Следите за новыми предложениями.</span></div></article>`;
+
+/* ---------- уведомления в колокольчике ---------- */
+function note(b,k,t,d,btn,act){DF.log.unshift({id:`df-${b.id}-${k}-${now()}`,topic:'bonus',type:'bonus',t,d,at:now(),btn:btn||'Открыть',act:act||(()=>{go('promo')})});
+ try{ntBadge()}catch(e){}if(k!=='credit')toast(t)}
+DF.notes=()=>DF.log.map(x=>({...x,m:Math.floor((now()-x.at)/60000)}));
+
+function sync(){try{bpSync()}catch(e){}try{renderBal()}catch(e){}}
+document.addEventListener('click',e=>{
+ const ok=e.target.closest('[data-df-ok]');if(ok){const b=bonusModel.get(ok.dataset.dfOk);if(b){if(b.status==='expired')b.seen=true;else{const st=b.flow&&b.flow.state;b.flow=null;if(st!=='ended')b.status='available';else{b.status='available'}}sync()}return}
+ if(e.target.closest('[data-df-close]')){bpCloseModal();return}
+ if(e.target.closest('[data-df-play]')){bpCloseModal();go('lobby');return}
+});
+DF.SCN=SCN;window.DF=DF;
 })();
 
 </script>
