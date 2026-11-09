@@ -2531,6 +2531,40 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .pbn-h em{flex:none;font-style:normal;font-size:12px;line-height:16px;font-weight:700;color:#a99fc2}
 .pbn-h em.on{color:#70ed85}.pbn-h em.off{color:#ff8fa3}
 .pbn-note{margin:8px 0 0;font-size:12px;line-height:16px;color:#7f7690}
+/* ===== «Промокоды» по флоу Столото: вкладки, счётчик, «Добавить промокод», шторка ввода ===== */
+.pbn-tabs{display:flex;margin:0 0 16px;border-bottom:1px solid #ffffff14}
+.pbn-tabs button{flex:1 1 auto;white-space:nowrap;padding:0 4px;height:44px;border:0;background:none;color:#a99fc2;font-family:inherit;font-size:13px;line-height:20px;font-weight:700;cursor:pointer;position:relative}
+.pbn-tabs button.on{color:#fff}
+.pbn-tabs button.on:after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;border-radius:2px;background:#a25be6}
+.pf-card.pbn-sum{display:flex;align-items:center;gap:12px;padding:12px 16px;font-size:14px;line-height:20px}
+.pbn-sum-i{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#ffffff0f;font-size:18px}
+.pf-card.pbn-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 16px;gap:12px}
+.pbn-empty-art{font-size:56px;line-height:64px;filter:grayscale(.3)}
+.pbn-empty b{font-size:14px;line-height:20px;font-weight:600;color:#d9d3e6}
+.pbn-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;margin:16px 0 0;border:0;border-radius:12px;background:#ffffff14;color:#fff;font-family:inherit;font-size:16px;line-height:24px;font-weight:700;cursor:pointer}
+.pbn-add span{font-size:20px;line-height:20px}
+.pbn-card.fresh{animation:pbnfresh 1.6s}
+@keyframes pbnfresh{0%{box-shadow:0 0 0 2px #70ed85,0 0 24px #70ed8566}100%{box-shadow:none}}
+.pbn-about{display:flex;flex-direction:column;gap:12px}
+.pbn-step{display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:16px;background:#15131d;border:1px solid #ffffff14}
+.pbn-step i{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:14px;background:#a25be6;color:#fff;font-style:normal;font-weight:800;font-size:14px}
+.pbn-step span{display:flex;flex-direction:column;gap:4px}
+.pbn-step b{font-size:14px;line-height:20px}.pbn-step small{font-size:12px;line-height:16px;color:#a99fc2}
+.pbn-go{width:100%;height:48px;margin:16px 0 0;border:0;border-radius:12px;background:linear-gradient(180deg,#b06ff0,#8f45dc);color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.pbn-sheet-bg{position:absolute;inset:0;z-index:5;background:#0a0b1199;animation:pbnfade .2s}
+.pbn-sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;flex-direction:column;gap:8px;padding:8px 16px 32px;border-radius:24px 24px 0 0;background:#15131d;animation:pbnup .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes pbnfade{from{opacity:0}}@keyframes pbnup{from{transform:translateY(40%)}}
+.pbn-grab{align-self:center;width:40px;height:4px;border-radius:2px;background:#ffffff33;margin-bottom:8px}
+.pbn-sh-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pbn-sh-head b{font-size:20px;line-height:24px;font-weight:800}
+.pbn-sh-head button{width:32px;height:32px;border:0;border-radius:16px;background:#ffffff14;color:#fff;font-size:20px;cursor:pointer}
+.pbn-sheet label{font-size:12px;line-height:16px;color:#a99fc2}
+.pbn-sheet input{height:52px;padding:0 16px;border-radius:12px;border:1px solid #ffffff1f;background:#0a0b11;color:#fff;font-family:inherit;font-size:20px;line-height:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.pbn-sheet input:focus{outline:none;border-color:#a25be6}
+.pbn-sheet input.err{border-color:#ff8fa3}
+.pbn-submit{height:48px;margin-top:8px;border:0;border-radius:12px;background:linear-gradient(180deg,#b06ff0,#8f45dc);color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.pbn-submit:disabled{background:#ffffff14;color:#ffffff59;cursor:default}
+.pbn-demo{margin:4px 0 0;font-size:11px;line-height:16px;color:#7f7690;text-align:center}
 
 </style>
 <style>
@@ -9306,9 +9340,12 @@ const left=t=>{const ms=t-now();if(ms<=0)return 'истёк';const d=Math.floor(
 const word=k=>k%10===1&&k%100!==11?'игра':k%10>=2&&k%10<=4&&(k%100<10||k%100>=20)?'игры':'игр';
 const gName=g=>g&&GAMES[g]?GAMES[g].n:'';
 
-/* промокоды MVP: бесплатные игры в быстрых играх (без пополнения и отыгрыша) */
-const CODES={COIN5:{game:'coin',total:5,days:7},HILO3:{game:'hilo',total:3,days:3},SHELL10:{game:'shell',total:10,days:14}};
-const used=new Set();
+/* промокоды MVP: 12 символов, как на Столото (XXXX-XXXX-XXXX). Дают бесплатные игры в быстрых играх */
+const CODES={COIN55552026:{game:'coin',total:5,days:7},HILO33332026:{game:'hilo',total:3,days:3},SHEL10102026:{game:'shell',total:10,days:14},OLDD00002025:{expired:true}};
+const used=new Set(['USED00002026']);
+const norm=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+const fmtCode=c=>c.replace(/(.{4})(?=.)/g,'$1-');
+let TAB='active',ADD=null;
 const HIST=[
  {t:'Колесо удачи · «Где шарик?»: 3 бесплатные игры',s:'Использован',at:now()-2*D},
  {t:'Промокод WELCOME · «Монетка»: 5 бесплатных игр',s:'Использован',at:now()-6*D},
@@ -9318,7 +9355,7 @@ const log=(t,s)=>HIST.unshift({t,s,at:now()});
 function mk(id,code,game,total,days,status,src){return {id,type:'tickets',fs:true,code,title:`«${gName(game)}»: ${total} бесплатн${total===1?'ая игра':total<5?'ые игры':'ых игр'}`,tag:src,game,total,used:0,nominal:GAMES[game].price,status,expiresAt:now()+days*D,validForMs:days*D}}
 /* стартовый набор: промокод, который уже пришёл письмом (ещё не активирован), и бесплатные игры с колеса */
 function seed(){if(typeof bonusModel==='undefined'||bonusModel.get('pb-chet'))return;
- bonusModel.records.push(mk('pb-chet','CHET7','coin',7,6,'available','Промокод CHET7 · из письма'));
+ bonusModel.records.push(mk('pb-chet','CHET-7777-2026','coin',7,6,'available','Промокод CHET-7777-2026 · из письма'));
  const w=mk('pb-wheel',null,'scale',3,2,'active','Колесо удачи');w.used=1;bonusModel.records.push(w)}
 
 const inMvp=g=>{if(!g)return true;const m=MVPS[PCFG.mvp];return SECTIONS.some(s=>m.sec.includes(s.id)&&s.ids.includes(g))};
@@ -9327,31 +9364,41 @@ function items(){const t=now();return bonusModel.records.filter(b=>inMvp(b.game)
 function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status==='active',soon=b.expiresAt-now()<2*D;
  const art=g?`<img class="pbn-art" src="${IMG[g.img]}" alt="">`:`<span class="pbn-art gift">🎟</span>`;
  const what=b.type==='voucher'?`Бесплатный билет ${n(b.nominal)} ₽`:act?`${rest} из ${b.total} ${word(b.total)} · ${gName(b.game)}`:b.title;
- return `<div class="pbn-card${act?' on':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b><small>${b.tag||'Бонус'}${b.type==='voucher'?' · любая быстрая игра':''}</small>
+ const fr=b.fresh;b.fresh=0;
+ return `<div class="pbn-card${act?' on':''}${fr?' fresh':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b><small>${b.tag||'Бонус'}${b.type==='voucher'?' · любая быстрая игра':''}</small>
   <span class="pbn-exp${soon?' soon':''}">До ${dShort(b.expiresAt)} · осталось ${left(b.expiresAt)}</span></div>
   <button type="button" class="pbn-btn${act?'':' ghost'}" data-pbn-go="${b.id}">${act?'Играть':'Активировать'}</button></div>`}
-function render(){const P=$('#pfb');if(!P)return;seed();const L=items();
- $('.pf-body',P).innerHTML=`<form class="pf-card pbn-code" id="pbnForm"><label for="pbnCode">Есть промокод?</label><div><input id="pbnCode" placeholder="Например, COIN5" autocomplete="off" maxlength="20"><button type="submit">Активировать</button></div><p class="pbn-msg" id="pbnMsg" role="status"></p></form>
- <h3 class="pf-h">Доступные бонусы <small>${L.length}</small></h3>
- ${L.length?L.map(card).join(''):'<div class="pf-card pbn-empty"><b>Пока нет бонусов</b><small>Крутите колесо удачи и вводите промокоды — бонусы появятся здесь</small></div>'}
- <h3 class="pf-h">История</h3>
- <div class="pf-card pbn-hist">${HIST.map(h=>`<div class="pbn-h"><span><b>${h.t}</b><small>${dShort(h.at)}</small></span><em class="${h.s==='Истёк'?'off':h.s==='Активирован'?'on':''}">${h.s}</em></div>`).join('')}</div>
- <p class="pbn-note">Бонусы без пополнения и отыгрыша: бесплатные игры засчитываются автоматически, выигрыш — в рубли.</p>`;
- $('#pbnForm').onsubmit=e=>{e.preventDefault();redeem($('#pbnCode').value)}}
-function redeem(v){const code=String(v||'').trim().toUpperCase(),m=$('#pbnMsg');m.className='pbn-msg';
- if(!code){m.textContent='Введите промокод';m.classList.add('err');return}
- const c=CODES[code];if(!c){m.textContent='Промокод не найден. Проверьте написание.';m.classList.add('err');return}
- if(used.has(code)){m.textContent='Этот промокод уже активирован';m.classList.add('err');return}
- used.add(code);const b=mk('pc-'+code,code,c.game,c.total,c.days,'active','Промокод '+code);bonusModel.records.push(b);
- log(`Промокод ${code} · ${b.title}`,'Активирован');try{bpSync()}catch(e){}render();
- const m2=$('#pbnMsg');m2.textContent=`Готово — ${b.title}. Действует ${c.days} ${c.days===1?'день':c.days<5?'дня':'дней'}`;m2.classList.add('ok');toast('Промокод активирован')}
-
-function open(){render();const P=$('#pfb');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.pf-body',P).scrollTop=0;$('.pf-back',P).focus()}
+function tabs(){return `<div class="pbn-tabs" role="tablist">${[['active','Активные'],['hist','История'],['about','Всё о промокодах']].map(([k,t])=>`<button type="button" role="tab" class="${TAB===k?'on':''}" aria-selected="${TAB===k}" data-pbn-tab="${k}">${t}</button>`).join('')}</div>`}
+function render(){const P=$('#pfb');if(!P)return;seed();const L=items();let body='';
+ if(TAB==='active')body=`<div class="pf-card pbn-sum"><span class="pbn-sum-i">🎟</span><span>Промокодов и бонусов доступно: <b>${L.length}</b></span></div>
+  ${L.length?L.map(card).join(''):`<div class="pf-card pbn-empty"><span class="pbn-empty-art">🎫</span><b>У вас нет активных промокодов</b></div>`}
+  <button type="button" class="pbn-add" data-pbn-add><span>＋</span>Добавить промокод</button>`;
+ else if(TAB==='hist')body=HIST.length?`<div class="pf-card pbn-hist">${HIST.map(h=>`<div class="pbn-h"><span><b>${h.t}</b><small>${dShort(h.at)}</small></span><em class="${h.s==='Истёк'?'off':h.s==='Активирован'?'on':''}">${h.s}</em></div>`).join('')}</div>`:`<div class="pf-card pbn-empty"><b>Истории пока нет</b></div>`;
+ else body=`<div class="pbn-about"><div class="pbn-step"><i>1</i><span><b>Где взять</b><small>За акции, колесо удачи и в письмах Столото</small></span></div><div class="pbn-step"><i>2</i><span><b>Как добавить</b><small>«Добавить промокод» → 12 символов с карточки</small></span></div><div class="pbn-step"><i>3</i><span><b>Как использовать</b><small>Нажмите «Играть» — бесплатные игры спишутся сами</small></span></div></div>
+  <button type="button" class="pbn-go" data-pbn-tab="active">К промокодам</button>`;
+ $('.pf-body',P).innerHTML=tabs()+body+(ADD?addSheet():'')}
+function addSheet(){const v=ADD.v||'',ok=v.length===12;
+ return `<div class="pbn-sheet-bg" data-pbn-add-close></div><form class="pbn-sheet" id="pbnAdd"><div class="pbn-grab"></div><div class="pbn-sh-head"><b>Добавить промокод</b><button type="button" data-pbn-add-close aria-label="Закрыть">×</button></div>
+  <label for="pbnCode">Код промокода</label><input id="pbnCode" class="${ADD.err?'err':''}" value="${fmtCode(v)}" placeholder="XXXX-XXXX-XXXX" autocomplete="off" inputmode="text" maxlength="14">
+  <p class="pbn-msg${ADD.err?' err':''}" id="pbnMsg">${ADD.err||'12 символов — латинские буквы и цифры'}</p>
+  <button type="submit" class="pbn-submit" ${ok?'':'disabled'}>Добавить</button><p class="pbn-demo">Демо-коды: COIN-5555-2026 · HILO-3333-2026 · USED-0000-2026 · OLDD-0000-2025</p></form>`}
+function redeem(v){const code=norm(v);
+ if(code.length<12){ADD={v:code,err:'Введите все 12 символов'};render();return}
+ if(used.has(code)){ADD={v:code,err:'Этот промокод уже добавлен'};render();focusIn();return}
+ const c=CODES[code];if(!c){ADD={v:code,err:'Промокод не найден. Проверьте символы'};render();focusIn();return}
+ if(c.expired){ADD={v:code,err:'Срок действия промокода истёк'};render();focusIn();return}
+ used.add(code);const b=mk('pc-'+code,fmtCode(code),c.game,c.total,c.days,'active','Промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);
+ log(`Промокод ${fmtCode(code)} · ${b.title}`,'Активирован');try{bpSync()}catch(e){}ADD=null;TAB='active';render();toast('Промокод добавлен')}
+function focusIn(){const i=$('#pbnCode');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
+function open(){TAB='active';ADD=null;render();const P=$('#pfb');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.pf-body',P).scrollTop=0;$('.pf-back',P).focus()}
 function close(){const P=$('#pfb');P.classList.remove('show');P.setAttribute('aria-hidden','true');try{$('#pf').classList.contains('show')&&window.PF_render&&PF_render()}catch(e){}}
 $('#scr').insertAdjacentHTML('beforeend',`<section class="pf" id="pfb" aria-hidden="true" aria-label="Бонусы и промокоды"><div class="pf-head"><button class="pf-back" type="button" data-pbn-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Бонусы и промокоды</h2></div><div class="pf-body"></div></section>`);
 
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-pbn-close]')){close();return}
+ const tb=e.target.closest('[data-pbn-tab]');if(tb){TAB=tb.dataset.pbnTab;render();return}
+ if(e.target.closest('[data-pbn-add]')){ADD={v:''};render();focusIn();return}
+ if(e.target.closest('[data-pbn-add-close]')){ADD=null;render();return}
  const gbtn=e.target.closest('[data-pbn-go]');if(gbtn){const b=bonusModel.get(gbtn.dataset.pbnGo);if(!b)return;
   if(b.status==='available'){b.status='active';b.expiresAt=now()+b.validForMs;log(`${b.code?'Промокод '+b.code+' · ':''}${b.title}`,'Активирован');try{bpSync()}catch(_){}render();toast('Бонус активирован');return}
   close();try{$('#pf').classList.remove('show')}catch(_){}if(b.game){go('lobby');openGame(b.game)}else go('lobby');return}
@@ -9367,7 +9414,9 @@ function gate(){const off=!promoOn();$('#scr').classList.toggle('no-promo',off);
 const _sm=window.setMvp;if(_sm){window.setMvp=function(m){_sm(m);gate()};try{setMvp=window.setMvp}catch(e){}}
 new MutationObserver(gate).observe(document.getElementById('pf'),{childList:true,subtree:true});
 seed();gate();
-window.PB={open,close,redeem,items,HIST};
+document.addEventListener('input',e=>{if(e.target.id!=='pbnCode'||!ADD)return;const v=norm(e.target.value);ADD={v};const f=fmtCode(v);if(e.target.value!==f)e.target.value=f;const b=$('.pbn-submit');if(b)b.disabled=v.length!==12;const m=$('#pbnMsg');if(m){m.className='pbn-msg';m.textContent='12 символов — латинские буквы и цифры'}e.target.classList.remove('err')});
+document.addEventListener('submit',e=>{if(e.target.id==='pbnAdd'){e.preventDefault();redeem($('#pbnCode').value)}});
+window.PB={open,close,redeem,items,HIST,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
 })();
 
 </script>
