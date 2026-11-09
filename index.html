@@ -2519,6 +2519,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .pbn-main b{font-size:14px;line-height:20px;font-weight:700}
 .pbn-main small{font-size:12px;line-height:16px;color:#a99fc2}
 .pbn-exp{align-self:flex-start;white-space:nowrap;height:20px;padding:0 8px;display:flex;align-items:center;border-radius:10px;background:#ffffff0f;color:#d9d3e6;font-size:12px;line-height:16px}
+.pbn-exp{gap:4px}.pbn-exp svg{width:12px;height:12px;flex:none}
 .pbn-exp.soon{background:#e9966226;color:#ffd5b5}
 .pbn-btn{flex:none;height:32px;padding:0 12px;border:0;border-radius:8px;background:#a25be6;color:#fff;font-family:inherit;font-size:12px;line-height:16px;font-weight:700;cursor:pointer;white-space:nowrap}
 .pbn-btn.ghost{background:#ffffff14}
@@ -9367,7 +9368,7 @@ function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status=
  const what=b.type==='voucher'?`Бесплатный билет ${n(b.nominal)} ₽`:act?`${rest} из ${b.total} ${word(b.total)} · ${gName(b.game)}`:b.title;
  const fr=b.fresh;b.fresh=0;
  return `<div class="pbn-card${act?' on':''}${fr?' fresh':''}" data-pbn="${b.id}">${art}<div class="pbn-main"><b>${what}</b>
-  <span class="pbn-exp${soon?' soon':''}">До ${dShort(b.expiresAt)} · осталось ${left(b.expiresAt)}</span></div>
+  <span class="pbn-exp${soon?' soon':''}"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.75V8l2.25 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${left(b.expiresAt)}</span></div>
   <button type="button" class="pbn-btn${act?'':' ghost'}" data-pbn-go="${b.id}">${act?'Играть':'Активировать'}</button></div>`}
 function tabs(){return `<div class="pbn-tabs" role="tablist">${[['active','Активные'],['about','Всё о промокодах']].map(([k,t])=>`<button type="button" role="tab" class="${TAB===k?'on':''}" aria-selected="${TAB===k}" data-pbn-tab="${k}">${t}</button>`).join('')}</div>`}
 function render(){const P=$('#pfb');if(!P)return;seed();const L=items();let body='';
