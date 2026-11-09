@@ -2534,6 +2534,116 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 
 </style>
 <style>
+/* ===== Остров удачи 2.0 — небо, море, кольца-бонусы, самолёты ===== */
+#game.cr-game{background:#061233}
+.g-body.cr-body{background:#061233}
+.cr-body .p2-info{background:#121a3a}
+.cr-top .cr-logo{flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#5fc8ff,#0a52e0 70%);box-shadow:0 0 0 2px #ffd23f,0 6px 14px #0008}
+.cr-top .cr-logo svg{width:46px;height:30px;transform:rotate(-12deg)}
+.cr-wrap{margin:0 8px;border-radius:24px;overflow:hidden;box-shadow:0 0 0 2px #2f86ff66,0 12px 30px #000a}
+.cr-stage{--sx:0;position:relative;height:250px;overflow:hidden;user-select:none;-webkit-user-select:none;background:#0b2a6b}
+.cr-sky{position:absolute;inset:0;background:linear-gradient(180deg,#0a1a52 0%,#1d3f9a 38%,#4f7de0 62%,#ffb27a 84%,#ff8a6a 100%)}
+.cr-sun{position:absolute;left:62%;top:150px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle,#fff6c4 0 18%,#ffd36b 30%,#ff9a5a55 52%,transparent 70%);filter:blur(.5px)}
+.cr-clouds{position:absolute;inset:0;pointer-events:none}
+.cr-cl{position:absolute;color:#ffffff;opacity:.55}
+.cr-clouds.far .cr-cl{--k:.12;color:#c9d8ff;opacity:.4}
+.cr-clouds.near .cr-cl{--k:.35;opacity:.75}
+.cr-cl.a{--x:20;top:22px}.cr-cl.b{--x:240;top:56px}.cr-cl.c{--x:430;top:12px}.cr-cl.d{--x:610;top:92px}
+.cr-clouds.near .cr-cl.a{--x:300;top:118px}.cr-clouds.near .cr-cl.b{--x:640;top:70px}
+.cr-cl{left:0;translate:calc(mod(calc(var(--x) * 1px - var(--sx) * var(--k) * 1px), 760px) - 160px) 0;transform:none}
+.cr-sea{position:absolute;left:0;right:0;top:196px;bottom:0;background:linear-gradient(180deg,#1aa6d8,#0b5fa8 50%,#073a7a);overflow:hidden}
+.cr-sea:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#e6f6ff,transparent);opacity:.8}
+.cr-sea i{position:absolute;left:-40px;right:-40px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='14'%3E%3Cpath d='M0 7 Q20 0 40 7 T80 7' fill='none' stroke='%23bfe9ff' stroke-width='2' stroke-opacity='.55'/%3E%3C/svg%3E") repeat-x;background-position-x:calc(var(--sx) * -1px);animation:crwave 3s linear infinite}
+.cr-sea .w1{top:6px}.cr-sea .w2{top:22px;opacity:.6;background-position-x:calc(var(--sx) * -.8px - 30px)}.cr-sea .w3{top:38px;opacity:.4}
+@keyframes crwave{to{translate:-80px 0}}
+.cr-world,.cr-planes,.cr-fx{position:absolute;inset:0;pointer-events:none}
+.cr-world{z-index:2}.cr-planes{z-index:4}.cr-fx{z-index:5}
+.cr-wo{position:absolute;left:0;top:0;will-change:transform}
+.cr-wi{position:absolute}
+.cr-isl{position:relative;width:110px;height:104px;margin-left:-55px}
+.cr-isl svg{position:absolute;left:0;top:4px;width:110px;height:103px}
+.cr-isl.gold svg{filter:drop-shadow(0 0 14px #ffd23f)}
+.cr-isl-x{position:absolute;left:50%;top:-14px;transform:translateX(-50%);z-index:2;height:22px;padding:0 9px;border-radius:11px;background:linear-gradient(180deg,#ffe066,#f2a72a);color:#3a2200;font:900 13px/22px StoloText,Inter,sans-serif;box-shadow:0 2px 6px #0007;white-space:nowrap}
+.cr-isl.gold .cr-isl-x{background:linear-gradient(180deg,#fff3b0,#ffc400);box-shadow:0 0 14px #ffd23f}
+/* кольцо-бонус */
+.cr-ring{position:relative;width:56px;height:56px;margin:-28px 0 0 -28px;display:grid;place-items:center}
+.cr-ring i{position:absolute;inset:0;border-radius:50%;border:5px solid #ffd23f;box-shadow:0 0 14px #ffd23fcc,inset 0 0 10px #ffd23f88;animation:crring 1.2s ease-in-out infinite}
+.cr-ring b{position:relative;font:900 15px/1 StoloText,Inter,sans-serif;color:#fff;text-shadow:0 2px 4px #7a4a00,0 0 8px #ffb300}
+.cr-ring.gold i{border-color:#fff3b0;box-shadow:0 0 22px #ffd23f,inset 0 0 14px #ffd23f}
+@keyframes crring{50%{transform:scale(1.08)}}
+.cr-ring.got{animation:crgot .5s forwards}
+@keyframes crgot{to{transform:scale(2.2);opacity:0}}
+.cr-ring.miss{opacity:.45;filter:grayscale(.6)}
+.cr-wo.coin i{display:block;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6c4,#ffd23f 45%,#d48a00);box-shadow:0 0 8px #ffd23f;animation:crcoin 1s ease-in-out infinite}
+.cr-wo.coin.got i{animation:crgot .4s forwards}
+@keyframes crcoin{50%{transform:scaleX(.35)}}
+/* самолёты */
+.cr-hero,.cr-wing{position:absolute;left:0;top:0;will-change:transform,opacity;transition:opacity .3s}
+.cr-pl .in{width:98px;height:60px;margin:-30px 0 0 -49px}
+.cr-pl .in svg{display:block;width:100%;height:100%;filter:drop-shadow(0 6px 6px #0006)}
+.cr-pl .prop{transform-origin:116px 41px;animation:csprop .08s linear infinite}
+.cr-wing .cr-pl .in{width:46px;height:28px;margin:-14px 0 0 -23px}
+.cr-wing .cr-pl .in svg{filter:drop-shadow(0 3px 3px #0006) saturate(.85)}
+.cr-hero.idle .cr-pl .in{animation:csbob 2.2s ease-in-out infinite}
+.cr-hero.landed .cr-pl .in{animation:crland .6s ease-out}
+@keyframes crland{40%{transform:translateY(4px) scaleY(.9)}}
+.cr-hero:after{content:"";position:absolute;right:46px;top:2px;width:120px;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,#ffffffa0);opacity:.7}
+.cr-hero.idle:after,.cr-hero.landed:after{display:none}
+/* HUD */
+.cr-hud{position:absolute;inset:0;z-index:6;pointer-events:none}
+.cr-mult{position:absolute;left:0;right:0;top:12px;display:flex;flex-direction:column;align-items:center;gap:0}
+.cr-mult b{font:900 44px/1 StoloText,Inter,sans-serif;color:#fff;text-shadow:0 3px 0 #0a3a7a,0 0 18px #5fc8ff}
+.cr-mult small{font-size:12px;line-height:16px;font-weight:700;color:#e6f2ff;text-shadow:0 1px 3px #000a}
+.cr-mult.pulse b{animation:crpulse .5s}
+.cr-mult.hot b{color:#ffe066;text-shadow:0 3px 0 #7a4a00,0 0 22px #ffb300}
+@keyframes crpulse{40%{transform:scale(1.35)}}
+.cr-count{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;justify-content:center}
+.cr-count span{height:24px;padding:0 8px;display:flex;align-items:center;gap:4px;border-radius:12px;background:#061233b3;color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px)}
+.cr-count .sum{background:linear-gradient(180deg,#ffe066,#f2a72a);color:#3a2200}
+.cr-wait{position:absolute;left:0;right:0;top:18px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.cr-wait small{font-size:12px;font-weight:700;color:#e6f2ff;text-transform:uppercase;letter-spacing:.06em}
+.cr-wait b{font:900 40px/1 StoloText,Inter,sans-serif;color:#fff;text-shadow:0 3px 0 #0a3a7a,0 0 16px #5fc8ff}
+.cr-wait span{font-size:12px;line-height:16px;color:#e6f2ff;text-shadow:0 1px 3px #000a}
+/* эффекты */
+.cr-burst{position:absolute;width:0;height:0}
+.cr-burst i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#ffe066;box-shadow:0 0 8px #ffd23f;transform:rotate(var(--a)) translateY(0);animation:crspark .8s ease-out forwards}
+.cr-burst.big i{width:9px;height:9px;background:#fff3b0}
+.cr-burst b{position:absolute;left:0;top:-30px;transform:translateX(-50%);font:900 20px/1 StoloText,Inter,sans-serif;color:#ffe066;text-shadow:0 2px 0 #7a4a00;animation:crup .9s ease-out forwards;white-space:nowrap}
+@keyframes crspark{to{transform:rotate(var(--a)) translateY(-46px) scale(.3);opacity:0}}
+@keyframes crup{to{transform:translate(-50%,-28px);opacity:0}}
+/* история и лента билетов */
+.cr-hist{display:flex;gap:4px;padding:8px;background:#0a1a4a;overflow:hidden}
+.cr-hist span{flex:none;height:22px;min-width:34px;padding:0 6px;display:grid;place-items:center;border-radius:11px;background:#ffffff14;color:#9fb6e6;font-size:11px;font-weight:800}
+.cr-hist span.w{background:#2f86ff33;color:#bfe0ff}
+.cr-hist span.big{background:linear-gradient(180deg,#ffe066,#f2a72a);color:#3a2200}
+.cr-tix{display:flex;gap:6px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.cr-tix::-webkit-scrollbar{display:none}
+.cr-t{flex:none;height:32px;padding:0 10px;display:flex;align-items:center;border-radius:16px;background:#ffffff14;color:#cfe0ff;font-size:12px;font-weight:800;white-space:nowrap}
+.cr-t.sea{background:#0b2a6b;color:#6f8fc8}
+.cr-t.land{background:#2f86ff40;color:#fff;box-shadow:inset 0 0 0 1px #5fc8ff88}
+.cr-t.big{background:linear-gradient(180deg,#ffe066,#f2a72a);color:#3a2200;box-shadow:0 0 12px #ffd23f88}
+.cr-t.pop{animation:crtpop .45s}
+@keyframes crtpop{40%{transform:scale(1.15)}}
+.cr-bought .cr-mini{position:relative;flex:none;width:52px;height:34px}
+.cr-bought .cr-mini .cr-pl{position:absolute}.cr-bought .cr-mini .cr-pl:first-child{left:20px;top:12px}.cr-bought .cr-mini .cr-pl:last-child{left:36px;top:22px}
+.cr-bought .cr-mini .in{width:36px;height:22px;margin:-11px 0 0 -18px}
+/* таблица «Как играть» */
+.cr-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid #ffffff10}
+.cr-row b{flex:1;font-size:14px;line-height:20px;font-weight:700}
+.cr-row em{font-style:normal;font-size:14px;font-weight:800}
+.cr-row em.sp{color:#ffd23f}
+.cr-rx{flex:none;width:52px;height:24px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(180deg,#ffe066,#f2a72a);color:#3a2200;font:900 13px/1 StoloText,Inter,sans-serif}
+.cr-rx.gold{box-shadow:0 0 12px #ffd23f}
+.cr-row.sea .cr-rx{background:#0b5fa8;color:#fff}
+/* итог */
+.cr-res .cr-res-art{position:relative;width:160px;height:110px}
+.cr-res .cr-res-art .cr-isl{position:absolute;left:80px;top:6px}
+.cr-res .cr-res-art .cr-pl{position:absolute;left:84px;top:78px}
+.cr-res-sea{font-size:56px;line-height:110px;text-align:center}
+.cr-res .p2-sheet.big .p2-sum{box-shadow:0 0 0 1px #ffd23f,0 0 24px #ffd23f55}
+
+</style>
+<style>
 /* ===== Вывод средств (сетка 4 px, на базе .ac) ===== */
 .wd{z-index:76}
 .wd .ac-body{padding-bottom:0}
@@ -9258,6 +9368,221 @@ const _sm=window.setMvp;if(_sm){window.setMvp=function(m){_sm(m);gate()};try{set
 new MutationObserver(gate).observe(document.getElementById('pf'),{childList:true,subtree:true});
 seed();gate();
 window.PB={open,close,redeem,items,HIST};
+})();
+
+</script>
+<script>
+/* ================= Остров удачи 2.0 (Crash Games) =================
+   Механика как у «Покера 2.0»: под капотом — билеты «Рапидо». Покупаете N билетов — N самолётов в тираже.
+   Категория выигрыша каждого билета приходит из тиража, полёт её только показывает:
+   самолёт ловит кольца-бонусы (x1 → x2 → x5 … → суперприз), сколько колец поймал — на таком острове и сядет.
+   Не поймал первое кольцо — падает в море (0 ₽). Выигрыш билета = выигрыш его категории «Рапидо». */
+(function(){
+const ID='av2',PRICE=100,BUY_MS=40000,QTY=[5,10,15,25,50],MAXQ=50;
+/* категории «Рапидо» → кольцо/остров: множитель к цене билета и выигрыш */
+const CAT=[null,
+ {x:'x1',v:100,n:'Пляжный'},{x:'x2',v:200,n:'Пальмовый'},{x:'x5',v:500,n:'Коралловый'},{x:'x10',v:1000,n:'Вулкан'},
+ {x:'x20',v:2000,n:'Маяк'},{x:'x50',v:5000,n:'Изумрудный'},{x:'x400',v:40000,n:'Пиратский'},{x:'★',v:'sp',n:'Золотой'}];
+const ISL=[null,
+ {rock:'#4b5568',rockL:'#7a879a',gr:'#e8c27a',grL:'#ffe2a6',leaf:'#3fb950',ac:'#5ad1ff'},
+ {rock:'#4b5568',rockL:'#7a879a',gr:'#2f9e44',grL:'#74d65c',leaf:'#27a84a',ac:'#3ddc84'},
+ {rock:'#7c2a36',rockL:'#b04a5c',gr:'#ff7a8a',grL:'#ffb3bd',leaf:'#ff8a3d',ac:'#ff6b9a'},
+ {rock:'#3a2a2a',rockL:'#6a4040',gr:'#d24b2b',grL:'#ff8a4a',leaf:'#8cc63a',ac:'#ff6a2b'},
+ {rock:'#4b5568',rockL:'#8a97aa',gr:'#5aa0d8',grL:'#a6d6ff',leaf:'#2fa86a',ac:'#7ec8ff'},
+ {rock:'#2b5a4a',rockL:'#4f8a74',gr:'#19b37a',grL:'#6ff0b8',leaf:'#11a05a',ac:'#3dffb0'},
+ {rock:'#4a3a2a',rockL:'#7a6040',gr:'#a8743a',grL:'#e0b070',leaf:'#6b8e23',ac:'#c58bff'},
+ {rock:'#8a6a1a',rockL:'#d2a83a',gr:'#ffd23f',grL:'#fff09a',leaf:'#ffb300',ac:'#ffe066'}];
+const ODDS={real:[[8,.00002],[7,.0001],[6,.001],[5,.003],[4,.006],[3,.02],[2,.06],[1,.18]],
+ win:[[8,.01],[7,.02],[6,.05],[5,.08],[4,.1],[3,.16],[2,.2],[1,.3]],lose:[]};
+function rollCat(){const t=ODDS[(typeof PCFG!=='undefined'&&PCFG.luck)||'real']||ODDS.real;let r=Math.random();for(const [c,p] of t){if((r-=p)<0)return c}return 0}
+const prizeOf=(c,sp)=>!c?0:CAT[c].v==='sp'?sp:CAT[c].v;
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+const plural=n=>{const a=n%10,b=n%100;return a===1&&b!==11?'билет':a>=2&&a<=4&&(b<12||b>14)?'билета':'билетов'};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
+
+/* ---------- состояние ---------- */
+const P={no:4127,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:8400000,draw:null,view:'buy',resOpen:false,hist:[3,0,1,0,0,2,1,0,5,1]};
+let root=null,raf=0;
+const mounted=()=>root&&root.isConnected&&$('#game').dataset.g===ID;
+const timer=()=>{const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/BUY_MS*100));
+
+/* ---------- графика ---------- */
+const plane=(cls='')=>`<div class="cr-pl ${cls}"><div class="in">${FLY_PLANE}</div></div>`;
+const isle=c=>`<div class="cr-isl${c===8?' gold':''}" data-c="${c}"><span class="cr-isl-x">${CAT[c].x}</span>${flyIsle(ISL[c])}</div>`;
+const ring=c=>`<div class="cr-ring${c===8?' gold':''}" data-r="${c}"><i></i><b>${CAT[c].x}</b></div>`;
+const cloud=(cls,w)=>`<svg class="cr-cl ${cls}" style="width:${w}px" viewBox="0 0 120 50"><g fill="currentColor"><ellipse cx="30" cy="36" rx="28" ry="12"/><ellipse cx="62" cy="30" rx="30" ry="16"/><ellipse cx="92" cy="37" rx="24" ry="11"/><circle cx="48" cy="20" r="14"/><circle cx="74" cy="17" r="13"/></g></svg>`;
+
+function stageHTML(){
+ return `<div class="cr-stage" id="crStage">
+  <div class="cr-sky"></div><div class="cr-sun"></div>
+  <div class="cr-clouds far">${cloud('a',140)}${cloud('b',90)}${cloud('c',120)}${cloud('d',70)}</div>
+  <div class="cr-clouds near">${cloud('a',110)}${cloud('b',160)}</div>
+  <div class="cr-sea"><i class="w1"></i><i class="w2"></i><i class="w3"></i></div>
+  <div class="cr-world" id="crWorld"></div>
+  <div class="cr-planes" id="crPlanes"></div>
+  <div class="cr-fx" id="crFx"></div>
+  <div class="cr-hud" id="crHud"></div>
+ </div>`}
+
+/* ---------- экран ---------- */
+function topHTML(){const live=P.view==='live';
+ return `<div class="p2-top cr-top"><span class="cr-logo">${FLY_PLANE}</span><div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
+  <div class="r">${live?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Полёт<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div>${live?'':`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`}</div></div>`}
+function histHTML(){return `<div class="cr-hist">${P.hist.slice(0,10).map(c=>`<span class="${c?'w':''}${c>=6?' big':''}">${c?CAT[c].x:'💧'}</span>`).join('')}</div>`}
+const CHIP={5:'--c:#d32f2f;--d:#7a1515',10:'--c:#1e63d6;--d:#0f3a85',15:'--c:#1f9d55;--d:#0f5a30',25:'--c:#2b2b2e;--d:#000',50:'--c:#7b3fe4;--d:#40188c'};
+function buyHTML(){if(P.view!=='buy')return '';
+ return `<div class="p2-qty">${QTY.map(q=>`<button type="button" class="${P.qty===q?'on':''}" data-cr-q="${q}" style="${CHIP[q]}" ${P.bought>=MAXQ?'disabled':''}>${q}</button>`).join('')}</div>
+ <div class="p2-step"><button type="button" data-cr-s="-1" aria-label="Меньше" ${P.qty<=0?'disabled':''}>−</button><div><i>0</i><b>Самолёты: ${P.qty}</b><i>${MAXQ}</i></div><button type="button" data-cr-s="1" aria-label="Больше" ${P.qty+P.bought>=MAXQ?'disabled':''}>+</button></div>
+ ${P.bought?`<div class="p2-bought cr-bought"><span><b>В тираже ${P.bought} ${plural(P.bought)} · № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до взлёта</small></span><span class="cr-mini">${plane()}${plane()}</span></div>`:''}`}
+function tixHTML(d){if(!d||!d.mine)return '';
+ return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':`${CAT[t.cat].x} · ${bpLabel(d.wins[i])}`}</span>`}).join('')}</div>`}
+function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Каждый билет — самолёт в общем тираже. На трансляции самолёты ловят кольца-бонусы: x1 → x2 → x5 и дальше. Сколько колец поймал самолёт — на таком острове он и сядет. Не поймал первое кольцо — падает в море.</p>
+ <div class="p2-th"><span>Остров</span><span>Выигрыш за билет</span></div>
+ ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${CAT[c].x}</span><b>${CAT[c].n} остров</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
+ <div class="cr-row sea"><span class="cr-rx">💧</span><b>Море</b><em>0 ₽</em></div>
+ <p class="p2-note">Это билет «Рапидо»: выигрыш определяется тиражом, полёт его показывает. Цена билета — ${PRICE} ₽.</p></div>`}
+function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE;return `<div class="p2-foot"><button type="button" class="p2-pay" data-cr="pay" ${P.qty?'':'disabled'}><span>${P.bought?'Докупить':'Купить билеты'}</span><b>${fmt(sum)} ₽</b></button></div>`}
+ const d=P.draw;if(P.view==='live'&&d&&d.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-cr="result" ${d.done?'':'disabled'}>${d.done?'Итог тиража':'Самолёты в полёте…'}</button></div>`;return ''}
+function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
+ const won=d.total>0,best=Math.max(0,...d.tickets.map(t=>t.cat)),land=d.tickets.filter(t=>t.cat).length;
+ return `<div class="p2-res show cr-res" role="dialog" aria-modal="true" aria-labelledby="crResT"><div class="p2-sheet${won?' won':''}${best>=6?' big':''}"><button type="button" class="p2-x" data-cr="close" aria-label="Закрыть">×</button>
+  <small class="p2-cap" id="crResT">${best===8?'Суперприз!':won?'Лучший полёт':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?CAT[best].n+' остров · '+CAT[best].x:'Все самолёты в море'}</b>
+  <div class="cr-res-art">${won?isle(best):'<div class="cr-res-sea">💧</div>'}${won?plane('land'):''}</div>
+  <div class="p2-sum"><small>Общий выигрыш</small><b>${won?'+ '+bpLabel(d.total):'0 ₽'}</b><small>${d.tickets.length} ${plural(d.tickets.length)} · сели ${land} · в море ${d.tickets.length-land}</small></div>
+  <button type="button" class="p2-gold" data-cr="again">Играть ещё</button><button type="button" class="p2-dark" data-cr="tickets">Смотреть билеты</button></div></div>`}
+
+function render(){if(!mounted())return;const sc=root.scrollTop;
+ const live=P.view==='live';
+ root.innerHTML=`<div class="p2 cr${live?' is-live':''}">${topHTML()}<div class="cr-wrap">${stageHTML()}${live?'':histHTML()}</div>${live?tixHTML(P.draw):''}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;
+ const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();
+ if(live&&P.draw&&P.draw.anim)P.draw.anim.attach();else idleStage()}
+function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%';
+ const h=$('#crHud',root);if(h&&P.view==='buy'){const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));h.innerHTML=`<div class="cr-wait"><small>Взлёт через</small><b>${s} с</b><span>${P.bought?`Ваших самолётов: ${P.bought}`:'Купите билеты — каждый билет это самолёт'}</span></div>`}}
+/* перед тиражом: самолёт на взлётной полосе, первый остров и облака плывут */
+function idleStage(){const w=$('#crWorld',root),pl=$('#crPlanes',root);if(!w)return;
+ w.innerHTML=`<div class="cr-wi" style="left:110px;top:140px">${isle(1)}</div><div class="cr-wi" style="left:300px;top:140px">${isle(2)}</div>`;
+ pl.innerHTML=`<div class="cr-hero idle" style="transform:translate(110px,198px)">${plane('hero')}</div>`;tick()}
+
+/* ---------- покупка ---------- */
+function buy(){const n=P.qty;if(!n)return;const cost=n*PRICE;
+ const prev=bpFunding.get(ID);if(prev)bpFunding.delete(ID);
+ const ok=charge(cost);const r=bpFunding.get(ID);if(prev)bpFunding.set(ID,prev);if(!ok)return;
+ P.rounds.push({round:r,n});P.bought+=n;P.qty=Math.min(P.qty,MAXQ-P.bought);
+ SFX&&SFX.click&&SFX.click();toast(`Куплено ${n} ${plural(n)} на тираж № ${String(P.no).padStart(5,'0')}`);render()}
+
+/* ---------- полёт ---------- */
+const V=150,T0=1.6,DT=1.7;               /* скорость мира, время до 1-го кольца, интервал колец */
+const tRing=k=>T0+(k-1)*DT;              /* кольцо k у героя */
+function makeAnim(d){
+ const M=Math.max(0,...d.tickets.map(t=>t.cat));
+ const end=M?tRing(M)+1.9:tRing(1)+1.6;   /* после последнего пойманного кольца — посадка */
+ const HX=104;                             /* x героя на экране */
+ const order=d.tickets.map((t,i)=>i).sort((a,b)=>d.tickets[b].cat-d.tickets[a].cat);
+ const lead=order[0];
+ const show=order.slice(1,8);              /* до 7 ведомых на экране, остальные — в счётчике */
+ const slots=[[-34,30],[-58,-22],[-84,46],[-104,8],[-130,-30],[-150,34],[-176,-6]];
+ const A={d,M,end,t:0,started:0,attached:false,ev:[]};
+ /* события билетов: для ленты и счётчиков */
+ d.tickets.forEach((t,i)=>{t.st='fly';t.at=t.cat?tRing(t.cat)+1.1:tRing(1)+.25});
+ A.attach=()=>{
+  const w=$('#crWorld',root),pl=$('#crPlanes',root),fx=$('#crFx',root),hud=$('#crHud',root),st=$('#crStage',root);if(!w)return;
+  /* мир: кольца 1..min(M+1,8) и острова 1..M */
+  let html='';const lastRing=Math.min(8,Math.max(1,M+1));
+  for(let k=1;k<=lastRing;k++)html+=`<div class="cr-wo" data-wx="${HX+V*tRing(k)}" data-y="${124-Math.min(k,5)*6}">${ring(k)}</div>`;
+  for(let k=1;k<=Math.max(M,1);k++)html+=`<div class="cr-wo isl" data-wx="${HX+V*(tRing(k)+1.25)}" data-y="140">${isle(k)}</div>`;
+  for(let k=0;k<9;k++)html+=`<div class="cr-wo coin" data-wx="${HX+V*(T0-.6+k*.85)}" data-y="${96+((k*37)%50)}"><i></i></div>`;
+  w.innerHTML=html;
+  pl.innerHTML=`<div class="cr-hero" id="crHero">${plane('hero')}</div>`+show.map((ti,j)=>`<div class="cr-wing" data-t="${ti}" data-s="${j}">${plane('wing')}</div>`).join('');
+  hud.innerHTML=`<div class="cr-mult"><b id="crX">x0</b><small id="crXs">Ловим первое кольцо</small></div>`+(d.mine?`<div class="cr-count"><span>✈ <b id="crFly">${d.tickets.length}</b></span><span>🏝 <b id="crLand">0</b></span><span>💧 <b id="crSea">0</b></span><span class="sum">+<b id="crSum">0</b> ₽</span></div>`:'');
+  A.el={w,pl,fx,hud,st,hero:$('#crHero',root),wings:$$('.cr-wing',root),wo:$$('.cr-wo',root)};A.attached=true;
+  if(A.done)frame(performance.now())};
+ /* один кадр */
+ function frame(now){
+  if(!A.started)A.started=now;const t=A.done?A.end:Math.min(A.end,(now-A.started)/1000);A.t=t;
+  if(mounted()&&A.attached&&A.el.w.isConnected){draw(t)}else if(mounted()&&P.view==='live'){A.attach()}
+  if(!A.done){if(t>=A.end){A.done=true;finish()}else raf=requestAnimationFrame(frame)}}
+ const sx=t=>V*t;
+ function heroY(t){const k=Math.min(M,Math.floor((t-T0)/DT)+1),base=124-Math.max(0,Math.min(k,5))*6;let y=base+Math.sin(t*2.2)*6;
+  if(M&&t>tRing(M)+.25){const u=Math.min(1,(t-tRing(M)-.25)/1.5);y=y+(204-y)*u*u}            /* снижение на остров */
+  if(!M&&t>tRing(1)+.05){const u=(t-tRing(1)-.05);y=y+u*u*120}                                  /* падение в море */
+  return y}
+ function draw(t){const E=A.el,S=sx(t);
+  E.st.style.setProperty('--sx',S);
+  for(const o of E.wo){const x=+o.dataset.wx-S;o.style.transform=`translate(${x.toFixed(1)}px,${o.dataset.y}px)`;o.style.visibility=x<-160||x>520?'hidden':'visible'}
+  /* герой */
+  const hy=heroY(t),hyb=heroY(Math.max(0,t-.05)),ang=Math.max(-.5,Math.min(.9,Math.atan2(hy-hyb,V*.05)));
+  const crashed=!M&&t>tRing(1)+.05;
+  E.hero.style.transform=`translate(${HX}px,${hy.toFixed(1)}px) rotate(${(crashed?ang+ (t-tRing(1))*2.4:ang).toFixed(3)}rad)`;
+  if(crashed&&!A.heroSplash&&hy>200){A.heroSplash=1;splash(E.fx,HX,204);E.hero.style.opacity=0;haptic&&haptic(20)}
+  /* ведомые */
+  E.wings.forEach(el=>{const i=+el.dataset.t,s=slots[+el.dataset.s],tk=d.tickets[i];
+   const bob=Math.sin(t*2.6+ +el.dataset.s)*5;let x=HX+s[0],y=heroY(t)+s[1]+bob,r=0,o=1;
+   if(tk.cat===0&&t>tRing(1)-.1){const u=t-tRing(1)+.1;y+=u*u*140;x-=u*30;r=u*3;if(y>204){o=0;if(!el.dataset.sp){el.dataset.sp=1;splash(E.fx,x,204)}}}
+   else if(tk.cat&&t>tRing(tk.cat)+.2){const u=Math.min(1,(t-tRing(tk.cat)-.2)/1.2);const lx=HX+V*(tRing(tk.cat)+1.25)-S;x=x+(lx-x)*u;y=y+(204-y)*u*u;r=.2*u;if(u>=1){o=Math.max(0,1-(t-tRing(tk.cat)-1.4)*2)}}
+   el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}rad)`;el.style.opacity=o});
+  /* кольца: поймано / пролетело */
+  for(const o of E.wo){const r=o.querySelector('.cr-ring');if(!r||r.dataset.done)continue;const k=+r.dataset.r;
+   if(t>=tRing(k)){r.dataset.done=1;if(k<=M){r.classList.add('got');burst(E.fx,HX+10,heroY(t),k);setX(k);SFX&&SFX.price&&SFX.price()}else{r.classList.add('miss')}}}
+  /* монетки-бонусы: искры, когда герой пролетает */
+  for(const o of E.wo){if(!o.classList.contains('coin')||o.dataset.got)continue;const x=+o.dataset.wx-S;if(x<HX+16&&x>HX-30&&Math.abs(+o.dataset.y-hy)<40&&!(crashed)){o.dataset.got=1;o.classList.add('got')}}
+  /* статусы билетов */
+  let fly=0,land=0,sea=0,sum=0;d.tickets.forEach((tk,i)=>{if(tk.st==='fly'&&t>=tk.at){tk.st=tk.cat?'land':'sea';const c=$(`.cr-t[data-i="${i}"]`,root);if(c){c.className='cr-t '+tk.st+(tk.cat>=6?' big':'');c.textContent=tk.cat?`${CAT[tk.cat].x} · ${bpLabel(d.wins[i])}`:'💧 0 ₽';c.classList.add('pop')}}
+   if(tk.st==='fly')fly++;else if(tk.st==='land'){land++;sum+=d.wins[i]}else sea++});
+  const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(sum)}
+  if(!M&&t>tRing(1)){const x=q('crXs');if(x)x.textContent='Не поймал кольцо — в море'}
+  if(M&&t>tRing(M)+.3){const x=q('crXs');if(x&&!A.landTxt){A.landTxt=1;x.textContent=M<8?`Кольцо ${CAT[M+1].x} не поймано — посадка`:'Суперприз — золотой остров!'}}}
+ function setX(k){const x=$('#crX',root),s=$('#crXs',root);if(!x)return;x.textContent=CAT[k].x;x.parentNode.classList.remove('pulse');void x.offsetWidth;x.parentNode.classList.add('pulse');if(k>=6)x.parentNode.classList.add('hot');if(s)s.textContent=CAT[k].v==='sp'?'Суперприз!':`${fmt(CAT[k].v)} ₽ за билет`}
+ function finish(){const E=A.el;if(E&&E.hero&&M){E.hero.classList.add('landed')}
+  d.done=true;settle(d);if(d.mine&&mounted()&&P.view==='live'){const b=$('[data-cr="result"]',root);if(b){b.disabled=false;b.textContent='Итог тиража'}
+   setTimeout(()=>{if(P.draw===d&&mounted()&&P.view==='live'){P.resOpen=true;render();if(d.total){confetti&&confetti(M>=6?1:0);SFX&&SFX.win&&SFX.win()}else SFX&&SFX.lose&&SFX.lose()}},900)}}
+ A.run=()=>{A.attach();raf=requestAnimationFrame(frame)};
+ A.skip=()=>{A.done=true;A.t=A.end;d.tickets.forEach(t=>t.st=t.cat?'land':'sea')};
+ return A}
+function burst(fx,x,y,k){const b=document.createElement('div');b.className='cr-burst'+(k>=6?' big':'');b.style.left=x+'px';b.style.top=y+'px';b.innerHTML=Array.from({length:10},(_,i)=>`<i style="--a:${i*36}deg"></i>`).join('')+`<b>${CAT[k].x}</b>`;fx.appendChild(b);setTimeout(()=>b.remove(),900)}
+function splash(fx,x,y){const s=document.createElement('div');s.className='cssplash';s.style.left=x+'px';s.style.top=y+'px';s.innerHTML=Array.from({length:7},(_,i)=>`<i style="--a:${(i-3)*17}deg;--d:${.78+Math.random()*.3}"></i>`).join('');fx.appendChild(s);setTimeout(()=>s.remove(),1200)}
+
+async function runDraw(){
+ const mine=P.bought>0,n=mine?P.bought:3;
+ const d={no:P.no,mine,tickets:Array.from({length:n},()=>({cat:mine?rollCat():rollCat()}))};
+ d.wins=d.tickets.map(t=>prizeOf(t.cat,P.sp));d.total=mine?d.wins.reduce((a,b)=>a+b,0):0;
+ let k=0;d.parts=P.rounds.map(x=>{const s=d.wins.slice(k,k+x.n).reduce((a,b)=>a+b,0);k+=x.n;return {round:x.round,win:s}});
+ P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.resOpen=false;
+ d.anim=makeAnim(d);const watching=mounted();
+ if(watching){P.view='live';render();d.anim.run()}
+ else{d.anim.skip();d.done=true;settle(d);if(mine)toast(d.total?`Остров удачи 2.0: +${bpLabel(d.total)}`:'Остров удачи 2.0: самолёты в море')}
+ P.hist.unshift(Math.max(0,...d.tickets.map(t=>t.cat)));P.hist.length=Math.min(P.hist.length,20);
+ await wait((d.anim.end+1)*1000);
+ P.next=Date.now()+BUY_MS;P.phase='buy';P.qty=P.qty||10;
+ if(!mine&&P.view==='live'&&P.draw===d&&mounted()){P.view='buy';render()}}
+function settle(d){if(d.paid)return;d.paid=true;
+ for(const p of d.parts||[]){if(!p.round)continue;bpFunding.set(ID,p.round);if(p.win)pay(p.win,false,ID);bpFinishRound(ID)}
+ if(d.mine&&d.tickets.some(t=>t.cat>=8))P.sp=8400000;else P.sp+=d.tickets.length*9}
+
+setInterval(()=>{if(P.phase==='buy'&&Date.now()>=P.next)runDraw();else if(P.view==='buy')tick()},250);
+
+/* ---------- лобби ---------- */
+GAMES[ID]={n:'Остров удачи 2.0',t:'Crash Games',img:'x_fly',sub:'Билет «Рапидо» в полёте',price:PRICE,c:'#2fb6ff',bb:'#0a3a7a',sec:'crash',bg:'#061233',acc:'linear-gradient(180deg,#2f86ff,#0a52e0)',accs:'rgba(40,120,255,.7)'};
+const sec=SECTIONS.find(s=>s.id==='crash');if(sec&&!sec.ids.includes(ID))sec.ids.unshift(ID);
+try{renderLobby()}catch(e){}
+GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body','cr-body');$('#game').classList.add('p2-game','cr-game');
+ if(!$('#game .p2-hdr')){const src=$('#lobby .app-header');if(src){const h=src.cloneNode(true);h.classList.add('p2-hdr');h.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));const hb=h.querySelector('.header-home');if(hb){hb.classList.add('p2-back');hb.removeAttribute('aria-disabled');hb.setAttribute('aria-label','Назад');hb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>';hb.onclick=e=>{e.stopPropagation();$('#gBack').click()}}$('#game').insertAdjacentElement('afterbegin',h)}}
+ $('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
+ const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game','cr-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body','cr-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
+ if(P.view==='live'&&P.draw&&P.draw.done&&!P.resOpen)P.view='buy';
+ render()};
+
+document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2ResHost'))return;
+ const q=e.target.closest('[data-cr-q]');if(q){P.qty=Math.min(+q.dataset.crQ,MAXQ-P.bought);render();return}
+ const s=e.target.closest('[data-cr-s]');if(s){P.qty=Math.max(0,Math.min(MAXQ-P.bought,P.qty+ +s.dataset.crS));render();return}
+ const a=e.target.closest('[data-cr]');if(!a)return;const k=a.dataset.cr;
+ if(k==='pay')buy();
+ else if(k==='result'){P.resOpen=true;render()}
+ else if(k==='again'){P.resOpen=false;P.view='buy';render()}
+ else if(k==='tickets'||k==='close'){P.resOpen=false;render()}
+});
+window.CR2=P;
 })();
 
 </script>
