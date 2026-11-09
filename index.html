@@ -2907,8 +2907,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .p2-note{margin:8px 0 0;font-size:11px;line-height:15px;color:#ffffff73}
 /* технические ссылки: правила и архив тиражей (пока без перехода) */
 .p2-links{display:flex;gap:8px;margin-top:16px}
-.p2-link{flex:1;height:44px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;background:#ffffff14;color:#fff;font:inherit;font-size:14px;line-height:20px;font-weight:700;cursor:default}
-.p2-link svg{width:20px;height:20px;flex:none;opacity:.8}
+.p2-link{flex:1;height:40px;border:0;border-radius:12px;background:#ffffff0d;color:#fff;font:inherit;font-size:14px;line-height:16px;font-weight:500;cursor:default}
 /* низ */
 .p2-foot{position:sticky;bottom:0;z-index:4;padding:12px 16px 20px;background:linear-gradient(#05050500,#050505 30%)}
 .p2-pay{display:flex;align-items:center;justify-content:space-between;width:100%;height:52px;padding:0 20px;border:0;border-radius:14px;background:#ffd400;color:#1a1400;font:800 17px/24px inherit;cursor:pointer;box-shadow:0 6px 18px #ffd40033}
@@ -8974,7 +8973,7 @@ function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p
  <div class="p2-th"><span>Комбинация</span><span>Выигрыш за билет</span></div>
  ${PT.map(([c,n,d,v,ex],i)=>`<div class="p2-row"><div class="p2-rh"><b>${i+1}. ${n}</b><em class="${v==='sp'?'sp':''}">${v==='sp'?'Суперприз':fmt(v)+' ₽'}</em></div><div class="p2-rb"><span class="p2-ex">${ex.map(x=>card(x,{open:true,cls:'xs'})).join('')}</span><small>${d}</small></div></div>`).join('')}
  <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p>
- <div class="p2-links"><button type="button" class="p2-link" data-p2-tech="rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Правила</button><button type="button" class="p2-link" data-p2-tech="archive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9M10 13h4"/></svg>Архив</button></div></div>`}
+ <div class="p2-links"><button type="button" class="p2-link" data-p2-tech="rules">Правила</button><button type="button" class="p2-link" data-p2-tech="archive">Архив</button></div></div>`}
 
 function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE;return `<div class="p2-foot"><button type="button" class="p2-pay" data-p2="pay" ${P.qty?'':'disabled'}><span>${P.bought?'Докупить':'Оплатить'}</span><b>${fmt(sum)} ₽</b></button></div>`}
  if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
