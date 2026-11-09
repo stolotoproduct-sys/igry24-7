@@ -2487,7 +2487,8 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 </style>
 <style>
 /* ===== MVP 1–2 без «Промо» ===== */
-.no-promo #lobby .l-banner,.no-promo #lobby .reward-bonuses{display:none!important}
+.no-promo #lobby .reward-bonuses{display:none!important}
+.no-promo #lobby .l-banner{cursor:default}
 .no-promo #lobby .home-rewards{grid-template-columns:1fr}
 /* широкое колесо удачи: текст и прогресс слева, колесо справа; высота как у блока «Мой уровень» */
 .no-promo #lobby .reward-wheel{height:84px;min-height:84px}
@@ -9395,6 +9396,7 @@ function close(){const P=$('#pfb');P.classList.remove('show');P.setAttribute('ar
 $('#scr').insertAdjacentHTML('beforeend',`<section class="pf" id="pfb" aria-hidden="true" aria-label="Бонусы и промокоды"><div class="pf-head"><button class="pf-back" type="button" data-pbn-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Бонусы и промокоды</h2></div><div class="pf-body"></div></section>`);
 
 document.addEventListener('click',e=>{
+ if(!promoOn()&&e.target.closest('#lobby .l-banner')){e.preventDefault();e.stopImmediatePropagation();return}   /* MVP 1–2: баннер — рыба, никуда не ведёт */
  if(e.target.closest('[data-pbn-close]')){close();return}
  const tb=e.target.closest('[data-pbn-tab]');if(tb){TAB=tb.dataset.pbnTab;render();return}
  if(e.target.closest('[data-pbn-add]')){ADD={v:''};render();focusIn();return}
