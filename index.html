@@ -5596,30 +5596,32 @@ function wheelSVG(sz,mult=1){
   /* 12 мягких секторов: сектор сужается на зазор+радиус и обводится своим же градиентом с round-join — так получаются скруглённые углы; объём дают радиальные градиенты и блик */
   const n=WSEG.length,seg=360/n,C=sz/2,R=C-1,RO=R*.95,RI=R*.27,id='wg'+sz+(mult>1?'x':''),P=(a,r)=>[C+r*Math.sin(a*Math.PI/180),C-r*Math.cos(a*Math.PI/180)];
   const TONE={a:['#9a73ff','#6a3fe0'],b:['#5a34c4','#3a1f8f'],fs:['#5fc8ff','#2f7fe6'],top:['#ffe28a','#f2a72a']};
-  let ci=0;const tone=w=>w.k==='rub'?'top':w.k==='fs'?'fs':(ci++%2?'b':'a');
+  let ci=0;const tone=w=>w.k==='pc'?'top':(ci++%2?'b':'a');
   let d=`<defs>${Object.entries(TONE).map(([k,[c0,c1]])=>`<radialGradient id="${id}${k}" cx="${C}" cy="${C}" r="${RO}" gradientUnits="userSpaceOnUse"><stop offset=".25" stop-color="${c1}"/><stop offset="1" stop-color="${c0}"/></radialGradient>`).join('')}
    <radialGradient id="${id}rim" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#3b2470"/><stop offset="1" stop-color="#170d33"/></radialGradient>
    <radialGradient id="${id}sh" cx="${C}" cy="${C}" r="${RO}" gradientUnits="userSpaceOnUse"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></radialGradient>
    <linearGradient id="${id}gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
-   <symbol id="${id}tk" viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v2.5a2.5 2.5 0 0 0 0 5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.5a2.5 2.5 0 0 0 0-5V7a2 2 0 0 1 2-2z"/></symbol></defs>`;
+   <symbol id="${id}tk" viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v2.5a2.5 2.5 0 0 0 0 5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.5a2.5 2.5 0 0 0 0-5V7a2 2 0 0 1 2-2z"/></symbol>
+   <symbol id="${id}pc" viewBox="0 0 24 24"><path d="M4 6h16a1.5 1.5 0 0 1 1.5 1.5v2.7a1.8 1.8 0 0 0 0 3.6v2.7A1.5 1.5 0 0 1 20 18H4a1.5 1.5 0 0 1-1.5-1.5v-2.7a1.8 1.8 0 0 0 0-3.6V7.5A1.5 1.5 0 0 1 4 6z" fill="#5a2d00"/><path d="M15.5 6v12" stroke="#ffe28a" stroke-width="1.2" stroke-dasharray="1.6 1.4"/><path d="m7 15 5-6" stroke="#ffe28a" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.6" cy="9.6" r="1.3" fill="#ffe28a"/><circle cx="11.4" cy="14.4" r="1.3" fill="#ffe28a"/><path d="m18.6 10.2.5 1 1.1.2-.8.8.2 1.1-1-.5-1 .5.2-1.1-.8-.8 1.1-.2z" fill="#ffe28a"/></symbol></defs>`;
   let o=d+`<circle cx="${C}" cy="${C}" r="${R}" fill="url(#${id}rim)"/>`;
   const rr=sz*.03,ins=sz*.008+rr,f=v=>v.toFixed(2),dg=r=>Math.asin(ins/r)*180/Math.PI;
   WSEG.forEach((w,i)=>{const a0=i*seg,a1=a0+seg,ro=RO-ins,ri=RI+ins,[x0,y0]=P(a0+dg(ro),ro),[x1,y1]=P(a1-dg(ro),ro),[x2,y2]=P(a1-dg(ri),ri),[x3,y3]=P(a0+dg(ri),ri),g=`url(#${id}${tone(w,i)})`;
     o+=`<path d="M${f(x3)} ${f(y3)}L${f(x0)} ${f(y0)}A${f(ro)} ${f(ro)} 0 0 1 ${f(x1)} ${f(y1)}L${f(x2)} ${f(y2)}A${f(ri)} ${f(ri)} 0 0 0 ${f(x3)} ${f(y3)}Z" fill="${g}" stroke="${g}" stroke-width="${f(rr*2)}" stroke-linejoin="round"/>`;
-    const cp=w.k==='cp',tr=cp?R*.56:R*.6,ti=R*.8,ts=sz*.075,top=w.k==='rub',col=top?'#4a2600':mult>1?'#ffe9a3':'#fff';
-    o+=`<g transform="rotate(${a0+seg/2} ${C} ${C})"><text x="${C}" y="${C-tr}" text-anchor="middle" dominant-baseline="central" font-family="StoloText,'Roboto Flex',Inter,sans-serif" font-weight="800" font-size="${Math.round(sz*.055)}" fill="${col}" transform="rotate(${a0+seg/2>180?90:-90} ${C} ${C-tr})">${mult>1?wsLabel(w,mult):w.l}</text>${cp?`<use href="#${id}tk" x="${f(C-ts/2)}" y="${f(C-ti-ts/2)}" width="${f(ts)}" height="${f(ts)}" fill="${col}" opacity=".9"/>`:''}</g>`});
+    const cp=w.k==='cp',pc=w.k==='pc',tr=R*.56,ti=R*.8,ts=sz*(pc?.1:.075),top=pc,col=top?'#4a2600':mult>1?'#ffe9a3':'#fff';
+    o+=`<g transform="rotate(${a0+seg/2} ${C} ${C})"><text x="${C}" y="${C-tr}" text-anchor="middle" dominant-baseline="central" font-family="StoloText,'Roboto Flex',Inter,sans-serif" font-weight="800" font-size="${Math.round(sz*.055)}" fill="${col}" transform="rotate(${a0+seg/2>180?90:-90} ${C} ${C-tr})">${mult>1?wsLabel(w,mult):w.l}</text>${cp?`<use href="#${id}tk" x="${f(C-ts/2)}" y="${f(C-ti-ts/2)}" width="${f(ts)}" height="${f(ts)}" fill="${col}" opacity=".9"/>`:''}${pc?`<use href="#${id}pc" x="${f(C-ts/2)}" y="${f(C-ti-ts/2)}" width="${f(ts)}" height="${f(ts)}"/>`:''}</g>`});
   o+=`<circle cx="${C}" cy="${C}" r="${RO}" fill="url(#${id}sh)" pointer-events="none"/><ellipse cx="${C}" cy="${C-RO*.42}" rx="${RO*.78}" ry="${RO*.5}" fill="url(#${id}gl)" pointer-events="none"/>`;
   return o;
 }
 /* 12 секторов: 8 × купончики (+20…+100) — прокси-валюта колеса, не показывается в шапке, копим CP_GOAL и меняем на промокод на 1 FS;
-   2 × рубли (100 ₽ и 300 ₽, золотые) и 2 × фриспины (4 и 6 FS, голубые). Шансы из 100. */
+   4 × промокоды (×1, ×2, ×1, ×3 — золотые, через каждые 3 сектора). Рублей и FS в колесе нет. Шансы из 100. */
 const CP_GOAL=200;
 /* условие доступа: ставки рублями от WG_MIN ₽ за календарный месяц (прототип стартует с 0 ₽) */
 const WG_MIN=1000,wheelOpen=()=>S.mb>=WG_MIN,wgLeft=()=>Math.max(0,WG_MIN-S.mb);
 const WG_LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="3" fill="currentColor"/><path d="M8 10V8a4 4 0 0 1 8 0v2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
 const wgMonth=()=>['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'][new Date(Date.now()+3*3600000).getUTCMonth()];
 const wgNum=n=>Math.round(n).toLocaleString('ru-RU');
-const WSEG=[{k:'cp',v:20,w:20},{k:'fs',v:4,w:2},{k:'cp',v:50,w:13},{k:'cp',v:30,w:17},{k:'rub',v:100,w:1.5},{k:'cp',v:60,w:10},{k:'cp',v:40,w:15},{k:'fs',v:6,w:1},{k:'cp',v:80,w:7},{k:'cp',v:70,w:8},{k:'rub',v:300,w:0.5},{k:'cp',v:100,w:5}].map(w=>({...w,l:w.k==='cp'?'+'+w.v:w.k==='rub'?w.v+' ₽':w.v+' FS'}));
+const WSEG=[{k:'cp',v:20,w:20},{k:'pc',v:1,w:2.5},{k:'cp',v:50,w:13},{k:'cp',v:30,w:17},{k:'pc',v:2,w:1.5},{k:'cp',v:60,w:10},{k:'cp',v:40,w:15},{k:'pc',v:1,w:2},{k:'cp',v:80,w:7},{k:'cp',v:70,w:8},{k:'pc',v:3,w:0.5},{k:'cp',v:100,w:5}].map(w=>({...w,l:w.k==='cp'?'+'+w.v:'×'+w.v}));
+const pcWord=n=>{n=Math.abs(n)%100;const d=n%10;return n>10&&n<20?'промокодов':d===1?'промокод':d>=2&&d<=4?'промокода':'промокодов'};
 const cpWord=n=>{n=Math.abs(n)%100;const d=n%10;return n>10&&n<20?'купончиков':d===1?'купончик':d>=2&&d<=4?'купончика':'купончиков'};
 const CP_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14a2 2 0 0 1 2 2v2.5a2.5 2.5 0 0 0 0 5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.5a2.5 2.5 0 0 0 0-5V7a2 2 0 0 1 2-2z" fill="currentColor"/><path d="M15 7v2M15 11v2M15 15v2" stroke="rgba(0,0,0,.28)" stroke-width="1.6" stroke-linecap="round"/></svg>';
 const PROMOS={
@@ -5722,7 +5724,7 @@ function wsState(){
 /* недельная серия ×2 отключена (решение продукта) — компоненты оставлены; вернуть: WS_ON=true */
 const WS_ON=false;
 const wsMult=()=>{if(!WS_ON)return 1;const s=wsState();return !s.spun&&s.day===WS_DAYS?2:1};
-function wsLabel(w,m){const v=w.v*m;return w.k==='rub'?v+' ₽':w.k==='fs'?v+' FS':w.k==='cp'?'+'+v:'+'+v+' Б'}
+function wsLabel(w,m){const v=w.v*m;return w.k==='pc'?'×'+v:w.k==='cp'?'+'+v:'+'+v+' Б'}
 function wsSave(){try{localStorage.setItem('wheelDay',S.wheelDay);localStorage.setItem('wheelStreak',String(S.wheelStreak))}catch(e){}}
 function renderStreak(anim){
   if(!WS_ON){const el=$('#ws');if(el){el.hidden=true;el.innerHTML=''}$('#fw').classList.remove('x2');const hub=$('#fw .fw-hub');if(hub&&wheelOpen())hub.textContent='R';return}
@@ -5778,7 +5780,7 @@ $('#fwCpGo').onclick=cpExchange;
 $('#fw').addEventListener('click',e=>{const b=e.target.closest('[data-cp-copy]');if(!b)return;const c=b.dataset.cpCopy;try{navigator.clipboard.writeText(c)}catch(er){}b.textContent='Скопировано';toast('Промокод скопирован')});
 /* блокировка колеса до 1 000 ₽ ставок в месяц */
 function wgRenderLock(){const fw=$('#fw'),guest=!!(window.pfIsGuest&&pfIsGuest()),locked=guest||!wheelOpen();fw.classList.toggle('guest',guest);
-  $('#fwLockT').textContent=guest?'Войдите, чтобы крутить колесо':'Откроется при ставках от 1 000 ₽ в месяц';$('#fwLockS').textContent=guest?'Каждый день — рубли, фриспины и купончики. Нужен только телефон.':'Учитываются ставки рублями · счётчик обнуляется 1-го числа';
+  $('#fwLockT').textContent=guest?'Войдите, чтобы крутить колесо':'Откроется при ставках от 1 000 ₽ в месяц';$('#fwLockS').textContent=guest?'Каждый день — промокоды и купончики. Нужен только телефон.':'Учитываются ставки рублями · счётчик обнуляется 1-го числа';
   $('#fwLockRow').hidden=guest;$('.fw-lock-bar').hidden=guest;$('#fwLockGo').textContent=guest?'Войти':'Перейти к играм';$('#fwLockReg').hidden=!guest;$('#fwCp').hidden=guest;$('.fw-demo').hidden=guest;{const g=$('#fwGate');if(g){g.setAttribute('aria-checked',String(!locked));g.querySelector('.fw-sw-l').textContent=locked?'Колесо заблокировано':'Колесо доступно'}}fw.classList.toggle('locked',locked);$('#fwLock').hidden=!locked;$('#ws').hidden=locked||!WS_ON;
   const hub=$('#fw .fw-hub');if(locked)hub.innerHTML=WG_LOCK;else if(hub.querySelector('svg'))renderStreak();
   if(locked){$('#fwLockN').textContent=wgNum(S.mb);$('#fwLockM').textContent='Ставки за '+wgMonth();$('#fwLockBar').style.width=Math.min(100,S.mb/WG_MIN*100)+'%'}
@@ -5811,10 +5813,10 @@ function spinWheel(){
   $('#fwSvg').style.transform=`rotate(${fwRot}deg)`;SFX.roulette(4.4);
   setTimeout(()=>{
     fwBusy=false;const w=WSEG[idx],val=w.v*mult;S.wheelDay=today();S.wheelStreak=wsSt.day;wsSave();renderPromos();renderStreak();
-    const txt=w.k==='cp'?`+${val} ${cpWord(val)}`:w.k==='rub'?`${money(val)} на счёт`:w.k==='fs'?`${val} ${val%10===1&&val%100!==11?'фриспин':val%10>=2&&val%10<=4&&(val%100<12||val%100>14)?'фриспина':'фриспинов'}`:`${val} бонусов`;
+    const txt=w.k==='cp'?`+${val} ${cpWord(val)}`:w.k==='pc'?`${val} ${pcWord(val)}`:w.k==='rub'?`${money(val)} на счёт`:w.k==='fs'?`${val} ${val%10===1&&val%100!==11?'фриспин':val%10>=2&&val%10<=4&&(val%100<12||val%100>14)?'фриспина':'фриспинов'}`:`${val} бонусов`;
     $('#fwRes').innerHTML=mult>1?`Ваш приз удвоен <span class="ws-was">${wsLabel(w,1)}</span><b>${txt}</b>`:`Ваш приз<b>${txt}</b>`;mult>1?(SFX.big(),confetti(1)):(SFX.win(),confetti(1));buzz([30,50,30]);
     go.disabled=false;go.textContent='Забрать';
-    fwPendingClaim=()=>{fwPendingClaim=null;if(w.k==='cp'){S.cp+=val;cpSave();renderCoupons(true)}else if(w.k==='rub')pay(val,1);else if(w.k==='fs')S.fs+=val;else{S.bp+=val;renderBP()}toast('Начислено: '+txt+(mult>1?' (×2 за серию)':''))};
+    fwPendingClaim=()=>{fwPendingClaim=null;if(w.k==='cp'){S.cp+=val;cpSave();renderCoupons(true)}else if(w.k==='pc'){try{PB.grant(val,'Колесо удачи')}catch(_){}}else if(w.k==='rub')pay(val,1);else if(w.k==='fs')S.fs+=val;else{S.bp+=val;renderBP()}toast('Начислено: '+txt+(mult>1?' (×2 за серию)':''))};
     go.onclick=()=>{if(fwPendingClaim)fwPendingClaim();go.hidden=true;fwCountdown()};
   },4700);
 }
@@ -5984,7 +5986,7 @@ function bpWheelCard(){if(typeof wheelOpen!=='function')return '';const open=whe
   <div class="bp-mini-top"><span class="bp-wheel-art${open?'':' off'}"><svg viewBox="0 0 120 120">${wheelSVG(120)}</svg>${open?'':`<i>${WG_LOCK}</i>`}</span><div class="bp-mini-head"><b class="bp-mini-amt">Колесо удачи</b><span class="bp-mini-sub">${open?'ставки от 1 000 ₽ в месяц выполнены':'при ставках от 1 000 ₽ в месяц · до '+end}</span></div></div>
   ${info}
   <div class="bp-actions"><button class="bp-primary" data-wheel-go>${open?(free?'Крутить':'Открыть колесо'):'Играть'}</button><button class="bp-secondary bp-info" data-wheel-info aria-label="Условия колеса удачи">${bpInfoIco}</button></div></article>`}
-function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Открывается, когда за календарный месяц вы сделали ставок рублями на ${wgNum(WG_MIN)} ₽ или больше.</p><ul class="cb-sheet-rules"><li>Сейчас за ${wgMonth()}: <b>${wgNum(S.mb)} из ${wgNum(WG_MIN)} ₽</b>${wheelOpen()?' — условие выполнено.':` — осталось ${wgNum(wgLeft())} ₽.`}</li><li>Учитываются только ставки рублями. Ставки с бонусного баланса и бесплатные билеты не считаются.</li><li>1-го числа счётчик обнуляется — условие нужно выполнить заново.</li><li>Призы: рубли (100 и 300 ₽), фриспины (4 и 6 FS) и купончики (+20…+100). 200 купончиков = промокод на 1 FS.</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>${wheelOpen()?'Открыть колесо':'Перейти к играм'}</button></div></div>`}
+function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Открывается, когда за календарный месяц вы сделали ставок рублями на ${wgNum(WG_MIN)} ₽ или больше.</p><ul class="cb-sheet-rules"><li>Сейчас за ${wgMonth()}: <b>${wgNum(S.mb)} из ${wgNum(WG_MIN)} ₽</b>${wheelOpen()?' — условие выполнено.':` — осталось ${wgNum(wgLeft())} ₽.`}</li><li>Учитываются только ставки рублями. Ставки с бонусного баланса и бесплатные билеты не считаются.</li><li>1-го числа счётчик обнуляется — условие нужно выполнить заново.</li><li>Призы: промокоды (1, 2 или 3 — золотые сектора) и купончики (+20…+100). 200 купончиков = промокод на 1 FS. Промокоды появляются в «Бонусы и промокоды».</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>${wheelOpen()?'Открыть колесо':'Перейти к играм'}</button></div></div>`}
 document.addEventListener('click',e=>{if(e.target.closest('[data-wheel-info]')){e.stopPropagation();bpWheelInfo();return}
  if(e.target.closest('[data-wheel-go]')){e.stopPropagation();if($('#bpModal').classList.contains('show'))bpCloseModal();if(wheelOpen())openWheel();else{go('lobby');setTimeout(()=>{const h=$$('#lobby h2.h-t').find(x=>x.textContent.trim()==='Быстрые игры');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},250)}}},true);
 function bpEnd(empty=false){return `<article class="bp-card bp-end">${bpGift}<h4>${empty?'Пока нет активных бонусов':'Ещё бонусы'}</h4><button class="bp-primary" data-bp-more>Выбрать бонус</button><button class="bp-secondary" data-bp-topup>Пополнить счёт</button></article>`}
@@ -9454,7 +9456,12 @@ new MutationObserver(gate).observe(document.getElementById('pf'),{childList:true
 seed();gate();
 document.addEventListener('input',e=>{if(e.target.id!=='pbnCode'||!ADD)return;const v=norm(e.target.value);ADD={v};const f=fmtCode(v);if(e.target.value!==f)e.target.value=f;const b=$('.pbn-submit');if(b)b.disabled=v.length!==12;const m=$('#pbnMsg');if(m){m.className='pbn-msg';m.textContent='12 символов — латинские буквы и цифры'}e.target.classList.remove('err')});
 document.addEventListener('submit',e=>{if(e.target.id==='pbnAdd'){e.preventDefault();redeem($('#pbnCode').value)}});
-window.PB={open,close,redeem,items,HIST,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
+/* промокоды с колеса: N кодов в «Бонусы и промокоды», ждут активации */
+const QG=['coin','hilo','shell','scale'];
+function grant(n,src){if(typeof bonusModel==='undefined')return;for(let i=0;i<n;i++){const pool=QG.filter(x=>GAMES[x]),g=pool[Math.floor(Math.random()*pool.length)]||Object.keys(GAMES)[0];
+ const code=Array.from({length:12},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');const b=mk('pw-'+code,fmtCode(code),g,3,7,'available',src+' · промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);log(`${src} · промокод ${fmtCode(code)}`,'Получен')}
+ try{bpSync()}catch(e){}try{render()}catch(e){}}
+window.PB={open,close,redeem,items,HIST,grant,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
 })();
 
 </script>
