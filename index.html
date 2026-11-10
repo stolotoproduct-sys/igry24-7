@@ -3692,6 +3692,7 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .cb-claim.ghost{background:#ffffff14!important;color:#e6f2f1!important;box-shadow:none!important}
 .mn-lad b{display:inline-flex;align-items:center;gap:2px}
 .mn-tk{width:16px;height:16px;object-fit:contain;vertical-align:middle}
+.mn-pc{width:18px;height:18px;flex:none;vertical-align:middle;margin-left:2px}
 .mn-u{font-style:normal;font-size:10px;line-height:12px;font-weight:800;color:#9fd8cf}
 .mn-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin:4px 0 0;font-size:11px;line-height:16px;color:#7c8a92}
 .mn-legend span{display:inline-flex;align-items:center;gap:4px}
@@ -5612,7 +5613,7 @@ function wheelSVG(sz,mult=1){
   o+=`<circle cx="${C}" cy="${C}" r="${RO}" fill="url(#${id}sh)" pointer-events="none"/><ellipse cx="${C}" cy="${C-RO*.42}" rx="${RO*.78}" ry="${RO*.5}" fill="url(#${id}gl)" pointer-events="none"/>`;
   return o;
 }
-/* 12 секторов: 8 × купончики (+20…+100) — прокси-валюта колеса, не показывается в шапке, копим CP_GOAL и меняем на промокод на 1 FS;
+/* 12 секторов: 8 × купончики (+20…+100) — прокси-валюта колеса, не показывается в шапке, копим CP_GOAL и меняем на промокод на 3 бесплатные игры;
    4 × промокоды (×1, ×2, ×1, ×3 — золотые, через каждые 3 сектора). Рублей и FS в колесе нет. Шансы из 100. */
 const CP_GOAL=200;
 /* условие доступа: ставки рублями от WG_MIN ₽ за календарный месяц (прототип стартует с 0 ₽) */
@@ -5772,9 +5773,9 @@ function cpExchange(){if(S.cp<CP_GOAL||fwBusy)return;if(fwPendingClaim)fwPending
   const code='KUP-'+Array.from({length:5},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');cpCodes[code]={used:false};
   if(!window.__cpRedeem&&typeof bpRedeemCode==='function'){const orig=bpRedeemCode;window.__cpRedeem=1;bpRedeemCode=function(raw){const c=String(raw||'').trim().toUpperCase(),msg=$('#bpCodeMessage');if(!cpCodes[c])return orig(raw);
     if(cpCodes[c].used){if(msg)msg.textContent='Этот промокод уже использован.';return}cpCodes[c].used=true;
-    bonusModel.records.push({id:'code-'+c,status:'available',used:0,turnover:0,amount:0,remaining:0,pending:0,target:0,ready:false,expiresAt:Date.now()+7*86400000,validForMs:7*86400000,type:'tickets',title:'1 FS в Рапидо',tag:'Промокод · колесо удачи',total:1,nominal:25,game:'rap',fs:true});
-    bonusModel.activate('code-'+c);bpSync();const m2=$('#bpCodeMessage');if(m2)m2.textContent='Начислен 1 FS в Рапидо. Он в активных бонусах.'}}
-  const box=$('#fwCode');box.hidden=false;box.innerHTML=`<span class="fw-code-l">Ваш промокод</span><span class="fw-code"><b>${code}</b><button type="button" data-cp-copy="${code}">Скопировать</button></span><small class="fw-code-note">1 FS в Рапидо · введите в «Бонусах» → «Есть промокод?»</small>`;
+    bonusModel.records.push({id:'code-'+c,status:'available',used:0,turnover:0,amount:0,remaining:0,pending:0,target:0,ready:false,expiresAt:Date.now()+7*86400000,validForMs:7*86400000,type:'tickets',title:'«Монетка»: 3 бесплатные игры',tag:'Промокод · колесо удачи',total:3,nominal:GAMES.coin.price,game:'coin'});
+    bonusModel.activate('code-'+c);bpSync();const m2=$('#bpCodeMessage');if(m2)m2.textContent='Начислены 3 бесплатные игры в «Монетке». Они в активных бонусах.'}}
+  const box=$('#fwCode');box.hidden=false;box.innerHTML=`<span class="fw-code-l">Ваш промокод</span><span class="fw-code"><b>${code}</b><button type="button" data-cp-copy="${code}">Скопировать</button></span><small class="fw-code-note">3 бесплатные игры · введите в «Бонусы и промокоды» → «Добавить промокод»</small>`;
   renderCoupons(true);SFX.win();confetti(1);toast('Промокод получен: '+code)}
 $('#fwCpGo').onclick=cpExchange;
 $('#fw').addEventListener('click',e=>{const b=e.target.closest('[data-cp-copy]');if(!b)return;const c=b.dataset.cpCopy;try{navigator.clipboard.writeText(c)}catch(er){}b.textContent='Скопировано';toast('Промокод скопирован')});
@@ -5986,7 +5987,7 @@ function bpWheelCard(){if(typeof wheelOpen!=='function')return '';const open=whe
   <div class="bp-mini-top"><span class="bp-wheel-art${open?'':' off'}"><svg viewBox="0 0 120 120">${wheelSVG(120)}</svg>${open?'':`<i>${WG_LOCK}</i>`}</span><div class="bp-mini-head"><b class="bp-mini-amt">Колесо удачи</b><span class="bp-mini-sub">${open?'ставки от 1 000 ₽ в месяц выполнены':'при ставках от 1 000 ₽ в месяц · до '+end}</span></div></div>
   ${info}
   <div class="bp-actions"><button class="bp-primary" data-wheel-go>${open?(free?'Крутить':'Открыть колесо'):'Играть'}</button><button class="bp-secondary bp-info" data-wheel-info aria-label="Условия колеса удачи">${bpInfoIco}</button></div></article>`}
-function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Открывается, когда за календарный месяц вы сделали ставок рублями на ${wgNum(WG_MIN)} ₽ или больше.</p><ul class="cb-sheet-rules"><li>Сейчас за ${wgMonth()}: <b>${wgNum(S.mb)} из ${wgNum(WG_MIN)} ₽</b>${wheelOpen()?' — условие выполнено.':` — осталось ${wgNum(wgLeft())} ₽.`}</li><li>Учитываются только ставки рублями. Ставки с бонусного баланса и бесплатные билеты не считаются.</li><li>1-го числа счётчик обнуляется — условие нужно выполнить заново.</li><li>Призы: промокоды (1, 2 или 3 — золотые сектора) и купончики (+20…+100). 200 купончиков = промокод на 1 FS. Промокоды появляются в «Бонусы и промокоды».</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>${wheelOpen()?'Открыть колесо':'Перейти к играм'}</button></div></div>`}
+function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Открывается, когда за календарный месяц вы сделали ставок рублями на ${wgNum(WG_MIN)} ₽ или больше.</p><ul class="cb-sheet-rules"><li>Сейчас за ${wgMonth()}: <b>${wgNum(S.mb)} из ${wgNum(WG_MIN)} ₽</b>${wheelOpen()?' — условие выполнено.':` — осталось ${wgNum(wgLeft())} ₽.`}</li><li>Учитываются только ставки рублями. Ставки с бонусного баланса и бесплатные билеты не считаются.</li><li>1-го числа счётчик обнуляется — условие нужно выполнить заново.</li><li>Призы: промокоды (1, 2 или 3 — золотые сектора) и купончики (+20…+100). 200 купончиков = промокод на 3 бесплатные игры. Промокоды появляются в «Бонусы и промокоды».</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>${wheelOpen()?'Открыть колесо':'Перейти к играм'}</button></div></div>`}
 document.addEventListener('click',e=>{if(e.target.closest('[data-wheel-info]')){e.stopPropagation();bpWheelInfo();return}
  if(e.target.closest('[data-wheel-go]')){e.stopPropagation();if($('#bpModal').classList.contains('show'))bpCloseModal();if(wheelOpen())openWheel();else{go('lobby');setTimeout(()=>{const h=$$('#lobby h2.h-t').find(x=>x.textContent.trim()==='Быстрые игры');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},250)}}},true);
 function bpEnd(empty=false){return `<article class="bp-card bp-end">${bpGift}<h4>${empty?'Пока нет активных бонусов':'Ещё бонусы'}</h4><button class="bp-primary" data-bp-more>Выбрать бонус</button><button class="bp-secondary" data-bp-topup>Пополнить счёт</button></article>`}
@@ -6544,7 +6545,7 @@ function lpGive(){
  return tiles.length?`<h3 class="lp-h">Что дадут уровни</h3><div class="lp-tiles">${tiles.join('')}</div>`:'';
 }
 function lpMinesInfo(){if(typeof MN==='undefined')return '';
- return `<p class="lp-mn-info">На поле ${MN.mines} мин из ${MN.size} клеток. Каждая безопасная клетка повышает приз: ${MN.ladder.map(x=>x.k==='fs'?x.n+' FS':x.n+' '+lbTicketWord(x.n)).join(' → ')}. Попытки действуют до конца месяца</p>`}
+ return `<p class="lp-mn-info">На поле ${MN.mines} мин из ${MN.size} клеток. Каждая безопасная клетка повышает приз: промокод на ${MN.ladder.map(x=>x.n).join(' → ')} бесплатных игр. Попытки действуют до конца месяца</p>`}
 function lpTabs(s){
  const both=LV.cb&&LV.mines,att=lvAttempts(),r=null;
  if(!both)return LV.cb?lpWeek(s)+lpHistory(s):lpMines(s);
@@ -6579,7 +6580,7 @@ function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
  if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша за месяц',`Проигрыш = покупки − выигрыши за календарный месяц. Процент — по уровню, которого вы достигли за этот месяц. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами 1-го числа',`Пришлём уведомление — забирать не нужно. ${lvBonusNote()}${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
- if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца'+(typeof MN!=='undefined'?`. На поле ${MN.mines} мин из ${MN.size} клеток, каждая безопасная клетка повышает приз: ${MN.ladder.map(x=>x.k==='fs'?x.n+' FS':x.n+' '+lbTicketWord(x.n)).join(' → ')}`:'')]);
+ if(LV.mines)steps.push([ICD.mine,`«Мины» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца'+(typeof MN!=='undefined'?`. На поле ${MN.mines} мин из ${MN.size} клеток, каждая безопасная клетка повышает приз: промокод на ${MN.ladder.map(x=>x.n).join(' → ')} бесплатных игр`:'')]);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>Мины</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
   <p class="cb-sheet-note">Пороги и проценты — демонстрационные.</p></div>`;
@@ -8119,7 +8120,7 @@ function items(){
   try{
     const cl=window.lvLastGet&&lvLastGet();
     if(LV.cb&&cl)L.push({id:'cb-credit-'+cl.start,topic:'bonus',type:'bonus',t:`Кэшбек за ${lvMon(cl.start)} начислен: ${num(cl.amount)} ${BonusEngine.mode==='wager'?'Б':'бонусов'}`,d:`${cl.pct}% кэшбека за ${lvMon(cl.start)} — ${BonusEngine.mode==='wager'?'бонусом в «Промо»':'на бонусный счёт'}. Забирать не нужно.`,m:Math.max(0,Math.round((Date.now()-cl.at)/60000)),btn:'Посмотреть',act:()=>go('lossback')});
-    if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,topic:'bonus',type:'bonus',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Попытки за уровень. Призы — FS и бесплатные билеты.',m:5,btn:'Играть',act:()=>lvOpenMines()})}
+    if(LV.mines){const att=lvAttempts();if(att)L.push({id:'mines-'+att,topic:'bonus',type:'bonus',t:`Мины: ${att} ${lvAttWord(att)}`,d:'Попытки за уровень. Призы — промокоды на бесплатные игры.',m:5,btn:'Играть',act:()=>lvOpenMines()})}
   }catch(e){}
   try{if(window.DF)DF.notes().forEach(x=>L.push(x))}catch(e){}
   const mode=(window.BonusEngine&&BonusEngine.mode)||'wager';
@@ -8130,7 +8131,7 @@ function items(){
   try{const v=lvTickets()[0];if(v)L.push({id:'tk-exp-'+v.id,topic:'expiry',type:'reminder',t:`Билет ${num(v.nominal)} ₽ действует до ${dShort(v.expiresAt)}`,d:'Бесплатная игра в любой быстрой игре. Напоминаем один раз.',m:20,btn:'Сыграть',act:()=>openGame('coin')})}catch(e){}
   // 4. скоро интересующий тираж — по подписке
   // 5. давно не заходили — одно сообщение с актуальным поводом
-  L.push({id:'comeback',topic:'comeback',type:'promo',ad:true,t:'Для вас бесплатный билет 100 ₽',d:'Пришло, пока вас не было: одна бесплатная игра в «Монетке». Больше не напоминаем.',m:4320,read:true,act:()=>openGame('coin')});
+  L.push({id:'comeback',topic:'comeback',type:'promo',ad:true,t:'Для вас промокод',d:'Пришёл, пока вас не было: 3 бесплатные игры в «Монетке». Больше не напоминаем.',m:4320,read:true,act:()=>{if(window.promoOn&&promoOn())go('promo');else if(window.PB)PB.open()}});
   return L.sort((a,b)=>a.m-b.m);
 }
 /* журнал отправки (демо): что система сделала бы с каждым поводом прямо сейчас */
@@ -8317,7 +8318,7 @@ function authView(){
  <h3 class="pf-h">Колесо удачи и бонусы</h3>
  <div class="pf-card pf-list">
   <button class="pf-row" type="button" data-pf="wheel"><span class="pf-ri wheel">${I.ticket}</span><span class="pf-rt"><b>Колесо удачи</b><small>${w.t}</small>${w.p!==undefined?`<span class="pf-track sm"><i style="width:${w.p}%"></i></span>`:''}</span><span class="pf-tag">${w.b}</span></button>
-  ${row('gift','Мои бонусы',`Активных: ${typeof bonusModel!=='undefined'?bonusModel.list('active').length:0} · FS: ${n(S.fs||0)}`,'bonuses')}
+  ${row('gift','Мои бонусы',`Активных: ${typeof bonusModel!=='undefined'?bonusModel.list('active').length:0} `,'bonuses')}
  </div>
  <h3 class="pf-h">Настройки</h3>
  <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return !A?'Телефон и почта':A.emailState==='confirmed'&&A.email?'Телефон и почта подтверждены':A.emailState==='pending'?'Почта не подтверждена':'Почта не указана'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('bell','Уведомления','Каналы, темы, время и пауза','notif')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
@@ -8330,7 +8331,7 @@ function about(){return `<h3 class="pf-h">О компании</h3>
 function guestView(){return `<div class="pf-card pf-guest"><span class="pf-ava g">${I.user}</span><b>Вы не вошли</b><p>Войдите, чтобы играть, получать кэшбек, крутить колесо удачи и забирать бонусы.</p>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="login">Войти</button><button class="pf-btn" type="button" data-pf="register">Регистрация</button></div></div>
  <h3 class="pf-h">Что вы получите</h3>
- <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша за месяц — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Рубли, фриспины и купончики</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Фриспины, турниры и призы</small></span></div></div>
+ <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша за месяц — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Промокоды и купончики</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Турниры, промокоды и призы</small></span></div></div>
  ${about()}
  <div class="pf-card pf-list">${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
@@ -8390,7 +8391,7 @@ $$('.app-header').forEach(h=>{if(!h.querySelector('.header-login')){const w=h.qu
 new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(x=>x.nodeType===1&&(x.matches?.('.app-header')||x.querySelector?.('.app-header')))))$$('.app-header').forEach(h=>{if(!h.querySelector('.header-login')){const w=h.querySelector('.header-wallet');if(w)w.insertAdjacentHTML('afterend','<button class="header-login" type="button">Войти</button>')}})}).observe($('#scr'),{childList:true,subtree:true});
 const _og=openGame;openGame=function(){if(!PF.auth){openLogin('Чтобы играть, войдите в аккаунт');return}return _og.apply(this,arguments)};
 
-const _rb=renderBonuses;renderBonuses=function(){if(PF.auth)return _rb.apply(this,arguments);const p=$('#panel-bonuses');if(p)p.innerHTML=`<div class="pf-gate"><span class="pf-ava g">${I.gift}</span><b>Бонусы — после входа</b><p>Фриспины, бонусы к пополнению и колесо удачи доступны авторизованным игрокам.</p><button class="pf-btn primary" type="button" data-pf-login>Войти</button></div>`};
+const _rb=renderBonuses;renderBonuses=function(){if(PF.auth)return _rb.apply(this,arguments);const p=$('#panel-bonuses');if(p)p.innerHTML=`<div class="pf-gate"><span class="pf-ava g">${I.gift}</span><b>Бонусы — после входа</b><p>Промокоды, бонусы и колесо удачи доступны авторизованным игрокам.</p><button class="pf-btn primary" type="button" data-pf-login>Войти</button></div>`};
 const _rl=renderLossback;renderLossback=function(){if(PF.auth)return _rl.apply(this,arguments);const e=$('#lossbackEntry');if(e){e.hidden=!(LV.cb||LV.mines);e.classList.add('lp-entry');e.innerHTML=`<span class="lp-w-art off">${lvArt(LossbackEngine.levels[1])}</span><span class="lp-w-main"><span class="lp-w-top"><strong>${lvTitle()}</strong></span><span class="lp-w-bottom"><span>${LV.cb?'Кэшбек до '+LossbackEngine.MAX_PCT+'% бонусами и «Мины»':'Попытки в «Минах» за покупки'}</span></span></span><span class="lp-w-btn">Войти</span>`}};
 
 window.addEventListener('click',e=>{if(e.target.closest('[data-pf-login]')){e.stopImmediatePropagation();openLogin()}},true);
@@ -9148,18 +9149,19 @@ const _gt=bpGameTickets;bpGameTickets=function(){_gt.apply(this,arguments);try{l
 document.addEventListener('click',e=>{const b=e.target.closest('[data-lv-stake]');if(!b)return;const root=$('#gBody');if(!lvSetStake(root,+b.dataset.lvStake))toast('Дождитесь результата текущей ставки');else{haptic&&haptic();lvGameBanner()}});
 
 /* ---------- мини-игра «Мины» ---------- */
-const MN={size:25,mines:5,tkNominal:100,ladder:[{k:'fs',n:1},{k:'fs',n:2},{k:'fs',n:3},{k:'fs',n:5},{k:'tk',n:1},{k:'tk',n:2},{k:'tk',n:3}]};
+const MN={size:25,mines:5,tkNominal:100,ladder:[{k:'pc',n:1},{k:'pc',n:2},{k:'pc',n:3},{k:'pc',n:5},{k:'pc',n:7},{k:'pc',n:10},{k:'pc',n:15}]}   /* MVP: призы — только промокоды на бесплатные игры (без FS и рублей) */;
 window.MN=MN;
-function mnLabel(p){return p.k==='fs'?p.n+' FS':p.n+' '+lbTicketWord(p.n)}
-function mnLong(p){return p.k==='fs'?`${p.n} FS в «Рапидо»`:`${p.n} ${p.n===1?'бесплатный билет':'бесплатных '+lbTicketWord(p.n)} в быстрые игры`}
-function mnChip(p){return p.k==='fs'?`${p.n}<i class="mn-u">FS</i>`:`${p.n}<img class="mn-tk" src="${LV_TICKET_IMG}" alt="${lbTicketWord(p.n)}">`}
+const mnGames=n=>n%10===1&&n%100!==11?'игру':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'игры':'игр';
+function mnLabel(p){return `промокод на ${p.n} ${mnGames(p.n)}`}
+function mnLong(p){return `промокод на ${p.n} бесплатн${p.n%10===1&&p.n%100!==11?'ую игру':'ых '+mnGames(p.n)} в быстрых играх`}
+function mnChip(p){return `${p.n}<svg class="mn-pc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1.5 1.5 0 0 1 1.5 1.5v2.7a1.8 1.8 0 0 0 0 3.6v2.7A1.5 1.5 0 0 1 20 18H4a1.5 1.5 0 0 1-1.5-1.5v-2.7a1.8 1.8 0 0 0 0-3.6V7.5A1.5 1.5 0 0 1 4 6z" fill="#f5c542"/><path d="m7 15 5-6" stroke="#5a2d00" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.6" cy="9.6" r="1.3" fill="#5a2d00"/><circle cx="11.4" cy="14.4" r="1.3" fill="#5a2d00"/><path d="M15.5 6v12" stroke="#5a2d00" stroke-width="1.2" stroke-dasharray="1.6 1.4"/></svg>`}
 const st={phase:'idle',open:new Set(),mines:new Set(),step:0,last:null};
 const box=document.createElement('div');box.className='mn';box.id='mn';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-labelledby','mnT');
 box.innerHTML=`<div class="mn-in"><div class="mn-hd"><h3 id="mnT">Мины</h3><button class="mn-x" type="button" aria-label="Закрыть">✕</button></div>
  <p class="mn-sub">Каждая безопасная клетка повышает приз. Забрать можно в любой момент</p>
  <div class="mn-att" id="mnAtt"></div>
  <ol class="mn-lad" id="mnLad" aria-label="Призы за открытые клетки"></ol>
- <p class="mn-legend"><span><i class="mn-u">FS</i> — бесплатная игра в «Рапидо»</span><span><img class="mn-tk" src="${LV_TICKET_IMG}" alt=""> — бесплатный билет ${MN.tkNominal} ₽ в быстрые игры</span></p>
+ <p class="mn-legend"><span><svg class="mn-pc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1.5 1.5 0 0 1 1.5 1.5v2.7a1.8 1.8 0 0 0 0 3.6v2.7A1.5 1.5 0 0 1 20 18H4a1.5 1.5 0 0 1-1.5-1.5v-2.7a1.8 1.8 0 0 0 0-3.6V7.5A1.5 1.5 0 0 1 4 6z" fill="#f5c542"/><path d="m7 15 5-6" stroke="#5a2d00" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.6" cy="9.6" r="1.3" fill="#5a2d00"/><circle cx="11.4" cy="14.4" r="1.3" fill="#5a2d00"/><path d="M15.5 6v12" stroke="#5a2d00" stroke-width="1.2" stroke-dasharray="1.6 1.4"/></svg> — промокод на N бесплатных игр в быстрых играх. Придёт в «Бонусы и промокоды»</span></p>
  <div class="mn-gw"><div class="mn-grid" id="mnGrid" role="grid" aria-label="Поле 5 на 5"></div></div>
  <p class="mn-res" id="mnRes" role="status" aria-live="polite"></p>
  <div class="mn-act"><button class="mn-go" id="mnGo" type="button"></button><button class="mn-2" id="mn2" type="button"></button></div></div>`;
@@ -9178,7 +9180,7 @@ function mnRender(){
  if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=att?`На поле ${MN.mines} мин из ${MN.size} клеток. Первая клетка — ${mnLabel(MN.ladder[0])}.`:`На поле ${MN.mines} мин из ${MN.size} клеток. Попытки — с уровня «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}»`;res.className='mn-res'}
  if(p==='play'){go.disabled=!cur;go.textContent=cur?`Забрать ${mnLabel(cur)}`:'Откройте клетку';b2.hidden=true;const nx=MN.ladder[st.step];res.textContent=nx?`Следующая клетка — ${mnLabel(nx)}`:'';res.className='mn-res'}
  if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
- if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent=st.prize.k==='tk'?'Сыграть билетом':'Сыграть в Рапидо';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промо»`;res.className='mn-res good'}
+ if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent='К промокодам';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Бонусы и промокоды»`;res.className='mn-res good'}
 }
 function mnStart(){if(!lvUseAttempt()){toast('Нет попыток');return}st.phase='play';st.open.clear();st.mines.clear();st.step=0;st.last=null;st.prize=null;bpSync();renderLossback();mnRender();haptic&&haptic()}
 function mnPlaceRest(except){const pool=[...Array(MN.size).keys()].filter(i=>!st.open.has(i)&&i!==except&&!st.mines.has(i));while(st.mines.size<MN.mines&&pool.length){st.mines.add(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}}
@@ -9193,8 +9195,7 @@ function mnPick(i){
 }
 function mnCollect(auto=false){
  if(st.phase!=='play'||!st.step)return;const p=MN.ladder[st.step-1];st.prize=p;
- if(p.k==='fs')bonusModel.records.push({id:'mn-fs-'+Date.now(),type:'tickets',fs:true,title:`${p.n} FS в Рапидо`,tag:'Приз из «Мин»',game:'rap',total:p.n,used:0,nominal:25,status:'active',expiresAt:Date.now()+7*DAY,validForMs:7*DAY});
- else for(let k=0;k<p.n;k++)lvAddTicket(MN.tkNominal,'Приз из «Мин»');
+ try{PB.grant(1,'Приз из «Мин»',p.n)}catch(e){}
  mnPlaceRest(-1);st.phase='won';bpSync();renderLossback();confetti();toast(auto?`Все призовые клетки открыты: ${mnLong(p)}`:`Приз: ${mnLong(p)}`);mnRender();
 }
 window.lvOpenMines=function(){if(!LV.mines){toast('«Мины» выключены в настройках прототипа');return}if(st.phase==='play'){box.classList.add('show');mnRender();return}st.phase='idle';st.open.clear();st.mines.clear();st.step=0;box.classList.add('show');mnRender();setTimeout(()=>$('#mnGo').focus(),50)};
@@ -9206,7 +9207,7 @@ box.addEventListener('keydown',e=>{if(e.key==='Escape')mnClose()});
 $('#mnGo').onclick=()=>{if(st.phase==='play')mnCollect();else mnStart()};
 $('#mn2').onclick=()=>{
  if(st.phase==='boom'){mnClose();return}
- if(st.phase==='won'){const p=st.prize;box.classList.remove('show');st.phase='idle';if(p.k==='tk')openGame(QUICK()[0]);else openGame('rap');return}
+ if(st.phase==='won'){box.classList.remove('show');st.phase='idle';if(window.promoOn&&promoOn())go('promo');else if(window.PB)PB.open();return}
  box.classList.remove('show');lbOpenDetails(true,'level')};
 
 /* сброс прототипа — поле закрывается */
@@ -9458,8 +9459,8 @@ document.addEventListener('input',e=>{if(e.target.id!=='pbnCode'||!ADD)return;co
 document.addEventListener('submit',e=>{if(e.target.id==='pbnAdd'){e.preventDefault();redeem($('#pbnCode').value)}});
 /* промокоды с колеса: N кодов в «Бонусы и промокоды», ждут активации */
 const QG=['coin','hilo','shell','scale'];
-function grant(n,src){if(typeof bonusModel==='undefined')return;for(let i=0;i<n;i++){const pool=QG.filter(x=>GAMES[x]),g=pool[Math.floor(Math.random()*pool.length)]||Object.keys(GAMES)[0];
- const code=Array.from({length:12},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');const b=mk('pw-'+code,fmtCode(code),g,3,7,'available',src+' · промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);log(`${src} · промокод ${fmtCode(code)}`,'Получен')}
+function grant(n,src,games=3){if(typeof bonusModel==='undefined')return;for(let i=0;i<n;i++){const pool=QG.filter(x=>GAMES[x]),g=pool[Math.floor(Math.random()*pool.length)]||Object.keys(GAMES)[0];
+ const code=Array.from({length:12},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');const b=mk('pw-'+code,fmtCode(code),g,games,7,'available',src+' · промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);log(`${src} · промокод ${fmtCode(code)}`,'Получен')}
  try{bpSync()}catch(e){}try{render()}catch(e){}}
 window.PB={open,close,redeem,items,HIST,grant,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
 })();
