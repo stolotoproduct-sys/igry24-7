@@ -3153,6 +3153,25 @@ button.ac-row{cursor:pointer}
 .ac-rt b.ac-em{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ac-badge.warn{background:#f0aa2c1f;color:#ffd76a}
 
+/* профиль: никнейм, дата рождения, пол; привязанные аккаунты; отзыв согласия */
+.ac-prof .ac-kv{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;font-size:14px;line-height:20px}
+.ac-prof .ac-kv+.ac-kv{border-top:1px solid #ffffff0f}
+.ac-kv span{color:#a99fc2}.ac-kv b{font-weight:600;text-align:right;overflow-wrap:anywhere}
+.ac-prof .ac-edit{border-top:1px solid #ffffff0f;min-height:56px}
+.ac-sub{margin:-4px 0 0;font-size:12px;line-height:16px;color:#8f86a8}
+.ac-brand{flex:none;width:40px;height:40px;border-radius:20px;display:grid;place-items:center;background:var(--c);color:#fff;font-size:14px;line-height:16px;font-weight:800}
+.ac-ico{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;border:1px solid #ffffff1f;background:#ffffff0f;color:#fff;cursor:pointer}
+.ac-ico svg{width:20px;height:20px}.ac-ico.del{color:#ff8fa3}
+.ac-revoke{align-self:center;margin-top:4px;padding:8px;background:none;border:0;color:#8f86a8;font:600 12px/16px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.ac-cf{z-index:5}
+.ape{z-index:96}
+.pe-ava{display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 0}
+.pe-ava .ac-ava{width:80px;height:80px;border-radius:40px;font-size:28px;line-height:32px}
+.ape .acf-field select{height:48px;padding:0 12px;border-radius:12px;border:1px solid #ffffff1f;background:#15131d;color:#fff;font:500 16px/24px var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);outline:none}
+.ape .acf-field.ro input{color:#8f86a8;background:#0f0e15}
+.pe-hint{display:flex;align-items:center;gap:4px;margin:-4px 0 4px;font-size:12px;line-height:16px;color:#8f86a8}.pe-hint svg{width:12px;height:12px;flex:none}
+.pe-save{margin-top:8px;flex:none}.pe-save:disabled{opacity:.4;box-shadow:none;cursor:default}
+
 </style>
 <style>
 /* ===== Шрифты Столотеки (библиотека «Столото — Столотека»)
@@ -8413,8 +8432,9 @@ setAuth(true);
    Демо: подходит любой код, кроме 0000 (так показываем ошибку). */
 (function(){
 const KEY='acCfg2';
-const DEF={phone:'+7 916 123-45-12',email:'',emailState:'none',name:'Иван Петров',birth:'12.04.1990'};
+const DEF={phone:'+7 916 123-45-12',email:'',emailState:'none',name:'Иван Петров',birth:'12.04.1990',nick:'ivan_petrov',gender:'m',links:{sber:false,yandex:true,vk:false,alfa:false}};
 let AC;try{AC={...DEF,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){AC={...DEF}}
+AC.links={...DEF.links,...(AC.links||{})};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(AC))}catch(e){}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const digits=s=>String(s).replace(/\D/g,'');
@@ -8432,8 +8452,13 @@ const I={
  id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h4M14 13h3" stroke-linecap="round"/></svg>',
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',
  done:'<svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#2fbf7c26"/><path d="m15 24 6 6 12-13" stroke="#7fe0ae" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
+const GEN={m:'Мужской',f:'Женский','':'Не указан'};
+/* быстрый вход через сторонние ID — в прототипе буквенные значки, не логотипы */
+const LINKS=[{id:'sber',n:'Сбер ID',l:'С',c:'#21a038'},{id:'yandex',n:'Яндекс ID',l:'Я',c:'#fc3f1d'},{id:'vk',n:'VK ID',l:'VK',c:'#0077ff'},{id:'alfa',n:'Альфа ID',l:'А',c:'#ef3124'}];
 /* ---------- публичный API для профиля, уведомлений и панели прототипа ---------- */
 window.ACC={get:()=>({...AC}),maskPhone,maskEmail,
  set(p){Object.assign(AC,p);save();refresh()},
@@ -8449,6 +8474,13 @@ function emailRow(){
 function accRender(){const P=$('#acc');if(!P)return;
  const em=AC.emailState==='confirmed'&&AC.email;
  $('.ac-body',P).innerHTML=`<div class="ac-card ac-who"><span class="ac-ava">${AC.name.split(' ').map(w=>w[0]).join('')}</span><span class="ac-rt"><b>${esc(AC.name)}</b><small>Дата рождения ${AC.birth}</small>${(()=>{const k=window.WD?WD.state.id:'full';return k==='none'?`<span class="ac-badge warn">${I.warn}Личность не подтверждена</span>`:`<span class="ac-badge">${I.check}${k==='simple'?'Подтверждена через Госуслуги':'Личность подтверждена'}</span>`})()}</span></div>
+ <h4>Профиль</h4>
+ <div class="ac-card ac-list ac-prof">
+  <div class="ac-kv"><span>Никнейм</span><b>${esc(AC.nick)}</b></div>
+  <div class="ac-kv"><span>Дата рождения</span><b>${AC.birth}</b></div>
+  <div class="ac-kv"><span>Пол</span><b>${GEN[AC.gender]||'Не указан'}</b></div>
+  <button type="button" class="ac-row ac-edit" data-ac="profile-edit"><span class="ac-rt"><b>Редактировать профиль</b><small>Никнейм видят другие игроки в рейтингах и турнирах</small></span><span class="ac-val">Изменить</span></button>
+ </div>
  <h4>Контакты</h4>
  <div class="ac-card ac-list">
   <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small class="ac-st ok">${I.check}Подтверждён · логин</small></span><button type="button" class="ac-act" data-ac="phone-change">Сменить</button></div>
@@ -8457,8 +8489,13 @@ function accRender(){const P=$('#acc');if(!P)return;
  ${em?'':`<p class="ac-warn">${AC.emailState==='pending'?'Мы отправили код на '+esc(AC.email)+'. Пока почта не подтверждена, канал E-mail в уведомлениях выключен.':'Без почты чеки и результаты тиражей приходят только в приложение и по SMS.'}</p>`}
  <h4>Вход</h4>
  <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b><small>Изменён 3 месяца назад</small></span><span class="ac-val">Изменить</span></button>
-  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>Из документа при подтверждении личности. Изменить — через поддержку</small></span></div>${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
- <p class="ac-note">Номер и почту не показываем другим игрокам. Любое изменение подтверждаем кодом — без вас данные сменить нельзя. О смене сообщаем на старый контакт.</p>`}
+  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>${locked()?'Из документа. Изменить — через поддержку':'При подтверждении личности возьмём из документа'}</small></span></div>${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
+ <h4>Привязанные аккаунты</h4>
+ <p class="ac-sub">Привяжите аккаунт для быстрого входа</p>
+ <div class="ac-card ac-list">${LINKS.map(l=>{const on=AC.links[l.id];return `<div class="ac-row"><span class="ac-brand" style="--c:${l.c}">${l.l}</span><span class="ac-rt"><b>${l.n}</b>${on?`<small class="ac-st ok">${I.check}${esc(AC.name)}</small>`:'<small>Не привязан</small>'}</span><button type="button" class="ac-act${on?'':' primary'}" data-ac-link="${l.id}" aria-label="${on?'Отвязать':'Привязать'} ${l.n}">${on?'Отвязать':'Привязать'}</button></div>`}).join('')}</div>
+ <p class="ac-note">Номер и почту не показываем другим игрокам. Любое изменение подтверждаем кодом — без вас данные сменить нельзя. О смене сообщаем на старый контакт.</p>
+ <button type="button" class="ac-revoke" data-ac="revoke">Отозвать согласие на обработку персональных данных</button>
+ <div class="pf-confirm ac-cf" hidden></div>`}
 function accOpen(){accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
 function accClose(){const P=$('#acc');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
 function refresh(){accRender();try{window.pfRender&&pfRender()}catch(e){}try{window.nsRender&&nsRender()}catch(e){}}
@@ -8543,9 +8580,45 @@ function finish(){const d=F.def;F.finished=true;clearInterval(timer);
  const P=$('#acf');$('.acf-prog',P).innerHTML=`<span>${d.name}</span>`;
  $('.acf-body',P).innerHTML=`<div class="acf-done">${I.done}<h3>${t}</h3><p class="acf-text">${txt}</p><button class="pf-btn primary" type="button" data-acf="close-done">${d.reg?'Начать играть':'Готово'}</button></div>`;
 }
+/* ---------- подтверждение (шторка) ---------- */
+let CF=null;
+function confirmAsk(t,txt,yes,fn){CF=fn;const c=$('#acc .ac-cf');if(!c)return;c.innerHTML=`<div class="pf-sheet"><b>${t}</b><p>${txt}</p><button class="pf-btn danger" type="button" data-ac="cf-yes">${yes}</button><button class="pf-btn" type="button" data-ac="cf-no">Отмена</button></div>`;c.hidden=false}
+function confirmClose(){CF=null;const c=$('#acc .ac-cf');if(c)c.hidden=true}
+/* ---------- редактирование профиля: никнейм, дата рождения, пол ---------- */
+const TAKEN=['player','admin','stoloto','ivan'];
+const locked=()=>!!(window.WD&&WD.state.id!=='none');     /* после подтверждения личности дата — из документа */
+let PE=null;
+function bdErr(v){const m=v.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);if(!m)return 'Введите дату в формате ДД.ММ.ГГГГ';const d=+m[1],mo=+m[2],y=+m[3];const dt=new Date(y,mo-1,d);
+ if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d||y<1900)return 'Такой даты нет — проверьте';const n=new Date();let age=n.getFullYear()-y;if(n.getMonth()<mo-1||(n.getMonth()===mo-1&&n.getDate()<d))age--;return age<18?'Играть можно с 18 лет':''}
+function nickErr(v){if(v.length<3)return 'Не короче 3 символов';if(v.length>16)return 'Не длиннее 16 символов';if(!/^[a-zа-яё0-9_.-]+$/i.test(v))return 'Только буквы, цифры, точка, дефис и _';if(TAKEN.includes(v.toLowerCase())&&v!==AC.nick)return 'Этот никнейм уже занят — попробуйте другой';return ''}
+function peOpen(){PE={nick:AC.nick,birth:AC.birth,gender:AC.gender,err:{}};peRender();const P=$('#ape');P.classList.add('show');P.setAttribute('aria-hidden','false')}
+function peClose(){const P=$('#ape');P.classList.remove('show');P.setAttribute('aria-hidden','true');PE=null}
+function peDirty(){return PE&&(PE.nick!==AC.nick||PE.birth!==AC.birth||PE.gender!==AC.gender)}
+function peValid(){return !nickErr(PE.nick)&&(locked()||!bdErr(PE.birth))}
+function peRender(){const P=$('#ape');if(!P||!PE)return;const lk=locked();const E=PE.err;
+ $('.ac-body',P).innerHTML=`<div class="pe-ava"><span class="ac-ava">${esc(AC.name.split(' ').map(w=>w[0]).join(''))}</span><button type="button" class="ac-act" data-pe="ava">Изменить аватар и рамку</button></div>
+ <label class="acf-field${E.nick?' err':''}">Никнейм<input name="nick" value="${esc(PE.nick)}" maxlength="16" autocomplete="off"></label>${E.nick?`<p class="acf-err">${E.nick}</p>`:'<p class="pe-hint">Видят другие игроки в рейтингах и турнирах</p>'}
+ <label class="acf-field${E.birth?' err':''}${lk?' ro':''}">Дата рождения<input name="birth" value="${esc(PE.birth)}" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10" ${lk?'readonly':''}></label>${E.birth?`<p class="acf-err">${E.birth}</p>`:lk?`<p class="pe-hint">${I.lock}Из документа — изменить можно через поддержку</p>`:''}
+ <label class="acf-field">Пол<select name="gender">${Object.entries(GEN).map(([k,v])=>`<option value="${k}"${PE.gender===k?' selected':''}>${v}</option>`).join('')}</select></label>
+ <label class="acf-field ro">Номер телефона<input value="${esc(AC.phone)}" readonly></label><p class="pe-hint">Сменить номер — в «Личные данные» → «Контакты»</p>
+ <button class="pf-btn primary pe-save" type="button" data-pe="save" ${peDirty()&&peValid()?'':'disabled'}>Сохранить изменения</button>`}
+function peSave(){if(!peDirty())return;const ne=nickErr(PE.nick),be=locked()?'':bdErr(PE.birth);if(ne||be){PE.err={nick:ne,birth:be};peRender();return}
+ AC.nick=PE.nick;if(!locked())AC.birth=PE.birth;AC.gender=PE.gender;save();peClose();refresh();toast('Изменения сохранены')}
+document.addEventListener('input',e=>{const P=e.target.closest('#ape');if(!P||!PE)return;const n=e.target.name;
+ if(n==='birth'){let d=e.target.value.replace(/\D/g,'').slice(0,8);e.target.value=d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2}\.\d{2})(\d)/,'$1.$2');PE.birth=e.target.value}
+ if(n==='nick')PE.nick=e.target.value.trim();
+ if(n==='gender')PE.gender=e.target.value;
+ if(PE.err[n]){PE.err[n]='';const f=e.target.closest('.acf-field');f.classList.remove('err');const er=f.nextElementSibling;if(er&&er.classList.contains('acf-err'))er.remove()}
+ $('.pe-save',P).disabled=!(peDirty()&&peValid())});
+document.addEventListener('change',e=>{if(e.target.closest('#ape')&&e.target.name==='gender'){PE.gender=e.target.value;$('#ape .pe-save').disabled=!(peDirty()&&peValid())}});
+document.addEventListener('focusout',e=>{const P=e.target.closest('#ape');if(!P||!PE)return;const n=e.target.name;
+ if(n==='nick'){const er=PE.nick!==AC.nick?nickErr(PE.nick):'';if(er){PE.err.nick=er;peRender()}}
+ if(n==='birth'&&!locked()){const er=PE.birth!==AC.birth?bdErr(PE.birth):'';if(er){PE.err.birth=er;peRender()}}});
 /* ---------- разметка ---------- */
 $('#scr').insertAdjacentHTML('beforeend',`<div class="ac" id="acc" role="dialog" aria-modal="true" aria-label="Личные данные" aria-hidden="true">
  <div class="ac-head"><button class="ac-back" type="button" data-ac="close" aria-label="Назад">${I.back}</button><h2>Личные данные</h2></div><div class="ac-body"></div></div>
+<div class="ac ape" id="ape" role="dialog" aria-modal="true" aria-label="Редактирование профиля" aria-hidden="true">
+ <div class="ac-head"><button class="ac-back" type="button" data-pe="close" aria-label="Назад">${I.back}</button><h2>Профиль</h2></div><div class="ac-body"></div></div>
 <div class="acf" id="acf" role="dialog" aria-modal="true" aria-label="Подтверждение" aria-hidden="true">
  <div class="ac-head"><button class="ac-back" type="button" data-acf="back" aria-label="Назад">${I.back}</button><div class="acf-prog"></div><button class="ac-x" type="button" data-acf="close" aria-label="Закрыть">✕</button></div><div class="acf-body"></div></div>`);
 /* ---------- обработчики ---------- */
@@ -8555,7 +8628,18 @@ document.addEventListener('click',e=>{
  if(a&&e.target.closest('#acc')){const k=a.dataset.ac;
   if(k==='close'){accClose();return}
   if(k==='password'){toast('Смена пароля — через код из SMS (демо)');return}
+  if(k==='profile-edit'){peOpen();return}
+  if(k==='revoke'){confirmAsk('Отозвать согласие?','Без согласия мы не сможем вести ваш аккаунт — он будет закрыт. Перед этим выведите деньги с баланса. [Точный текст — от юристов]','Отозвать согласие',()=>toast('Заявка на отзыв согласия принята (демо)'));return}
+  if(k==='cf-no'){confirmClose();return}
+  if(k==='cf-yes'){const f=CF;confirmClose();f&&f();return}
   start(k);return}
+ const lk=e.target.closest('[data-ac-link]');
+ if(lk&&e.target.closest('#acc')){const id=lk.dataset.acLink,L=LINKS.find(x=>x.id===id);
+  if(AC.links[id]){confirmAsk(`Отвязать ${L.n}?`,`Входить через ${L.n} больше не получится. Войти можно по номеру телефона.`,'Отвязать',()=>{AC.links[id]=false;save();refresh();toast(`${L.n} отвязан`)})}
+  else{toast(`Откроется вход через ${L.n} (демо)`);setTimeout(()=>{AC.links[id]=true;save();refresh();toast(`${L.n} привязан — входите в один тап`)},900)}
+  return}
+ const pe=e.target.closest('[data-pe]');
+ if(pe&&e.target.closest('#ape')){const k=pe.dataset.pe;if(k==='close'){peClose();return}if(k==='ava'){toast('Аватар и рамка — в следующей итерации (демо)');return}if(k==='save'){peSave();return}return}
  const f=e.target.closest('[data-acf]');
  if(f&&e.target.closest('#acf')){const k=f.dataset.acf;
   if(k==='close'){stop(true);return}
@@ -8571,7 +8655,7 @@ document.addEventListener('click',e=>{
 },true);
 document.addEventListener('submit',e=>{if(!e.target.closest('#acf'))return;e.preventDefault();const s=F.def.steps[F.i];const v=$('input[name=v]',e.target).value.trim();
  const err=s.check(v);if(err){F.err=err;F.val[F.i]=v;step();return}F.err='';s.put(v);next()});
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('#acf').classList.contains('show')){e.stopImmediatePropagation();stop(true)}else if($('#acc').classList.contains('show')){e.stopImmediatePropagation();accClose()}},true);
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('#ape').classList.contains('show')){e.stopImmediatePropagation();peClose();return}if(!$('#acc .ac-cf')?.hidden&&$('#acc .ac-cf')){e.stopImmediatePropagation();confirmClose();return}if($('#acf').classList.contains('show')){e.stopImmediatePropagation();stop(true)}else if($('#acc').classList.contains('show')){e.stopImmediatePropagation();accClose()}},true);
 /* сброс прототипа — исходные данные */
 if(typeof resetProto==='function'){const r=resetProto;resetProto=function(){AC={...DEF};save();r.apply(this,arguments);refresh()}}
 })();
