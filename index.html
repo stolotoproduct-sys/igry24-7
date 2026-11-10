@@ -6260,9 +6260,9 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)bpTickTime
 const DAY=86400000,WEEK=7*DAY,OFFSET=3*3600000;
 const levels=[
  {id:0,name:'Старт',threshold:0,pct:0,attempts:0,art:'lock'},
- {id:1,name:'Бронза',threshold:1000,pct:3,attempts:0,art:'l1'},
- {id:2,name:'Серебро',threshold:2000,pct:4,attempts:0,art:'l2'},
- {id:3,name:'Золото',threshold:3000,pct:5,attempts:0,art:'l3'},
+ {id:1,name:'Бронза',threshold:1000,pct:3,attempts:1,art:'l1'},
+ {id:2,name:'Серебро',threshold:2000,pct:4,attempts:1,art:'l2'},
+ {id:3,name:'Золото',threshold:3000,pct:5,attempts:2,art:'l3'},
  {id:4,name:'Платина',threshold:5000,pct:6,attempts:3,art:'l4'},
  {id:5,name:'Рубин',threshold:10000,pct:8,attempts:5,art:'l5'},
  {id:6,name:'Изумруд',threshold:20000,pct:10,attempts:5,art:'l6'},
@@ -6428,7 +6428,7 @@ function lvCreditBonus(n){const m=BonusEngine.mode,t=Date.now(),ms=LossbackEngin
  if(m==='wager')bonusModel.records.push({id:'cb-'+t,type:'deposit',fsw:true,cbk:true,title:'Кэшбек месяца',tag:'Кэшбек уровня · отыгрыш ×1',percent:0,min:0,cap:0,multiplier:1,game:null,status:'active',used:0,turnover:0,amount:n,remaining:n,pending:0,target:n,ready:false,expiresAt:t+ms,validForMs:ms});
  else{S.stb=(S.stb||0)+n;try{stbRender()}catch(e){}}
  if(typeof bpSync==='function')bpSync();try{renderHeaderBalances()}catch(e){}}
-/* новые уровни: поздравление; с «Платины» — попытки в «Минах» */
+/* новые уровни: поздравление; с «Бронзы» — попытки в «Минах» */
 function lvLevelUps(){const fresh=lossbackModel.takeLevelUps(),ups=lossbackModel.takeNewLevels();let n=0;
  if(LV.mines&&fresh.length){for(const l of fresh)n+=l.attempts;lvGrantAttempts(n)}
  if(ups.length){const l=ups.at(-1);const parts=[];if(LV.cb)parts.push(`кэшбек ${l.pct}%`);if(n)parts.push(`+${n} ${lvAttWord(n)} в «Минах»`);toast(`Новый уровень «${l.name}»${parts.length?': '+parts.join(', '):''}`);lbSelected=null;try{confetti()}catch(e){}}
