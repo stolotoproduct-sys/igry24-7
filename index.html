@@ -3338,6 +3338,9 @@ body,button,input,select,textarea{font-family:var(--g4-font)}
 #toast{top:calc(var(--sb,0px) + 8px);bottom:auto!important;left:0;right:0;z-index:500;margin:0 auto;width:fit-content;max-width:calc(100% - 32px);transform:translateY(-24px);background:rgba(28,28,32,.96);border:1px solid #ffffff1f;box-shadow:0 10px 30px #0009;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 #toast.show{transform:none}
 
+/* затемнение под шторками и окнами — с размытием фона 8 px (как в макетах: Backdrop + background blur 8) */
+.wm,.sheet,.tg-sheet,.pm,.stb-top,.stb-co,.bp-modal,.lp-pop,.npr-bd,.pbn-sheet-bg,.pf-confirm,.pfl,.pc-pop{-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important}
+
 </style>
 <style>
 /* Уровень месяца, кэшбек недели, «Мины», бесплатный билет. Сетка 4 px. */
