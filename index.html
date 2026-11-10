@@ -9529,7 +9529,7 @@ const PROMOS={
  wheel:{name:'Колесо удачи',term:'Срок: с [дата] по [дата], 1 вращение в день',prize:'Призы: промокоды и бонусы, [перечень по правилам]'},
  weekly:{name:'Недельный набор',term:'Срок: 7 дней с момента активации',prize:'Призы: бесплатные участия (FS) и билеты, [перечень]'},
  raffle:{name:'Розыгрыш',term:'Срок: с [дата] по [дата]',prize:'Призы: [перечень призов по правилам]'},
- level:{name:'Мой уровень',term:'Действует постоянно, уровень считается за календарный месяц',prize:'Кэшбек бонусами до 15% от проигрыша за месяц, попытки в «Минах»'},
+ level:{name:'Мой уровень',term:'Действует постоянно, уровень считается за календарный месяц',prize:()=>'Кэшбек бонусами до 15% от проигрыша за месяц, попытки в «'+(window.lvGN?lvGN('p'):'Еноте')+'»'},
 };
 const RULES=[
  {id:'tour',sel:'[data-tm-cta]',when:b=>/Принять участие/.test(b.textContent),name:()=>{const h=document.querySelector('.tm-detail .tm-card h3,.tm-detail .tm-card strong,.tm-detail .tm-card-title');return h?h.textContent.trim():''}},
@@ -9545,7 +9545,7 @@ function open(id,custom,after){
  w.dataset.id=id;
  w.innerHTML=`<div class="pc-c"><button type="button" class="pc-x" data-pc-x aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <h3 id="pcT">Участвовать в&nbsp;${nm}?</h3>
-  <ul class="pc-terms"><li>${P.term}</li><li>${P.prize}</li><li>Участвуют совершеннолетние зарегистрированные игроки [условия допуска]</li><li>Организатор: [наименование организатора, ИНН, адрес]</li><li>Порядок выдачи призов и сроки — в&nbsp;полных правилах</li></ul>
+  <ul class="pc-terms"><li>${P.term}</li><li>${typeof P.prize==='function'?P.prize():P.prize}</li><li>Участвуют совершеннолетние зарегистрированные игроки [условия допуска]</li><li>Организатор: [наименование организатора, ИНН, адрес]</li><li>Порядок выдачи призов и сроки — в&nbsp;полных правилах</li></ul>
   <label class="pc-check"><input type="checkbox" data-pc-check><span>Я прочитал и принимаю <a href="#" data-pc-rules>условия акции</a></span></label>
   <button type="button" class="pc-go" data-pc-go disabled>Участвовать</button>
   <button type="button" class="pc-no" data-pc-x>Не сейчас</button></div>`;
