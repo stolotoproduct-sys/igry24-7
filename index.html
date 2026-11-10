@@ -2489,6 +2489,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 /* ===== MVP 1–2 без «Промо» ===== */
 .no-promo #lobby .reward-bonuses{display:none!important}
 .no-promo #lobby .l-banner{cursor:default}
+.no-promo #sheet label[for=bpDepositOffer],.no-promo #bpDepositOffer,.no-promo #bpDepositSelected,.no-promo #bpDepositSummary{display:none!important}
 .no-promo #lobby .home-rewards{grid-template-columns:1fr}
 /* широкое колесо удачи: текст и прогресс слева, колесо справа; высота как у блока «Мой уровень» */
 .no-promo #lobby .reward-wheel{height:84px;min-height:84px}
@@ -6052,7 +6053,8 @@ function bpAction(id){const b=bonusModel.get(id);if(!b)return;if(b.ready){const 
  if(b.status!=='available')return;if(b.type==='tickets'){bonusModel.activate(id);bpCloseModal();bpSync();toast(`${b.total} бесплатных билетов активированы`);return}
  bpCloseModal();openSheet(id);
 }
-function bpDepositOptions(){return bonusModel.list('available').filter(b=>b.type!=='tickets'&&b.type!=='weekly'&&!b.ended)}
+/* MVP 1–2 (без «Промо»): бонус при пополнении не выбирается */
+function bpDepositOptions(){if(window.promoOn&&!promoOn())return [];return bonusModel.list('available').filter(b=>b.type!=='tickets'&&b.type!=='weekly'&&!b.ended)}
 openSheet=function(id){
  const options=bpDepositOptions();selectedDepositBonus=typeof id==='string'&&options.some(b=>b.id===id)?id:options[0]?.id||null;
  const selected=bonusModel.get(selectedDepositBonus);if(selected&&depA<selected.min)depA=selected.min;
