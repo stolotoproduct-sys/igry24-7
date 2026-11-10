@@ -6531,11 +6531,10 @@ function lpPrivileges(s,l){
   t.push(row(lock?' lock':'',`<b class="lp-pv-n">${l.pct}<i>%</i></b>`,`Кэшбек ${l.pct}%`,
    'От проигрыша за месяц, бонусами'))}
  if(LV.mines){
-  if(cur&&l.attempts){const att=lvAttempts(),rec=lvMinesRec();
-   t.push(att?row('',lvArt(mines,'lp-pv-art'),'«Мины»',`${att} ${lvAttWord(att)}`,`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`)
-    :row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',s.nextMines?`0 попыток · новые на «${s.nextMines.name}»`:'Все попытки получены'))}
-  else if(l.attempts)t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),'«Мины»',`+${l.attempts} ${lvAttWord(l.attempts)} до конца месяца`));
-  else t.push(row(' off',lvArt(mines,'lp-pv-art dim'),'«Мины»',`С уровня «${mines.name}»`));
+  /* на каждом уровне: сколько попыток даёт уровень + «Играть»; остаток попыток видно в самой игре */
+  const play=`<button type="button" class="cb-claim" data-lv-mines>Играть</button>`;
+  if(cur){const att=lvAttempts();t.push(row(att?'':' off',lvArt(mines,'lp-pv-art'+(att?'':' dim')),`«Мины» · +${l.attempts} ${lvAttWord(l.attempts)}`,att?`Осталось ${att} ${lvAttWord(att)} до конца месяца`:s.nextMines?`Попытки потрачены · новые на «${s.nextMines.name}»`:'Все попытки месяца потрачены',play))}
+  else t.push(row(lock?' lock':'',lvArt(mines,'lp-pv-art'),`«Мины» · +${l.attempts} ${lvAttWord(l.attempts)}`,lock?`Придут на уровне «${l.name}», действуют до конца месяца`:'Получены за этот уровень',play));
  }
  t.push(nx?row(' tap',lvArt(nx,'lp-pv-art'),`Дальше — «${nx.name}»${LV.cb?' · '+nx.pct+'%':''}`,
    cur?`Ещё ${lbRub(Math.max(0,nx.threshold-s.turnover))} покупок`:`От ${lbRub(nx.threshold)} за месяц`,chev,` data-lp-select="${nx.id}" role="button" tabindex="0"`)
@@ -6555,7 +6554,7 @@ function lpWeek(s,bare){
 function lpMines(s){
  if(!LV.mines)return '';const att=lvAttempts(),rec=lvMinesRec();
  return `<section class="lv-mines-card${att?'':' off'}">${lvMinesArt()}<div class="lv-mines-t"><b>Мины${att?` · ${att}`:''}</b><small>${att?`${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.nextMines?`+${s.nextMines.attempts} на уровне «${s.nextMines.name}»`:'Все попытки месяца получены'}</small></div>
-  <button type="button" class="cb-claim${att?'':' ghost'}" data-lv-mines>${att?'Играть':'Посмотреть'}</button></section>`;
+  <button type="button" class="cb-claim" data-lv-mines>Играть</button></section>`;
 }
 /* истории и карточки «Начислено» на экране нет: о начислении сообщает только уведомление */
 function lpHistory(s){return ''}
@@ -6564,7 +6563,7 @@ function lpGive(){
  const L=LVL(),b=L[1],m=L[LossbackEngine.MINES_FROM],top=L.at(-1);
  const tiles=[];
  if(LV.cb)tiles.push(`<div class="lp-tile wide lp-grow"><span class="lp-tile-t"><b>Кэшбек от ${b.pct}% до ${top.pct}%</b><small>От проигрыша за месяц — бонусами. Чем выше уровень, тем больше процент</small></span><span class="lp-grow-n" aria-hidden="true"><em>${b.pct}%</em>${IC('<path d="M5 12h14M13 6l6 6-6 6"/>',16)}<b>${top.pct}<i>%</i></b></span></div>`);
- if(LV.mines)tiles.push(`<button type="button" class="lp-tile wide" data-lv-mines><span class="lp-tile-t"><b>Игра «Мины»</b><small>С уровня «${m.name}» — от ${lbNum(m.threshold)} ₽ покупок</small></span>${lvArt(m,'lp-tile-art')}<span class="lp-tile-more">Как это ›</span></button>`);
+ if(LV.mines)tiles.push(`<button type="button" class="lp-tile wide" data-lv-mines><span class="lp-tile-t"><b>Игра «Мины» · +${m.attempts} ${lvAttWord(m.attempts)}</b><small>С уровня «${m.name}» — от ${lbNum(m.threshold)} ₽ покупок</small></span>${lvArt(m,'lp-tile-art')}<span class="lp-tile-more">Играть ›</span></button>`);
  
  return tiles.length?`<h3 class="lp-h">Что дадут уровни</h3><div class="lp-tiles">${tiles.join('')}</div>`:'';
 }
