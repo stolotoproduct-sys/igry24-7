@@ -9995,7 +9995,7 @@ function buyHTML(){if(P.view!=='buy')return '';const left=MAXQ-P.bought;
  ${P.bought?`<div class="p2-bought cr-bought"><span><b>В тираже ${P.bought} ${plural(P.bought)} · № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до взлёта</small></span><span class="cr-mini">${spr('plane',40)}</span></div>`:''}`}
 function tixHTML(d){if(!d||!d.mine)return '';
  return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':`${CAT[t.cat].x} · ${bpLabel(d.wins[i])}`}</span>`}).join('')}</div>`}
-function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Каждый билет — место в общем тираже. Самолёт летит сразу за все ваши билеты: его запускают из рогатки, бонусы «+N» и «×N» подбрасывают вверх и растят сумму, ракеты «÷2» сбивают вниз и делят её пополам. С какой суммой самолёт сел — столько вы и выиграли. Сбили ракетой — тираж без выигрыша.</p>
+function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Купите билеты и смотрите полёт. Бонусы увеличивают выигрыш, ракеты уменьшают его вдвое. Самолёт сел — забираете сумму. Сбили — выигрыша нет.</p>
  <div class="p2-th"><span>Множитель</span><span>Выигрыш за билет</span></div>
  ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${CAT[c].x}</span><b>${c===8?'Золотая звезда':'Приводнение'}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
  <div class="cr-row sea"><span class="cr-rx">💧</span><b>Сбит ракетой</b><em>0 ₽</em></div>
