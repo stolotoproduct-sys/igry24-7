@@ -2751,6 +2751,45 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .cr-res .cr-res-art .cr-res-pl{left:32px;top:46px;transform:rotate(-3deg)}
 .cr-res-water{position:absolute;left:10px;right:10px;bottom:22px;height:22px;border-radius:50%;background:radial-gradient(ellipse,#5fc8ff99,#2f86ff44 55%,#0000 72%)}
 
+/* ===== v4: камера дальше, поле цифр, стопка модификаторов, дымный след, полоса посадки ===== */
+.cr-pl.sm{width:62px;height:39px;margin:-20px 0 0 -31px}
+.cr-pl.sm .cr-trail{display:none}
+.cr-pl.sm .cr-smoke{left:0;top:2px;width:24px;height:24px}
+.cr-bon{width:auto;height:auto;left:0;top:0;transform:translate(-50%,-50%);background:none!important;box-shadow:none!important;border-radius:0;animation:none}
+.cr-wo.bon .cr-bon{animation:crbub2 2.4s ease-in-out infinite}
+@keyframes crbub2{50%{margin-top:-3px}}
+.cr-bon b{display:block;font:900 19px/1 StoloText,Inter,sans-serif;color:#f4f9ff;-webkit-text-stroke:1px #7fb4ff;text-shadow:0 2px 0 #2a5bb8,0 3px 0 #173a80,0 0 10px #8fc4ff99;letter-spacing:-.02em}
+.cr-wo.mul .cr-bon b{color:#fff6d6;-webkit-text-stroke:1px #ffd06a;text-shadow:0 2px 0 #c07a10,0 3px 0 #7a4a00,0 0 10px #ffd23f99}
+.cr-wo.deco .cr-bon b{opacity:.82}
+.cr-wo.star .cr-bon b{font-size:30px;-webkit-text-stroke:0}
+.cr-wo.bon.got .cr-bon{animation:crpop2 .3s ease-out forwards}
+@keyframes crpop2{to{transform:translate(-50%,-50%) scale(1.9);opacity:0}}
+.cr-tag{position:absolute;left:0;top:0;z-index:3;pointer-events:none;will-change:transform;transition:opacity .2s}
+.cr-tag b{position:absolute;left:0;bottom:0;transform:translateX(-50%);white-space:nowrap;font:800 10px/1 StoloText,Inter,sans-serif;color:#fff;text-shadow:0 1px 2px #000c;padding:2px 5px;border-radius:6px;background:#06123399}
+.cr-tag b:empty{display:none}
+.cr-stack{position:absolute;left:0;bottom:14px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0}
+.cr-stack i{font:900 13px/1.05 StoloText,Inter,sans-serif;font-style:normal;white-space:nowrap;animation:crstk .3s ease-out}
+.cr-stack i.good{color:#5dff8a;text-shadow:0 1px 0 #0a4a2a,0 0 6px #3dff7a88}
+.cr-stack i.bad{color:#ff5a5f;text-shadow:0 1px 0 #5a0a0a,0 0 6px #ff2a3a88}
+@keyframes crstk{from{transform:scale(1.8);opacity:0}}
+.cr-puffs{position:absolute;inset:0;pointer-events:none}
+.cr-puffs i{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;opacity:0;background:radial-gradient(circle,#ffffffee 0 35%,#e6f0ff88 60%,#e6f0ff00 72%);will-change:transform,opacity}
+.cr-puffs i.dark{background:radial-gradient(circle,#4a4f66ee 0 35%,#3a3f5588 60%,#3a3f5500 72%)}
+.cr-boom:before,.cr-boom:after{left:-46px;top:-46px;width:92px;height:92px}
+.cr-deck{position:absolute;left:0;top:0;width:300px;height:12px;border-radius:3px;background:linear-gradient(180deg,#5a6a8a,#2a3350 60%,#1a2038);box-shadow:0 6px 10px #0008}
+.cr-deck::before{content:"";position:absolute;left:8px;right:8px;top:5px;height:2px;background:repeating-linear-gradient(90deg,#e6f0ff 0 14px,#0000 14px 26px);opacity:.8}
+.cr-deck::after{content:"";position:absolute;left:14px;right:14px;top:12px;height:16px;background:repeating-linear-gradient(90deg,#2a3350 0 6px,#0000 6px 54px)}
+.cr-deck i{position:absolute;left:0;right:0;top:-3px;height:4px;background:repeating-linear-gradient(90deg,#ffd23f 0 4px,#0000 4px 30px);filter:drop-shadow(0 0 4px #ffd23f);animation:crdeck 1s steps(2) infinite}
+@keyframes crdeck{50%{opacity:.4}}
+.cr-dust{position:absolute;width:0;height:0}
+.cr-dust i{position:absolute;left:-8px;top:-8px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#e6f0ffcc,#e6f0ff00 70%);animation:crdust 1s ease-out forwards}
+.cr-dust i:nth-child(2){animation-delay:.05s;--x:-30px}.cr-dust i:nth-child(3){animation-delay:.1s;--x:-50px}.cr-dust i:nth-child(4){--x:20px}.cr-dust i:nth-child(5){animation-delay:.08s;--x:-12px}
+@keyframes crdust{to{transform:translate(var(--x,-20px),-14px) scale(2.6);opacity:0}}
+.cr-win{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);padding:8px 22px;border-radius:16px;background:#061233d9;box-shadow:0 0 0 1px #ffffff33,0 8px 24px #000a;text-align:center;animation:crwin .5s cubic-bezier(.3,1.6,.5,1)}
+.cr-win small{display:block;font-size:11px;font-weight:700;color:#a9bde6}
+.cr-win b{font:900 26px/1.1 StoloText,Inter,sans-serif;color:#ffe066;text-shadow:0 2px 0 #7a4a00}
+@keyframes crwin{from{transform:translate(-50%,-50%) scale(.4);opacity:0}}
+
 </style>
 <style>
 /* ===== Вывод средств (сетка 4 px, на базе .ac) ===== */
@@ -9927,10 +9966,11 @@ const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/BUY_MS*100));
 
 /* ---------- графика: арт из ChatGPT (CR2ART) ---------- */
 const spr=(k,w,cls='')=>`<img class="cr-spr ${k} ${cls}" src="${CR2ART[k].src}" width="${w}" height="${Math.round(w*CR2ART[k].h/CR2ART[k].w)}" alt="" draggable="false">`;
-const plane=(cls='')=>`<div class="cr-pl ${cls}">${spr('plane',96)}<i class="cr-trail"></i><i class="cr-smoke"></i></div>`;
+const plane=(cls='',w=96)=>`<div class="cr-pl ${cls}${w<96?' sm':''}">${spr('plane',w)}<i class="cr-trail"></i><i class="cr-smoke"></i></div>`;
+const PW=62;                                        /* самолёт на сцене: камера дальше, он меньше */
 /* рогатка (ChatGPT): ширина SLW, высота SLH на сцене; основание — низ по центру */
-const SLW=CR2BG.sling?CR2BG.sling.w:86,SLH=CR2BG.sling?CR2BG.sling.h:120;
-const REST_Y=SEA_Y+8-SLH+4;                          /* самолёт лежит между рожками */
+const SLH=84,SLW=CR2BG.sling?Math.round(SLH*CR2BG.sling.w/CR2BG.sling.h):52;
+const REST_Y=SEA_Y+8-SLH+2;                          /* самолёт лежит между рожками */
 const slingHTML=()=>`<div class="cr-sling" style="left:${-SLW/2}px;width:${SLW}px;height:${SLH}px">${CR2BG.sling?`<img src="${CR2BG.sling.src}" alt="" draggable="false">`:''}</div>`;
 /* ночной фон: бесшовные слои с параллаксом (k — доля скорости мира), луна стоит, волны моря едут со скоростью мира */
 const BGL=[['sky',.05,0],['city',.18,SEA_Y-68],['isl',.42,SEA_Y-72]];const WAVE_W=120;
@@ -9979,9 +10019,9 @@ function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textConten
 }
 /* перед тиражом: самолёт заряжен в рогатку, фон плывёт */
 function idleStage(){const w=$('#crWorld',root),pl=$('#crPlanes',root),st=$('#crStage',root),h=$('#crHud',root);if(!w)return;st.classList.add('idle');
- const sx=HX-22,tip=SEA_Y+8-SLH+7;
+ const sx=HX-16,tip=SEA_Y+8-SLH+6;
  w.innerHTML=`<div class="cr-wo sling" style="transform:translate(${sx}px,${SEA_Y+8}px)">${slingHTML()}</div>`;
- pl.innerHTML=`<svg class="cr-band" viewBox="0 0 360 280" preserveAspectRatio="none"><path d="M${sx-SLW*.38} ${tip}L${HX-36} ${REST_Y+6}L${sx+SLW*.38} ${tip}"/></svg><div class="cr-hero idle" style="transform:translate(${HX-6}px,${REST_Y}px) rotate(-.1rad)">${plane('hero')}</div>`;
+ pl.innerHTML=`<svg class="cr-band" viewBox="0 0 360 280" preserveAspectRatio="none"><path d="M${sx-SLW*.38} ${tip}L${HX-28} ${REST_Y+5}L${sx+SLW*.38} ${tip}"/></svg><div class="cr-hero idle" style="transform:translate(${HX-6}px,${REST_Y}px) rotate(-.1rad)">${plane('hero',PW)}</div>`;
  if(h)h.innerHTML=`<div class="cr-hint">${P.bought?`Ваших билетов в тираже: ${P.bought}. Самолёт полетит за лучший`:'Купите билеты — самолёт полетит за лучший из них'}</div>`;tick()}
 
 /* ---------- покупка ---------- */
@@ -9996,7 +10036,7 @@ function buy(){const n=P.qty;if(!n)return;const cost=n*PRICE;
    бонусы «+N» и «×N» подбрасывают самолёт вверх и растят множитель, ракеты «÷2» сбивают вниз и делят его.
    Сценарий бонусов подбирается под категорию билета из тиража: итоговый множитель = категория «Рапидо».
    С выигрышем — мягкое приводнение, без выигрыша — последняя ракета сбивает самолёт в море. */
-const V=150,G=560,HX=118,SEA=SEA_Y,TR=1.05;            /* скорость мира, гравитация, x самолёта, море, момент выстрела */
+const V=150,G=560,HX=118,SEA=SEA_Y,TR=1.05,LAND_Y=SEA_Y-24;   /* LAND_Y — центр самолёта на палубе */            /* скорость мира, гравитация, x самолёта, море, момент выстрела */
 const MULT=[0,1,2,5,10,20,50,400,400];
 const ADDS=[1,2,3,4,5,8,10,15,20,25,30,40,50,100,150,200,300];
 const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -10020,7 +10060,7 @@ const opLabel=o=>o.op==='+'?'+'+o.n:o.op==='*'?'×'+o.n:o.op==='/'?'÷'+o.n:o.op
 const isRocket=o=>o.op==='/'||o.op==='kill';
 const xLabel=(v,star)=>star?'★':'x'+fmt(v);
 /* баллистика: шаг 1/120 с, импульсы в моменты событий */
-function simulate(ops){const YF=SEA-46,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch';
+function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch';
  const ev=[];let k=0,next=TR;
  /* выстрел: вверх-вправо до первой вершины */
  const apex0=ri(84,104);
@@ -10037,7 +10077,7 @@ function simulate(ops){const YF=SEA-46,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,v
    k++;if(k===ops.length&&o.op!=='kill'){phase='glide';out.tG=t+.35}}
   if(phase==='launch'){Y.push(y);X.push(0)}
   else{
-   if(phase==='glide'&&t>=out.tG){/* планирование к воде */vy=Math.min(vy+G*.35*dt,100);if(y>=SEA-14){y=SEA-14;vy=0;if(!out.tW)out.tW=t;vx=Math.max(0,vx-V*dt*.95)}}
+   if(phase==='glide'&&t>=out.tG){/* заход на посадку: пикирование ~35° на плавучую полосу, пробег, торможение */vy=Math.min(vy+G*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
    else if(phase==='fall'){vy+=G*1.25*dt}
    else vy+=G*dt;
    if(phase!=='glide'||t<out.tG||!out.tW)y+=vy*dt;
@@ -10057,18 +10097,24 @@ function makeAnim(d){
  const A={d,M,end:sim.end+.2,t:0,started:0,attached:false,ev};
  d.tickets.forEach(t=>{t.st='fly';t.at=t.cat?(t.cat===8?ev[ev.length-1].t:firstReach(MULT[t.cat])):TR+.6+Math.random()*Math.max(.5,(sim.end-TR-1.5))});
  const wo=(wx,yy,cls,html)=>`<div class="cr-wo ${cls}" data-wx="${wx.toFixed(1)}" data-y="${yy.toFixed(1)}">${html}</div>`;
- const SLX=HX-22,SLW=86;                              /* рогатка: x основания на экране в момент старта, ширина спрайта */
+ const SLX=HX-16;                                      /* рогатка: x основания на экране в момент старта */
  A.attach=()=>{
   const w=$('#crWorld',root),pl=$('#crPlanes',root),fx=$('#crFx',root),hud=$('#crHud',root),st=$('#crStage',root);if(!w)return;st.classList.remove('idle');
   let back='',front='';
   ev.forEach((e,i)=>{const wx=HX+e.x;
-   if(isRocket(e))front+=`<div class="cr-rocket${e.op==='kill'?' kill':''}" data-i="${i}">${spr('rocket',58)}</div>`;
+   if(isRocket(e))front+=`<div class="cr-rocket${e.op==='kill'?' kill':''}" data-i="${i}">${spr('rocket',40)}</div>`;
    else back+=wo(wx,e.y,'bon'+(e.op==='*'?' mul':'')+(e.op==='star'?' star':''),`<div class="cr-bon"><b>${opLabel(e)}</b></div>`)});
   back+=wo(SLX,SEA+8,'sling',slingHTML());
+  /* поле цифр как в референсе: много бонусов вокруг, самолёт собирает только те, что на его пути */
+  const xs=sim.X,xAt=wx=>{let lo=0,hi=xs.length-1;while(lo<hi){const m=(lo+hi)>>1;if(xs[m]<wx)lo=m+1;else hi=m}return lo};
+  const farX=(sim.xW||xs[xs.length-1])+260;
+  for(let wx=60;wx<farX;wx+=ri(16,30)){const yy=ri(46,SEA-46),i=xAt(wx-HX),py=sim.Y[i];if(Math.abs(yy-py)<44)continue;if(ev.some(e=>Math.abs(HX+e.x-wx)<36&&Math.abs(e.y-yy)<40))continue;
+   const o=Math.random()<.28?{op:'*',n:pick([2,2,3,4,5])}:{op:'+',n:pick([1,1,2,2,5,10])};back+=wo(wx,yy,'bon deco'+(o.op==='*'?' mul':''),`<div class="cr-bon"><b>${opLabel(o)}</b></div>`)}
+  if(sim.tW)back+=wo(HX+sim.xW-46,LAND_Y+17,'deck',`<div class="cr-deck"><i></i></div>`);
   w.innerHTML=back;fx.innerHTML=front;
-  pl.innerHTML=`<svg class="cr-band" id="crBand" viewBox="0 0 360 280" preserveAspectRatio="none"><path d=""/></svg><div class="cr-hero" id="crHero">${plane('hero')}</div>`;
+  pl.innerHTML=`<svg class="cr-band" id="crBand" viewBox="0 0 360 280" preserveAspectRatio="none"><path d=""/></svg><div class="cr-puffs" id="crPuffs">${'<i></i>'.repeat(28)}</div><div class="cr-hero" id="crHero">${plane('hero',PW)}</div><div class="cr-tag" id="crTag"><div class="cr-stack" id="crStack"></div><b id="crAmt"></b></div>`;
   hud.innerHTML=`<div class="cr-mult"><b id="crX">x0</b><small id="crXs">Рогатка заряжена…</small></div>`+(d.mine?`<div class="cr-count"><span>✈ <b id="crFly">${d.tickets.length}</b></span><span>✓ <b id="crLand">0</b></span><span>💧 <b id="crSea">0</b></span><span class="sum">Выигрыш <b id="crSum">0</b> ₽</span></div>`:'');
-  A.el={w,pl,fx,hud,st,cam:$('#crCam',root),ly:$$('#crBg .cr-ly',root).map(e=>[e,+e.dataset.k,+e.dataset.tw]),hero:$('#crHero',root),band:$('#crBand path',root),wo:$$('.cr-wo',root),rk:$$('.cr-rocket',root),sl:$('.cr-wo.sling',root)};A.attached=true;A.shake=0;A.ze=1.4;
+  A.el={w,pl,fx,hud,st,cam:$('#crCam',root),ly:$$('#crBg .cr-ly',root).map(e=>[e,+e.dataset.k,+e.dataset.tw]),hero:$('#crHero',root),tag:$('#crTag',root),stk:$('#crStack',root),amt:$('#crAmt',root),pf:$$('#crPuffs i',root).map(e=>({e,wx:0,y:0,t0:-9})),band:$('#crBand path',root),wo:$$('.cr-wo',root),rk:$$('.cr-rocket',root),sl:$('.cr-wo.sling',root)};A.attached=true;A.shake=0;A.ze=1.15;A.pi=0;A.pt=0;
   if(A.done)frame(performance.now())};
  function frame(now){
   if(!A.started)A.started=now;const t=A.done?A.end:Math.min(A.end,(now-A.started)/1000);A.dt=t-A.t;A.t=t;
@@ -10081,42 +10127,48 @@ function makeAnim(d){
   for(const o of E.wo){const x=+o.dataset.wx-sx;o.style.transform=`translate3d(${x.toFixed(1)}px,${o.dataset.y}px,0)`;o.style.visibility=x<-160||x>540?'hidden':'visible'}
   /* рогатка: натяжение и выстрел */
   let px=HX,ang=0;const pull=t<TR?EZ.io(Math.max(0,Math.min(1,(t-.25)/(TR-.3)))):0;
-  if(t<TR){px=HX-6-34*pull;ang=-.18*pull;if(pull>0&&!A.creak){A.creak=1;SFX.sling&&SFX.sling(0)}}
-  else{const u=Math.min(1,(t-TR)/.35);px=HX-40+40*EZ.out(u);const dy=y(t+.04)-hy,dx=S(t+.04)-sx;ang=Math.max(-.7,Math.min(1.1,Math.atan2(dy,Math.max(4,dx))));
+  if(t<TR){px=HX-6-26*pull;ang=-.18*pull;if(pull>0&&!A.creak){A.creak=1;SFX.sling&&SFX.sling(0)}}
+  else{const u=Math.min(1,(t-TR)/.35);px=HX-32+32*EZ.out(u);const dy=y(t+.04)-hy,dx=S(t+.04)-sx;ang=Math.max(-.7,Math.min(1.1,Math.atan2(dy,Math.max(4,dx))));
    if(!A.fired){A.fired=1;SFX.twang&&SFX.twang();sub('Пуск!');A.shake=.5;haptic&&haptic(20)}}
   const hyy=t<TR?REST_Y+12*pull:hy;
   const falling=sim.tS&&t>ev[ev.length-1].t,onWater=sim.tW&&t>=sim.tW;
   if(falling)ang=Math.min(1.35,ang+ (t-ev[ev.length-1].t)*1.2);if(onWater)ang=Math.sin(t*3)*.03;
   E.hero.style.transform=`translate3d(${px.toFixed(1)}px,${hyy.toFixed(1)}px,0) rotate(${ang.toFixed(3)}rad)`;
+  E.tag.style.transform=`translate3d(${px.toFixed(1)}px,${(hyy-22).toFixed(1)}px,0)`;E.tag.style.opacity=A.splashed||t<TR?0:1;
+  /* дымный след: облачка остаются в мире и тают */
+  if(t>TR&&!A.splashed&&!(onWater&&t>sim.tW+.5)&&t-A.pt>.045){A.pt=t;const p=E.pf[A.pi++%E.pf.length];p.wx=sx+px-26;p.y=hyy+3+(Math.random()-.5)*3;p.t0=t;p.big=!!falling||t<TR+.5}
+  for(const p of E.pf){const age=t-p.t0;if(age<0||age>1.1){p.e.style.opacity=0;continue}const sc=(p.big?1.4:1)*(.5+age*1.6);p.e.style.opacity=((1-age/1.1)*.75).toFixed(2);p.e.style.transform=`translate3d(${(p.wx-sx).toFixed(1)}px,${(p.y-age*6).toFixed(1)}px,0) scale(${sc.toFixed(2)})`;p.e.classList.toggle('dark',!!falling)}
   E.hero.classList.toggle('smoke',!!falling);E.hero.classList.toggle('skid',!!(onWater&&t<sim.tW+1.2));
   /* резинка: от рожков рогатки к хвосту самолёта, после выстрела — прямая между рожками */
-  const slx=+E.sl.dataset.wx-sx,tipY=SEA+8-SLH+7,L=[slx-SLW*.38,tipY],R=[slx+SLW*.38,tipY];
-  const bx=t<TR?px-30:L[0]+(R[0]-L[0])*.5,by=t<TR?hyy+6:tipY+ (t<TR+.25?8*Math.sin((t-TR)*40)*(1-(t-TR)/.25):0);
+  const slx=+E.sl.dataset.wx-sx,tipY=SEA+8-SLH+6,L=[slx-SLW*.38,tipY],R=[slx+SLW*.38,tipY];
+  const bx=t<TR?px-22:L[0]+(R[0]-L[0])*.5,by=t<TR?hyy+5:tipY+ (t<TR+.25?8*Math.sin((t-TR)*40)*(1-(t-TR)/.25):0);
   E.band.setAttribute('d',slx>-120?`M${L[0].toFixed(1)} ${L[1]}L${bx.toFixed(1)} ${by.toFixed(1)}L${R[0].toFixed(1)} ${R[1]}`:'');
   /* ракеты: летят справа навстречу самолёту */
   for(const r of E.rk){const e=ev[+r.dataset.i],u=e.t-t;if(u>1.1||r.dataset.done){r.style.opacity=0;continue}if(u<=0){r.dataset.done=1;r.style.opacity=0;continue}
-   const rx=HX+30+u*330,ry=e.y-8+u*u*30;r.style.opacity=1;r.style.transform=`translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0) rotate(-2.2rad)`}
+   const rx=HX+14+u*320,ry=e.y-2;r.style.opacity=1;r.style.transform=`translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0) rotate(-2.36rad)`}
   /* события */
   while(ei<ev.length&&t>=ev[ei].t){hit(ev[ei],hy);ei++}
   if(sim.tS&&t>=sim.tS&&!A.splashed){A.splashed=1;splash(E.fx,HX,SEA+4);E.hero.style.opacity=0;A.shake=1;flash('sea');sub('Самолёт в море · выигрыш 0 ₽');SFX&&SFX.lose&&SFX.lose()}
-  if(sim.tW&&t>=sim.tW&&!A.landed){A.landed=1;A.shake=.4;flash('gold');spray(E.fx,HX-10,SEA-2);sub(star?'Суперприз!':`Приводнение · выигрыш ${bpLabel(MULT[M]*PRICE)}`);SFX.win&&SFX.win()}
+  if(sim.tW&&t>=sim.tW&&!A.landed){A.landed=1;A.shake=.35;flash('gold');dust(E.fx,HX-8,LAND_Y+18);sub(star?'Суперприз!':'Посадка!');SFX.win&&SFX.win();const h=E.hud;if(h)h.insertAdjacentHTML('beforeend',`<div class="cr-win"><small>Выигрыш</small><b>${star?'Суперприз':bpLabel(MULT[M]*PRICE)}</b></div>`)}
   /* камера: ведёт самолёт по высоте, на событиях — толчок зума */
-  const zt=t<TR?1.4:onWater||A.splashed?1.32:1.12;A.ze+=(zt-A.ze)*Math.min(1,(A.dt||0)*3);const z=A.ze+(A.kick||0);A.kick=Math.max(0,(A.kick||0)-(A.dt||0)*.5);
+  const zt=t<TR?1.15:onWater||A.splashed?1.12:1;A.ze+=(zt-A.ze)*Math.min(1,(A.dt||0)*3);const z=A.ze+(A.kick||0);A.kick=Math.max(0,(A.kick||0)-(A.dt||0)*.5);
   A.shake=Math.max(0,A.shake-(A.dt||0)*2.4);const k=A.shake*A.shake*7,shx=(Math.random()-.5)*k,shy=(Math.random()-.5)*k;
-  const fy=Math.max(110,Math.min(200,hyy));E.cam.style.transform=`translate3d(${shx.toFixed(1)}px,${shy.toFixed(1)}px,0) translate(${HX}px,${fy.toFixed(1)}px) scale(${z.toFixed(3)}) translate(${-HX}px,${(-fy).toFixed(1)}px)`;
+  const fy=Math.max(120,Math.min(190,hyy));E.cam.style.transform=`translate3d(${shx.toFixed(1)}px,${shy.toFixed(1)}px,0) translate(${HX}px,${fy.toFixed(1)}px) scale(${z.toFixed(3)}) translate(${-HX}px,${(-fy).toFixed(1)}px)`;
   /* статусы билетов */
   let fly=0,land=0,sea=0,sum=0;d.tickets.forEach((tk,i)=>{if(tk.st==='fly'&&t>=tk.at){tk.st=tk.cat?'land':'sea';const c=$(`.cr-t[data-i="${i}"]`,root);if(c){c.className='cr-t '+tk.st+(tk.cat>=6?' big':'');c.textContent=tk.cat?`${CAT[tk.cat].x} · ${bpLabel(d.wins[i])}`:'💧 0 ₽';c.classList.add('pop')}}
    if(tk.st==='fly')fly++;else if(tk.st==='land'){land++;sum+=d.wins[i]}else sea++});
   const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(sum)}}
  function hit(e,hy){const E=A.el;
   cur=applyOp(cur,e);if(e.op==='star')star=true;
-  if(isRocket(e)){A.shake=1;A.kick=.14;flash('fire');boom(E.fx,HX+6,hy+2);floatTxt(E.fx,HX+10,hy-26,e.op==='kill'?'Сбит!':'÷2','bad');SFX.boom&&SFX.boom();haptic&&haptic(28);
+  if(isRocket(e)){A.shake=1;A.kick=.08;flash('fire');boom(E.fx,HX+6,hy+2);SFX.boom&&SFX.boom();haptic&&haptic(28);
    sub(e.op==='kill'?'Ракета сбила самолёт!':'Ракета! Множитель ÷2')}
   else{const b=E.wo.find(o=>o.classList.contains('bon')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');
-   burst(E.fx,HX+14,hy-4,opLabel(e),e.op==='star'||cur>=50);floatTxt(E.fx,HX+12,hy-30,opLabel(e),'good');A.kick=.06;
+   burst(E.fx,HX+10,hy-2,opLabel(e),e.op==='star'||cur>=50);A.kick=.03;
    SFX.price&&SFX.price();haptic&&haptic(10);sub(e.op==='star'?'Золотая звезда — суперприз!':e.op==='*'?`Множитель ×${e.n}!`:`Бонус +${e.n}`)}
   setX(cur,e)}
- function setX(v,e){const x=$('#crX',root);if(!x)return;x.textContent=xLabel(v,star);const p=x.parentNode;p.classList.remove('pulse','down');void x.offsetWidth;p.classList.add(isRocket(e)?'down':'pulse');p.classList.toggle('hot',star||v>=50);p.classList.toggle('dead',e.op==='kill')}
+ function setX(v,e){const E=A.el;if(E.stk){E.stk.insertAdjacentHTML('beforeend',`<i class="${isRocket(e)?'bad':'good'}">${e.op==='kill'?'💥':opLabel(e)}</i>`);while(E.stk.children.length>6)E.stk.firstElementChild.remove()}
+  if(E.amt)E.amt.textContent=star?'Суперприз':e.op==='kill'?'0 ₽':fmt(v*PRICE)+' ₽';
+  const x=$('#crX',root);if(!x)return;x.textContent=xLabel(v,star);const p=x.parentNode;p.classList.remove('pulse','down');void x.offsetWidth;p.classList.add(isRocket(e)?'down':'pulse');p.classList.toggle('hot',star||v>=50);p.classList.toggle('dead',e.op==='kill')}
  function flash(kind){const f=$('#crFlash',root);if(!f)return;f.className='cr-flash '+kind;void f.offsetWidth;f.classList.add('on')}
  function finish(){d.done=true;settle(d);if(d.mine&&mounted()&&P.view==='live'){const b=$('[data-cr="result"]',root);if(b){b.disabled=false;b.textContent='Итог тиража'}
    setTimeout(()=>{if(P.draw===d&&mounted()&&P.view==='live'){P.resOpen=true;render();if(d.total){confetti&&confetti(M>=6?1:0)}}},1000)}}
@@ -10127,6 +10179,7 @@ function burst(fx,x,y,lab,big){const b=document.createElement('div');b.className
 function floatTxt(fx,x,y,txt,kind){const b=document.createElement('div');b.className='cr-ft '+kind;b.style.left=x+'px';b.style.top=y+'px';b.textContent=txt;fx.appendChild(b);setTimeout(()=>b.remove(),1100)}
 function boom(fx,x,y){const b=document.createElement('div');b.className='cr-boom';b.style.left=x+'px';b.style.top=y+'px';fx.appendChild(b);setTimeout(()=>b.remove(),800)}
 function splash(fx,x,y){const s=document.createElement('div');s.className='cssplash cr-splash';s.style.left=x+'px';s.style.top=y+'px';s.innerHTML=Array.from({length:11},(_,i)=>`<i style="--a:${(i-5)*14}deg;--d:${.8+Math.random()*.4}"></i>`).join('');fx.appendChild(s);setTimeout(()=>s.remove(),1500)}
+function dust(fx,x,y){const s=document.createElement('div');s.className='cr-dust';s.style.left=x+'px';s.style.top=y+'px';s.innerHTML='<i></i><i></i><i></i><i></i><i></i>';fx.appendChild(s);setTimeout(()=>s.remove(),1200)}
 function spray(fx,x,y){const s=document.createElement('div');s.className='cr-spray';s.style.left=x+'px';s.style.top=y+'px';s.innerHTML=Array.from({length:9},(_,i)=>`<i style="--a:${-150-i*5}deg;--d:${.6+Math.random()*.5}"></i>`).join('');fx.appendChild(s);setTimeout(()=>s.remove(),1400)}
 
 async function runDraw(){
