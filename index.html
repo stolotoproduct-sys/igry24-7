@@ -9995,7 +9995,7 @@ function buyHTML(){if(P.view!=='buy')return '';const left=MAXQ-P.bought;
  ${P.bought?`<div class="p2-bought cr-bought"><span><b>В тираже ${P.bought} ${plural(P.bought)} · № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до взлёта</small></span><span class="cr-mini">${spr('plane',40)}</span></div>`:''}`}
 function tixHTML(d){if(!d||!d.mine)return '';
  return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':`${CAT[t.cat].x} · ${bpLabel(d.wins[i])}`}</span>`}).join('')}</div>`}
-function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Каждый билет — место в общем тираже. В полёте за ваш лучший билет самолёт запускают из рогатки. Бонусы «+N» и «×N» подбрасывают его вверх и растят множитель, ракеты «÷2» сбивают вниз и делят его пополам. С каким множителем самолёт приводнился — такой выигрыш у билета. Сбили ракетой — билет без выигрыша.</p>
+function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Каждый билет — место в общем тираже. Самолёт летит сразу за все ваши билеты: его запускают из рогатки, бонусы «+N» и «×N» подбрасывают вверх и растят сумму, ракеты «÷2» сбивают вниз и делят её пополам. С какой суммой самолёт сел — столько вы и выиграли. Сбили ракетой — тираж без выигрыша.</p>
  <div class="p2-th"><span>Множитель</span><span>Выигрыш за билет</span></div>
  ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${CAT[c].x}</span><b>${c===8?'Золотая звезда':'Приводнение'}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
  <div class="cr-row sea"><span class="cr-rx">💧</span><b>Сбит ракетой</b><em>0 ₽</em></div>
@@ -10005,7 +10005,7 @@ function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE;return `<div class=
 function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
  const won=d.total>0,best=Math.max(0,...d.tickets.map(t=>t.cat)),land=d.tickets.filter(t=>t.cat).length;
  return `<div class="p2-res show cr-res" role="dialog" aria-modal="true" aria-labelledby="crResT"><div class="p2-sheet${won?' won':''}${best>=6?' big':''}"><button type="button" class="p2-x" data-cr="close" aria-label="Закрыть">×</button>
-  <small class="p2-cap" id="crResT">${best===8?'Суперприз!':won?'Лучший полёт':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?(best===8?'Золотая звезда':'Приводнение · '+CAT[best].x):'Все самолёты сбиты'}</b>
+  <small class="p2-cap" id="crResT">${best===8?'Суперприз!':won?'Итог полёта':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?(best===8?'Золотая звезда':'Посадка · x'+fmt(d.total/PRICE)):'Самолёт сбит'}</b>
   <div class="cr-res-art">${won?`<div class="cr-res-pl">${spr('plane',96)}</div><i class="cr-res-water"></i>`:'<div class="cr-res-sea">💧</div>'}</div>
   <div class="p2-sum"><small>Выигрыш</small><b>${won?bpLabel(d.total):'0 ₽'}</b><small>${d.tickets.length} ${plural(d.tickets.length)} · с выигрышем ${land} · без выигрыша ${d.tickets.length-land}</small></div>
   <button type="button" class="p2-gold" data-cr="again">Играть ещё</button><button type="button" class="p2-dark" data-cr="tickets">Смотреть билеты</button></div></div>`}
@@ -10022,7 +10022,7 @@ function idleStage(){const w=$('#crWorld',root),pl=$('#crPlanes',root),st=$('#cr
  const sx=HX-16,tip=SEA_Y+8-SLH+6;
  w.innerHTML=`<div class="cr-wo sling" style="transform:translate(${sx}px,${SEA_Y+8}px)">${slingHTML()}</div>`;
  pl.innerHTML=`<svg class="cr-band" viewBox="0 0 360 280" preserveAspectRatio="none"><path d="M${sx-SLW*.38} ${tip}L${HX-28} ${REST_Y+5}L${sx+SLW*.38} ${tip}"/></svg><div class="cr-hero idle" style="transform:translate(${HX-6}px,${REST_Y}px) rotate(-.1rad)">${plane('hero',PW)}</div>`;
- if(h)h.innerHTML=`<div class="cr-hint">${P.bought?`Ваших билетов в тираже: ${P.bought}. Самолёт полетит за лучший`:'Купите билеты — самолёт полетит за лучший из них'}</div>`;tick()}
+ if(h)h.innerHTML=`<div class="cr-hint">${P.bought?`Ваших билетов в тираже: ${P.bought}. Самолёт полетит за все`:'Купите билеты — самолёт полетит за все ваши билеты'}</div>`;tick()}
 
 /* ---------- покупка ---------- */
 function buy(){const n=P.qty;if(!n)return;const cost=n*PRICE;
@@ -10041,7 +10041,7 @@ const MULT=[0,1,2,5,10,20,50,400,400];
 const ADDS=[1,2,3,4,5,8,10,15,20,25,30,40,50,100,150,200,300];
 const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
 /* цепочка бонусов и ракет, которая заканчивается ровно на множителе target (0 — проигрыш) */
-function planOps(cat){const target=MULT[cat];
+function planOps(target,starEnd){
  if(!target){const ops=[];let v=0;const k=ri(2,5);
   for(let i=0;i<k;i++){if(v>=4&&v%2===0&&Math.random()<.3&&ops.length&&ops[ops.length-1].op!=='/'){ops.push({op:'/',n:2});v/=2}else if(v&&Math.random()<.35){const m=pick([2,3]);ops.push({op:'*',n:m});v*=m}else{const a=pick([1,2,3,5,10]);ops.push({op:'+',n:a});v+=a}}
   ops.push({op:'kill',n:0});return ops}
@@ -10053,8 +10053,8 @@ function planOps(cat){const target=MULT[cat];
    const opts=ADDS.filter(a=>v+a<=lim&&a<=Math.max(5,target/2));if(!opts.length)break;const a=pick(opts);ops.push({op:'+',n:a});v+=a}
   /* последний шаг — ровно в цель */
   let fin=null;if(v<target&&ADDS.includes(target-v))fin={op:'+',n:target-v};else if(v&&target%v===0&&[2,3,5,10].includes(target/v))fin={op:'*',n:target/v};
-  if(!fin||ops.length+1<minK)continue;ops.push(fin);if(cat===8)ops.push({op:'star',n:0});return ops}
- return [{op:'+',n:target}].concat(cat===8?[{op:'star',n:0}]:[])}
+  if(!fin||ops.length+1<minK)continue;ops.push(fin);if(starEnd)ops.push({op:'star',n:0});return ops}
+ return [{op:'+',n:target}].concat(starEnd?[{op:'star',n:0}]:[])}
 const applyOp=(v,o)=>o.op==='+'?v+o.n:o.op==='*'?v*o.n:o.op==='/'?v/o.n:o.op==='kill'?0:v;
 const opLabel=o=>o.op==='+'?'+'+o.n:o.op==='*'?'×'+o.n:o.op==='/'?'÷'+o.n:o.op==='star'?'★':'';
 const isRocket=o=>o.op==='/'||o.op==='kill';
@@ -10088,14 +10088,18 @@ function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,v
  out.end=t;return out}
 const EZ={io:u=>u*u*(3-2*u),in:u=>u*u,out:u=>1-(1-u)*(1-u)};
 function makeAnim(d){
- const M=Math.max(0,...d.tickets.map(t=>t.cat)),ops=planOps(M),sim=simulate(ops),ev=sim.ev;
+ const M=Math.max(0,...d.tickets.map(t=>t.cat)),hasStar=d.tickets.some(t=>t.cat===8);
+ /* один самолёт показывает весь тираж игрока: итог полёта = общий выигрыш всех билетов (в ценах билета) */
+ const TOT=d.mine?d.total:prizeOf(M,P.sp),base=hasStar?Math.max(1,Math.round((TOT-P.sp)/PRICE)):Math.round(TOT/PRICE);
+ const ops=planOps(TOT?base:0,hasStar),sim=simulate(ops),ev=sim.ev;
+ const amtOf=v=>star?TOT:v*PRICE;
  const at=(arr,t)=>{const i=Math.max(0,Math.min(arr.length-1,t/sim.dt)),a=Math.floor(i),b=Math.min(arr.length-1,a+1),f=i-a;return arr[a]+(arr[b]-arr[a])*f};
  const y=t=>at(sim.Y,t),S=t=>at(sim.X,t);
  /* множитель по ходу полёта и моменты, когда билеты «сыграли» */
  let v=0;const vals=ev.map(e=>(v=applyOp(v,e),v));
- const firstReach=m=>{for(let i=0;i<ev.length;i++)if(vals[i]>=m&&ev[i].op!=='kill')return ev[i].t;return sim.end};
  const A={d,M,end:sim.end+.2,t:0,started:0,attached:false,ev};
- d.tickets.forEach(t=>{t.st='fly';t.at=t.cat?(t.cat===8?ev[ev.length-1].t:firstReach(MULT[t.cat])):TR+.6+Math.random()*Math.max(.5,(sim.end-TR-1.5))});
+ /* билеты раскрываются в финале — после посадки или падения, по очереди */
+ const tEnd=sim.tW||sim.tS||sim.end-1;d.tickets.forEach((t,i)=>{t.st='fly';t.at=tEnd+.25+Math.min(i,30)*.04});
  const wo=(wx,yy,cls,html)=>`<div class="cr-wo ${cls}" data-wx="${wx.toFixed(1)}" data-y="${yy.toFixed(1)}">${html}</div>`;
  const SLX=HX-16;                                      /* рогатка: x основания на экране в момент старта */
  A.attach=()=>{
@@ -10149,15 +10153,16 @@ function makeAnim(d){
   /* события */
   while(ei<ev.length&&t>=ev[ei].t){hit(ev[ei],hy);ei++}
   if(sim.tS&&t>=sim.tS&&!A.splashed){A.splashed=1;splash(E.fx,HX,SEA+4);E.hero.style.opacity=0;A.shake=1;flash('sea');sub('Самолёт в море · выигрыш 0 ₽');SFX&&SFX.lose&&SFX.lose()}
-  if(sim.tW&&t>=sim.tW&&!A.landed){A.landed=1;A.shake=.35;flash('gold');dust(E.fx,HX-8,LAND_Y+18);sub(star?'Суперприз!':'Посадка!');SFX.win&&SFX.win();const h=E.hud;if(h)h.insertAdjacentHTML('beforeend',`<div class="cr-win"><small>Выигрыш</small><b>${star?'Суперприз':bpLabel(MULT[M]*PRICE)}</b></div>`)}
+  if(sim.tW&&t>=sim.tW&&!A.landed){A.landed=1;A.shake=.35;flash('gold');dust(E.fx,HX-8,LAND_Y+18);sub(star?'Суперприз!':'Посадка!');SFX.win&&SFX.win();const h=E.hud;if(h)h.insertAdjacentHTML('beforeend',`<div class="cr-win"><small>Выигрыш</small><b>${bpLabel(TOT)}</b></div>`)}
   /* камера: ведёт самолёт по высоте, на событиях — толчок зума */
   const zt=t<TR?1.15:onWater||A.splashed?1.12:1;A.ze+=(zt-A.ze)*Math.min(1,(A.dt||0)*3);const z=A.ze+(A.kick||0);A.kick=Math.max(0,(A.kick||0)-(A.dt||0)*.5);
   A.shake=Math.max(0,A.shake-(A.dt||0)*2.4);const k=A.shake*A.shake*7,shx=(Math.random()-.5)*k,shy=(Math.random()-.5)*k;
   const fy=Math.max(120,Math.min(190,hyy));E.cam.style.transform=`translate3d(${shx.toFixed(1)}px,${shy.toFixed(1)}px,0) translate(${HX}px,${fy.toFixed(1)}px) scale(${z.toFixed(3)}) translate(${-HX}px,${(-fy).toFixed(1)}px)`;
   /* статусы билетов */
   let fly=0,land=0,sea=0,sum=0;d.tickets.forEach((tk,i)=>{if(tk.st==='fly'&&t>=tk.at){tk.st=tk.cat?'land':'sea';const c=$(`.cr-t[data-i="${i}"]`,root);if(c){c.className='cr-t '+tk.st+(tk.cat>=6?' big':'');c.textContent=tk.cat?`${CAT[tk.cat].x} · ${bpLabel(d.wins[i])}`:'💧 0 ₽';c.classList.add('pop')}}
-   if(tk.st==='fly')fly++;else if(tk.st==='land'){land++;sum+=d.wins[i]}else sea++});
-  const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(sum)}}
+   if(tk.st==='fly')fly++;else if(tk.st==='land')land++;else sea++});
+  /* выигрыш внизу = сумма над самолётом: в конце это ровно общий выигрыш тиража */
+  const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(A.splashed?0:amtOf(cur))}}
  function hit(e,hy){const E=A.el;
   cur=applyOp(cur,e);if(e.op==='star')star=true;
   if(isRocket(e)){A.shake=1;A.kick=.08;flash('fire');boom(E.fx,HX+6,hy+2);SFX.boom&&SFX.boom();haptic&&haptic(28);
@@ -10167,7 +10172,7 @@ function makeAnim(d){
    SFX.price&&SFX.price();haptic&&haptic(10);sub(e.op==='star'?'Золотая звезда — суперприз!':e.op==='*'?`Множитель ×${e.n}!`:`Бонус +${e.n}`)}
   setX(cur,e)}
  function setX(v,e){const E=A.el;if(E.stk){E.stk.insertAdjacentHTML('beforeend',`<i class="${isRocket(e)?'bad':'good'}">${e.op==='kill'?'💥':opLabel(e)}</i>`);while(E.stk.children.length>6)E.stk.firstElementChild.remove()}
-  if(E.amt)E.amt.textContent=star?'Суперприз':e.op==='kill'?'0 ₽':fmt(v*PRICE)+' ₽';
+  if(E.amt)E.amt.textContent=e.op==='kill'?'0 ₽':bpLabel(amtOf(v));
   const x=$('#crX',root);if(!x)return;x.textContent=xLabel(v,star);const p=x.parentNode;p.classList.remove('pulse','down');void x.offsetWidth;p.classList.add(isRocket(e)?'down':'pulse');p.classList.toggle('hot',star||v>=50);p.classList.toggle('dead',e.op==='kill')}
  function flash(kind){const f=$('#crFlash',root);if(!f)return;f.className='cr-flash '+kind;void f.offsetWidth;f.classList.add('on')}
  function finish(){d.done=true;settle(d);if(d.mine&&mounted()&&P.view==='live'){const b=$('[data-cr="result"]',root);if(b){b.disabled=false;b.textContent='Итог тиража'}
