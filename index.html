@@ -2262,7 +2262,8 @@ html.bonus-orig .header-stb{display:flex!important;align-items:center;gap:4px}
 .header-bell svg{width:21px;height:21px}
 .notif-badge{position:absolute;top:-3px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#ff3b5c;color:#fff;font:800 10.5px/18px StoloText,Inter,sans-serif;text-align:center;box-shadow:0 0 0 2px #0a0b11}
 .notif-badge[hidden]{display:none}
-.header-bell:has(.notif-badge:not([hidden])) svg{animation:ntRing 2.4s ease-in-out 1s 2}
+/* покачивание колокольчика убрано: хедер перерисовывается и анимация шла по кругу */
+.header-bell svg{animation:none!important}
 @keyframes ntRing{0%,20%,100%{transform:none}4%{transform:rotate(14deg)}8%{transform:rotate(-12deg)}12%{transform:rotate(8deg)}16%{transform:rotate(-4deg)}}
 
 /* ===== Панель уведомлений ===== */
@@ -2791,6 +2792,26 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .cr-win b{font:900 26px/1.1 StoloText,Inter,sans-serif;color:#ffe066;text-shadow:0 2px 0 #7a4a00}
 @keyframes crwin{from{transform:translate(-50%,-50%) scale(.4);opacity:0}}
 
+/* ---- море и рогатка: аккуратнее вписаны в сцену ---- */
+.cr-sea{background:linear-gradient(180deg,#2b63bd 0%,#1b4596 18%,#0f2d6e 52%,#081a45 100%)}
+.cr-sea::before{height:3px;background:linear-gradient(90deg,#9cc2ff00,#bcd6ff88 30%,#fff3c4aa 82%,#9cc2ff00);filter:blur(.6px)}
+.cr-sea::after{content:"";position:absolute;left:0;right:0;top:3px;height:26px;background:linear-gradient(180deg,#7fb0ff33,#7fb0ff00)}
+.cr-glint{right:14px;width:86px;height:110px;background:radial-gradient(ellipse 50% 60% at 50% 0,#fff3c477,#fff3c422 50%,#0000 75%);filter:blur(2px)}
+.cr-path{position:absolute;right:30px;top:4px;width:54px;height:96px;background:repeating-linear-gradient(180deg,#fff6d0cc 0 2px,#0000 2px 7px);-webkit-mask:radial-gradient(ellipse 50% 100% at 50% 0,#000 30%,#0000 75%);mask:radial-gradient(ellipse 50% 100% at 50% 0,#000 30%,#0000 75%);opacity:.55;animation:crpath 2.6s ease-in-out infinite}
+@keyframes crpath{50%{opacity:.3;transform:scaleX(1.12)}}
+.cr-ly.wav2{top:16px;height:90px;width:600px;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='90'%3E%3Cg fill='none' stroke='%23061637' stroke-opacity='.5' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M14 14q12-6 24 0'/%3E%3Cpath d='M80 30q14-7 28 0'/%3E%3Cpath d='M36 52q12-6 24 0'/%3E%3Cpath d='M92 70q10-5 20 0'/%3E%3C/g%3E%3C/svg%3E");background-size:120px 90px}
+.cr-sling{overflow:visible}
+.cr-sl-img{position:absolute;left:0;bottom:0;display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 4px 6px #0007) saturate(1.05)}
+.cr-sl-refl{position:absolute;left:0;top:100%;width:100%;height:60%;object-fit:fill;transform:scaleY(-1);transform-origin:50% 0;opacity:.22;filter:blur(1.2px) brightness(.8);-webkit-mask:linear-gradient(0deg,#0000,#000 80%);mask:linear-gradient(0deg,#0000,#000 80%)}
+.cr-sl-water{position:absolute;left:-10px;right:-10px;bottom:-2px;height:11px;border-radius:50%;background:linear-gradient(180deg,#5c93e8aa,#1b4596ee 60%);box-shadow:0 -1px 0 #bcd6ff66}
+.cr-sl-rip{position:absolute;left:50%;bottom:-6px;width:110%;height:14px;margin-left:-55%;border-radius:50%;border:1.5px solid #bcd6ff66;opacity:0;animation:crrip 3s ease-out infinite}
+.cr-sl-rip.d2{animation-delay:1.5s}
+@keyframes crrip{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+.cr-sling img:not(.cr-sl-img):not(.cr-sl-refl){display:none}
+.cr-band path{stroke:#a63a24;stroke-width:4.5;filter:drop-shadow(0 -1px 0 #ff9a6a99) drop-shadow(0 2px 2px #0006)}
+.cr-sl-water{left:-4px;right:-4px;bottom:-1px;height:10px;border-radius:0 0 50% 50%/0 0 100% 100%;background:linear-gradient(180deg,#2b63bd00,#1b4596f0 75%);box-shadow:none}
+.cr-path{width:46px;right:34px;background:repeating-linear-gradient(180deg,#fff6d0 0 1.5px,#0000 1.5px 6px,#fff6d099 6px 7px,#0000 7px 13px,#fff6d0cc 13px 14px,#0000 14px 22px);opacity:.42;filter:blur(.3px)}
+
 </style>
 <style>
 /* ===== нижнее меню и логотип 24/7 ===== */
@@ -2855,10 +2876,10 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .tabbar[data-act="menu"] [data-tab="menu"] .tab-ico-x{display:grid}
 .tabbar [data-tab]{transition:color .15s}
 .tabbar[data-act] button.on{color:#fff}
-.sm{position:absolute;left:0;right:0;top:0;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px));z-index:78;display:flex;align-items:flex-end;background:#05040a99;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s}
-.sm.show{opacity:1;pointer-events:auto}
+#mnu.sm{position:absolute;left:0;right:0;top:0;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px));z-index:78;display:flex;align-items:flex-end;background:#05040a99;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s}
+#mnu.sm.show{opacity:1;pointer-events:auto}
 .sm-sheet{position:relative;width:100%;height:calc(100% - 28px);display:flex;flex-direction:column;border-radius:24px 24px 0 0;background:#0e0c16;border-top:1px solid #ffffff14;color:#f4efff;font-family:var(--g4-font,StoloText,'Roboto Flex',Inter,sans-serif);transform:translateY(24px);transition:transform .28s cubic-bezier(.3,.8,.3,1)}
-.sm.show .sm-sheet{transform:none}
+#mnu.sm.show .sm-sheet{transform:none}
 .sm-grab{width:40px;height:4px;margin:8px auto 0;border-radius:2px;background:#ffffff33;flex:none}
 .sm-head{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 12px;flex:none}
 .sm-head h2{margin:0;font-size:28px;line-height:32px;font-weight:800}
@@ -2913,7 +2934,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 #scr:not([data-cur="home"]) .pf .pf-body{padding-bottom:calc(var(--tabh) + 24px)}
 #scr:not([data-cur="home"]) #akd .pf-body{padding-bottom:16px}
 #scr:not([data-cur="home"]) #akd .ak-foot-wrap{padding-bottom:var(--tabh)}
-#scr:not([data-cur="home"]) .sm{bottom:0}
+#scr:not([data-cur="home"]) #mnu.sm{bottom:0}
 #scr:not([data-cur="home"]) .sm-body{padding-bottom:calc(var(--tabh) + 88px)}
 #scr:not([data-cur="home"]) .sm-chat{bottom:calc(var(--tabh) + 12px)}
 .tabbar.sb{z-index:80}
@@ -3104,6 +3125,34 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .ak-slide-main{align-self:stretch;justify-content:flex-start}
 .ak-slide-main .ak-slide-cta,.ak-slide-main .ak-track{margin-top:auto!important}
 .ak-slide-main b{margin-bottom:8px}
+
+</style>
+<style>
+/* История кэшбека */
+#lossback .cbh-btn{display:grid;place-items:center;color:#bdaacb}
+#lossback .cbh-btn svg{width:18px;height:18px}
+#lossback .cbh-btn+.lb-help{margin-left:0}
+.cbh{z-index:76}
+.cbh-sum{display:flex;align-items:center;gap:12px;padding:16px;border-radius:16px;background:linear-gradient(135deg,#3a1d63,#1d1530);border:1px solid #ffffff14}
+.cbh-sum-ico{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#a25be633;color:#d2b0f5;flex:none}
+.cbh-sum-ico svg{width:22px;height:22px}
+.cbh-sum span:last-child{display:flex;flex-direction:column;gap:2px}
+.cbh-sum small{font-size:12px;line-height:16px;color:#c6b4d8}
+.cbh-sum b{font-size:24px;line-height:32px;font-weight:800;color:#ffd76a}
+.cbh-lead{margin:12px 0 16px;font-size:12px;line-height:16px;color:#a99fc2}
+.cbh-list{display:flex;flex-direction:column;gap:8px}
+.cbh-row{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border-radius:16px;background:#15161e;border:1px solid #262731}
+.cbh-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cbh-top b{font-size:16px;line-height:24px;font-weight:700}
+.cbh-amt{font-size:16px;line-height:24px;font-weight:800;color:#7ef0c9}
+.cbh-row.pend .cbh-amt{color:#ffd76a;font-size:12px;line-height:16px;font-weight:700;padding:4px 8px;border-radius:8px;background:#f0aa2c26}
+.cbh-row.no .cbh-amt,.cbh-row.none .cbh-amt{color:#7d7292}
+.cbh-mid{display:flex;flex-direction:column;font-size:12px;line-height:16px;color:#a99fc2}
+.cbh-st{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;line-height:16px;color:#c6b4d8}
+.cbh-st i{width:8px;height:8px;border-radius:50%;background:#7ef0c9;flex:none}
+.cbh-row.pend .cbh-st i{background:#ffd76a}
+.cbh-row.no .cbh-st i,.cbh-row.none .cbh-st i{background:#7d7292}
+.cbh-foot{margin:16px 0 0;font-size:12px;line-height:16px;color:#7d7292}
 
 </style>
 <style>
@@ -3400,6 +3449,106 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .p2-fxq button{position:absolute;margin:0;opacity:1!important;filter:none!important;animation:none!important;transform-origin:50% 50%;will-change:transform}
 .p2-fxc{position:absolute;width:62px;height:92px;border-radius:7px;box-shadow:0 8px 18px #000a;will-change:transform;backface-visibility:hidden}
 @media (prefers-reduced-motion:reduce){.p2-board .p2c.dl,.p2-pair,.p2c.fl{animation:none}}
+
+/* нижнее меню игры и разделы */
+#game.p2-game .p2-nav{z-index:40}
+#game.p2-game .g-body.p2-body{padding-bottom:calc(var(--tabh,80px) + 8px)}
+#game.p2-game .p2-foot{bottom:calc(var(--tabh,80px) - 12px)}
+.p2-nav .sb-coll .sb-btn{min-width:44px;padding:0 8px}
+.p2-pg{padding:8px 16px 24px}
+.p2-pg h2{margin:8px 0 4px;font-size:24px;line-height:32px;font-weight:800}
+.p2-pg-sub{margin:0 0 16px;font-size:13px;line-height:18px;color:#ffffff99}
+.p2-pg-h{margin:20px 0 8px;font-size:16px;line-height:24px;font-weight:700}
+.p2-ar,.p2-tk{display:flex;flex-direction:column;gap:8px;padding:12px;margin-bottom:8px;border-radius:16px;background:#1a1a1c;border:1px solid #ffffff14}
+.p2-ar-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.p2-ar-h b{font-size:15px;line-height:20px;font-weight:700}.p2-ar-h small{font-size:12px;color:#ffffff80}
+.p2-ar-b{display:flex;gap:4px}
+.p2-ar-f{display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:16px;color:#ffffff80}
+.p2-ar-f em{font-style:normal;color:#ffffffb3}.p2-ar-f em.win{color:#f7d98a;font-weight:700}
+.p2-chip{padding:4px 8px;border-radius:8px;font-size:12px;line-height:16px;font-weight:700;background:#ffffff14;color:#ffffffb3}
+.p2-chip.win{background:#d9a44133;color:#f7d98a}.p2-chip.wait{background:#1e63d633;color:#9cc0ff}
+.p2-tk.cur{border-color:#d9a44166}
+.p2-tk-row{display:flex;align-items:center;gap:12px}.p2-tk-row span:last-child{display:flex;flex-direction:column}.p2-tk-row b{font-size:14px;line-height:20px}.p2-tk-row small{font-size:12px;color:#ffffff80}
+.p2-tk-s{font-size:12px;line-height:16px;color:#ffffff80;margin-top:-4px}
+.p2-tk-best{display:flex;align-items:center;gap:12px}.p2-tk-h{display:flex;gap:4px;padding-left:12px;border-left:1px solid #ffffff1f}
+.p2-tk-c{font-size:12px;line-height:16px;color:#ffffffb3}.p2-tk-c b{color:#fff}
+.p2-empty{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px;border-radius:16px;background:#1a1a1c;border:1px dashed #ffffff26}
+.p2-empty b{font-size:15px;line-height:20px}.p2-empty small{font-size:12px;color:#ffffff80;margin-bottom:8px}
+.p2-gold.sm{width:auto;height:40px;padding:0 20px;font-size:14px}
+.p2-page .p2-info{margin-top:0;border-radius:16px}
+.p2-doc{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.p2-doc-r{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 16px;border-radius:12px;background:#1a1a1c;color:#fff;font-size:14px;font-weight:600;border:0}
+.p2-doc-r i{font-style:normal;color:#ffffff80;font-size:18px}
+.p2-doc p{margin:4px 0 0;font-size:12px;line-height:16px;color:#ffffff66}
+#game .tabbar.sb.p2-nav{transform:none!important;opacity:1!important;pointer-events:none}#game .tabbar.sb.p2-nav>*{pointer-events:auto}
+
+/* подпись над фишками и кнопка оплаты внизу, в 12 px над меню */
+.p2-qlab{margin:12px 16px 0;font-size:14px;line-height:20px;font-weight:600;color:#ffffffcc;text-align:center}
+#game.p2-game .g-body.p2-body{display:flex;flex-direction:column;padding-bottom:0}
+#game.p2-game .p2-body>.p2{flex:1 0 auto}
+#game.p2-game .p2-foot{position:sticky;bottom:calc(var(--tabh,80px) - 4px);padding:12px 16px 0;margin-bottom:calc(var(--tabh,80px) - 4px)}
+#game.p2-game .p2-body>.p2.p2-page{padding-bottom:calc(var(--tabh,80px) + 8px)}
+
+.p2-legal{margin:24px 16px 16px;font-size:11px;line-height:15px;color:#ffffff59}
+#game.p2-game .p2-body>.p2:not(.p2-page){display:flex;flex-direction:column}
+#game.p2-game .p2-body>.p2:not(.p2-page) .p2-legal{margin-top:auto;padding-top:24px}
+
+/* архив числами (8 из 20 + 1 из 4) */
+.p2-day{margin:16px 0 8px;font-size:13px;line-height:18px;font-weight:700;color:#ffffff99}
+.p2-ar2{display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:8px;padding:12px;border:1px solid #ffffff14;border-radius:16px;background:#1a1a1c;color:#fff;text-align:left;font:inherit}
+.p2-ar2.sp{background:linear-gradient(135deg,#3b2a0e,#1a1a1c 70%);border-color:#d9a44166}
+.p2-ar2-t{display:flex;align-items:baseline;gap:8px}.p2-ar2-t b{font-size:15px;line-height:20px}.p2-ar2-t small{font-size:12px;color:#ffffff80}.p2-ar2-t em{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;color:#ffffffcc}
+.p2-nums{display:flex;align-items:center;gap:4px}
+.p2-nums i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#d9a441;color:#1a1204;font-style:normal;font-size:13px;font-weight:800}
+.p2-nums .sep{width:1px;height:20px;margin:0 4px;background:#ffffff33}.p2-nums i.bn{background:#8d45dc;color:#fff}
+.p2-ar-sp{font-size:12px;font-weight:700;color:#f7d98a}
+.p2-ar-me{align-self:flex-start;padding:4px 8px;border-radius:8px;background:#ffffff14;font-size:12px;line-height:16px;font-weight:600;color:#ffffffb3}.p2-ar-me.win{background:#d9a44133;color:#f7d98a}
+.p2-seg{display:flex;gap:4px;margin:16px 0 8px;padding:4px;border-radius:12px;background:#1a1a1c}
+.p2-seg button{flex:1;height:36px;border:0;border-radius:8px;background:none;color:#ffffffa6;font:600 14px/20px inherit}.p2-seg button.on{background:#ffffff1f;color:#fff}
+.p2-dg{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.p2-dg-h{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:#1a1a1c;border:1px solid #ffffff14}
+.p2-more{align-self:flex-start;padding:0;border:0;background:none;color:#f7d98a;font:600 13px/18px inherit}.p2-more.all{align-self:stretch;height:40px;border-radius:12px;background:#ffffff0f;color:#fff}
+.p2-tk2{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:#141416;border:1px solid #ffffff0f}
+.p2-tk2-l{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}.p2-tk2-l b{font-size:13px;line-height:18px}
+.p2-tk2-k{font-size:15px;line-height:20px;font-weight:800}.p2-tk2-l small{font-size:12px;line-height:16px;color:#ffffff80;margin-bottom:6px}
+.p2-fld{display:flex;flex-direction:column;gap:4px;flex:none}
+.p2-fld .g20{display:grid;grid-template-columns:repeat(5,18px);gap:3px}.p2-fld .g4{display:grid;grid-template-columns:repeat(4,18px);gap:3px;padding-top:4px;border-top:1px solid #ffffff1a}
+.p2-fld i{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;font-style:normal;font-size:9px;font-weight:700;color:#ffffff4d;background:#ffffff0d}
+.p2-fld i.mine{background:#ffffff33;color:#fff}.p2-fld i.drawn{box-shadow:inset 0 0 0 1.5px #d9a441;color:#d9a441;background:none}.p2-fld i.hit{background:#d9a441;color:#1a1204}
+.p2-fld .g4 i.hit{background:#8d45dc;color:#fff}.p2-fld .g4 i.drawn{box-shadow:inset 0 0 0 1.5px #b072f0;color:#b072f0}
+.p2-dsh-bg{position:absolute;inset:0;z-index:90;display:flex;align-items:flex-end;background:#000a;opacity:0;transition:opacity .2s}.p2-dsh-bg.show{opacity:1}
+.p2-dsh{position:relative;width:100%;max-height:88%;overflow:auto;padding:12px 16px 32px;border-radius:24px 24px 0 0;background:#1a1a1c;color:#fff}
+.p2-grab{display:block;width:36px;height:4px;margin:0 auto 12px;border-radius:2px;background:#ffffff40}
+.p2-x{position:absolute;right:16px;top:16px;width:32px;height:32px;border:0;border-radius:50%;background:#ffffff1f;color:#fff;font-size:14px}
+.p2-dsh-h{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0 4px}.p2-dsh-h b{font-size:18px;line-height:24px;font-weight:800}.p2-dsh-h small{font-size:12px;color:#ffffff80}
+.p2-tbl{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;background:#141416}
+.p2-tbl>div{display:grid;grid-template-columns:56px 1fr 84px 88px;gap:8px;padding:10px 12px;font-size:13px;line-height:18px;border-top:1px solid #ffffff0f}
+.p2-tbl>div span:nth-child(n+3){text-align:right}.p2-tbl .hd{border:0;font-size:11px;color:#ffffff80}
+.p2-stat{display:grid;grid-template-columns:1fr 1fr;gap:8px}.p2-stat div{display:flex;flex-direction:column;padding:12px;border-radius:12px;background:#141416}.p2-stat small{font-size:12px;color:#ffffff80}.p2-stat b{font-size:16px;line-height:24px;font-weight:800}
+
+.p2-leg{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;font-size:12px;line-height:16px;color:#ffffff99}.p2-leg span{display:flex;align-items:center;gap:6px}
+.p2-leg i{width:12px;height:12px;border-radius:50%}.p2-leg i.hit{background:#d9a441}.p2-leg i.mine{background:#ffffff33}.p2-leg i.drawn{box-shadow:inset 0 0 0 1.5px #d9a441}
+.p2-buy{height:40px;padding:0 20px;border:0;border-radius:12px;background:linear-gradient(180deg,#f7d98a,#c99a3c);color:#2a1a00;font:800 14px/20px inherit;cursor:pointer}
+
+/* числа тиража — одним серым цветом; плашка «Мои билеты» — переход */
+.p2-nums i,.p2-nums i.bn{background:#ffffff1f;color:#fff}
+.p2-ar2{cursor:pointer}
+.p2-ar-me{display:inline-flex;align-items:center;gap:6px;border:0;font-family:inherit;cursor:pointer}
+.p2-ar-me i{font-style:normal;font-size:16px;line-height:16px;opacity:.8}
+
+.p2-tk2{cursor:pointer;margin-bottom:8px}
+.p2-tk2-l b{font-size:15px;line-height:20px;font-weight:800}
+.p2-tk2-l small.p2-tk2-t{color:#ffffffb3;margin-bottom:0}
+.p2-tk2-more{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13px;line-height:18px;font-weight:600;color:#f7d98a}.p2-tk2-more i{font-style:normal;font-size:16px}
+.p2-tk2.sh{cursor:default}
+.p2-tk2-dot{color:#ffffff66;font-weight:400;margin:0 2px}
+/* Покер 2.0 и Остров удачи 2.0: все блоки игры — ровно 12 px по вертикали, без собственных отступов */
+#game.p2-game .p2:not(.p2-page){display:flex;flex-direction:column;gap:12px}
+#game.p2-game .p2:not(.p2-page)>*{margin-top:0!important;margin-bottom:0!important}
+#game.p2-game .p2:not(.p2-page) .p2-legal{margin-top:0!important;padding-top:0}
+#game.p2-game .p2.cr>.pp-bar{margin-left:8px;margin-right:8px}
+#game.p2-game .p2:not(.p2-page)>.p2-legal{margin-bottom:12px!important}
+#game.p2-game .cr-qty{display:flex;flex-direction:column;gap:12px}#game.p2-game .cr-qty>*{margin:0!important}
 
 </style>
 <style>
@@ -4488,7 +4637,7 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
     <h3>Настройка прототипа</h3>
     <div class="cfg-t">Контур MVP</div>
     <div class="cfg-opts c3" role="radiogroup" aria-label="Контур MVP">
-     <button data-mvp="1" role="radio">MVP 1<small>Быстрые + Crash</small></button>
+     <button data-mvp="1" role="radio">MVP 1<small>Быстрые + Покер 2.0 + Crash</small></button>
      <button data-mvp="2" role="radio">MVP 2<small>+ Классические</small></button>
      <button data-mvp="3" role="radio">MVP 3<small>+ Моментальные</small></button>
     </div>
@@ -4760,7 +4909,7 @@ const DRAW_ALL=['coin','rps','shell','hilo','scale','index','poker','card','roul
 const QUICK_IDS=['coin','rps','shell','hilo','scale','index'];
 /* контуры MVP: какие блоки лобби видны и в каком порядке (МЛО = моментальные лотереи онлайн) */
 const MVPS={
-  '1':{t:'MVP 1',s:'Быстрые + Crash',sec:['quick','crash'],txt:'Быстрые игры → Crash Games'},
+  '1':{t:'MVP 1',s:'Быстрые + Покер 2.0 + Crash',sec:['quick','classic','crash'],txt:'Быстрые игры → Классические (Покер 2.0) → Crash Games'},
   '2':{t:'MVP 2',s:'+ Классические',sec:['quick','classic','crash'],txt:'Быстрые игры → Классические игры → Crash Games'},
   '3':{t:'MVP 3',s:'+ Моментальные (МЛО)',sec:['instant','quick','crash','classic'],txt:'Моментальные лотереи → Быстрые игры → Crash Games → Классические игры'}};
 /* игры с тиражами в контуре: классика появляется с MVP 2 (у моментальных лотерей тиражей нет) */
@@ -4800,6 +4949,8 @@ function nextAt(id,from){
 }
 const qLeft=id=>Math.max(0,(QD[id]?QD[id].next:nextAt(id,Date.now()))-Date.now());
 const mmss=ms=>{const s=Math.ceil(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+/* в MVP 1 из классических игр только «Покер 2.0» */
+const secIds=s=>s.id==='classic'&&PCFG.mvp==='1'?s.ids.filter(i=>i==='pk2'):s.ids;
 const qFixed=()=>SECTIONS.find(x=>x.id==='quick').ids.slice();
 const qSorted=()=>PCFG.sort?QUICK_IDS.slice().sort((a,b)=>qLeft(a)-qLeft(b)):qFixed();
 function qApply(id,tk,out){
@@ -4953,13 +5104,13 @@ function cardHTML(id,cls){
 function renderLobby(){
   $('#lobbySections').innerHTML=secOrder(PCFG.mvp).map(id=>SECTIONS.find(x=>x.id===id)).map(s=>`
  <div class="sec-h"><img src="${IMG[s.icon]}" alt=""><div class="tt"><h3>${s.t}</h3><p>${s.p}</p></div><button class="all" data-cat="${s.id}">Все<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><path d="m4 2 4 4-4 4"/></svg></button></div>
- <div class="grow" data-sec="${s.id}" tabindex="0" role="region" aria-label="${s.all}: горизонтальная лента">${(s.id==='quick'?qSorted():s.ids).map(i=>cardHTML(i,s.cls)).join('')}</div>`).join('');
+ <div class="grow" data-sec="${s.id}" tabindex="0" role="region" aria-label="${s.all}: горизонтальная лента">${(s.id==='quick'?qSorted():secIds(s)).map(i=>cardHTML(i,s.cls)).join('')}</div>`).join('');
   if(typeof bpBindRail==='function')$$('#lobbySections .grow').forEach(bpBindRail);
 }
 renderLobby();
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-game]');if(c)openGame(c.dataset.game);
-  const a=e.target.closest('[data-cat]');if(a){const s=SECTIONS.find(x=>x.id===a.dataset.cat);$('#catTitle').innerHTML=s.all;$('#catGrid').dataset.sec=s.id;$('#catGrid').innerHTML=(s.id==='quick'?qSorted():s.ids).map(i=>cardHTML(i,s.cls)).join('');go('cat')}
+  const a=e.target.closest('[data-cat]');if(a){const s=SECTIONS.find(x=>x.id===a.dataset.cat);$('#catTitle').innerHTML=s.all;$('#catGrid').dataset.sec=s.id;$('#catGrid').innerHTML=(s.id==='quick'?qSorted():secIds(s)).map(i=>cardHTML(i,s.cls)).join('');go('cat')}
 });
 
 /* ================= navigation ================= */
@@ -7086,7 +7237,7 @@ function lpWeek(s,bare){
  if(!LV.cb)return '';const w=s.week,pct=s.level.pct;let h='';
  h+=`<section class="lp-cb"><span class="lp-cb-pct${pct?'':' off'}"><b>${pct}<i>%</i></b><small>кэшбек</small></span><span class="lp-cb-t"><small>Эта неделя · ${lbRange(w)}</small>
   <b>${!pct?`С уровня «${LVL()[1].name}»`:w.cb?`≈ ${lbNum(w.cb)}${LV_BI}`:'Пока 0'+LV_BI}</b>${!pct?`<span>Купите на ${lbRub(LVL()[1].threshold)} за месяц</span>`:''}</span></section>
-  <p class="lp-note">${IC(ICD.cal,12)}Начислим сами в ${lvWd(w.end)} · ${lvIn(w.end)} — пришлём уведомление</p>`;
+  <p class="lp-note">${IC(ICD.cal,12)}Начислим сами в ${lvWd(w.end)} · ${lvIn(w.end)}</p>`;
  return (bare?'':`<h3 class="lp-h">Кэшбек недели</h3>`)+h;
 }
 function lpMines(s){
@@ -7094,7 +7245,7 @@ function lpMines(s){
  return `<section class="lv-mines-card${att?'':' off'}">${lvMinesArt()}<div class="lv-mines-t"><b>${lvGN('n')}${att?` · ${att}`:''}</b><small>${att?`${lvAttWord(att)} · сгорят ${lbDate(rec.expiresAt)}`:s.nextMines?`+${s.nextMines.attempts} на уровне «${s.nextMines.name}»`:'Все попытки месяца получены'}</small></div>
   <button type="button" class="cb-claim" data-lv-mines>Играть</button></section>`;
 }
-/* истории и карточки «Начислено» на экране нет: о начислении сообщает только уведомление */
+/* начисления — в «Истории кэшбека» (cb-history.js), карточки на экране нет */
 function lpHistory(s){return ''}
 /* «Старт»: что дадут уровни */
 function lpGive(){
@@ -7140,7 +7291,7 @@ function lpScrollTo(id,smooth=true){const rail=$('.lp-rail');if(!rail)return;con
 function lbOpenDetails(){
  const L=LVL();bonusModalView={type:'cashback',rules:true};bpOpenModal('Как работает уровень');
  const steps=[[ICD.cal,'Уровень — по покупкам за месяц',`${LV_RULE}. ${Object.values(LossbackEngine.EXCLUDED).join(', ')} тоже не идут. 1-го числа — с нуля`]];
- if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша за месяц',`Проигрыш = покупки − выигрыши за календарный месяц. Процент — по уровню, которого вы достигли за этот месяц. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами 1-го числа',`Пришлём уведомление — забирать не нужно. ${lvBonusNote()}${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
+ if(LV.cb)steps.push([ICD.ret,'Кэшбек — процент от проигрыша за месяц',`Проигрыш = покупки − выигрыши за календарный месяц. Процент — по уровню, которого вы достигли за этот месяц. Например: покупки 1 000 ₽, выигрыши 600 ₽ → 400 ₽ × ${L[1].pct}% = ${LossbackEngine.cashback(400,L[1].pct)} Б`],[ICD.check,'Начисляем сами 1-го числа',`Забирать не нужно — начисление видно в «Истории кэшбека» (иконка часов в шапке). Бонусами на счёт: 1 Б = 1 ₽ при оплате игр${BonusEngine.mode==='wager'?`. Бонус действует ${LossbackEngine.BONUS_DAYS} дней`:''}`]);
  if(LV.mines)steps.push([ICD.mine,`«${lvGN('n')}» — с уровня «${L[LossbackEngine.MINES_FROM].name}»`,'Попытки — один раз за уровень, действуют до конца месяца'+(typeof MN!=='undefined'?`. ${LV.game==='racc'?`${MN.ladder.length} этажей, на каждом 2 окна — в одном сторож, каждый этаж повышает приз:`:`На поле ${MN.mines} мин из ${MN.size} клеток, каждая безопасная клетка повышает приз:`} промокод на ${MN.ladder.map(x=>x.n).join(' → ')} бесплатных игр`:'')]);
  $('#bpModalBody').innerHTML=`<div class="cb-sheet"><div class="lv-steps">${steps.map(([ic,t,d])=>`<div><i>${IC(ic,20)}</i><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
   <h4>Уровни</h4><div class="lp-table"><div class="hd"><span>Уровень</span><span>Покупки</span>${LV.cb?'<span>Кэшбек</span>':''}${LV.mines?'<span>'+lvGN('n')+'</span>':''}</div>${L.slice(1).map(l=>`<div><span>${lvArt(l,'xs')}${l.name}</span><span>${lbNum(l.threshold)} ₽</span>${LV.cb?`<b>${l.pct}%</b>`:''}${LV.mines?`<span>${l.attempts?'+'+l.attempts:'—'}</span>`:''}</div>`).join('')}</div>
@@ -9513,6 +9664,83 @@ back:"data:image/webp;base64,UklGRkAQAABXRUJQVlA4WAoAAAAgAAAAawAApwAASUNDUMgBAAA
 
 </script>
 <script>
+/* ===== Общие разделы игр на билетах «Рапидо» (Покер 2.0, Остров удачи 2.0):
+   нижнее меню (домик → лобби 24/7 · Игра · Архив · Мои билеты · Правила), архив числами, мои билеты, шторка тиража.
+   Игра передаёт своё состояние и отображение категорий — визуализация разная, тираж один и тот же. ===== */
+window.RapidoTabs=function(C){
+const P=C.P,R=C.root,H=C.hist,fmt=C.fmt,plural=C.plural;if(!P.tab)P.tab='game';
+/* тиражи «Рапидо» идут каждые 15 минут (96 в день). Время тиража считаем по номеру: последний прошедший — на ближайшей прошедшей четверти часа.
+   В режиме тиражей Real (Настройка прототипа) отсчёт в шапке тоже до ближайшей четверти; в демо-режимах тираж каждые 40 с для наглядности. */
+const Q15=15*60000,realMode=()=>typeof DRMODE!=='undefined'&&DRMODE==='real';
+const drawAt=no=>Math.floor(Date.now()/Q15)*Q15-(P.no-1-no)*Q15;
+const AT=d=>drawAt(d.no);
+const legalHTML=()=>`<p class="p2-legal">«ВГЛ 1 Спорт», алгоритм определения выигрышей № 4, срок проведения лотереи — до 31.12.2044 года. Лотерея проводится в соответствии с распоряжением Правительства РФ от 02.05.2012 № 687-р. Призовой фонд — 50% от выручки. Место проведения розыгрыша — Москва. Организатор: Министерство спорта Российской Федерации. Оператор: АО «ГСЛ». «Остатки сладки» и «Безумное комбо» являются равнозначными коммерческими наименованиями лотереи «ВГЛ 1 Спорт», алгоритм определения выигрышей №4.</p>`;
+/* ---------- нижнее меню игры: домик (лобби 24/7) + Игра · Архив · Мои билеты · Правила ---------- */
+const NI={home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>',
+ game:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="11" height="15" rx="2" transform="rotate(-8 8.5 12.5)"/><path d="M14.5 4.6 19 5.4a2 2 0 0 1 1.6 2.3l-2 11.4a2 2 0 0 1-2.3 1.6l-2.8-.5"/></svg>',
+ archive:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9"/><path d="M10 13h4"/></svg>',
+ tickets:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>',
+ rules:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M8.5 12.5h7M8.5 16.5h5"/></svg>'};
+const TABS=[['game','Игра'],['archive','Архив'],['tickets','Мои билеты'],['rules','Правила']];
+function navHTML(){return `<nav class="tabbar sb p2-nav" id="p2Nav" aria-label="Разделы игры"><button type="button" class="sb-btn sb-solo" data-p2-home aria-label="Все игры 24/7">${NI.home}<span>Игры</span></button>
+ <div class="sb-coll">${TABS.map(([k,t])=>`<button type="button" class="sb-btn${P.tab===k?' on':''}" data-p2-tab="${k}" aria-label="${t}"${P.tab===k?' aria-current="page"':''}>${k==='game'&&C.gameIcon?C.gameIcon:NI[k]}<span>${t}</span></button>`).join('')}</div></nav>`}
+function navSync(){const n=$('#p2Nav');if(!n)return;$$('[data-p2-tab]',n).forEach(b=>{const on=b.dataset.p2Tab===P.tab;b.classList.toggle('on',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+const no5=n=>String(n).padStart(5,'0');
+const tm=t=>{const d=new Date(t),today=new Date().toDateString()===d.toDateString();return (today?'сегодня':d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'}))+', '+d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})};
+/* демо-архив: несколько прошедших тиражей, в двух — билеты игрока */
+function seedHist(){if(H().length)return;const t=Date.now();[[1,6,1],[0,0,2],[1,10,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7],[0,0,8],[1,4,70],[0,0,71],[1,8,96]].forEach(([mine,n,off],i)=>{const d={tickets:mine?Array.from({length:n},()=>({cat:C.rollCat()})):[]};d.no=P.no-off;d.mine=!!mine;if(!mine)d.tickets=[];d.wins=d.tickets.map(x=>x.cat?C.prize(x.cat>=9?8:x.cat,P.sp):0);d.total=d.wins.reduce((a,b)=>a+b,0);d.shown=5;d.paid=true;d.sold=900+Math.round(Math.random()*900);d.tickets.forEach(x=>x.open=true);numify(d);H().push(d)})}
+
+/* ---------- числа «Рапидо»: 8 из 20 + 1 из 4. Карты — визуализация этих чисел ---------- */
+/* категория в игре → сколько угадано (k из 8, + доп. число) */
+const KB={8:[8,1],9:[8,1],7:[8,0],6:[7,1],5:[7,0],4:[6,1],3:[6,0],2:[5,1],1:[5,0]};
+const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const R20=()=>Array.from({length:20},(_,i)=>i+1);
+function numify(d){if(d.nums)return;const all=shuf(R20());d.nums=all.slice(0,8).sort((a,b)=>a-b);d.bonus=1+Math.floor(Math.random()*4);d.sp=d.sp||P.sp;d.spWon=d.tickets.some(t=>t.cat>=8);
+ const rest=R20().filter(n=>!d.nums.includes(n));let ser=1000+Math.floor(Math.random()*8000);
+ d.tickets.forEach(t=>{let [k,b]=t.cat?KB[t.cat]:[Math.floor(Math.random()*5),0];if(!t.cat&&k===4)b=0;
+  t.nums=[...shuf(d.nums.slice()).slice(0,k),...shuf(rest.slice()).slice(0,8-k)].sort((a,b)=>a-b);t.bn=b?d.bonus:[1,2,3,4].filter(x=>x!==d.bonus)[Math.floor(Math.random()*3)];t.k=k;t.b=b;t.ser=ser++});
+ d.sold=d.sold||900+Math.round(Math.random()*900)}
+const dayL=t=>{const d=new Date(t),n=new Date();return d.toDateString()===n.toDateString()?'Сегодня':d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})};
+const hm=t=>new Date(t).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+const numsRow=d=>`<span class="p2-nums">${d.nums.map(n=>`<i>${n}</i>`).join('')}<b class="sep"></b><i class="bn">${d.bonus}</i></span>`;
+function field(d,t){const g=n=>{const m=t.nums.includes(n),h=d.nums.includes(n);return `<i class="${m&&h?'hit':m?'mine':h?'drawn':''}">${n}</i>`};
+ return `<span class="p2-fld"><span class="g20">${R20().map(g).join('')}</span><span class="g4">${[1,2,3,4].map(n=>`<i class="${t.bn===n&&d.bonus===n?'hit':t.bn===n?'mine':d.bonus===n?'drawn':''}">${n}</i>`).join('')}</span></span>`}
+function tkHTML(d,t,i,anchor,inSh){const w=d.wins[i];return `<div class="p2-tk2${inSh?' sh':''}"${inSh?'':` role="button" tabindex="0" data-p2-draw="${d.no}"`}${anchor?` id="p2dg${d.no}"`:''}><div class="p2-tk2-l"><b>№${String(t.ser).padStart(6,'0')} <span class="p2-tk2-dot">•</span> ${hm(AT(d))}</b><small>в игре: ${t.cat?C.name(t.cat):(C.none||'без комбинации')}</small><span class="p2-chip ${w?'win':''}">${w?'Выигрыш '+fmt(w)+' ₽':'Без выигрыша'}</span>${inSh?'':'<span class="p2-tk2-more">Подробнее<i aria-hidden="true">›</i></span>'}</div>${field(d,t)}</div>`}
+/* таблица итогов: угадано → в игре → выигрыш, число выигрышных комбинаций */
+const CATROWS=[[8,'8 + 1'],[7,'8'],[6,'7 + 1'],[5,'7'],[4,'6 + 1'],[3,'6'],[2,'5 + 1'],[1,'5']];
+function drawSheet(no){const d=H().find(x=>x.no===+no);if(!d)return;let host=$('#p2Dsh');if(!host){host=document.createElement('div');host.id='p2Dsh';$('#game').appendChild(host)}
+ const cnt=c=>{const base={8:0,7:0,6:1,5:3,4:8,3:22,2:58,1:190}[c];return d.spWon&&c===8?1:Math.round(base*(d.sold/1200))+d.tickets.filter(t=>t.cat===c||(c===8&&t.cat>=8)).length};
+ const my=d.mine?`<h3 class="p2-pg-h">Мои билеты в этом тираже</h3>${d.tickets.map((t,i)=>({t,i})).sort((a,b)=>d.wins[b.i]-d.wins[a.i]||a.t.ser-b.t.ser).map(({t,i})=>tkHTML(d,t,i,false,true)).join('')}`:'';
+ host.innerHTML=`<div class="p2-dsh-bg" data-p2-dclose><div class="p2-dsh" role="dialog" aria-label="Тираж № ${no5(d.no)}"><i class="p2-grab"></i><button type="button" class="p2-x" data-p2-dclose aria-label="Закрыть">✕</button>
+  <div class="p2-dsh-h"><b>Тираж № ${no5(d.no)}</b><small>${hm(AT(d))} · ${dayL(AT(d))}</small>${numsRow(d)}</div>
+  <h3 class="p2-pg-h">Итоги розыгрыша</h3><div class="p2-tbl"><div class="hd"><span>Угадано</span><span>В игре</span><span>Комбинаций</span><span>Выигрыш</span></div>${CATROWS.map(([c,l])=>`<div><span>${l}</span><span>${C.rowName(c)}</span><span>${fmt(cnt(c))}</span><span>${c===8?'Суперприз':fmt(C.prize(c,d.sp))+' ₽'}</span></div>`).join('')}</div>
+  <h3 class="p2-pg-h">Статистика тиража</h3><div class="p2-stat"><div><small>Куплено билетов</small><b>${fmt(d.sold)}</b></div><div><small>Выигрышных комбинаций</small><b>${fmt(CATROWS.reduce((a,[c])=>a+cnt(c),0))}</b></div><div><small>Суперприз</small><b>${fmt(d.sp)} ₽</b></div></div>
+  <p class="p2-pg-sub">В архиве показана сумма суперприза на начало тиража, которая разыгрывалась в этом тираже</p>${my}</div></div>`;
+ requestAnimationFrame(()=>host.firstElementChild&&host.firstElementChild.classList.add('show'))}
+function pageHTML(){
+ if(P.tab==='archive'){let last='';
+  return `<div class="p2-pg"><h2>Архив тиражей</h2><p class="p2-pg-sub">Тиражи каждые 15 минут, 96 в день. 8 чисел из 20 и 1 из 4 — результат тиража лотереи; ${C.visual} показывает эти же числа</p>
+  ${H().map(d=>{const dl=dayL(AT(d)),hd=dl!==last?`<div class="p2-day">${dl}</div>`:'';last=dl;const mt=d.mine?`<button type="button" class="p2-ar-me${d.total?' win':''}" data-p2-mytk="${d.no}">Мои билеты: ${d.tickets.length}${d.total?' · +'+fmt(d.total)+' ₽':''}<i aria-hidden="true">›</i></button>`:'';
+   return `${hd}<div role="button" tabindex="0" class="p2-ar2${d.spWon?' sp':''}" data-p2-draw="${d.no}"><span class="p2-ar2-t"><b>${hm(AT(d))}</b><small>№ ${no5(d.no)}</small><em>${fmt(d.sp)} ₽</em></span>${numsRow(d)}${d.spWon?'<span class="p2-ar-sp">Суперприз разыгран</span>':''}${mt}</div>`}).join('')}</div>`}
+ if(P.tab==='tickets'){const mine=H().filter(d=>d.mine&&(P.tkF!=='win'||d.total));
+  const cur=P.bought?`<div class="p2-tk cur"><div class="p2-ar-h"><b>Тираж № ${no5(P.no)}</b><span class="p2-chip wait">Ждёт тиража</span></div><div class="p2-tk-row"><span class="p2-mini"><img src="${C.back}" alt=""><img src="${C.back}" alt=""></span><span><b>${P.bought} ${plural(P.bought)} · ${fmt(P.bought*C.price)} ₽</b><small>Розыгрыш через ${C.timer()} · числа выбраны автоматически</small></span></div></div>`
+   :'';
+  return `<div class="p2-pg"><h2>Мои билеты</h2>${cur}<div class="p2-seg" role="tablist"><button type="button" class="${P.tkF!=='win'?'on':''}" data-p2-tkf="all">Все</button><button type="button" class="${P.tkF==='win'?'on':''}" data-p2-tkf="win">С выигрышем</button></div><div class="p2-leg"><span><i class="hit"></i>угадано</span><span><i class="mine"></i>ваше, не выпало</span><span><i class="drawn"></i>выпало, не ваше</span></div>
+  ${mine.length?(()=>{let last='';return mine.map(d=>{const dl=dayL(AT(d)),hd=dl!==last?`<div class="p2-day">${dl}</div>`:'';last=dl;return hd+d.tickets.map((t,i)=>({t,i})).filter(x=>P.tkF!=='win'||d.wins[x.i]).sort((a,b)=>d.wins[b.i]-d.wins[a.i]||a.t.ser-b.t.ser).map(({t,i},k)=>tkHTML(d,t,i,k===0)).join('')}).join('')})():`<p class="p2-pg-sub">${P.tkF==='win'?'Выигрышных билетов пока нет':'Здесь появятся билеты прошедших тиражей'}</p>`}</div>`}
+ return `<div class="p2-pg">${C.rules()}<div class="p2-doc"><button type="button" class="p2-doc-r">Полные правила лотереи «Рапидо»<i>›</i></button><button type="button" class="p2-doc-r">Как проверить билет<i>›</i></button><p>Организатор — Минфин России, распространитель — ООО «Столото». Тиражи проводятся с использованием генератора случайных чисел. 18+</p></div></div>`}
+document.addEventListener('click',e=>{if(!R()||!C.mounted())return;
+ const h=e.target.closest('[data-p2-home]');if(h){e.stopPropagation();$('#gBack').click();return}
+ const mk=e.target.closest('[data-p2-mytk]');if(mk){e.stopPropagation();if(C.leave)C.leave();P.tab='tickets';P.tkF='all';C.render();const g=$('#p2dg'+mk.dataset.p2Mytk);if(g)R().scrollTop=g.offsetTop-8;return}
+ const dr=e.target.closest('[data-p2-draw]');if(dr){e.stopPropagation();drawSheet(dr.dataset.p2Draw);return}
+ if(e.target.closest('[data-p2-dclose]')&&(e.target.matches('[data-p2-dclose]'))){e.stopPropagation();const h=$('#p2Dsh');if(h)h.innerHTML='';return}
+ const tf=e.target.closest('[data-p2-tkf]');if(tf){e.stopPropagation();P.tkF=tf.dataset.p2Tkf;C.render();return}
+ const to=e.target.closest('[data-p2-tkopen]');if(to){e.stopPropagation();P.tkOpen=+to.dataset.p2Tkopen;C.render();return}
+ const t=e.target.closest('[data-p2-tab],[data-p2-go]');if(t){e.stopPropagation();if(C.leave)C.leave();P.tab=t.dataset.p2Tab||t.dataset.p2Go;P.resOpen=false;if(C.onTab)C.onTab(P.tab);C.render();R().scrollTop=0;return}},true);
+seedHist();
+return {navHTML,navSync,pageHTML,legalHTML,numify,AT,drawAt,realMode,Q15,drawSheet}};
+
+</script>
+<script>
 /* ================= Покер 2.0 (классические игры) =================
    Механика: билет «Рапидо», показанный картами. Покупаете N билетов — это N пар карт.
    На трансляции открываются 5 карт стола, затем вы открываете свои пары: комбинация — лучшая из 7 карт.
@@ -9581,8 +9809,16 @@ function deal(targets){const uniq=[...new Set(targets)].sort((a,b)=>b-a),T=uniq[
  return {board,tickets}}
 
 /* ---------- состояние (живёт и при закрытой игре) ---------- */
-const P={no:9876,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:12500000,draw:null,view:'buy',resOpen:false,seen:false};
+const P={no:9876,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:12500000,draw:null,view:'buy',resOpen:false,seen:false,tab:'game',hist:[]};
 let root=null;
+/* общие разделы «Рапидо»: меню, архив, мои билеты, правила (rapido-tabs.js) */
+const RT=RapidoTabs({P,ID,root:()=>root,hist:()=>P.hist,mounted:()=>mounted(),render:()=>render(),leave:()=>{if(fxBusy)fxBusy()},
+ name:c=>NAME(c),rowName:c=>c===8?'Стрит-флеш':NAME(c),prize:(c,sp)=>prizeOf(c>=9?8:c,sp),rollCat:()=>rollCat(),back:PK2_ART.back,rules:()=>infoHTML(),
+ price:PRICE,timer:()=>timer(),fmt:n=>fmt(n),plural:n=>plural(n),visual:'покер на трансляции',
+ onTab:t=>{if(t==='game'&&P.view==='live'&&P.draw&&P.draw.paid&&!P.draw.mine)P.view='buy'}});
+const {navHTML,navSync,pageHTML,legalHTML,numify,drawAt,realMode,Q15}=RT;
+if(realMode())P.next=drawAt(P.no);
+
 const mounted=()=>root&&root.isConnected&&$('#game').dataset.g===ID;
 
 /* фигуры: корона (K), диадема (Q), шлем с пером (J) — масть на карте одна, в углу */
@@ -9598,7 +9834,7 @@ const timer=()=>{const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));return 
 function topHTML(){const live=P.phase==='live'||P.view!=='buy';
  return `<div class="p2-top"><img class="p2-logo" src="${PK2_ART.logo}" alt="89×4"><div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live&&P.view==='live'?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
   <div class="r">${P.view==='live'?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Трансляция<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div>${P.view==='buy'?`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`:''}</div></div>`}
-const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/BUY_MS*100));
+const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/(realMode()?Q15:BUY_MS)*100));
 
 function tableHTML(){
  if(P.view==='live'){const d=P.draw;
@@ -9613,7 +9849,7 @@ function tableHTML(){
   :`<div class="p2-msg big"><b>Выбери количество билетов</b><small>Одна пара карт — один билет · ${PRICE} ₽</small></div>`}</div>`}
 
 function buyHTML(){if(P.view!=='buy')return '';
- return `<div class="p2-qty">${QTY.map(q=>`<button type="button" class="${P.qty===q?'on':''}" data-p2-q="${q}" style="${CHIP[q]||''}">${q}</button>`).join('')}</div>
+ return `<p class="p2-qlab">Выберите количество билетов</p><div class="p2-qty">${QTY.map(q=>`<button type="button" class="${P.qty===q?'on':''}" data-p2-q="${q}" style="${CHIP[q]||''}">${q}</button>`).join('')}</div>
  <div class="p2-step"><button type="button" data-p2-s="-1" aria-label="Меньше" ${P.qty<=0?'disabled':''}>−</button><div><i>0</i><b>Билеты: ${P.qty}</b><i>${MAXQ}</i></div><button type="button" data-p2-s="1" aria-label="Больше" ${P.qty+P.bought>=MAXQ?'disabled':''}>+</button></div>
  ${P.bought?`<div class="p2-bought"><span><b>Куплено ${P.bought} ${plural(P.bought)} на тираж № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до начала трансляции</small></span><span class="p2-mini"><img src="${PK2_ART.back}" alt=""><img src="${PK2_ART.back}" alt=""></span></div>`:''}`}
 const CHIP={5:'--c:#d32f2f;--d:#7a1515',10:'--c:#1e63d6;--d:#0f3a85',15:'--c:#1f9d55;--d:#0f5a30',25:'--c:#2b2b2e;--d:#000',50:'--c:#7b3fe4;--d:#40188c'};
@@ -9623,7 +9859,7 @@ function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p
  <div class="p2-th"><span>Комбинация</span><span>Выигрыш за билет</span></div>
  ${PT.map(([c,n,d,v,ex],i)=>`<div class="p2-row"><div class="p2-rh"><b>${i+1}. ${n}</b><em class="${v==='sp'?'sp':''}">${v==='sp'?'Суперприз':fmt(v)+' ₽'}</em></div><div class="p2-rb"><span class="p2-ex">${ex.map(x=>card(x,{open:true,cls:'xs'})).join('')}</span><small>${d}</small></div></div>`).join('')}
  <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p>
- <div class="p2-links"><button type="button" class="p2-link" data-p2-tech="rules">Правила</button><button type="button" class="p2-link" data-p2-tech="archive">Архив</button></div></div>`}
+ </div>`}
 
 function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE;return `<div class="p2-foot"><button type="button" class="p2-pay" data-p2="pay" ${P.qty?'':'disabled'}><span>${P.bought?'Докупить':'Оплатить'}</span><b>${fmt(sum)} ₽</b></button></div>`}
  if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
@@ -9640,7 +9876,7 @@ function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
 const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
 
 function render(){if(!mounted())return;const sc=root.scrollTop,tx=$('#p2Tix',root)?.scrollLeft||0;
- root.innerHTML=`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
+ root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${legalHTML()}</div>${footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();const d=P.draw;if(d&&P.view==='live'&&d.shown>=5&&!d.dealt)setTimeout(()=>d.dealt=true,900)}
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%'}
 
@@ -9686,16 +9922,16 @@ async function runDraw(){
  const mine=P.bought>0,targets=Array.from({length:P.bought},rollCat);
  const d=deal(mine?targets:[0]);d.no=P.no;d.mine=mine;d.shown=0;if(!mine)d.tickets=[];
  /* выигрыши по билетам и раскладка по оплатам (у докупки — своя оплата) */
- d.wins=d.tickets.map(t=>t.cat?prizeOf(t.cat>=9?8:t.cat,P.sp):0);d.total=d.wins.reduce((a,b)=>a+b,0);
+ d.wins=d.tickets.map(t=>t.cat?prizeOf(t.cat>=9?8:t.cat,P.sp):0);d.total=d.wins.reduce((a,b)=>a+b,0);numify(d);
  let k=0;d.parts=P.rounds.map(x=>{const s=d.wins.slice(k,k+x.n).reduce((a,b)=>a+b,0);k+=x.n;return {round:x.round,win:s}});
- P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.next=Date.now()+BUY_MS+9000;P.qty=P.qty||10;P.resOpen=false;
- const watching=mounted();
+ P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.next=realMode()?drawAt(P.no):Date.now()+BUY_MS+9000;P.qty=P.qty||10;P.resOpen=false;
+ const watching=mounted()&&P.tab==='game';
  if(watching||!mine){P.view=watching?'live':P.view;render()}
- const see=()=>P.view==='live'&&mounted();
+ const see=()=>P.view==='live'&&mounted()&&P.tab==='game';
  if(see()){for(let i=0;i<5;i++)SFX.card&&SFX.card(i*.09);if(mine)for(let i=0;i<Math.min(d.tickets.length,5);i++)SFX.card&&SFX.card(.52+i*.07)}
  setTimeout(()=>{d.boardIn=true},1300);setTimeout(()=>{d.dealt=true},1900);
  for(let i=0;i<5;i++){await wait(i?760:1350);d.shown=i+1;if(see()){const el=$$('.p2-board .p2c',root)[i];if(el){el.classList.add('open','fl');setTimeout(()=>el.classList.remove('fl'),700);SFX.cardFlip&&SFX.cardFlip()}}}
- settle(d);
+ settle(d);P.hist.unshift(d);if(P.hist.length>20)P.hist.pop();
  if(P.view==='live'&&mounted())render();
  if(!mine){await wait(2500);if(P.view==='live'&&P.draw===d){P.view='buy';render()}}
  else if(!watching){toast(d.total?`Покер 2.0: +${bpLabel(d.total)} · ${NAME(Math.max(...d.tickets.map(t=>t.cat)))}`:'Покер 2.0: тираж без выигрыша');d.tickets.forEach(t=>t.open=true)}
@@ -9729,8 +9965,8 @@ IMG.c_pk2=PK2_ART.logo;
 function hdrMount(){const src=$('#lobby .app-header');if(!src||$('#game .p2-hdr'))return;const h=src.cloneNode(true);h.classList.add('p2-hdr');h.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
  const hb=h.querySelector('.header-home');if(hb){hb.classList.add('p2-back');hb.removeAttribute('aria-disabled');hb.setAttribute('aria-label','Назад');hb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>';hb.onclick=e=>{e.stopPropagation();$('#gBack').click()}}
  $('#game').insertAdjacentElement('afterbegin',h)}
-GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add('p2-game');hdrMount();$('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
- const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
+GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body');$('#game').classList.add('p2-game');hdrMount();$('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>'+navHTML());P.tab='game';
+ const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body');$('#p2ResHost')?.remove();$('#p2Nav')?.remove();$('#p2Dsh')?.remove();root=null;pc&&pc()};
  if(P.view==='live'&&P.draw&&P.draw.paid&&!P.draw.mine)P.view='buy';
  render()};
 try{renderLobby()}catch(e){}
@@ -9751,6 +9987,7 @@ document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2Res
  else if(k==='again'){P.resOpen=false;P.view='buy';render()}
  else if(k==='tickets'||k==='close'){P.resOpen=false;if(P.draw)P.draw.tickets.forEach(x=>x.open=true);render()}
 });
+
 window.PK2=P;
 })();
 
@@ -10210,7 +10447,7 @@ function seed(){if(typeof bonusModel==='undefined'||bonusModel.get('pb-chet'))re
  bonusModel.records.push(mk('pb-chet','CHET-7777-2026','coin',7,6,'active','Промокод CHET-7777-2026 · из письма'));
  const w=mk('pb-wheel',null,'scale',3,2,'active','Колесо удачи');w.used=1;bonusModel.records.push(w)}
 
-const inMvp=g=>{if(!g)return true;const m=MVPS[PCFG.mvp];return SECTIONS.some(s=>m.sec.includes(s.id)&&s.ids.includes(g))};
+const inMvp=g=>{if(!g)return true;const m=MVPS[PCFG.mvp];return SECTIONS.some(s=>m.sec.includes(s.id)&&(typeof secIds==='function'?secIds(s):s.ids).includes(g))};
 function items(){const t=now();return bonusModel.records.filter(b=>inMvp(b.game)&&['tickets','voucher','discount'].includes(b.type)&&['available','active'].includes(b.status)&&b.used<b.total&&b.expiresAt>t)
  .sort((a,b)=>(a.status==='active'?0:1)-(b.status==='active'?0:1)||a.expiresAt-b.expiresAt)}
 function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status==='active',soon=b.expiresAt-now()<2*D;
@@ -10335,26 +10572,35 @@ const SEA_Y=236;                                     /* линия горизо�
 const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
 
 /* ---------- состояние ---------- */
-const P={no:4127,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:8400000,draw:null,view:'buy',resOpen:false,hist:[3,0,1,0,0,2,1,0,5,1]};
+const P={no:4127,next:Date.now()+BUY_MS,phase:'buy',qty:10,bought:0,rounds:[],sp:8400000,draw:null,view:'buy',resOpen:false,hist:[3,0,1,0,0,2,1,0,5,1],tab:'game',dh:[]};
 let root=null,raf=0;
 const mounted=()=>root&&root.isConnected&&$('#game').dataset.g===ID;
+/* общие разделы «Рапидо» — те же, что у «Покера 2.0»: меню, архив числами, мои билеты, правила */
+const RT=RapidoTabs({P,ID,root:()=>root,hist:()=>P.dh,mounted:()=>mounted(),render:()=>render(),
+ name:c=>c===8?'Золотая звезда':'посадка '+CAT[c].x,none:'самолёт сбит',rowName:c=>c===8?'Золотая звезда':'Посадка '+CAT[c].x,prize:(c,sp)=>prizeOf(Math.min(c,8),sp),rollCat:()=>rollCat(),back:CR2ART.plane.src,rules:()=>infoHTML(),
+ price:PRICE,timer:()=>timer(),fmt:n=>fmt(n),plural:n=>plural(n),visual:'полёт',
+ gameIcon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-2 7.5 1L17 4.5a2.1 2.1 0 0 1 3 3L14.5 13l1 7.5-2 1.5-2.5-7.5"/><path d="m6 17 2 1-1 2-2-1z"/></svg>',
+ leave:()=>{const d=P.draw;if(P.view==='live'&&d&&!d.done&&d.anim){d.anim.skip();d.done=true;settle(d)}},
+ onTab:t=>{if(t==='game'&&P.view==='live'&&P.draw&&P.draw.done&&!P.draw.mine)P.view='buy'}});
+const {navHTML,navSync,pageHTML,legalHTML,numify,drawAt,realMode,Q15}=RT;
+if(realMode())P.next=drawAt(P.no);
 const timer=()=>{const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
-const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/BUY_MS*100));
+const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/(realMode()?Q15:BUY_MS)*100));
 
 /* ---------- графика: арт из ChatGPT (CR2ART) ---------- */
 const spr=(k,w,cls='')=>`<img class="cr-spr ${k} ${cls}" src="${CR2ART[k].src}" width="${w}" height="${Math.round(w*CR2ART[k].h/CR2ART[k].w)}" alt="" draggable="false">`;
 const plane=(cls='',w=96)=>`<div class="cr-pl ${cls}${w<96?' sm':''}">${spr('plane',w)}<i class="cr-trail"></i><i class="cr-smoke"></i></div>`;
 const PW=62;                                        /* самолёт на сцене: камера дальше, он меньше */
 /* рогатка (ChatGPT): ширина SLW, высота SLH на сцене; основание — низ по центру */
-const SLH=84,SLW=CR2BG.sling?Math.round(SLH*CR2BG.sling.w/CR2BG.sling.h):52;
+const SLH=96,SLW=CR2BG.sling?Math.round(SLH*CR2BG.sling.w/CR2BG.sling.h):52;
 const REST_Y=SEA_Y+8-SLH+2;                          /* самолёт лежит между рожками */
-const slingHTML=()=>`<div class="cr-sling" style="left:${-SLW/2}px;width:${SLW}px;height:${SLH}px">${CR2BG.sling?`<img src="${CR2BG.sling.src}" alt="" draggable="false">`:''}</div>`;
+const slingHTML=()=>`<div class="cr-sling" style="left:${-SLW/2}px;width:${SLW}px;height:${SLH}px"><i class="cr-sl-rip"></i><i class="cr-sl-rip d2"></i>${CR2BG.sling?`<img class="cr-sl-refl" src="${CR2BG.sling.src}" alt="" draggable="false"><img class="cr-sl-img" src="${CR2BG.sling.src}" alt="" draggable="false">`:''}<i class="cr-sl-water"></i></div>`;
 /* ночной фон: бесшовные слои с параллаксом (k — доля скорости мира), луна стоит, волны моря едут со скоростью мира */
 const BGL=[['sky',.05,0],['city',.18,SEA_Y-68],['isl',.42,SEA_Y-72]];const WAVE_W=120;
 const lyHTML=([k,f,top])=>{const L=CR2BG[k];return `<div class="cr-ly ${k}" data-k="${f}" data-tw="${L.w}" style="top:${top}px;height:${L.h}px;width:${L.w*Math.ceil(420/L.w+1)}px;background-image:url(${L.src});background-size:${L.w}px ${L.h}px;--tw:${L.w}px;--d:${(L.w/(f*24)).toFixed(1)}s"></div>`};
 function stageHTML(){
  return `<div class="cr-stage" id="crStage"><div class="cr-cam" id="crCam">
-  <div class="cr-bg" id="crBg">${lyHTML(BGL[0])}<img class="cr-moon" src="${CR2BG.moon.src}" alt="" draggable="false">${lyHTML(BGL[1])}<div class="cr-sea" style="top:${SEA_Y}px"><i class="cr-glint"></i><div class="cr-ly wav" data-k="1" data-tw="${WAVE_W}" style="--tw:${WAVE_W}px;--d:${(WAVE_W/24).toFixed(1)}s"></div></div>${lyHTML(BGL[2])}</div>
+  <div class="cr-bg" id="crBg">${lyHTML(BGL[0])}<img class="cr-moon" src="${CR2BG.moon.src}" alt="" draggable="false">${lyHTML(BGL[1])}<div class="cr-sea" style="top:${SEA_Y}px"><i class="cr-glint"></i><i class="cr-path"></i><div class="cr-ly wav2" data-k="1" data-tw="${WAVE_W}" style="--tw:${WAVE_W}px;--d:${(WAVE_W/14).toFixed(1)}s"></div><div class="cr-ly wav" data-k="1" data-tw="${WAVE_W}" style="--tw:${WAVE_W}px;--d:${(WAVE_W/24).toFixed(1)}s"></div></div>${lyHTML(BGL[2])}</div>
   <div class="cr-world" id="crWorld"></div>
   <div class="cr-planes" id="crPlanes"></div>
   <div class="cr-fx" id="crFx"></div></div>
@@ -10368,7 +10614,7 @@ function topHTML(){const live=P.view==='live';
   <div class="r">${live?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Полёт<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div>${live?'':`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`}</div></div>`}
 function histHTML(){return `<div class="cr-hist">${P.hist.slice(0,10).map(c=>`<span class="${c?'w':''}${c>=6?' big':''}">${c?CAT[c].x:'💧'}</span>`).join('')}</div>`}
 function buyHTML(){if(P.view!=='buy')return '';const left=MAXQ-P.bought;const ppb=window.PP?PP.barHTML(ID):'';
- return `${ppb}<div class="cr-qty"><div class="cr-step"><button type="button" data-cr-step="-1" aria-label="Меньше билетов" ${P.qty<=1?'disabled':''}>−</button><div class="v"><b>${P.qty}</b><small>${plural(P.qty)} · ${fmt(window.PP?PP.price(ID,P.qty*PAY(),P.qty).pay:P.qty*PAY())} ₽${PAY()<PRICE||(window.PP&&PP.current(ID))?' · скидка':''}</small></div><button type="button" data-cr-step="1" aria-label="Больше билетов" ${P.qty>=left?'disabled':''}>+</button></div><div class="cr-tabs" role="tablist">${QTY.map(q=>`<button type="button" role="tab" aria-selected="${P.qty===q}" class="${P.qty===q?'on':''}" data-cr-q="${q}" ${q>left?'disabled':''}>${q}</button>`).join('')}</div></div>
+ return `${ppb}<div class="cr-qty"><div class="cr-step"><button type="button" data-cr-step="-1" aria-label="Меньше билетов" ${P.qty<=1?'disabled':''}>−</button><div class="v"><b>${P.qty}</b><small>${plural(P.qty)}</small></div><button type="button" data-cr-step="1" aria-label="Больше билетов" ${P.qty>=left?'disabled':''}>+</button></div><div class="cr-tabs" role="tablist">${QTY.map(q=>`<button type="button" role="tab" aria-selected="${P.qty===q}" class="${P.qty===q?'on':''}" data-cr-q="${q}" ${q>left?'disabled':''}>${q}</button>`).join('')}</div></div>
  ${P.bought?`<div class="p2-bought cr-bought"><span><b>В тираже ${P.bought} ${plural(P.bought)} · № ${String(P.no).padStart(5,'0')}</b><small>Можно докупить до взлёта</small></span><span class="cr-mini">${spr('plane',40)}</span></div>`:''}`}
 function tixHTML(d){if(!d||!d.mine)return '';
  return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':`${CAT[t.cat].x} · ${bpLabel(d.wins[i])}`}</span>`}).join('')}</div>`}
@@ -10390,7 +10636,8 @@ function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
 window.CR2_rerender=()=>{try{if(P.view==='buy')render()}catch(e){}};
 function render(){if(!mounted())return;const sc=root.scrollTop;
  const live=P.view==='live';
- root.innerHTML=`<div class="p2 cr${live?' is-live':''}">${topHTML()}<div class="cr-wrap">${stageHTML()}${live?'':histHTML()}</div>${live?tixHTML(P.draw):''}${buyHTML()}${infoHTML()}</div>${footHTML()}`;root.scrollTop=sc;
+ if(P.tab!=='game'){root.innerHTML=`<div class="p2 cr p2-page">${topHTML()}${pageHTML()}</div>`;root.scrollTop=sc;navSync();const h=$('#p2ResHost');if(h)h.innerHTML='';return}
+ root.innerHTML=`<div class="p2 cr${live?' is-live':''}">${topHTML()}<div class="cr-wrap">${stageHTML()}${live?'':histHTML()}</div>${live?tixHTML(P.draw):''}${buyHTML()}${legalHTML()}</div>${footHTML()}`;root.scrollTop=sc;navSync();
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();
  if(live&&P.draw&&P.draw.anim)P.draw.anim.attach();else idleStage()}
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%';
@@ -10414,7 +10661,7 @@ function buy(){const n=P.qty;if(!n)return;const cost=n*PAY();if(window.PP)PP.uni
    бонусы «+N» и «×N» подбрасывают самолёт вверх и растят множитель, ракеты «÷2» сбивают вниз и делят его.
    Сценарий бонусов подбирается под категорию билета из тиража: итоговый множитель = категория «Рапидо».
    С выигрышем — мягкое приводнение, без выигрыша — последняя ракета сбивает самолёт в море. */
-const V=150,G=560,HX=118,SEA=SEA_Y,TR=1.05,LAND_Y=SEA_Y-24;   /* LAND_Y — центр самолёта на палубе */            /* скорость мира, гравитация, x самолёта, море, момент выстрела */
+const V=150,GRV=560,HX=118,SEA=SEA_Y,TR=1.05,LAND_Y=SEA_Y-24;   /* LAND_Y — центр самолёта на палубе */            /* скорость мира, гравитация, x самолёта, море, момент выстрела */
 const MULT=[0,1,2,5,10,20,50,400,400];
 const ADDS=[1,2,3,4,5,8,10,15,20,25,30,40,50,100,150,200,300];
 const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -10444,20 +10691,20 @@ function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,v
  const apex0=ri(84,104);
  const out={ev,Y,X,dt};
  for(let i=0;i<120*40;i++){
-  if(t>=TR&&phase==='launch'){phase='fly';vy=-Math.sqrt(2*G*(y-apex0));next=TR+Math.sqrt(2*(y-apex0)/G)+.12}
+  if(t>=TR&&phase==='launch'){phase='fly';vy=-Math.sqrt(2*GRV*(y-apex0));next=TR+Math.sqrt(2*(y-apex0)/GRV)+.12}
   if(phase==='fly'&&t>=next&&k<ops.length){const o=ops[k];ev.push({...o,t,x,y,k});
    if(o.op==='kill'){phase='fall';vy=60}
    else if(isRocket(o)){/* ракета толкает вниз, но до следующего бонуса самолёт не должен коснуться воды */
-    const room=YF-y;vy=room>70?200:room>35?110:40;const tt=(-vy+Math.sqrt(vy*vy+2*G*Math.max(4,room)))/G;next=t+Math.max(.26,Math.min(.55,tt*.8))}
-   else{const ap=Math.max(78,Math.min(y-28,ri(80,140)));vy=-Math.sqrt(2*G*Math.max(12,y-ap));
+    const room=YF-y;vy=room>70?200:room>35?110:40;const tt=(-vy+Math.sqrt(vy*vy+2*GRV*Math.max(4,room)))/GRV;next=t+Math.max(.26,Math.min(.55,tt*.8))}
+   else{const ap=Math.max(78,Math.min(y-28,ri(80,140)));vy=-Math.sqrt(2*GRV*Math.max(12,y-ap));
     /* полёт до вершины и обратно до безопасной высоты */
-    const tot=-vy/G+Math.sqrt(2*Math.max(4,YF-ap)/G);next=t+Math.max(.38,Math.min(ri(52,86)/100,tot*.92))}
+    const tot=-vy/GRV+Math.sqrt(2*Math.max(4,YF-ap)/GRV);next=t+Math.max(.38,Math.min(ri(52,86)/100,tot*.92))}
    k++;if(k===ops.length&&o.op!=='kill'){phase='glide';out.tG=t+.35}}
   if(phase==='launch'){Y.push(y);X.push(0)}
   else{
-   if(phase==='glide'&&t>=out.tG){/* заход на посадку: пикирование ~35° на плавучую полосу, пробег, торможение */vy=Math.min(vy+G*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
-   else if(phase==='fall'){vy+=G*1.25*dt}
-   else vy+=G*dt;
+   if(phase==='glide'&&t>=out.tG){/* заход на посадку: пикирование ~35° на плавучую полосу, пробег, торможение */vy=Math.min(vy+GRV*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
+   else if(phase==='fall'){vy+=GRV*1.25*dt}
+   else vy+=GRV*dt;
    if(phase!=='glide'||t<out.tG||!out.tW)y+=vy*dt;
    x+=vx*dt;Y.push(y);X.push(x);
    if(phase==='fall'&&y>=SEA+6&&!out.tS){out.tS=t}
@@ -10567,16 +10814,17 @@ function spray(fx,x,y){const s=document.createElement('div');s.className='cr-spr
 
 async function runDraw(){
  const mine=P.bought>0,n=mine?P.bought:3;
- const d={no:P.no,mine,tickets:Array.from({length:n},()=>({cat:mine?rollCat():rollCat()}))};
+ const d={no:P.no,mine,sp:P.sp,tickets:Array.from({length:n},()=>({cat:mine?rollCat():rollCat()}))};
  d.wins=d.tickets.map(t=>prizeOf(t.cat,P.sp));d.total=mine?d.wins.reduce((a,b)=>a+b,0):0;
  let k=0;d.parts=P.rounds.map(x=>{const s=d.wins.slice(k,k+x.n).reduce((a,b)=>a+b,0);k+=x.n;return {round:x.round,win:s}});
  P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.resOpen=false;
- d.anim=makeAnim(d);const watching=mounted();
+ numify(d);d.anim=makeAnim(d);const watching=mounted()&&P.tab==='game';
  if(watching){P.view='live';render();d.anim.run()}
  else{d.anim.skip();d.done=true;settle(d);if(mine)toast(d.total?`Остров удачи 2.0: выигрыш ${bpLabel(d.total)}`:'Остров удачи 2.0: без выигрыша')}
  P.hist.unshift(Math.max(0,...d.tickets.map(t=>t.cat)));P.hist.length=Math.min(P.hist.length,20);
  await wait((d.anim.end+1)*1000);
- P.next=Date.now()+BUY_MS;P.phase='buy';P.qty=P.qty||10;
+ P.dh.unshift(d);if(P.dh.length>30)P.dh.pop();
+ P.next=realMode()?drawAt(P.no):Date.now()+BUY_MS;P.phase='buy';P.qty=P.qty||10;
  if(!mine&&P.view==='live'&&P.draw===d&&mounted()){P.view='buy';render()}}
 function settle(d){if(d.paid)return;d.paid=true;
  for(const p of d.parts||[]){if(!p.round)continue;bpFunding.set(ID,p.round);if(p.win)pay(p.win,false,ID);bpFinishRound(ID)}
@@ -10590,8 +10838,8 @@ const sec=SECTIONS.find(s=>s.id==='crash');if(sec&&!sec.ids.includes(ID))sec.ids
 try{renderLobby()}catch(e){}
 GAME_IMPL[ID]=(r,g)=>{root=r;r.classList.add('p2-body','cr-body');$('#game').classList.add('p2-game','cr-game');
  if(!$('#game .p2-hdr')){const src=$('#lobby .app-header');if(src){const h=src.cloneNode(true);h.classList.add('p2-hdr');h.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));const hb=h.querySelector('.header-home');if(hb){hb.classList.add('p2-back');hb.removeAttribute('aria-disabled');hb.setAttribute('aria-label','Назад');hb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>';hb.onclick=e=>{e.stopPropagation();$('#gBack').click()}}$('#game').insertAdjacentElement('afterbegin',h)}}
- $('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>');
- const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game','cr-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body','cr-body');$('#p2ResHost')?.remove();root=null;pc&&pc()};
+ $('#game').insertAdjacentHTML('beforeend','<div id="p2ResHost"></div>'+navHTML());P.tab='game';
+ const pc=G.cleanup;G.cleanup=()=>{$('#game').classList.remove('p2-game','cr-game');$('#game .p2-hdr')?.remove();r.classList.remove('p2-body','cr-body');$('#p2ResHost')?.remove();$('#p2Nav')?.remove();$('#p2Dsh')?.remove();root=null;pc&&pc()};
  if(P.view==='live'&&P.draw&&P.draw.done&&!P.resOpen)P.view='buy';
  render()};
 
@@ -10686,7 +10934,9 @@ function render(){const h=host();let bar=$('#gBody .pp-bar');
  if(!h){if(bar&&!$('#gBody .cr-qty'))bar.remove();return}
  const html=barInner(h.game),b=current(h.game),on=!!b;
  if(h.kind==='crash'){const want=html?barHTML(h.game):'';const has=bar?bar.outerHTML:'';
-  if((bar?bar.innerHTML:'')!==(html||'')||(bar&&bar.classList.contains('on')!==on)){if(window.CR2_rerender)CR2_rerender()}return}
+  /* перерисовываем экран краша только когда строка промокода реально изменилась — иначе сбивается анимация сцены */
+  const sig=(html||'')+'|'+on;if(bar&&!bar.dataset.h)bar.dataset.h=sig;if((bar?bar.dataset.h:'|false')===sig||(!bar&&!html))return;
+  if(window.CR2_rerender)CR2_rerender();const nb=$('#gBody .pp-bar');if(nb)nb.dataset.h=sig;return}
  if(!html){if(bar)bar.remove();h.root.classList.remove('pp-locked');return}
  const changed=!bar||bar.dataset.h!==html+on;
  if(!bar){bar=document.createElement('div');bar.className='pp-bar'}
@@ -10708,7 +10958,8 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-pp-pick]')){const h=host();if(h&&codes(h.game).length>1)pick();else if(h)$('#gBody [data-pp-toggle]').click();return}
  const go=e.target.closest('[data-pbn-go]');if(go){PREFER=go.dataset.pbnGo;const b=bonusModel.get(PREFER);if(b&&b.game)SEL[b.game]=b.id}
 },true);
-const _og=openGame;openGame=function(id){_og.apply(this,arguments);setTimeout(render,0);setTimeout(render,120)};
+/* «Без промокода» держится до выхода из игры: при новом входе код снова подставляется сам */
+const _og=openGame;openGame=function(id){if(SEL[id]==='none')delete SEL[id];_og.apply(this,arguments);setTimeout(render,0);setTimeout(render,120)};
 setInterval(()=>{if($('#game')&&!$('#game').classList.contains('off-b'))render()},700);
 
 /* ---------- демо-промокоды со скидкой ---------- */
@@ -10915,6 +11166,56 @@ document.addEventListener('click',e=>{const w=e.target.closest('#rwdPop');if(!w)
  if(pl||e.target.closest('[data-rwd-x]')||e.target===w){w.classList.remove('show');
   if(pl){try{closeWheel()}catch(_){}try{window.AKC&&AKC.closeAll()}catch(_){}try{PB.close()}catch(_){}go('lobby');try{PP.prefer(pl.dataset.rwdId)}catch(_){}setTimeout(()=>openGame(pl.dataset.rwdPlay),250)}}},true);
 window.RWD={show};
+})();
+
+</script>
+<script>
+/* ===== История начислений кэшбека =====
+   Уведомлений в MVP нет, поэтому начисления видны здесь: иконка «часы» в шапке «Мой уровень».
+   Строка на каждый месяц: уровень и процент, база (покупки − выигрыши), сумма и статус. */
+(()=>{
+const scr=document.getElementById('scr');if(!scr)return;
+const ICO={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>',
+ hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>'};
+const n=v=>Math.round(v).toLocaleString('ru-RU');
+const MON=['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+const MONG=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+function rows(){
+ const d=new Date(),y=d.getFullYear(),m=d.getMonth(),L=LossbackEngine.levels;let s=null;try{s=lossbackModel.snapshot()}catch(e){}
+ const pm=k=>{const x=new Date(y,m-k,1);return {mi:x.getMonth(),y:x.getFullYear()}};
+ const nx=k=>{const x=new Date(y,m-k+1,1);return `1 ${MONG[x.getMonth()]}`};
+ const R=[];
+ /* текущий месяц — ещё считается */
+ if(s){const pct=s.level.pct,est=s.week&&s.week.cb||0;
+  R.push({cur:1,mon:pm(0),lvl:s.level.name,pct,buy:null,
+   amount:est,status:pct?'pend':'none',note:pct?`Сумму посчитаем и начислим ${nx(0)}`:`Кэшбек — с уровня «${L[1].name}»`})}
+ const last=typeof LV_LAST!=='undefined'?LV_LAST:null;
+ const oct=last?{amount:last.amount,pct:last.pct}:{amount:160,pct:5};
+ const lv=p=>(L.find(l=>l.pct===p)||L[3]).name;
+ R.push({mon:pm(1),lvl:lv(oct.pct),pct:oct.pct,buy:Math.round(oct.amount*100/oct.pct)+5200,win:5200,amount:oct.amount,status:'ok',note:`Начислено ${nx(1)}`});
+ R.push({mon:pm(2),lvl:lv(3),pct:3,buy:2100,win:3400,amount:0,status:'no',note:'Выигрыши больше покупок — кэшбека нет'});
+ R.push({mon:pm(3),lvl:lv(4),pct:4,buy:4000,win:1500,amount:100,status:'ok',note:`Начислено ${nx(3)}`});
+ return R}
+function html(){const R=rows(),tot=R.filter(r=>r.status==='ok').reduce((a,r)=>a+r.amount,0);
+ return `<div class="cbh-sum"><span class="cbh-sum-ico">${ICO.hist}</span><span><small>Начислено за ${new Date().getFullYear()} год</small><b>${n(tot)} Б</b></span></div>
+ <p class="cbh-lead">Кэшбек приходит бонусами на счёт: 1 Б = 1 ₽ при оплате игр. Вывести нельзя</p>
+ <div class="cbh-list">${R.map(r=>`<div class="cbh-row ${r.status}">
+   <div class="cbh-top"><b>${cap(MON[r.mon.mi])}${r.cur?' · идёт':''}</b><span class="cbh-amt">${r.status==='ok'?`+${n(r.amount)} Б`:r.status==='pend'?'Считаем':r.status==='no'?'0 Б':'—'}</span></div>
+   <div class="cbh-mid"><span>«${r.lvl}»${r.pct?` · ${r.pct}%`:''}</span>${r.buy!=null?`<span>Покупки ${n(r.buy)} ₽ − выигрыши ${n(r.win)} ₽</span>`:''}</div>
+   <div class="cbh-st"><i></i>${r.note}</div></div>`).join('')}</div>
+ <p class="cbh-foot">Кэшбек считается за календарный месяц: процент вашего уровня от разницы покупок и выигрышей. Начисляем 1-го числа сами — забирать не нужно</p>`}
+scr.insertAdjacentHTML('beforeend',`<section class="pf cbh" id="cbh" aria-hidden="true" aria-label="История кэшбека"><div class="pf-head"><button class="pf-back" type="button" data-cbh-close aria-label="Назад">${ICO.back}</button><h2>История кэшбека</h2></div><div class="pf-body"></div></section>`);
+const P=document.getElementById('cbh');
+function open(){$('.pf-body',P).innerHTML=html();P.classList.add('show');P.setAttribute('aria-hidden','false')}
+function close(){P.classList.remove('show');P.setAttribute('aria-hidden','true')}
+/* кнопка в шапке «Мой уровень» — перед «?» */
+function addBtn(){const t=document.querySelector('#lossback .lb-title');if(!t||t.querySelector('[data-cbh-open]'))return;
+ const h=t.querySelector('.lb-help');const b=document.createElement('button');b.type='button';b.className='lb-help cbh-btn';b.dataset.cbhOpen='';b.setAttribute('aria-label','История кэшбека');b.innerHTML=ICO.hist;
+ if(h)h.before(b);else t.appendChild(b)}
+addBtn();
+document.addEventListener('click',e=>{if(e.target.closest('[data-cbh-open]')){open();return}if(e.target.closest('[data-cbh-close]'))close()});
+window.CBH={open,close,rows};
 })();
 
 </script>
