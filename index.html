@@ -3216,6 +3216,27 @@ div.pp-row{cursor:default}
 .pp-enter button{height:44px;padding:0 14px;border-radius:12px;border:0;background:#a25be6;color:#fff;font:inherit;font-weight:700;cursor:pointer}
 .pp-err{margin:6px 16px 0;min-height:16px;font-size:12px;line-height:16px;color:#ff8a8a}
 .pp-demo{margin:0 16px 8px;font-size:11px;color:#6f6688}
+/* кнопка «Оплата» слева от «Купить» */
+.pp-line{display:flex;align-items:stretch;gap:12px}
+.qf .pp-line{margin-top:8px}.qf .pp-line .qgo{margin-top:0;flex:1;min-width:0}
+.pp-line .p2-pay{flex:1;min-width:0;padding:0 16px;gap:8px}
+.pp-line .p2-pay>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-line .p2-pay>b{white-space:nowrap;font-size:16px}
+.pp-cfg{position:relative;flex:none;width:52px;min-height:52px;border-radius:14px;border:0;display:grid;place-items:center;background:#1b1827;box-shadow:inset 0 0 0 1px #ffffff26;color:#ffd76a;cursor:pointer}
+.qf .pp-cfg{min-height:54px;width:54px;border-radius:16px}
+.pp-cfg svg{width:24px;height:24px}
+.pp-cfg.on{background:linear-gradient(135deg,#3a1d63,#1d1430);box-shadow:inset 0 0 0 1.5px #a25be6}
+.pp-dot{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;box-sizing:border-box;border-radius:10px;background:#ff4f6d;color:#fff;font:800 11px/20px Inter,sans-serif;font-style:normal;box-shadow:0 0 0 2px #050505}
+.pp-dot.ok{background:#a25be6}
+.pp-sheet .pp-row{margin:0 16px;width:auto}
+.pp-empty{margin:0;padding:12px;border-radius:14px;background:#1b1827;color:#8f84a8;font-size:13px}
+.pp-sum{margin:16px 16px 0;padding:12px 14px;border-radius:14px;background:#ffffff0d;display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:baseline;color:#fff}
+.pp-sum span{font-size:14px;color:#c9bfe3}.pp-sum b{font-size:18px;font-weight:800;text-align:right}.pp-sum b em{font-style:normal;font-size:14px;color:#9aefb5}
+.pp-sum small{grid-column:1/-1;font-size:12px;color:#8f84a8}
+.pp-sum.warn{background:#ff4f6d1f}.pp-sum.warn b{color:#ff8a8a}
+.pp-sum .pp-old{opacity:.5;font-weight:600;margin-right:6px;font-size:14px}
+.pp-done{display:block;width:calc(100% - 32px);margin:12px 16px 4px;height:48px!important;min-height:48px;line-height:48px!important;padding:0!important;border:0;border-radius:14px;background:#a25be6;color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.pp-err.ok{color:#9aefb5}
 
 </style>
 <style>
@@ -9892,7 +9913,7 @@ function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p
  <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p>
  </div>`}
 
-function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE,v=P.bought?'Докупить':'Купить билеты',c=window.PP?PP.cta(ID,sum,P.qty,v):{cls:'',html:`<span>${v}</span><b>${fmt(sum)} ₽</b>`};return `<div class="p2-foot"><button type="button" class="p2-pay ${c.cls}" data-p2="pay" ${P.qty?'':'disabled'}>${c.html}</button></div>`}
+function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE,v=P.bought?'Докупить':'Купить',c=window.PP?PP.cta(ID,sum,P.qty,v):{cls:'',html:`<span>${v}</span><b>${fmt(sum)} ₽</b>`};return `<div class="p2-foot"><div class="pp-line">${window.PP?PP.cfgHTML(ID,sum,P.qty):''}<button type="button" class="p2-pay ${c.cls}" data-p2="pay" ${P.qty?'':'disabled'}>${c.html}</button></div></div>`}
  if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
  return ''}
 
@@ -10655,7 +10676,7 @@ function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть
  ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${CAT[c].x}</span><b>${c===8?'Золотая звезда':'Приводнение'}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
  <div class="cr-row sea"><span class="cr-rx">💧</span><b>Сбит ракетой</b><em>0 ₽</em></div>
  <p class="p2-note">Это билет «Рапидо»: выигрыш определяется тиражом, полёт его показывает. Цена билета — ${PAY()<PRICE?`${PAY()} ₽ вместо ${PRICE} ₽ (акция)`:PRICE+' ₽'}.</p></div>`}
-function footHTML(){if(P.view==='buy'){const base=P.qty*PAY(),v=P.bought?'Докупить':'Купить билеты',c=window.PP?PP.cta(ID,base,P.qty,v,P.qty*PRICE):{cls:'',html:`<span>${v}</span><b>${fmt(base)} ₽</b>`};return `<div class="p2-foot"><button type="button" class="p2-pay ${c.cls}" data-cr="pay" ${P.qty?'':'disabled'}>${c.html}</button></div>`}
+function footHTML(){if(P.view==='buy'){const base=P.qty*PAY(),v=P.bought?'Докупить':'Купить',c=window.PP?PP.cta(ID,base,P.qty,v,P.qty*PRICE):{cls:'',html:`<span>${v}</span><b>${fmt(base)} ₽</b>`};return `<div class="p2-foot"><div class="pp-line">${window.PP?PP.cfgHTML(ID,base,P.qty,P.qty*PRICE):''}<button type="button" class="p2-pay ${c.cls}" data-cr="pay" ${P.qty?'':'disabled'}>${c.html}</button></div></div>`}
  const d=P.draw;if(P.view==='live'&&d&&d.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-cr="result" ${d.done?'':'disabled'}>${d.done?'Итог тиража':'Самолёт в полёте…'}</button></div>`;return ''}
 function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
  const won=d.total>0,best=Math.max(0,...d.tickets.map(t=>t.cat)),land=d.tickets.filter(t=>t.cat).length;
@@ -10938,9 +10959,9 @@ function price(game,amount,units){const p=plan(game,amount,units);return {pay:p.
 function lockStake(game){const b=current(game);return isFree(b)&&!TG.includes(game)?b.nominal:0}
 /* кнопка в играх с билетами */
 function cta(game,amount,units,verb,full){const p=plan(game,amount,units);full=full||amount;
- if(p.short)return {cls:'pp-topup',html:`<span>Пополнить на ${rub(p.topup)}</span><b class="pp-need">не хватает ${rub(p.short)}</b>`};
+ if(p.short)return {cls:'pp-topup',html:`<span>Пополнить на ${rub(p.topup)}</span>`};
  if(p.free)return {cls:'pp-free',html:`<span>Забрать бесплатно</span><b><s class="pp-old">${num(full)}</s>0 ₽</b>`};
- const old=p.promo||p.bonus||full>amount?`<s class="pp-old">${num(full)}</s>`:'';
+ const old=p.promo?`<s class="pp-old">${num(full)}</s>`:'';
  return {cls:'',html:`<span>${verb}</span><b>${old}${rub(p.wallet)}${p.bonus?`<em class="pp-plusb"> + ${num(p.bonus)} Б</em>`:''}</b>`}}
 /* кнопка в быстрых играх */
 function payLabel(game,amount){const p=plan(game,amount,1);
@@ -10980,31 +11001,28 @@ function topup(p,game){PEND={game};depA=p.topup;try{openSheet()}catch(e){$('#she
 {const cd=bpConfirmDeposit;bpConfirmDeposit=function(){const before=S.bal;const x=cd.apply(this,arguments);
  if(S.bal>before&&PEND){PEND=null;setTimeout(()=>{SIG='';render();toast('Кошелёк пополнен — можно покупать')},60)}return x}}
 
-/* ---------- блок оплаты над кнопкой ---------- */
+/* ---------- кнопка «Оплата» слева от «Купить» + шторка ---------- */
 const TK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.2a2.8 2.8 0 0 0 0 5.6V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.2a2.8 2.8 0 0 0 0-5.6Z" fill="currentColor"/><path d="M14.5 6.5v11" stroke="#1a1030" stroke-width="1.6" stroke-dasharray="2 2"/></svg>';
 const CR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4.5A1.5 1.5 0 0 1 4.5 3H12l9 9-9 9-9-9Z" fill="currentColor"/><circle cx="8" cy="8" r="1.8" fill="#1a1030"/></svg>';
 const ico=b=>`<span class="pp-ico${isFree(b)?'':' disc'}">${isFree(b)?TK:CR}</span>`;
-function barHTML(game,amount=0,units=1){const L=codes(game),b=current(game),p=plan(game,amount,units);let h='';
- if(b)h+=`<div class="pp-row on"><button type="button" class="pp-main" data-pp-pick>${ico(b)}<span class="pp-t"><b>${codeTitle(b)}</b><small>Промокод применён · ${dLeft(b.expiresAt)}${L.length>1?` · ещё ${L.length-1}`:''}</small></span></button><button type="button" class="pp-x" data-pp-off aria-label="Убрать промокод">✕</button></div>`;
- else if(L.length)h+=`<button type="button" class="pp-row" data-pp-pick><span class="pp-ico">${TK}</span><span class="pp-t"><b>Промокоды · ${L.length}</b><small>${codeTitle(L[0])}${L.length>1?` и ещё ${L.length-1}`:''} · не применён</small></span><span class="pp-chev">Выбрать</span></button>`;
- else h+=`<button type="button" class="pp-row ghost" data-pp-pick><span class="pp-ico none">${TK}</span><span class="pp-t"><b>Есть промокод?</b></span><span class="pp-chev">Ввести</span></button>`;
- if(S.stb>0&&p.cap>0){const off=!p.maxB;
-  h+=`<div class="pp-row${S.ppBon&&p.bonus?' on b':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${off?'Бонусы':S.ppBon?`Списать ${num(p.bonus)} Б`:`Можно списать ${num(p.maxB)} Б`}</b><small>${off&&p.free?'Не нужны — промокод покрыл покупку':`Есть ${num(S.stb)} Б · до ${Math.round(p.cap*100)}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!off}" ${off?'disabled':''} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`}
- return `<div class="pp-box">${h}</div>`}
+/* в разметке экрана блоков больше нет — всё в шторке */
+function barHTML(){return ''}
+function cfgHTML(game,amount=0,units=1,full){const L=codes(game),b=current(game);
+ return `<button type="button" class="pp-cfg${b?' on':''}" data-pp-pick data-pp-amt="${amount}" data-pp-u="${units}" data-pp-full="${full||amount}" aria-label="Промокоды и бонусы${L.length&&!b?': доступно '+L.length:''}">${TK}${b?'<i class="pp-dot ok">✓</i>':L.length?`<i class="pp-dot">${L.length}</i>`:''}</button>`}
 function host(){const root=$('#gBody'),g=$('#game'),game=g&&g.dataset.g;if(!root||!game)return null;
  if(root.classList.contains('qf'))return {root,game,kind:'quick'};
  if(TG.includes(game))return {root,game,kind:'tickets'};return null}
 let SIG='';
 function rerender(h){if(h.kind==='tickets'){if(h.game==='av2'&&window.CR2_rerender)CR2_rerender();if(h.game==='pk2'&&window.P2_rerender)P2_rerender()}else h.root.dispatchEvent(new Event('qf-upd'))}
+const qAmt=root=>parseInt((($('.qv',root)||{}).textContent||'0').replace(/\D/g,''),10)||0;
 function render(){const h=host();if(!h)return;
  const sig=JSON.stringify([h.game,SEL[h.game]||'',S.bal,S.stb,S.ppBon,codes(h.game).map(b=>b.id+':'+left(b))]);
  if(h.kind==='tickets'){if(sig!==SIG){SIG=sig;rerender(h)}return}
- const amt=parseInt((($('.qv',h.root)||{}).textContent||'0').replace(/\D/g,''),10)||0;
- const html=barHTML(h.game,amt,1),box=$('.pp-box',h.root);
- if(!box){const bef=$('.qf-bet',h.root);if(bef)bef.insertAdjacentHTML('beforebegin',html)}else if(box.outerHTML!==html)box.outerHTML=html;
- if(sig+amt!==SIG){SIG=sig+amt;h.root.classList.toggle('pp-locked',!!lockStake(h.game));rerender(h)}}
+ /* быстрые игры: кнопка «Оплата» встаёт слева от «Оплатить» */
+ const go_=$('.qgo',h.root);if(go_){let line=go_.parentElement;if(!line.classList.contains('pp-line')){line=document.createElement('div');line.className='pp-line';go_.before(line);line.appendChild(go_)}
+  const html=cfgHTML(h.game,qAmt(h.root),1),c=$('.pp-cfg',line);if(!c)line.insertAdjacentHTML('afterbegin',html);else if(c.outerHTML!==html)c.outerHTML=html}
+ const amt=qAmt(h.root);if(sig+amt!==SIG){SIG=sig+amt;h.root.classList.toggle('pp-locked',!!lockStake(h.game));rerender(h)}}
 
-/* ---------- шторка: выбрать, ввести, промокоды других игр ---------- */
 const DEMO={FLY300:{type:'credit',game:'av2',amount:300,days:7},POKER3:{type:'tickets',game:'pk2',total:3,days:5},COIN100:{type:'credit',game:'coin',amount:100,days:5},OLD2025:{expired:1}};
 const usedCodes=new Set();
 function addCode(code,c){const id='pp-'+code;const r={id,code,game:c.game,status:'active',used:0,expiresAt:now()+c.days*D,validForMs:c.days*D,fresh:1};
@@ -11012,32 +11030,39 @@ function addCode(code,c){const id='pp-'+code;const r={id,code,game:c.game,status
  else Object.assign(r,{type:'tickets',total:c.total,nominal:TG.includes(c.game)?100:GAMES[c.game].price,title:`${c.total} бесплатных «${gName(c.game)}»`,tag:'Промокод '+code});
  bonusModel.records.push(r);try{bpSync()}catch(e){}return r}
 function closeSheet(sh){sh.classList.remove('show');setTimeout(()=>sh.remove(),250)}
-function pick(){const h=host();if(!h)return;const game=h.game,L=codes(game),b=current(game),O=others(game);
- const opt=c=>`<button type="button" class="pp-opt${b&&b.id===c.id?' on':''}" data-pp-sel="${c.id}">${ico(c)}<span class="pp-t"><b>${codeTitle(c)}</b><small>${c.code?c.code+' · ':''}<span class="${c.expiresAt-now()<1.5*D?'pp-soon':''}">${dLeft(c.expiresAt)}</span></small></span><i class="pp-radio"></i></button>`;
- const sh=document.createElement('div');sh.className='ak-sheet-bg pp-sheet';
- sh.innerHTML=`<div class="ak-sheet"><div class="ak-grab"></div><div class="ak-sh-head"><b>Промокоды</b><button type="button" class="ak-x" data-pp-x aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-  ${L.length?`<p class="pp-cap">Для «${gName(game)}»</p><div class="pp-list">${L.map(opt).join('')}${b?`<button type="button" class="pp-opt" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Не применять</b><small>Оплатить бонусами и рублями</small></span><i class="pp-radio"></i></button>`:''}</div>`:''}
-  <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err" data-pp-err></p><p class="pp-demo">Демо-коды: FLY300 · POKER3 · COIN100 · OLD2025</p>
-  ${O.length?`<p class="pp-cap">Для других игр</p><div class="pp-list">${O.map(c=>`<button type="button" class="pp-opt mute" data-pp-go="${c.id}">${ico(c)}<span class="pp-t"><b>${codeTitle(c)}</b><small>«${gName(c.game)}» · ${dLeft(c.expiresAt)}</small></span><span class="pp-chev">Перейти</span></button>`).join('')}</div>`:''}
-  <p class="pp-note">Один промокод на покупку. Остаток оплачивается бонусами (до ${Math.round(capOf(game)*100)}% цены в этой игре) и рублями кошелька. В «Играх 24/7» бонусы не начисляются. Выигрыш по билетам с промокодом — рублями.</p></div>`;
- $('#scr').appendChild(sh);requestAnimationFrame(()=>sh.classList.add('show'));
- sh.addEventListener('click',e=>{const s=e.target.closest('[data-pp-sel]');if(s){SEL[game]=s.dataset.ppSel;closeSheet(sh);render();try{haptic()}catch(_){}return}
+/* шторка «Оплата»: промокод, бонусы, итог. Выбор сразу применяется; покупка — по-прежнему кнопкой на экране */
+function pick(amount,units,full){const h=host();if(!h)return;const game=h.game;
+ if(h.kind==='quick')amount=qAmt(h.root);full=full||amount;
+ const sh=document.createElement('div');sh.className='ak-sheet-bg pp-sheet';let msg=null;
+ const opt=(c,on)=>`<button type="button" class="pp-opt${on?' on':''}" data-pp-sel="${c.id}">${ico(c)}<span class="pp-t"><b>${codeTitle(c)}</b><small>${c.code?c.code+' · ':''}<span class="${c.expiresAt-now()<1.5*D?'pp-soon':''}">${dLeft(c.expiresAt)}</span></small></span><i class="pp-radio"></i></button>`;
+ function body(){const L=codes(game),b=current(game),O=others(game),p=plan(game,amount,units),cap=Math.round(capOf(game)*100);
+  const sum=p.short?`<div class="pp-sum warn"><span>Не хватает</span><b>${rub(p.short)}</b><small>Кнопка на экране предложит пополнить кошелёк на ${rub(p.topup)}</small></div>`
+   :`<div class="pp-sum"><span>К оплате</span><b>${p.promo||full>amount?`<s class="pp-old">${rub(full)}</s>`:''}${rub(p.wallet)}${p.bonus?` <em>+ ${num(p.bonus)} Б</em>`:''}</b>${p.promo?`<small>Промокод: −${rub(p.promo)}</small>`:''}</div>`;
+  return `<div class="ak-sheet"><div class="ak-grab"></div><div class="ak-sh-head"><b>Оплата</b><button type="button" class="ak-x" data-pp-x aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+   <p class="pp-cap">Промокод</p>
+   <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty">Для этой игры промокодов нет</p>'}</div>
+   <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err${msg&&msg.ok?' ok':''}" data-pp-err>${msg?msg.t:''}</p><p class="pp-demo">Демо-коды: FLY300 · POKER3 · COIN100 · OLD2025</p>
+   ${S.stb>0&&cap?`<p class="pp-cap">Бонусы</p><div class="pp-row${S.ppBon&&p.bonus?' on b':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${!p.maxB?'Бонусы не нужны':S.ppBon?`Списать ${num(p.bonus)} Б`:`Можно списать ${num(p.maxB)} Б`}</b><small>${!p.maxB&&p.free?'Промокод покрыл покупку':`Есть ${num(S.stb)} Б · до ${cap}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.maxB}" ${p.maxB?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:''}
+   ${sum}
+   <button type="button" class="pp-done" data-pp-x>Готово</button>
+   ${O.length?`<p class="pp-cap">Промокоды для других игр</p><div class="pp-list">${O.map(c=>`<button type="button" class="pp-opt mute" data-pp-go="${c.id}">${ico(c)}<span class="pp-t"><b>${codeTitle(c)}</b><small>«${gName(c.game)}» · ${dLeft(c.expiresAt)}</small></span><span class="pp-chev">Перейти</span></button>`).join('')}</div>`:''}
+   <p class="pp-note">Один промокод на покупку. Остаток — бонусами (до ${cap}% цены в этой игре) и рублями кошелька. В «Играх 24/7» бонусы не начисляются. Выигрыш по билетам с промокодом — рублями.</p></div>`}
+ const paint=()=>{const sc=$('.ak-sheet',sh)?.scrollTop||0;sh.innerHTML=body();$('.ak-sheet',sh).scrollTop=sc;render()};
+ sh.innerHTML=body();$('#scr').appendChild(sh);requestAnimationFrame(()=>sh.classList.add('show'));
+ sh.addEventListener('click',e=>{const s=e.target.closest('[data-pp-sel]');if(s){SEL[game]=s.dataset.ppSel;msg=null;paint();try{haptic()}catch(_){}return}
+  if(e.target.closest('[data-pp-bon]')){S.ppBon=!S.ppBon;paint();try{haptic()}catch(_){}return}
   const go_=e.target.closest('[data-pp-go]');if(go_){const r=bonusModel.get(go_.dataset.ppGo);closeSheet(sh);if(r){PREFER=r.id;try{go('lobby')}catch(_){}setTimeout(()=>openGame(r.game),200)}return}
-  if(e.target.closest('[data-pp-x]')||e.target===sh)closeSheet(sh)});
- sh.addEventListener('submit',e=>{e.preventDefault();const inp=$('input',sh),err=$('[data-pp-err]',sh),code=(inp.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const fail=t=>{err.className='pp-err';err.textContent=t;inp.classList.add('err');inp.focus()};
-  if(!code)return fail('Введите код промокода');
-  if(usedCodes.has(code))return fail('Этот промокод уже добавлен');
+  if(e.target.closest('[data-pp-x]')||e.target===sh){closeSheet(sh);render()}});
+ sh.addEventListener('submit',e=>{e.preventDefault();const inp=$('input',sh),code=(inp.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const fail=t=>{const err=$('[data-pp-err]',sh);err.className='pp-err';err.textContent=t;inp.classList.add('err');inp.focus()};
+  if(!code)return fail('Введите код промокода');if(usedCodes.has(code))return fail('Этот промокод уже добавлен');
   const c=DEMO[code];if(!c)return fail('Такого промокода нет — проверьте символы');if(c.expired)return fail('Срок действия промокода истёк');
   usedCodes.add(code);const r=addCode(code,c);
-  if(c.game===game){SEL[game]=r.id;closeSheet(sh);render();toast('Промокод применён')}
-  else{closeSheet(sh);toast(`Промокод для «${gName(c.game)}» добавлен — применим его в той игре`)}});
- sh.addEventListener('input',e=>{if(e.target.name==='c'){e.target.classList.remove('err');$('[data-pp-err]',sh).textContent=''}})}
+  if(c.game===game){SEL[game]=r.id;msg={ok:1,t:'Промокод добавлен и применён'}}else msg={ok:1,t:`Промокод для «${gName(c.game)}» — он ниже, в других играх`};paint()});
+ sh.addEventListener('input',e=>{if(e.target.name==='c'){e.target.classList.remove('err');const er=$('[data-pp-err]',sh);if(er)er.textContent=''}})}
 const busy=game=>bpFunding.has(game)||(window.QT&&QT[game]);
 document.addEventListener('click',e=>{
- if(e.target.closest('[data-pp-pick]')){const h=host();if(h){if(h.kind==='quick'&&busy(h.game)){toast('Дождитесь результата текущей ставки');return}pick()}return}
- if(e.target.closest('[data-pp-off]')){const h=host();if(h){SEL[h.game]='none';render();try{haptic()}catch(_){}}return}
- if(e.target.closest('[data-pp-bon]')){S.ppBon=!S.ppBon;render();try{haptic()}catch(_){}return}
+ const pb=e.target.closest('[data-pp-pick]');if(pb){const h=host();if(h){if(h.kind==='quick'&&busy(h.game)){toast('Дождитесь результата текущей ставки');return}pick(+pb.dataset.ppAmt||0,+pb.dataset.ppU||1,+pb.dataset.ppFull||0)}return}
  const go=e.target.closest('[data-pbn-go]');if(go)PREFER=go.dataset.pbnGo;
 },true);
 /* при входе в игру промокод не выбран — кроме случая, когда пришли по кнопке «Играть» у промокода */
@@ -11052,7 +11077,7 @@ function seed(){if(bonusModel.get('pp-av2-cr'))return;
  add({id:'pp-pk2-fr',type:'tickets',code:'POKER-3',game:'pk2',total:3,nominal:100,title:'3 бесплатных билета «Покера 2.0»',tag:'Промокод POKER-3',days:3});
  try{bpSync()}catch(e){}}
 seed();hdr();
-window.PP={prefer:id=>{PREFER=id},barHTML,render,price,plan,cta,lockStake,payLabel,codes,current,units:1,label:codeTitle,isFree,caps:BONUS_CAP};
+window.PP={prefer:id=>{PREFER=id},barHTML,cfgHTML,render,price,plan,cta,lockStake,payLabel,codes,current,units:1,label:codeTitle,isFree,caps:BONUS_CAP};
 })();
 
 </script>
