@@ -10961,13 +10961,13 @@ function lockStake(game){const b=current(game);return isFree(b)&&!TG.includes(ga
 function cta(game,amount,units,verb,full){const p=plan(game,amount,units);full=full||amount;
  if(p.short)return {cls:'pp-topup',html:`<span>Пополнить на ${rub(p.topup)}</span>`};
  if(p.free)return {cls:'pp-free',html:`<span>Забрать бесплатно</span><b><s class="pp-old">${num(full)}</s>0 ₽</b>`};
- const old=p.promo?`<s class="pp-old">${num(full)}</s>`:'';
- return {cls:'',html:`<span>${verb}</span><b>${old}${rub(p.wallet)}${p.bonus?`<em class="pp-plusb"> + ${num(p.bonus)} Б</em>`:''}</b>`}}
+ const old=p.promo||p.bonus?`<s class="pp-old">${num(full)}</s>`:'';   /* бонусы и промокод — просто скидка: старая цена зачёркнута */
+ return {cls:'',html:`<span>${verb}</span><b>${old}${rub(p.wallet)}</b>`}}
 /* кнопка в быстрых играх */
 function payLabel(game,amount){const p=plan(game,amount,1);
  if(p.short)return `Пополнить на ${rub(p.topup)}`;
  if(p.free)return `Играть по промокоду · <s class="pp-old">${rub(amount)}</s> 0 ₽`;
- return `Оплатить · ${p.promo||p.bonus?`<s class="pp-old">${rub(amount)}</s> `:''}${rub(p.wallet)}${p.bonus?` + ${num(p.bonus)} Б`:''}`}
+ return `Оплатить · ${p.promo||p.bonus?`<s class="pp-old">${rub(amount)}</s> `:''}${rub(p.wallet)}`}
 
 /* ---------- бонусы в шапке: бонусы Столото, 1 Б = 1 ₽ ---------- */
 function hdr(){S.wagerBal=S.stb;$$('[data-wager-bal]').forEach(e=>{const v=num(S.stb);if(e.textContent!==v)e.textContent=v})}
