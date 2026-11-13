@@ -10716,7 +10716,8 @@ function makeAnim(d){
  const M=Math.max(0,...d.tickets.map(t=>t.cat)),hasStar=d.tickets.some(t=>t.cat===8);
  /* один самолёт показывает весь тираж игрока: итог полёта = общий выигрыш всех билетов (в ценах билета) */
  const TOT=d.mine?d.total:prizeOf(M,P.sp),base=hasStar?Math.max(1,Math.round((TOT-P.sp)/PRICE)):Math.round(TOT/PRICE);
- const ops=planOps(TOT?base:0,hasStar),sim=simulate(ops),ev=sim.ev;
+ let ops=planOps(TOT?base:0,hasStar);for(let k=0;k<300&&window.CR2_NEED==='rocket'&&!ops.some(o=>o.op==='/');k++)ops=planOps(TOT?base:0,hasStar);
+ const sim=simulate(ops),ev=sim.ev;
  const amtOf=v=>star?TOT:v*PRICE;
  const at=(arr,t)=>{const i=Math.max(0,Math.min(arr.length-1,t/sim.dt)),a=Math.floor(i),b=Math.min(arr.length-1,a+1),f=i-a;return arr[a]+(arr[b]-arr[a])*f};
  const y=t=>at(sim.Y,t),S=t=>at(sim.X,t);
@@ -10802,7 +10803,9 @@ function makeAnim(d){
  function flash(kind){const f=$('#crFlash',root);if(!f)return;f.className='cr-flash '+kind;void f.offsetWidth;f.classList.add('on')}
  function finish(){d.done=true;settle(d);if(d.mine&&mounted()&&P.view==='live'){const b=$('[data-cr="result"]',root);if(b){b.disabled=false;b.textContent='Итог тиража'}
    setTimeout(()=>{if(P.draw===d&&mounted()&&P.view==='live'){P.resOpen=true;render();if(d.total){confetti&&confetti(M>=6?1:0)}}},1000)}}
- A.run=()=>{A.attach();raf=requestAnimationFrame(frame)};
+ A.run=()=>{A.attach();if(window.CR2_MANUAL)return;raf=requestAnimationFrame(frame)};
+ /* для макетов: показать кадр полёта в момент t (сек), без анимации */
+ A.seek=t=>{if(!A.attached)A.attach();A.dt=t-A.t;A.t=t;draw(t);if(t>=A.end-.01&&!A.done){A.done=true;finish()}};A.sim=sim;
  A.skip=()=>{A.done=true;A.t=A.end;d.tickets.forEach(t=>t.st=t.cat?'land':'sea')};
  return A}
 function burst(fx,x,y,lab,big){const b=document.createElement('div');b.className='cr-burst'+(big?' big':'');b.style.left=x+'px';b.style.top=y+'px';b.innerHTML=Array.from({length:12},(_,i)=>`<i style="--a:${i*30}deg"></i>`).join('');fx.appendChild(b);setTimeout(()=>b.remove(),1000)}
@@ -10814,7 +10817,7 @@ function spray(fx,x,y){const s=document.createElement('div');s.className='cr-spr
 
 async function runDraw(){
  const mine=P.bought>0,n=mine?P.bought:3;
- const d={no:P.no,mine,sp:P.sp,tickets:Array.from({length:n},()=>({cat:mine?rollCat():rollCat()}))};
+ const d={no:P.no,mine,sp:P.sp,tickets:Array.from({length:n},(_,i)=>({cat:window.CR2_FORCE&&mine?(window.CR2_FORCE[i]||0):rollCat()}))};
  d.wins=d.tickets.map(t=>prizeOf(t.cat,P.sp));d.total=mine?d.wins.reduce((a,b)=>a+b,0):0;
  let k=0;d.parts=P.rounds.map(x=>{const s=d.wins.slice(k,k+x.n).reduce((a,b)=>a+b,0);k+=x.n;return {round:x.round,win:s}});
  P.draw=d;P.phase='live';P.no++;P.bought=0;P.rounds=[];P.resOpen=false;
@@ -10852,7 +10855,7 @@ document.addEventListener('click',e=>{if(!root||!e.target.closest('#gBody,#p2Res
  else if(k==='again'){P.resOpen=false;P.view='buy';render()}
  else if(k==='tickets'||k==='close'){P.resOpen=false;render()}
 });
-window.CR2=P;
+window.CR2=P;window.CR2_run=()=>runDraw();
 })();
 
 </script>
