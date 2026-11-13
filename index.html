@@ -11045,7 +11045,6 @@ function pick(amount,units,full){const h=host();if(!h)return;const game=h.game;
    ${S.stb>0&&cap?`<p class="pp-cap">Бонусы</p><div class="pp-row${S.ppBon&&p.bonus?' on b':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${!p.maxB?'Бонусы не нужны':S.ppBon?`Списать ${num(p.bonus)} Б`:`Можно списать ${num(p.maxB)} Б`}</b><small>${!p.maxB&&p.free?'Промокод покрыл покупку':`Есть ${num(S.stb)} Б · до ${cap}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.maxB}" ${p.maxB?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:''}
    ${sum}
    <button type="button" class="pp-done" data-pp-x>Готово</button>
-   ${O.length?`<p class="pp-cap">Промокоды для других игр</p><div class="pp-list">${O.map(c=>`<button type="button" class="pp-opt mute" data-pp-go="${c.id}">${ico(c)}<span class="pp-t"><b>${codeTitle(c)}</b><small>«${gName(c.game)}» · ${dLeft(c.expiresAt)}</small></span><span class="pp-chev">Перейти</span></button>`).join('')}</div>`:''}
    <p class="pp-note">Один промокод на покупку. Остаток — бонусами (до ${cap}% цены в этой игре) и рублями кошелька. В «Играх 24/7» бонусы не начисляются. Выигрыш по билетам с промокодом — рублями.</p></div>`}
  const paint=()=>{const sc=$('.ak-sheet',sh)?.scrollTop||0;sh.innerHTML=body();$('.ak-sheet',sh).scrollTop=sc;render()};
  sh.innerHTML=body();$('#scr').appendChild(sh);requestAnimationFrame(()=>sh.classList.add('show'));
@@ -11058,7 +11057,7 @@ function pick(amount,units,full){const h=host();if(!h)return;const game=h.game;
   if(!code)return fail('Введите код промокода');if(usedCodes.has(code))return fail('Этот промокод уже добавлен');
   const c=DEMO[code];if(!c)return fail('Такого промокода нет — проверьте символы');if(c.expired)return fail('Срок действия промокода истёк');
   usedCodes.add(code);const r=addCode(code,c);
-  if(c.game===game){SEL[game]=r.id;msg={ok:1,t:'Промокод добавлен и применён'}}else msg={ok:1,t:`Промокод для «${gName(c.game)}» — он ниже, в других играх`};paint()});
+  if(c.game===game){SEL[game]=r.id;msg={ok:1,t:'Промокод добавлен и применён'}}else msg={ok:1,t:`Промокод добавлен — он для «${gName(c.game)}», применится в той игре`};paint()});
  sh.addEventListener('input',e=>{if(e.target.name==='c'){e.target.classList.remove('err');const er=$('[data-pp-err]',sh);if(er)er.textContent=''}})}
 const busy=game=>bpFunding.has(game)||(window.QT&&QT[game]);
 document.addEventListener('click',e=>{
