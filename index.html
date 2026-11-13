@@ -10918,7 +10918,7 @@ window.CR2=P;window.CR2_run=()=>runDraw();
      Исключение — пришёл в игру по кнопке «Играть» у конкретного промокода.
    • Типы промокодов (как у Столото): tickets — N бесплатных билетов/игр по номиналу; credit — сумма в ₽ на билеты конкретной игры.
    • Бонусы Столото (1 Б = 1 ₽) списываются на остаток после промокода, но не больше лимита игры (BONUS_CAP: 10–100%).
-     Переключатель включён по умолчанию. В «Играх 24/7» бонусы не начисляются.
+     Переключатель по умолчанию выключен. В «Играх 24/7» бонусы не начисляются.
    • Не хватает рублей — вместо оплаты кнопка «Пополнить на N ₽» (N = нехватка, не меньше MIN_DEP). Отдельного чекаута нет.
      После пополнения игрок остаётся в игре: промокод, бонусы и количество сохранены, кнопка снова «Купить». */
 (()=>{
@@ -10930,7 +10930,7 @@ const gName=g=>(GAMES[g]&&GAMES[g].n)||'';
 /* лимит оплаты бонусами — настраивается по игре (доля цены после промокода) */
 const BONUS_CAP={pk2:1,av2:.3};const capOf=g=>BONUS_CAP[g]!=null?BONUS_CAP[g]:.1;
 const MIN_DEP=100,TG=['pk2','av2'];          /* TG — игры с билетами (Рапидо-формат) */
-S.stb=685;if(S.ppBon==null)S.ppBon=true;
+S.stb=685;S.ppBon=false;          /* списание бонусов по умолчанию выключено — игрок включает сам в шторке «Оплата» */
 const SEL={};let PREFER=null;
 const word=k=>k%10===1&&k%100!==11?'игра':k%10>=2&&k%10<=4&&(k%100<10||k%100>=20)?'игры':'игр';
 const tw=k=>k%10===1&&k%100!==11?'билет':k%10>=2&&k%10<=4&&(k%100<10||k%100>=20)?'билета':'билетов';
@@ -11008,7 +11008,7 @@ const ico=b=>`<span class="pp-ico${isFree(b)?'':' disc'}">${isFree(b)?TK:CR}</sp
 /* в разметке экрана блоков больше нет — всё в шторке */
 function barHTML(){return ''}
 function cfgHTML(game,amount=0,units=1,full){const L=codes(game),b=current(game);
- return `<button type="button" class="pp-cfg${b?' on':''}" data-pp-pick data-pp-amt="${amount}" data-pp-u="${units}" data-pp-full="${full||amount}" aria-label="Промокоды и бонусы${L.length&&!b?': доступно '+L.length:''}">${TK}${b?'<i class="pp-dot ok">✓</i>':L.length?`<i class="pp-dot">${L.length}</i>`:''}</button>`}
+ return `<button type="button" class="pp-cfg${b||(S.ppBon&&S.stb>0)?' on':''}" data-pp-pick data-pp-amt="${amount}" data-pp-u="${units}" data-pp-full="${full||amount}" aria-label="Промокоды и бонусы${L.length&&!b?': доступно '+L.length:''}">${TK}${b?'<i class="pp-dot ok">✓</i>':L.length?`<i class="pp-dot">${L.length}</i>`:''}</button>`}
 function host(){const root=$('#gBody'),g=$('#game'),game=g&&g.dataset.g;if(!root||!game)return null;
  if(root.classList.contains('qf'))return {root,game,kind:'quick'};
  if(TG.includes(game))return {root,game,kind:'tickets'};return null}
@@ -11065,7 +11065,7 @@ document.addEventListener('click',e=>{
  const go=e.target.closest('[data-pbn-go]');if(go)PREFER=go.dataset.pbnGo;
 },true);
 /* при входе в игру промокод не выбран — кроме случая, когда пришли по кнопке «Играть» у промокода */
-const _og=openGame;openGame=function(id){delete SEL[id];if(PREFER){const r=bonusModel.get(PREFER);if(r&&r.game===id)SEL[id]=r.id;PREFER=null}SIG='';_og.apply(this,arguments);setTimeout(render,0);setTimeout(render,150)};
+const _og=openGame;openGame=function(id){delete SEL[id];S.ppBon=false;if(PREFER){const r=bonusModel.get(PREFER);if(r&&r.game===id)SEL[id]=r.id;PREFER=null}SIG='';_og.apply(this,arguments);setTimeout(render,0);setTimeout(render,150)};
 setInterval(()=>{if($('#game')&&!$('#game').classList.contains('off-b'))render()},700);
 
 /* ---------- демо-промокоды ---------- */
