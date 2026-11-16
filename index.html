@@ -3252,7 +3252,8 @@ div.pp-row{cursor:default}
 .pp-u-promo .go{flex:none;font-size:13px;font-weight:700;color:#c9a8ff}.pp-u-promo .go::after{content:" ›"}
 .pp-u-x{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#ffffff1a;font-size:12px}
 .pp-u-bi{width:22px;height:22px;flex:none;color:#7ddc9a}.pp-u-bi svg{width:22px;height:22px}
-.pp-u-bon:not(.on) .pp-u-bi{color:#6f6a80}
+.pp-u-bi{display:grid;place-items:center}.pp-u-bi .header-bonus-icon{display:grid;place-items:center;box-sizing:border-box;width:22px;height:22px;margin:0;border-radius:50%;transform:none;font-style:normal;font-weight:800;font-size:12px;color:#70ed85;background:#093c23;border:2px solid #56d86f}
+.pp-u-bon:not(.on) .pp-u-bi{filter:grayscale(1) brightness(.75)}
 .pp-u-bon .t{flex:1}
 .pp-under small.go{color:#c9a8ff;font-weight:700}.pp-under small.go::after{content:" ›"}
 #game.p2-game .p2-foot{background:linear-gradient(#05050500,#050505 16px);box-shadow:0 24px 0 #050505}
@@ -10520,11 +10521,14 @@ const HIST=[
  {t:'Промокод SPRING · «Весы»: 3 бесплатные игры',s:'Истёк',at:now()-12*D}];
 const log=(t,s)=>HIST.unshift({t,s,at:now()});
 
-function mk(id,code,game,total,days,status,src){return {id,type:'tickets',fs:true,code,title:`«${gName(game)}»: ${total} бесплатн${total===1?'ая игра':total<5?'ые игры':'ых игр'}`,tag:src,game,total,used:0,nominal:GAMES[game].price,status,expiresAt:now()+days*D,validForMs:days*D}}
+function mk(id,code,game,total,days,status,src,nom){nom=nom||GAMES[game].price;return {id,type:'tickets',fs:true,code,title:`«${gName(game)}»: ${total} бесплатн${total===1?'ая игра':total<5?'ые игры':'ых игр'} по ${nom.toLocaleString('ru-RU')} ₽`,tag:src,game,total,used:0,nominal:nom,status,expiresAt:now()+days*D,validForMs:days*D}}
 /* стартовый набор: промокод из письма и бесплатные игры с колеса. Выданный промокод уже привязан к аккаунту — активировать не нужно, только играть */
 function seed(){if(typeof bonusModel==='undefined'||bonusModel.get('pb-chet'))return;
- bonusModel.records.push(mk('pb-chet','CHET-7777-2026','coin',7,6,'active','Промокод CHET-7777-2026 · из письма'));
- const w=mk('pb-wheel',null,'scale',3,2,'active','Колесо удачи');w.used=1;bonusModel.records.push(w)}
+ /* как у Столото: промокод = 1 бесплатная игра конкретной игры, номинал разный */
+ bonusModel.records.push(mk('pb-chet','CHET-7777-2026','coin',1,6,'active','Промокод CHET-7777-2026 · из письма',100));
+ bonusModel.records.push(mk('pb-coin50','COIN-50','coin',1,3,'active','Промокод за вход',50));
+ bonusModel.records.push(mk('pb-coin300','COIN-300','coin',1,1,'active','Промокод за уровень',300));
+ bonusModel.records.push(mk('pb-wheel',null,'scale',1,2,'active','Колесо удачи'))}
 
 const inMvp=g=>{if(!g)return true;const m=MVPS[PCFG.mvp];return SECTIONS.some(s=>m.sec.includes(s.id)&&(typeof secIds==='function'?secIds(s):s.ids).includes(g))};
 function items(){const t=now();return bonusModel.records.filter(b=>inMvp(b.game)&&['tickets','voucher','discount','credit'].includes(b.type)&&['available','active'].includes(b.status)&&b.used<b.total&&b.expiresAt>t)
@@ -11041,9 +11045,9 @@ function cfgHTML(game,amount=0,units=1,full){if(MODE!=='side')return '';const L=
  return `<button type="button" class="pp-cfg${b||(S.ppBon&&S.stb>0)?' on':''}" data-pp-pick data-pp-amt="${amount}" data-pp-u="${units}" data-pp-full="${full||amount}" aria-label="Промокоды и бонусы${L.length&&!b?': доступно '+L.length:''}">${TK}${b?'<i class="pp-dot ok">✓</i>':L.length?`<i class="pp-dot">${L.length}</i>`:''}</button>`}
 const BON='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="M9.5 7.5h4.2a2.3 2.3 0 0 1 0 4.6H9.5v4.4h4.6" fill="none" stroke="#0c2a17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function underHTML(game,amount=0,units=1){if(MODE!=='row')return '';const L=codes(game),b=current(game),p=plan(game,amount,units);
- const promo=b?`<button type="button" class="pp-u-promo on" data-pp-promo>${ico(b)}<span class="t"><b>${b.type==='credit'?`${rub(b.rest)} на ${TG.includes(game)?'билеты':'ставки'}`:`${left(b)} ${TG.includes(game)?tw(left(b)):word(left(b))} бесплатно`}</b><small>Промокод применён</small></span><span class="pp-u-x" data-pp-off role="button" aria-label="Убрать промокод">✕</span></button>`
+ const promo=b?`<button type="button" class="pp-u-promo on" data-pp-promo>${ico(b)}<span class="t"><b>${b.type==='credit'?`${rub(b.rest)} на ${TG.includes(game)?'билеты':'ставки'}`:(TG.includes(game)?`${left(b)} ${tw(left(b))} бесплатно`:`${left(b)} ${word(left(b))} по ${rub(b.nominal)}`)}</b><small>Промокод применён</small></span><span class="pp-u-x" data-pp-off role="button" aria-label="Убрать промокод">✕</span></button>`
   :`<button type="button" class="pp-u-promo" data-pp-promo><span class="pp-ico">${TK}</span><span class="t"><b>Промокод${L.length?` <em>${L.length}</em>`:''}</b><small class="go">${L.length?'Выбрать':'Ввести код'}</small></span></button>`;
- const bon=S.stb>0&&p.cap>0?`<div class="pp-u-bon${S.ppBon&&p.bonus?' on':''}"><span class="pp-u-bi">${BON}</span><span class="t"><b>${S.ppBon&&p.bonus?`−${num(p.bonus)} Б`:'Бонусы'}</b><small>${p.maxB?`${S.ppBon?'из':'до'} ${num(S.ppBon?S.stb:p.maxB)} Б`:p.free?'Не нужны':'—'}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.maxB}" ${p.maxB?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:'';
+ const bon=S.stb>0&&p.cap>0?`<div class="pp-u-bon${S.ppBon&&p.bonus?' on':''}"><span class="pp-u-bi"><i class="header-bonus-icon" aria-hidden="true">Б</i></span><span class="t"><b>${S.ppBon&&p.bonus?`−${num(p.bonus)} Б`:'Бонусы'}</b><small>${p.maxB?`${S.ppBon?'из':'до'} ${num(S.ppBon?S.stb:p.maxB)} Б`:p.free?'Не нужны':'—'}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.maxB}" ${p.maxB?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:'';
  return `<div class="pp-under">${promo}${bon}</div>`}
 function host(){const root=$('#gBody'),g=$('#game'),game=g&&g.dataset.g;if(!root||!game)return null;
  if(root.classList.contains('qf'))return {root,game,kind:'quick'};
@@ -11063,11 +11067,11 @@ function render(){const h=host();if(!h)return;
   const html=cfgHTML(h.game,qAmt(h.root),1),c=$('.pp-cfg',line);if(!html){if(c)c.remove()}else if(!c)line.insertAdjacentHTML('afterbegin',html);else if(c.outerHTML!==html)c.outerHTML=html}
  const amt=qAmt(h.root);if(sig+amt!==SIG){SIG=sig+amt;h.root.classList.toggle('pp-locked',!!lockStake(h.game));rerender(h)}}
 
-const DEMO={FLY300:{type:'credit',game:'av2',amount:300,days:7},POKER3:{type:'tickets',game:'pk2',total:3,days:5},COIN100:{type:'credit',game:'coin',amount:100,days:5},OLD2025:{expired:1}};
+const DEMO={FLY1:{type:'tickets',game:'av2',total:1,days:7},POKER1:{type:'tickets',game:'pk2',total:1,days:5},COIN200:{type:'tickets',game:'coin',total:1,nominal:200,days:5},OLD2025:{expired:1}};
 const usedCodes=new Set();
 function addCode(code,c){const id='pp-'+code;const r={id,code,game:c.game,status:'active',used:0,expiresAt:now()+c.days*D,validForMs:c.days*D,fresh:1};
  if(c.type==='credit')Object.assign(r,{type:'credit',total:1,rest:c.amount,amount:c.amount,nominal:0,title:`${rub(c.amount)} на «${gName(c.game)}»`,tag:'Промокод '+code});
- else Object.assign(r,{type:'tickets',total:c.total,nominal:TG.includes(c.game)?100:GAMES[c.game].price,title:`${c.total} бесплатных «${gName(c.game)}»`,tag:'Промокод '+code});
+ else Object.assign(r,{type:'tickets',total:c.total,nominal:TG.includes(c.game)?100:(c.nominal||GAMES[c.game].price),title:`${c.total} бесплатн. «${gName(c.game)}»`,tag:'Промокод '+code});
  bonusModel.records.push(r);try{bpSync()}catch(e){}return r}
 function closeSheet(sh){sh.classList.remove('show');setTimeout(()=>sh.remove(),250)}
 /* шторка «Оплата»: промокод, бонусы, итог. Выбор сразу применяется; покупка — по-прежнему кнопкой на экране */
@@ -11082,7 +11086,7 @@ function pick(amount,units,full,check,only){const h=host();if(!h)return;const ga
    ${check?`<p class="pp-what">${h.kind==='quick'?`Ставка ${rub(amount)} · «${gName(game)}»`:`${units} ${tw(units)} · «${gName(game)}»`}</p>`:''}
    ${only?'':'<p class="pp-cap">Промокод</p>'}
    <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty">Для этой игры промокодов нет</p>'}</div>
-   <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err${msg&&msg.ok?' ok':''}" data-pp-err>${msg?msg.t:''}</p><p class="pp-demo">Демо-коды: FLY300 · POKER3 · COIN100 · OLD2025</p>
+   <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err${msg&&msg.ok?' ok':''}" data-pp-err>${msg?msg.t:''}</p><p class="pp-demo">Демо-коды: FLY1 · POKER1 · COIN200 · OLD2025</p>
    ${only?'':S.stb>0&&cap?`<p class="pp-cap">Бонусы</p><div class="pp-row${S.ppBon&&p.bonus?' on b':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${!p.maxB?'Бонусы не нужны':S.ppBon?`Списать ${num(p.bonus)} Б`:`Можно списать ${num(p.maxB)} Б`}</b><small>${!p.maxB&&p.free?'Промокод покрыл покупку':`Есть ${num(S.stb)} Б · до ${cap}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.maxB}" ${p.maxB?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:''}
    ${only?'':sum}
    ${only?'':check?`<button type="button" class="pp-done pp-buy${p.short?' topup':''}" data-pp-buy>${p.short?`Пополнить на ${rub(p.topup)}`:p.free?'Забрать бесплатно':`${h.kind==='quick'?'Оплатить':'Купить'} · ${p.promo||p.bonus||full>amount?`<s class="pp-old">${num(full)}</s>`:''}${rub(p.wallet)}`}</button>`:'<button type="button" class="pp-done" data-pp-x>Готово</button>'}
@@ -11122,9 +11126,10 @@ setInterval(()=>{if($('#game')&&!$('#game').classList.contains('off-b'))render()
 /* ---------- демо-промокоды ---------- */
 function seed(){if(bonusModel.get('pp-av2-cr'))return;
  const add=o=>{const d=o.days;delete o.days;bonusModel.records.push(Object.assign({used:0,status:'active',expiresAt:now()+d*D,validForMs:d*D},o))};
- add({id:'pp-av2-cr',type:'credit',code:'FLY-300',game:'av2',total:1,rest:300,amount:300,nominal:0,title:'300 ₽ на билеты «Острова удачи 2.0»',tag:'Промокод FLY-300',days:5});
- add({id:'pp-av2-fr',type:'tickets',code:'SKY-2',game:'av2',total:2,nominal:100,title:'2 бесплатных билета «Острова удачи 2.0»',tag:'Промокод SKY-2',days:1});
- add({id:'pp-pk2-fr',type:'tickets',code:'POKER-3',game:'pk2',total:3,nominal:100,title:'3 бесплатных билета «Покера 2.0»',tag:'Промокод POKER-3',days:3});
+ /* как у Столото: промокод = 1 бесплатный билет конкретной игры */
+ add({id:'pp-av2-cr',type:'tickets',code:'FLY-1',game:'av2',total:1,nominal:100,title:'1 бесплатный билет «Острова удачи 2.0»',tag:'Промокод FLY-1',days:5});
+ add({id:'pp-av2-fr',type:'tickets',code:'SKY-1',game:'av2',total:1,nominal:100,title:'1 бесплатный билет «Острова удачи 2.0»',tag:'Промокод SKY-1',days:1});
+ add({id:'pp-pk2-fr',type:'tickets',code:'POKER-1',game:'pk2',total:1,nominal:100,title:'1 бесплатный билет «Покера 2.0»',tag:'Промокод POKER-1',days:3});
  try{bpSync()}catch(e){}}
 seed();hdr();
 window.PP={underHTML,mode:()=>MODE,setMode:v=>{MODE=['check','side','row'].includes(v)?v:'row';try{localStorage.setItem('payMode2',MODE)}catch(e){}SIG='';render();const h=host();if(h)rerender(h)},prefer:id=>{PREFER=id},barHTML,cfgHTML,render,price,plan,cta,lockStake,payLabel,codes,current,units:1,label:codeTitle,isFree,caps:BONUS_CAP};
