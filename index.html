@@ -2977,6 +2977,8 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .ak-acc-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .ak-acc .ak-left.in-top{position:static;margin:0;align-self:auto}
 .ak-acc-st{position:absolute;right:16px;bottom:24px;z-index:2}
+.ak-hero .ak-left.in-top{position:static;margin:0;align-self:auto}
+.ak-hero-st{position:relative;z-index:2;align-self:center;margin-top:4px}
 .ak-left{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;background:#0b081766;color:#e9e1ff;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}
 .ak-left svg{width:12px;height:12px}
 /* акцентная карточка */
@@ -11234,8 +11236,8 @@ function list(){const act=AK.filter(a=>a.end>now());
 
 /* ---------- страница акции ---------- */
 function detail(a){const J=joined(a),Dn=done(a);
- return `<div class="ak-hero" style="--akbg:${a.bg};--akglow:${a.glow}"><span class="ak-acc-top"><span class="ak-tag">${a.tag}</span>${badge(a)}</span>
-  <img class="ak-hero-art" src="${art(a)}" alt="" draggable="false"><h3>${a.title}</h3><p>${a.lead}</p><span class="ak-left">${ICO.clock}до ${dShort(a.end)} · ${left(a.end)}</span></div>
+ return `<div class="ak-hero" style="--akbg:${a.bg};--akglow:${a.glow}"><span class="ak-acc-top"><span class="ak-tag">${a.tag}</span><span class="ak-left in-top">${ICO.clock}до ${dShort(a.end)} · ${left(a.end)}</span></span>
+  <img class="ak-hero-art" src="${art(a)}" alt="" draggable="false"><h3>${a.title}</h3><p>${a.lead}</p>${badge(a)?`<span class="ak-hero-st">${badge(a)}</span>`:''}</div>
   ${J&&!Dn?`<div class="ak-box">${bar(a)}</div>`:''}
   ${Dn?`<div class="ak-box ak-won"><span class="ak-won-i">${ICO.gift}</span><span><b>Условия выполнены</b><small>${a.rewardTxt} — уже в «Бонусы и промокоды»</small></span></div>`:''}
   <div class="ak-box"><h4>${a.auto?'Выгода':'Награда'}</h4><p class="ak-reward">${ICO.gift}<span>${a.rewardTxt}</span></p></div>
