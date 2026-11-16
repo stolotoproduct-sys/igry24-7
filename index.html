@@ -1226,6 +1226,7 @@ button:not(:disabled):active{transform:scale(.97)}
 .pp-under .pp-u-bon .t b{grid-row:1;grid-column:2;line-height:1.15}
 .pp-under .pp-u-bon .t small{grid-row:2;grid-column:2/4;line-height:1.15}
 .pp-under .pp-u-bon .pp-sw{grid-row:1;grid-column:3}
+.pp-ok-i{position:relative;align-self:center;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:800;color:#0c2a17;background:radial-gradient(circle at 35% 30%,#b9ffd0,#56d86f);box-shadow:0 0 24px #56d86f88}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -11186,8 +11187,20 @@ function pick(amount,units,full,check,only){const h=host();if(!h)return;const ga
   if(!code)return fail('Введите код промокода');if(usedCodes.has(code))return fail('Этот промокод уже добавлен');
   const c=DEMO[code];if(!c)return fail('Такого промокода нет — проверьте символы');if(c.expired)return fail('Срок действия промокода истёк');
   usedCodes.add(code);const r=addCode(code,c);
-  if(c.game===game){selPromo(game,r.id);if(only){closeSheet(sh);render();toast('Промокод применён');return}msg={ok:1,t:'Промокод добавлен и применён'}}else msg={ok:1,t:`Промокод добавлен — он для «${gName(c.game)}», применится в той игре`};paint()});
+  if(c.game===game)selPromo(game,r.id);closeSheet(sh);render();try{haptic()}catch(_){}setTimeout(()=>okPop(r,game),180)});
  sh.addEventListener('input',e=>{if(e.target.name==='c'){e.target.classList.remove('err');const er=$('[data-pp-err]',sh);if(er)er.textContent=''}})}
+/* попап «Промокод добавлен»: что за промокод, к какой игре, применён ли уже */
+function okPop(r,game){const here=r.game===game,G=GAMES[r.game]||{};
+ let w=document.getElementById('ppOk');if(!w){w=document.createElement('div');w.id='ppOk';w.className='ak-sheet-bg rwd pp-ok';w.setAttribute('role','dialog');w.setAttribute('aria-modal','true');$('#scr').appendChild(w)}
+ w.innerHTML=`<div class="rwd-c"><div class="rwd-glow"></div><span class="pp-ok-i" aria-hidden="true">✓</span>
+  <small class="rwd-src">Промокод ${r.code}</small><h3>Промокод добавлен</h3>
+  <div class="rwd-list"><div class="rwd-item"><img src="${IMG[G.img]||''}" alt=""><span><b>${codeTitle(r)}</b><small>в «${G.n||''}» · ${dLeft(r.expiresAt)}</small></span></div></div>
+  <p class="rwd-note">${here?'Уже применён к этой игре — осталось нажать кнопку оплаты.':`Он для «${G.n||''}» и применится, когда вы откроете эту игру. Найти его можно в «Бонусы и промокоды».`}</p>
+  ${here?'<button type="button" class="ak-go" data-ppok-x>Отлично</button>':`<button type="button" class="ak-go" data-ppok-go="${r.id}">Перейти в «${G.n||''}»</button><button type="button" class="rwd-later" data-ppok-x>Позже</button>`}</div>`;
+ requestAnimationFrame(()=>w.classList.add('show'))}
+document.addEventListener('click',e=>{const w=e.target.closest('#ppOk');if(!w)return;const close=()=>w.classList.remove('show');
+ const g=e.target.closest('[data-ppok-go]');if(g){close();const r=bonusModel.get(g.dataset.ppokGo);if(r){PREFER=r.id;try{go('lobby')}catch(_){}setTimeout(()=>openGame(r.game),200)}return}
+ if(e.target.closest('[data-ppok-x]')||e.target===w)close()});
 const busy=game=>bpFunding.has(game)||(window.QT&&QT[game]);
 let PASS=false;
 document.addEventListener('click',e=>{
