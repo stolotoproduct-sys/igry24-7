@@ -2668,6 +2668,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .cr-tabs button:disabled{opacity:.35;cursor:default}
 /* HUD */
 .cr-hud{position:absolute;inset:0;z-index:6;pointer-events:none}
+#crTag{display:none!important}
 .cr-mult{position:absolute;left:0;right:0;top:10px;display:flex;flex-direction:column;align-items:center;gap:0}
 .cr-mult b{font:900 36px/1 StoloText,Inter,sans-serif;color:#fff;text-shadow:0 3px 0 #0a3a7a,0 0 18px #5fc8ff}
 .cr-mult small{font-size:12px;line-height:16px;font-weight:700;color:#e6f2ff;text-shadow:0 1px 3px #000a}
@@ -10662,7 +10663,7 @@ let root=null,raf=0;
 const mounted=()=>root&&root.isConnected&&$('#game').dataset.g===ID;
 /* общие разделы «Рапидо» — те же, что у «Покера 2.0»: меню, архив числами, мои билеты, правила */
 const RT=RapidoTabs({P,ID,root:()=>root,hist:()=>P.dh,mounted:()=>mounted(),render:()=>render(),
- name:c=>c===8?'Золотая звезда':'посадка '+CAT[c].x,none:'самолёт сбит',rowName:c=>c===8?'Золотая звезда':'Посадка '+CAT[c].x,prize:(c,sp)=>prizeOf(Math.min(c,8),sp),rollCat:()=>rollCat(),back:CR2ART.plane.src,rules:()=>infoHTML(),
+ name:c=>c===8?'Золотая звезда':`посадка на «${CAT[c].n}»`,none:'самолёт сбит',rowName:c=>c===8?'Золотая звезда':`Остров «${CAT[c].n}»`,prize:(c,sp)=>prizeOf(Math.min(c,8),sp),rollCat:()=>rollCat(),back:CR2ART.plane.src,rules:()=>infoHTML(),
  price:PRICE,timer:()=>timer(),fmt:n=>fmt(n),plural:n=>plural(n),visual:'полёт',
  gameIcon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-2 7.5 1L17 4.5a2.1 2.1 0 0 1 3 3L14.5 13l1 7.5-2 1.5-2.5-7.5"/><path d="m6 17 2 1-1 2-2-1z"/></svg>',
  leave:()=>{const d=P.draw;if(P.view==='live'&&d&&!d.done&&d.anim){d.anim.skip();d.done=true;settle(d)}},
@@ -10697,14 +10698,16 @@ function stageHTML(){
 function topHTML(){const live=P.view==='live';
  return `<div class="p2-top cr-top"><span class="cr-logo">${spr('plane',52)}</span><div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
   <div class="r">${live?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Полёт<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div>${live?'':`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`}</div></div>`}
-function histHTML(){return `<div class="cr-hist">${P.hist.slice(0,10).map(c=>`<span class="${c?'w':''}${c>=6?' big':''}">${c?CAT[c].x:'💧'}</span>`).join('')}</div>`}
+/* без множителей: всё в рублях — выигрыш может быть непропорционален «иксам» (распределительные тиражи) */
+const rubS=v=>v>=1000?(v%1000?(v/1000).toFixed(1).replace('.',','):v/1000)+' тыс ₽':v+' ₽';
+function histHTML(){return `<div class="cr-hist">${P.hist.slice(0,10).map(c=>`<span class="${c?'w':''}${c>=6?' big':''}">${c===8?'★':c?rubS(CAT[c].v):'💧'}</span>`).join('')}</div>`}
 function buyHTML(){if(P.view!=='buy')return '';const left=MAXQ-P.bought;const ppb=window.PP?PP.barHTML(ID,P.qty*PAY(),P.qty):'';
  return `<div class="cr-qty"><div class="cr-step"><button type="button" data-cr-step="-1" aria-label="Меньше билетов" ${P.qty<=1?'disabled':''}>−</button><div class="v"><b>${P.qty}</b><small>${plural(P.qty)}</small></div><button type="button" data-cr-step="1" aria-label="Больше билетов" ${P.qty>=left?'disabled':''}>+</button></div><div class="cr-tabs" role="tablist">${QTY.map(q=>`<button type="button" role="tab" aria-selected="${P.qty===q}" class="${P.qty===q?'on':''}" data-cr-q="${q}" ${q>left?'disabled':''}>${q}</button>`).join('')}</div></div>${ppb}`}   /* купленные билеты текущего тиража — в «Моих билетах», как в покере */
 function tixHTML(d){if(!d||!d.mine)return '';
- return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':`${CAT[t.cat].x} · ${bpLabel(d.wins[i])}`}</span>`}).join('')}</div>`}
-function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Купите билеты и смотрите полёт. Бонусы увеличивают выигрыш, ракеты уменьшают его вдвое. Самолёт сел — забираете сумму. Сбили — выигрыша нет.</p>
- <div class="p2-th"><span>Множитель</span><span>Выигрыш за билет</span></div>
- ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${CAT[c].x}</span><b>${c===8?'Золотая звезда':'Приводнение'}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
+ return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':bpLabel(d.wins[i])}</span>`}).join('')}</div>`}
+function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Купите билеты и смотрите полёт. Бонусы добавляют рубли к выигрышу, ракеты отнимают. Самолёт сел — забираете сумму. Сбили — выигрыша нет.</p>
+ <div class="p2-th"><span>Где сел самолёт</span><span>Выигрыш за билет</span></div>
+ ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${c===8?'★':'🏝'}</span><b>${c===8?'Золотая звезда':`Остров «${CAT[c].n}»`}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
  <div class="cr-row sea"><span class="cr-rx">💧</span><b>Сбит ракетой</b><em>0 ₽</em></div>
  <p class="p2-note">Это билет «Рапидо»: выигрыш определяется тиражом, полёт его показывает. Цена билета — ${PAY()<PRICE?`${PAY()} ₽ вместо ${PRICE} ₽ (акция)`:PRICE+' ₽'}.</p></div>`}
 function footHTML(){if(P.view==='buy'){const base=P.qty*PAY(),v=P.bought?'Докупить':'Купить',c=window.PP?PP.cta(ID,base,P.qty,v,P.qty*PRICE):{cls:'',html:`<span>${v}</span><b>${fmt(base)} ₽</b>`};return `<div class="p2-foot"><div class="pp-line">${window.PP?PP.cfgHTML(ID,base,P.qty,P.qty*PRICE):''}<button type="button" class="p2-pay ${c.cls}" data-cr="pay" data-pp-amt="${base}" data-pp-u="${P.qty}" data-pp-full="${P.qty*PRICE}" ${P.qty?'':'disabled'}>${c.html}</button></div>${window.PP?PP.underHTML(ID,P.qty*(typeof PAY==='function'?PAY():PRICE),P.qty):''}</div>`}
@@ -10712,7 +10715,7 @@ function footHTML(){if(P.view==='buy'){const base=P.qty*PAY(),v=P.bought?'Док
 function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
  const won=d.total>0,best=Math.max(0,...d.tickets.map(t=>t.cat)),land=d.tickets.filter(t=>t.cat).length;
  return `<div class="p2-res show cr-res" role="dialog" aria-modal="true" aria-labelledby="crResT"><div class="p2-sheet${won?' won':''}${best>=6?' big':''}"><button type="button" class="p2-x" data-cr="close" aria-label="Закрыть">×</button>
-  <small class="p2-cap" id="crResT">${best===8?'Суперприз!':won?'Итог полёта':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?(best===8?'Золотая звезда':'Посадка · x'+fmt(d.total/PRICE)):'Самолёт сбит'}</b>
+  <small class="p2-cap" id="crResT">${best===8?'Суперприз!':won?'Итог полёта':'Тираж № '+String(d.no).padStart(5,'0')}</small><b class="p2-cn">${won?(best===8?'Золотая звезда':'Самолёт приземлился'):'Самолёт сбит'}</b>
   <div class="cr-res-art">${won?`<div class="cr-res-pl">${spr('plane',96)}</div><i class="cr-res-water"></i>`:'<div class="cr-res-sea">💧</div>'}</div>
   <div class="p2-sum"><small>Выигрыш</small><b>${won?bpLabel(d.total):'0 ₽'}</b><small>${d.tickets.length} ${plural(d.tickets.length)} · с выигрышем ${land} · без выигрыша ${d.tickets.length-land}</small></div>
   <button type="button" class="p2-gold" data-cr="again">Играть ещё</button><button type="button" class="p2-dark" data-cr="tickets">Смотреть билеты</button></div></div>`}
@@ -10807,6 +10810,9 @@ function makeAnim(d){
  const y=t=>at(sim.Y,t),S=t=>at(sim.X,t);
  /* множитель по ходу полёта и моменты, когда билеты «сыграли» */
  let v=0;const vals=ev.map(e=>(v=applyOp(v,e),v));
+ /* сколько рублей даёт / забирает каждое событие (считаем заранее — на шариках сразу видно сумму) */
+ const DL=(()=>{let a=0;return ev.map(e=>{const b=a;a=applyOp(a,e);return e.op==='kill'?-b*PRICE:(a-b)*PRICE})})();
+ const rubLab=(e,i)=>e.op==='star'?'★':(DL[i]>=0?'+':'−')+fmt(Math.abs(DL[i]))+' ₽';
  const A={d,M,end:sim.end+.2,t:0,started:0,attached:false,ev};
  /* билеты раскрываются в финале — после посадки или падения, по очереди */
  const tEnd=sim.tW||sim.tS||sim.end-1;d.tickets.forEach((t,i)=>{t.st='fly';t.at=tEnd+.25+Math.min(i,30)*.04});
@@ -10817,17 +10823,18 @@ function makeAnim(d){
   let back='',front='';
   ev.forEach((e,i)=>{const wx=HX+e.x;
    if(isRocket(e))front+=`<div class="cr-rocket${e.op==='kill'?' kill':''}" data-i="${i}">${spr('rocket',40)}</div>`;
-   else back+=wo(wx,e.y,'bon'+(e.op==='*'?' mul':'')+(e.op==='star'?' star':''),`<div class="cr-bon"><b>${opLabel(e)}</b></div>`)});
+   else back+=wo(wx,e.y,'bon'+(DL[i]>=500?' mul':'')+(e.op==='star'?' star':''),`<div class="cr-bon"><b>${rubLab(e,i)}</b></div>`)});
   back+=wo(SLX,SEA+8,'sling',slingHTML());
   /* поле цифр как в референсе: много бонусов вокруг, самолёт собирает только те, что на его пути */
   const xs=sim.X,xAt=wx=>{let lo=0,hi=xs.length-1;while(lo<hi){const m=(lo+hi)>>1;if(xs[m]<wx)lo=m+1;else hi=m}return lo};
   const farX=(sim.xW||xs[xs.length-1])+260;
-  for(let wx=60;wx<farX;wx+=ri(16,30)){const yy=ri(46,SEA-46),i=xAt(wx-HX),py=sim.Y[i];if(Math.abs(yy-py)<44)continue;if(ev.some(e=>Math.abs(HX+e.x-wx)<36&&Math.abs(e.y-yy)<40))continue;
-   const o=Math.random()<.28?{op:'*',n:pick([2,2,3,4,5])}:{op:'+',n:pick([1,1,2,2,5,10])};back+=wo(wx,yy,'bon deco'+(o.op==='*'?' mul':''),`<div class="cr-bon"><b>${opLabel(o)}</b></div>`)}
+  for(let wx=60;wx<farX;wx+=ri(38,64)){   /* суммы в рублях длиннее «+2» — шариков вдвое меньше, чтобы не было каши */
+   const yy=ri(46,SEA-46),i=xAt(wx-HX),py=sim.Y[i];if(Math.abs(yy-py)<44)continue;if(ev.some(e=>Math.abs(HX+e.x-wx)<36&&Math.abs(e.y-yy)<40))continue;
+   const big=Math.random()<.28,r=big?pick([500,1000,2000]):pick([100,100,200,200,300]);back+=wo(wx,yy,'bon deco'+(big?' mul':''),`<div class="cr-bon"><b>+${fmt(r)} ₽</b></div>`)}
   if(sim.tW)back+=wo(HX+sim.xW-46,LAND_Y+17,'deck',`<div class="cr-deck"><i></i></div>`);
   w.innerHTML=back;fx.innerHTML=front;
   pl.innerHTML=`<svg class="cr-band" id="crBand" viewBox="0 0 360 280" preserveAspectRatio="none"><path d=""/></svg><div class="cr-puffs" id="crPuffs">${'<i></i>'.repeat(28)}</div><div class="cr-hero" id="crHero">${plane('hero',PW)}</div><div class="cr-tag" id="crTag"><div class="cr-stack" id="crStack"></div><b id="crAmt"></b></div>`;
-  hud.innerHTML=`<div class="cr-mult"><b id="crX">x0</b><small id="crXs">Рогатка заряжена…</small></div>`+(d.mine?`<div class="cr-count"><span>✈ <b id="crFly">${d.tickets.length}</b></span><span>✓ <b id="crLand">0</b></span><span>💧 <b id="crSea">0</b></span><span class="sum">Выигрыш <b id="crSum">0</b> ₽</span></div>`:'');
+  hud.innerHTML=`<div class="cr-mult"><b id="crX">0 ₽</b><small id="crXs">Рогатка заряжена…</small></div>`+(d.mine?`<div class="cr-count"><span>✈ <b id="crFly">${d.tickets.length}</b></span><span>✓ <b id="crLand">0</b></span><span>💧 <b id="crSea">0</b></span><span class="sum">Выигрыш <b id="crSum">0</b> ₽</span></div>`:'');
   A.el={w,pl,fx,hud,st,cam:$('#crCam',root),ly:$$('#crBg .cr-ly',root).map(e=>[e,+e.dataset.k,+e.dataset.tw]),hero:$('#crHero',root),tag:$('#crTag',root),stk:$('#crStack',root),amt:$('#crAmt',root),pf:$$('#crPuffs i',root).map(e=>({e,wx:0,y:0,t0:-9})),band:$('#crBand path',root),wo:$$('.cr-wo',root),rk:$$('.cr-rocket',root),sl:$('.cr-wo.sling',root)};A.attached=true;A.shake=0;A.ze=1.15;A.pi=0;A.pt=0;
   if(A.done)frame(performance.now())};
  function frame(now){
@@ -10861,7 +10868,7 @@ function makeAnim(d){
   for(const r of E.rk){const e=ev[+r.dataset.i],u=e.t-t;if(u>1.1||r.dataset.done){r.style.opacity=0;continue}if(u<=0){r.dataset.done=1;r.style.opacity=0;continue}
    const rx=HX+14+u*320,ry=e.y-2;r.style.opacity=1;r.style.transform=`translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0) rotate(-2.36rad)`}
   /* события */
-  while(ei<ev.length&&t>=ev[ei].t){hit(ev[ei],hy);ei++}
+  while(ei<ev.length&&t>=ev[ei].t){hit(ev[ei],hy,ei);ei++}
   if(sim.tS&&t>=sim.tS&&!A.splashed){A.splashed=1;splash(E.fx,HX,SEA+4);E.hero.style.opacity=0;A.shake=1;flash('sea');sub('Самолёт в море · выигрыш 0 ₽');SFX&&SFX.lose&&SFX.lose()}
   if(sim.tW&&t>=sim.tW&&!A.landed){A.landed=1;A.shake=.35;flash('gold');dust(E.fx,HX-8,LAND_Y+18);sub(star?'Суперприз!':'Посадка!');SFX.win&&SFX.win();const h=E.hud;if(h)h.insertAdjacentHTML('beforeend',`<div class="cr-win"><small>Выигрыш</small><b>${bpLabel(TOT)}</b></div>`)}
   /* камера: ведёт самолёт по высоте, на событиях — толчок зума */
@@ -10869,21 +10876,22 @@ function makeAnim(d){
   A.shake=Math.max(0,A.shake-(A.dt||0)*2.4);const k=A.shake*A.shake*7,shx=(Math.random()-.5)*k,shy=(Math.random()-.5)*k;
   const fy=Math.max(120,Math.min(190,hyy));E.cam.style.transform=`translate3d(${shx.toFixed(1)}px,${shy.toFixed(1)}px,0) translate(${HX}px,${fy.toFixed(1)}px) scale(${z.toFixed(3)}) translate(${-HX}px,${(-fy).toFixed(1)}px)`;
   /* статусы билетов */
-  let fly=0,land=0,sea=0,sum=0;d.tickets.forEach((tk,i)=>{if(tk.st==='fly'&&t>=tk.at){tk.st=tk.cat?'land':'sea';const c=$(`.cr-t[data-i="${i}"]`,root);if(c){c.className='cr-t '+tk.st+(tk.cat>=6?' big':'');c.textContent=tk.cat?`${CAT[tk.cat].x} · ${bpLabel(d.wins[i])}`:'💧 0 ₽';c.classList.add('pop')}}
+  let fly=0,land=0,sea=0,sum=0;d.tickets.forEach((tk,i)=>{if(tk.st==='fly'&&t>=tk.at){tk.st=tk.cat?'land':'sea';const c=$(`.cr-t[data-i="${i}"]`,root);if(c){c.className='cr-t '+tk.st+(tk.cat>=6?' big':'');c.textContent=tk.cat?bpLabel(d.wins[i]):'💧 0 ₽';c.classList.add('pop')}}
    if(tk.st==='fly')fly++;else if(tk.st==='land')land++;else sea++});
   /* выигрыш внизу = сумма над самолётом: в конце это ровно общий выигрыш тиража */
   const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(A.splashed?0:amtOf(cur))}}
- function hit(e,hy){const E=A.el;
+ function hit(e,hy,i){const E=A.el;
   cur=applyOp(cur,e);if(e.op==='star')star=true;
   if(isRocket(e)){A.shake=1;A.kick=.08;flash('fire');boom(E.fx,HX+6,hy+2);SFX.boom&&SFX.boom();haptic&&haptic(28);
-   sub(e.op==='kill'?'Ракета сбила самолёт!':'Ракета! Множитель ÷2')}
+   sub(e.op==='kill'?'Ракета сбила самолёт!':`Ракета! ${rubLab(e,i)}`)}
   else{const b=E.wo.find(o=>o.classList.contains('bon')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');
    burst(E.fx,HX+10,hy-2,opLabel(e),e.op==='star'||cur>=50);A.kick=.03;
-   SFX.price&&SFX.price();haptic&&haptic(10);sub(e.op==='star'?'Золотая звезда — суперприз!':e.op==='*'?`Множитель ×${e.n}!`:`Бонус +${e.n}`)}
-  setX(cur,e)}
- function setX(v,e){const E=A.el;if(E.stk){E.stk.insertAdjacentHTML('beforeend',`<i class="${isRocket(e)?'bad':'good'}">${e.op==='kill'?'💥':opLabel(e)}</i>`);while(E.stk.children.length>6)E.stk.firstElementChild.remove()}
+   SFX.price&&SFX.price();haptic&&haptic(10);sub(e.op==='star'?'Золотая звезда — суперприз!':`Бонус ${rubLab(e,i)}`)}
+  setX(cur,e,i,hy)}
+ /* вместо столбика сумм над самолётом — одна всплывающая сумма события, итог крупно сверху */
+ function setX(v,e,i,hy){const E=A.el;if(e.op!=='kill'&&e.op!=='star'&&hy!=null)floatTxt(E.fx,HX+8,hy-26,rubLab(e,i),isRocket(e)?'bad':'good');
   if(E.amt)E.amt.textContent=e.op==='kill'?'0 ₽':bpLabel(amtOf(v));
-  const x=$('#crX',root);if(!x)return;x.textContent=xLabel(v,star);const p=x.parentNode;p.classList.remove('pulse','down');void x.offsetWidth;p.classList.add(isRocket(e)?'down':'pulse');p.classList.toggle('hot',star||v>=50);p.classList.toggle('dead',e.op==='kill')}
+  const x=$('#crX',root);if(!x)return;x.textContent=star?'Суперприз':e.op==='kill'?'0 ₽':bpLabel(amtOf(v));const p=x.parentNode;p.classList.remove('pulse','down');void x.offsetWidth;p.classList.add(isRocket(e)?'down':'pulse');p.classList.toggle('hot',star||v>=50);p.classList.toggle('dead',e.op==='kill')}
  function flash(kind){const f=$('#crFlash',root);if(!f)return;f.className='cr-flash '+kind;void f.offsetWidth;f.classList.add('on')}
  function finish(){d.done=true;settle(d);if(d.mine&&mounted()&&P.view==='live'){const b=$('[data-cr="result"]',root);if(b){b.disabled=false;b.textContent='Итог тиража'}
    setTimeout(()=>{if(P.draw===d&&mounted()&&P.view==='live'){P.resOpen=true;render();if(d.total){confetti&&confetti(M>=6?1:0)}}},1000)}}
