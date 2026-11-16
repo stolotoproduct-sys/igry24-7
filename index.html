@@ -3257,6 +3257,9 @@ div.pp-row{cursor:default}
 .pp-u-bon .t{flex:1}
 .pp-under small.go{color:#c9a8ff;font-weight:700}.pp-under small.go::after{content:" ›"}
 #game.p2-game .p2-foot{background:linear-gradient(#05050500,#050505 16px);box-shadow:0 24px 0 #050505}
+/* покер: кнопка оплаты внутри экрана, не прилипает к меню */
+#game.p2-game .p2-foot.inline{position:static;margin:0;padding:0 16px;background:none;box-shadow:none}
+#game.p2-game .p2.p2-inl{padding-bottom:calc(var(--tabh,80px) + 12px)}
 .pp-what{margin:0 16px 12px;font-size:14px;color:#c9bfe3}
 .pp-done.pp-buy{background:linear-gradient(180deg,#ffe066,#ffc400);color:#1a1400}
 .pp-done.pp-buy.topup{background:linear-gradient(180deg,#b98bff,#7b3fe4);color:#fff}
@@ -9955,7 +9958,7 @@ function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
 const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
 
 function render(){if(!mounted())return;const sc=root.scrollTop,tx=$('#p2Tix',root)?.scrollLeft||0;
- root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}">${topHTML()}${tableHTML()}${buyHTML()}${legalHTML()}</div>${footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
+ root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}${P.view==='buy'?' p2-inl':''}">${topHTML()}${tableHTML()}${buyHTML()}${P.view==='buy'?footHTML().replace('class="p2-foot"','class="p2-foot inline"'):''}${legalHTML()}</div>${P.view==='buy'?'':footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();const d=P.draw;if(d&&P.view==='live'&&d.shown>=5&&!d.dealt)setTimeout(()=>d.dealt=true,900)}
 window.P2_rerender=()=>{try{if(P.view==='buy'&&P.tab==='game')render()}catch(e){}};
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%'}
