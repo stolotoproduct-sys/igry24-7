@@ -10754,11 +10754,11 @@ const ADDS=[1,2,3,4,5,8,10,15,20,25,30,40,50,100,150,200,300];
 const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
 /* цепочка бонусов и ракет, которая заканчивается ровно на множителе target (0 — проигрыш) */
 function planOps(target,starEnd){
- if(!target){const ops=[];let v=0;const k=ri(2,5);
+ if(!target){const ops=[];let v=0;const k=ri(7,11);
   for(let i=0;i<k;i++){if(v>=4&&v%2===0&&Math.random()<.3&&ops.length&&ops[ops.length-1].op!=='/'){ops.push({op:'/',n:2});v/=2}else if(v&&Math.random()<.35){const m=pick([2,3]);ops.push({op:'*',n:m});v*=m}else{const a=pick([1,2,3,5,10]);ops.push({op:'+',n:a});v+=a}}
   ops.push({op:'kill',n:0});return ops}
- const lim=Math.max(target*2,10),minK=target<=2?3:target<=10?5:7;
- for(let tr=0;tr<6000;tr++){const ops=[];let v=0,rk=0;const k=ri(minK,minK+5);
+ const lim=Math.max(target*2,10),minK=target<=2?8:target<=10?9:10;   /* длинный полёт: 30–60 с */
+ for(let tr=0;tr<6000;tr++){const ops=[];let v=0,rk=0;const k=ri(minK,minK+2);
   for(let i=0;i<k-1;i++){const r=Math.random(),last=ops[ops.length-1];
    if(v>=2&&v%2===0&&r<.24&&rk<3&&(!last||last.op!=='/')){ops.push({op:'/',n:2});v/=2;rk++;continue}
    if(v>=1&&r<.5){const m=pick([2,2,3,5]);if(v*m<=lim){ops.push({op:'*',n:m});v*=m;continue}}
@@ -10766,18 +10766,23 @@ function planOps(target,starEnd){
   /* последний шаг — ровно в цель */
   let fin=null;if(v<target&&ADDS.includes(target-v))fin={op:'+',n:target-v};else if(v&&target%v===0&&[2,3,5,10].includes(target/v))fin={op:'*',n:target/v};
   if(!fin||ops.length+1<minK)continue;ops.push(fin);if(starEnd)ops.push({op:'star',n:0});return ops}
- return [{op:'+',n:target}].concat(starEnd?[{op:'star',n:0}]:[])}
+ /* запасной путь: сумма набирается мелкими бонусами, длину добираем парами «бонус ×2 → ракета ÷2» (итог не меняется) */
+ const ops=[];let rem=target;while(rem>0){const a=pick(ADDS.filter(x=>x<=rem).concat([1]));ops.push({op:'+',n:a});rem-=a}
+ while(ops.length<minK+ri(0,1)){const at=1+Math.floor(Math.random()*ops.length);ops.splice(at,0,{op:'*',n:2},{op:'/',n:2})}
+ if(starEnd)ops.push({op:'star',n:0});return ops}
 const applyOp=(v,o)=>o.op==='+'?v+o.n:o.op==='*'?v*o.n:o.op==='/'?v/o.n:o.op==='kill'?0:v;
 const opLabel=o=>o.op==='+'?'+'+o.n:o.op==='*'?'×'+o.n:o.op==='/'?'÷'+o.n:o.op==='star'?'★':'';
 const isRocket=o=>o.op==='/'||o.op==='kill';
 const xLabel=(v,star)=>star?'★':'x'+fmt(v);
 /* баллистика: шаг 1/120 с, импульсы в моменты событий */
-function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch';
+/* полёт 30–60 с: после бонуса самолёт на вершине уходит в «крейсерский» отрезок — летит ровно 4–7 с, мимо проплывают острова и шарики */
+const CRUISE=()=>ri(40,70)/10;
+function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch',cr0=-1,cr1=-1,crY=0;
  const ev=[];let k=0,next=TR;
  /* выстрел: вверх-вправо до первой вершины */
  const apex0=ri(84,104);
  const out={ev,Y,X,dt};
- for(let i=0;i<120*40;i++){
+ for(let i=0;i<120*120;i++){
   if(t>=TR&&phase==='launch'){phase='fly';vy=-Math.sqrt(2*GRV*(y-apex0));next=TR+Math.sqrt(2*(y-apex0)/GRV)+.12}
   if(phase==='fly'&&t>=next&&k<ops.length){const o=ops[k];ev.push({...o,t,x,y,k});
    if(o.op==='kill'){phase='fall';vy=60}
@@ -10785,14 +10790,16 @@ function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,v
     const room=YF-y;vy=room>70?200:room>35?110:40;const tt=(-vy+Math.sqrt(vy*vy+2*GRV*Math.max(4,room)))/GRV;next=t+Math.max(.26,Math.min(.55,tt*.8))}
    else{const ap=Math.max(78,Math.min(y-28,ri(80,140)));vy=-Math.sqrt(2*GRV*Math.max(12,y-ap));
     /* полёт до вершины и обратно до безопасной высоты */
-    const tot=-vy/GRV+Math.sqrt(2*Math.max(4,YF-ap)/GRV);next=t+Math.max(.38,Math.min(ri(52,86)/100,tot*.92))}
+    const tot=-vy/GRV+Math.sqrt(2*Math.max(4,YF-ap)/GRV);next=t+Math.max(.38,Math.min(ri(52,86)/100,tot*.92));
+    if(k<ops.length-1){const ta=t+(-vy)/GRV,c=CRUISE();cr0=ta;cr1=ta+c;crY=ap;next+=c}}
    k++;if(k===ops.length&&o.op!=='kill'){phase='glide';out.tG=t+.35}}
   if(phase==='launch'){Y.push(y);X.push(0)}
   else{
    if(phase==='glide'&&t>=out.tG){/* заход на посадку: пикирование ~35° на плавучую полосу, пробег, торможение */vy=Math.min(vy+GRV*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
    else if(phase==='fall'){vy+=GRV*1.25*dt}
+   else if(phase==='fly'&&t>=cr0&&t<cr1){vy=0;y=crY+Math.sin((t-cr0)*2.2)*6}   /* ровный полёт с лёгкой волной */
    else vy+=GRV*dt;
-   if(phase!=='glide'||t<out.tG||!out.tW)y+=vy*dt;
+   if(phase==='fly'&&t>=cr0&&t<cr1){}else if(phase!=='glide'||t<out.tG||!out.tW)y+=vy*dt;
    x+=vx*dt;Y.push(y);X.push(x);
    if(phase==='fall'&&y>=SEA+6&&!out.tS){out.tS=t}
    if(out.tS&&t>out.tS+1.6)break;if(out.tW&&t>out.tW+1.9)break}
