@@ -1202,6 +1202,19 @@ button:not(:disabled):active{transform:scale(.97)}
 .toast{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 @media(max-width:350px){.app-header{padding-inline:12px;gap:6px}.header-round{width:44px;height:44px;flex-basis:44px}.header-wallet{max-width:calc(100% - 100px);gap:6px;padding-left:10px}.header-amount{font-size:14px}.header-amount i{width:20px;height:20px}.header-add{width:44px;flex-basis:44px}}
 
+
+.cr-hero.boost .cr-pl.sm .cr-trail{display:block;right:46px;top:13px;width:130px;height:12px;border-radius:6px;opacity:1;background:linear-gradient(90deg,transparent,#ff5a1f 40%,#ffb300 80%,#fff6c4);box-shadow:0 0 16px #ffb300}
+.cr-hero::before{content:'';position:absolute;left:-46px;top:-40px;width:92px;height:80px;border-radius:50%;border:2px solid #8fe6ff;background:radial-gradient(circle at 35% 30%,#ffffff40,#5fd0ff22 55%,#5fd0ff44);box-shadow:0 0 18px #5fd0ffaa,inset 0 0 14px #8fe6ff88;opacity:0;transform:scale(.6);transition:opacity .25s,transform .25s;pointer-events:none}
+.cr-hero.shield::before{opacity:1;transform:scale(1)}
+.cr-hero.shhit::before{border-color:#fff;box-shadow:0 0 34px #fff,inset 0 0 20px #fff;transform:scale(1.15)}
+.cr-pu{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:2px;animation:crbub2 2.4s ease-in-out infinite}
+.cr-pu i{font-style:normal;font-size:24px;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#7fd8ff 45%,#2a7bff);box-shadow:0 0 16px #5fc8ffcc}
+.cr-wo.boost .cr-pu i{background:radial-gradient(circle at 35% 30%,#fff,#ffd23f 45%,#ff7a1a);box-shadow:0 0 16px #ffb300cc}
+.cr-pu small{font:800 11px/1 ALS Sirius Pro,Inter,sans-serif;color:#fff;text-shadow:0 1px 2px #000a;white-space:nowrap}
+.cr-wo.pu.got .cr-pu{animation:crpop2 .3s ease-out forwards}
+.cr-wo.bon.tramp .cr-bon{animation:crtramp .45s ease-out forwards}
+@keyframes crtramp{0%{transform:translate(-50%,-50%) scale(1,1)}25%{transform:translate(-50%,-30%) scale(1.35,.55)}55%{transform:translate(-50%,-55%) scale(.9,1.15);opacity:1}100%{transform:translate(-50%,-60%) scale(1.3);opacity:0}}
+.cr-rocket.blk .cr-spr{filter:drop-shadow(0 0 10px #5fd0ff)}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -10709,7 +10722,7 @@ function buyHTML(){if(P.view!=='buy')return '';const left=MAXQ-P.bought;const pp
  return `<div class="cr-qty"><div class="cr-step"><button type="button" data-cr-step="-1" aria-label="Меньше билетов" ${P.qty<=1?'disabled':''}>−</button><div class="v"><b>${P.qty}</b><small>${plural(P.qty)}</small></div><button type="button" data-cr-step="1" aria-label="Больше билетов" ${P.qty>=left?'disabled':''}>+</button></div><div class="cr-tabs" role="tablist">${QTY.map(q=>`<button type="button" role="tab" aria-selected="${P.qty===q}" class="${P.qty===q?'on':''}" data-cr-q="${q}" ${q>left?'disabled':''}>${q}</button>`).join('')}</div></div>${ppb}`}   /* купленные билеты текущего тиража — в «Моих билетах», как в покере */
 function tixHTML(d){if(!d||!d.mine)return '';
  return `<div class="cr-tix" id="crTix">${d.tickets.map((t,i)=>{const st=t.st||'fly';return `<span class="cr-t ${st}${st==='land'&&t.cat>=6?' big':''}" data-i="${i}">${st==='fly'?'✈':st==='sea'?'💧 0 ₽':bpLabel(d.wins[i])}</span>`}).join('')}</div>`}
-function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Купите билеты и смотрите полёт. Бонусы добавляют рубли к выигрышу, ракеты отнимают. Самолёт сел — забираете сумму. Сбили — выигрыша нет.</p>
+function infoHTML(){return `<div class="p2-info cr-info"><h3>Как играть?</h3><p>Купите билеты и смотрите полёт. Самолёт отскакивает от денег, как от батута, и сумма растёт. Ракета сбивает его вниз и отнимает часть суммы. ⚡ Ускорение несёт самолёт вперёд, 🛡 щит отражает одну ракету. Самолёт сел — забираете сумму. Сбили — выигрыша нет.</p>
  <div class="p2-th"><span>Где сел самолёт</span><span>Выигрыш за билет</span></div>
  ${[8,7,6,5,4,3,2,1].map(c=>`<div class="cr-row"><span class="cr-rx${c===8?' gold':''}">${c===8?'★':'🏝'}</span><b>${c===8?'Золотая звезда':`Остров «${CAT[c].n}»`}</b><em class="${c===8?'sp':''}">${c===8?'Суперприз':fmt(CAT[c].v)+' ₽'}</em></div>`).join('')}
  <div class="cr-row sea"><span class="cr-rx">💧</span><b>Сбит ракетой</b><em>0 ₽</em></div>
@@ -10758,10 +10771,10 @@ const ADDS=[1,2,3,4,5,8,10,15,20,25,30,40,50,100,150,200,300];
 const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
 /* цепочка бонусов и ракет, которая заканчивается ровно на множителе target (0 — проигрыш) */
 function planOps(target,starEnd){
- if(!target){const ops=[];let v=0;const k=ri(7,11);
+ if(!target){const ops=[];let v=0;const k=ri(12,16);
   for(let i=0;i<k;i++){if(v>=4&&v%2===0&&Math.random()<.3&&ops.length&&ops[ops.length-1].op!=='/'){ops.push({op:'/',n:2});v/=2}else if(v&&Math.random()<.35){const m=pick([2,3]);ops.push({op:'*',n:m});v*=m}else{const a=pick([1,2,3,5,10]);ops.push({op:'+',n:a});v+=a}}
   ops.push({op:'kill',n:0});return ops}
- const lim=Math.max(target*2,10),minK=target<=2?8:target<=10?9:10;   /* длинный полёт: 30–60 с */
+ const lim=Math.max(target*2,10),minK=target<=2?13:target<=10?14:15;   /* длинный полёт: 30–60 с */
  for(let tr=0;tr<6000;tr++){const ops=[];let v=0,rk=0;const k=ri(minK,minK+2);
   for(let i=0;i<k-1;i++){const r=Math.random(),last=ops[ops.length-1];
    if(v>=2&&v%2===0&&r<.24&&rk<3&&(!last||last.op!=='/')){ops.push({op:'/',n:2});v/=2;rk++;continue}
@@ -10772,50 +10785,76 @@ function planOps(target,starEnd){
   if(!fin||ops.length+1<minK)continue;ops.push(fin);if(starEnd)ops.push({op:'star',n:0});return ops}
  /* запасной путь: сумма набирается мелкими бонусами, длину добираем парами «бонус ×2 → ракета ÷2» (итог не меняется) */
  const ops=[];let rem=target;while(rem>0){const a=pick(ADDS.filter(x=>x<=rem).concat([1]));ops.push({op:'+',n:a});rem-=a}
- while(ops.length<minK+ri(0,1)){const at=1+Math.floor(Math.random()*ops.length);ops.splice(at,0,{op:'*',n:2},{op:'/',n:2})}
+ for(let g=0;g<40&&ops.length<minK+ri(0,1);g++){const at=1+Math.floor(Math.random()*ops.length);if(ops[at-1].op!=='+'||(ops[at]&&ops[at].op==='/'))continue;ops.splice(at,0,{op:'*',n:2},{op:'/',n:2})}
  if(starEnd)ops.push({op:'star',n:0});return ops}
 const applyOp=(v,o)=>o.op==='+'?v+o.n:o.op==='*'?v*o.n:o.op==='/'?v/o.n:o.op==='kill'?0:v;
 const opLabel=o=>o.op==='+'?'+'+o.n:o.op==='*'?'×'+o.n:o.op==='/'?'÷'+o.n:o.op==='star'?'★':'';
 const isRocket=o=>o.op==='/'||o.op==='kill';
 const xLabel=(v,star)=>star?'★':'x'+fmt(v);
 /* баллистика: шаг 1/120 с, импульсы в моменты событий */
-/* полёт 30–60 с: после бонуса самолёт на вершине уходит в «крейсерский» отрезок — летит ровно 4–7 с, мимо проплывают острова и шарики */
-const CRUISE=()=>ri(40,70)/10;
-function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch',cr0=-1,cr1=-1,crY=0;
- const ev=[];let k=0,next=TR;
- /* выстрел: вверх-вправо до первой вершины */
+/* честная баллистика: самолёт летит по параболе.
+   Деньги — батут: самолёт падает на шарик сверху и отскакивает вверх.
+   Ракета прилетает в самолёт и сбивает его вниз — дальше он падает на следующий шарик-батут.
+   ⚡ Ускорение: на вершине самолёт подхватывает ускоритель и несколько секунд летит вперёд не падая (мир ускоряется).
+   🛡 Щит: подхваченный щит отражает следующую ракету — сумма не меняется. */
+const NOOP=o=>o.op==='boost'||o.op==='shield'||o.op==='block';
+function simulate(ops){const YF=SEA-40,dt=1/120,Y=[],X=[];let t=0,x=0,y=REST_Y,vy=0,vx=V,phase='launch',b0=-1,b1=-1,bY=0;
+ const ev=[];let k=0,next=TR;const out={ev,Y,X,dt};
+ /* состояние параболы от текущего момента: время до вершины и высота вершины */
+ const apexOf=(y,vy)=>vy<0?{ta:-vy/GRV,ya:y-vy*vy/(2*GRV)}:{ta:0,ya:y};
+ const yAt=(y,vy,u)=>y+vy*u+GRV*u*u/2;
+ const fallTo=(y,vy,yt)=>{const {ya}=apexOf(y,vy);yt=Math.max(yt,ya);return (-vy+Math.sqrt(Math.max(0,vy*vy+2*GRV*(yt-y))))/GRV};
+ /* когда наступит следующее событие, считая от текущего положения и скорости */
+ function plan(y,vy,o){const {ta,ya}=apexOf(y,vy);
+  if(!o)return 0;
+  if(o.op==='boost'||o.op==='shield')return Math.max(.12,ta);            /* подхватывает на вершине */
+  if(o.op==='block'||isRocket(o)){let u=vy<0?ta+ri(0,18)/100:ri(14,30)/100; /* ракета догоняет у вершины / на спуске */
+   while(u>.1&&yAt(y,vy,u)>YF-34)u-=.03;return Math.max(.1,u)}
+  /* шарик-батут ниже вершины: самолёт падает на него сверху */
+  const base=Math.max(ya,y);let yt=Math.min(YF,base+ri(55,115));if(yt<base+18)yt=Math.min(YF+6,base+18);return Math.max(.06,fallTo(y,vy,yt))}
  const apex0=ri(84,104);
- const out={ev,Y,X,dt};
- for(let i=0;i<120*120;i++){
-  if(t>=TR&&phase==='launch'){phase='fly';vy=-Math.sqrt(2*GRV*(y-apex0));next=TR+Math.sqrt(2*(y-apex0)/GRV)+.12}
-  if(phase==='fly'&&t>=next&&k<ops.length){const o=ops[k];ev.push({...o,t,x,y,k});
-   if(o.op==='kill'){phase='fall';vy=60}
-   else if(isRocket(o)){/* ракета толкает вниз, но до следующего бонуса самолёт не должен коснуться воды */
-    const room=YF-y;vy=room>70?200:room>35?110:40;const tt=(-vy+Math.sqrt(vy*vy+2*GRV*Math.max(4,room)))/GRV;next=t+Math.max(.26,Math.min(.55,tt*.8))}
-   else{const ap=Math.max(78,Math.min(y-28,ri(80,140)));vy=-Math.sqrt(2*GRV*Math.max(12,y-ap));
-    /* полёт до вершины и обратно до безопасной высоты */
-    const tot=-vy/GRV+Math.sqrt(2*Math.max(4,YF-ap)/GRV);next=t+Math.max(.38,Math.min(ri(52,86)/100,tot*.92));
-    if(k<ops.length-1){const ta=t+(-vy)/GRV,c=CRUISE();cr0=ta;cr1=ta+c;crY=ap;next+=c}}
-   k++;if(k===ops.length&&o.op!=='kill'){phase='glide';out.tG=t+.35}}
+ for(let i=0;i<120*150;i++){
+  if(t>=TR&&phase==='launch'){phase='fly';vy=-Math.sqrt(2*GRV*(y-apex0));next=TR+plan(y,vy,ops[0])}
+  if(phase==='fly'&&t>=next&&k<ops.length&&!(t>=b0&&t<b1)){const o=ops[k];ev.push({...o,t,x,y,k});
+   if(o.op==='kill'){phase='fall';vy=Math.max(vy,80)}
+   else if(o.op==='/'){vy=Math.min(Math.max(vy,0)+ri(150,210),Math.max(90,(YF-y)*3.2))}                  /* удар ракеты: резко вниз */
+   else if(o.op==='boost'){b0=t;b1=t+o.d;bY=y;vy=0;ev[ev.length-1].d=o.d}
+   else if(NOOP(o)){}                                                   /* щит / отражённая ракета — траектория та же */
+   else{const ap=Math.max(70,Math.min(y-40,ri(70,135)));vy=-Math.sqrt(2*GRV*Math.max(20,y-ap))}  /* батут */
+   k++;
+   if(k===ops.length&&o.op!=='kill'){phase='glide';out.tG=t+.35}
+   else if(k<ops.length){if(o.op==='boost')next=b1+plan(bY,0,ops[k]);else next=t+plan(y,vy,ops[k])}}
   if(phase==='launch'){Y.push(y);X.push(0)}
   else{
-   if(phase==='glide'&&t>=out.tG){/* заход на посадку: пикирование ~35° на плавучую полосу, пробег, торможение */vy=Math.min(vy+GRV*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
+   const boosting=t>=b0&&t<b1;
+   if(phase==='glide'&&t>=out.tG){vy=Math.min(vy+GRV*dt,108);if(y>=LAND_Y){y=LAND_Y;vy=0;if(!out.tW){out.tW=t;out.xW=x}vx=Math.max(0,vx-V*dt*.85)}}
    else if(phase==='fall'){vy+=GRV*1.25*dt}
-   else if(phase==='fly'&&t>=cr0&&t<cr1){vy=0;y=crY+Math.sin((t-cr0)*2.2)*6}   /* ровный полёт с лёгкой волной */
+   else if(boosting){const u=(t-b0)/(b1-b0);vy=0;y=bY-Math.sin(u*Math.PI)*10}  /* ровно вперёд, лёгкий подъём */
    else vy+=GRV*dt;
-   if(phase==='fly'&&t>=cr0&&t<cr1){}else if(phase!=='glide'||t<out.tG||!out.tW)y+=vy*dt;
+   const vxT=boosting?V*1.9:V;if(phase!=='glide'||!out.tW)vx+=(vxT-vx)*Math.min(1,dt*3);
+   if(!boosting&&(phase!=='glide'||t<out.tG||!out.tW))y+=vy*dt;
    x+=vx*dt;Y.push(y);X.push(x);
    if(phase==='fall'&&y>=SEA+6&&!out.tS){out.tS=t}
    if(out.tS&&t>out.tS+1.6)break;if(out.tW&&t>out.tW+1.9)break}
   t+=dt}
  out.end=t;return out}
+/* растягиваем полёт до 30–60 с ускорителями (и иногда щитом) — сумма от этого не меняется */
+function withPowerups(ops){const goal=ri(31,52);
+ for(let tr=0;tr<8;tr++){const o=ops.map(x=>({...x}));
+  const slots=()=>o.map((x,i)=>i).filter(i=>i<o.length-1&&['+','*'].includes(o[i].op)&&!NOOP(o[i+1]));
+  if(Math.random()<.6){const sl=slots();if(sl.length){const j=pick(sl);o.splice(j+1,0,{op:'shield',n:0},{op:'block',n:0})}}
+  const s0=simulate(o),T0=(s0.tW||s0.tS||s0.end);let def=goal-T0;
+  const nb=Math.max(def>3?1:0,Math.ceil(def/6));
+  for(let b=0;b<nb;b++){const sl=slots();if(!sl.length)break;const j=sl[Math.floor((b+.5)*sl.length/nb)]??pick(sl);o.splice(j+1,0,{op:'boost',n:0,d:Math.max(3.5,Math.min(6,def/nb))})}
+  const s1=simulate(o),T1=s1.tW||s1.tS||s1.end;if(T1>=28&&T1<=62)return o;if(tr===7)return o}
+ return ops}
 const EZ={io:u=>u*u*(3-2*u),in:u=>u*u,out:u=>1-(1-u)*(1-u)};
 function makeAnim(d){
  const M=Math.max(0,...d.tickets.map(t=>t.cat)),hasStar=d.tickets.some(t=>t.cat===8);
  /* один самолёт показывает весь тираж игрока: итог полёта = общий выигрыш всех билетов (в ценах билета) */
  const TOT=d.mine?d.total:prizeOf(M,P.sp),base=hasStar?Math.max(1,Math.round((TOT-P.sp)/PRICE)):Math.round(TOT/PRICE);
  let ops=planOps(TOT?base:0,hasStar);for(let k=0;k<300&&window.CR2_NEED==='rocket'&&!ops.some(o=>o.op==='/');k++)ops=planOps(TOT?base:0,hasStar);
- const sim=simulate(ops),ev=sim.ev;
+ ops=withPowerups(ops);const sim=simulate(ops),ev=sim.ev;
  const amtOf=v=>star?TOT:v*PRICE;
  const at=(arr,t)=>{const i=Math.max(0,Math.min(arr.length-1,t/sim.dt)),a=Math.floor(i),b=Math.min(arr.length-1,a+1),f=i-a;return arr[a]+(arr[b]-arr[a])*f};
  const y=t=>at(sim.Y,t),S=t=>at(sim.X,t);
@@ -10823,7 +10862,7 @@ function makeAnim(d){
  let v=0;const vals=ev.map(e=>(v=applyOp(v,e),v));
  /* сколько рублей даёт / забирает каждое событие (считаем заранее — на шариках сразу видно сумму) */
  const DL=(()=>{let a=0;return ev.map(e=>{const b=a;a=applyOp(a,e);return e.op==='kill'?-b*PRICE:(a-b)*PRICE})})();
- const rubLab=(e,i)=>e.op==='star'?'★':(DL[i]>=0?'+':'−')+fmt(Math.abs(DL[i]))+' ₽';
+ const rubLab=(e,i)=>e.op==='boost'?'Ускорение':e.op==='shield'?'Щит':e.op==='block'?'Щит!':e.op==='star'?'★':(DL[i]>=0?'+':'−')+fmt(Math.abs(DL[i]))+' ₽';
  const A={d,M,end:sim.end+.2,t:0,started:0,attached:false,ev};
  /* билеты раскрываются в финале — после посадки или падения, по очереди */
  const tEnd=sim.tW||sim.tS||sim.end-1;d.tickets.forEach((t,i)=>{t.st='fly';t.at=tEnd+.25+Math.min(i,30)*.04});
@@ -10833,8 +10872,9 @@ function makeAnim(d){
   const w=$('#crWorld',root),pl=$('#crPlanes',root),fx=$('#crFx',root),hud=$('#crHud',root),st=$('#crStage',root);if(!w)return;st.classList.remove('idle');
   let back='',front='';
   ev.forEach((e,i)=>{const wx=HX+e.x;
-   if(isRocket(e))front+=`<div class="cr-rocket${e.op==='kill'?' kill':''}" data-i="${i}">${spr('rocket',40)}</div>`;
-   else back+=wo(wx,e.y,'bon'+(DL[i]>=500?' mul':'')+(e.op==='star'?' star':''),`<div class="cr-bon"><b>${rubLab(e,i)}</b></div>`)});
+   if(isRocket(e)||e.op==='block')front+=`<div class="cr-rocket${e.op==='kill'?' kill':''}${e.op==='block'?' blk':''}" data-i="${i}">${spr('rocket',40)}</div>`;
+   else if(e.op==='boost'||e.op==='shield')back+=wo(wx,e.y,'bon pu '+e.op,`<div class="cr-pu"><i>${e.op==='boost'?'⚡':'🛡'}</i><small>${e.op==='boost'?'Ускорение':'Щит'}</small></div>`);
+   else back+=wo(wx,e.y+14,'bon'+(DL[i]>=500?' mul':'')+(e.op==='star'?' star':''),`<div class="cr-bon"><b>${rubLab(e,i)}</b></div>`)});
   back+=wo(SLX,SEA+8,'sling',slingHTML());
   /* поле цифр как в референсе: много бонусов вокруг, самолёт собирает только те, что на его пути */
   const xs=sim.X,xAt=wx=>{let lo=0,hi=xs.length-1;while(lo<hi){const m=(lo+hi)>>1;if(xs[m]<wx)lo=m+1;else hi=m}return lo};
@@ -10870,7 +10910,7 @@ function makeAnim(d){
   /* дымный след: облачка остаются в мире и тают */
   if(t>TR&&!A.splashed&&!(onWater&&t>sim.tW+.5)&&t-A.pt>.045){A.pt=t;const p=E.pf[A.pi++%E.pf.length];p.wx=sx+px-26;p.y=hyy+3+(Math.random()-.5)*3;p.t0=t;p.big=!!falling||t<TR+.5}
   for(const p of E.pf){const age=t-p.t0;if(age<0||age>1.1){p.e.style.opacity=0;continue}const sc=(p.big?1.4:1)*(.5+age*1.6);p.e.style.opacity=((1-age/1.1)*.75).toFixed(2);p.e.style.transform=`translate3d(${(p.wx-sx).toFixed(1)}px,${(p.y-age*6).toFixed(1)}px,0) scale(${sc.toFixed(2)})`;p.e.classList.toggle('dark',!!falling)}
-  E.hero.classList.toggle('smoke',!!falling);E.hero.classList.toggle('skid',!!(onWater&&t<sim.tW+1.2));
+  E.hero.classList.toggle('smoke',!!falling);{const bo=ev.find(e=>e.op==='boost'&&t>=e.t&&t<e.t+e.d);E.hero.classList.toggle('boost',!!bo);const si=ev.findIndex(e=>e.op==='shield'&&t>=e.t),bi=ev.findIndex(e=>e.op==='block');E.hero.classList.toggle('shield',si>=0&&bi>=0&&t<ev[bi].t+.45)}E.hero.classList.toggle('skid',!!(onWater&&t<sim.tW+1.2));
   /* резинка: от рожков рогатки к хвосту самолёта, после выстрела — прямая между рожками */
   const slx=+E.sl.dataset.wx-sx,tipY=SEA+8-SLH+6,L=[slx-SLW*.38,tipY],R=[slx+SLW*.38,tipY];
   const bx=t<TR?px-22:L[0]+(R[0]-L[0])*.5,by=t<TR?hyy+5:tipY+ (t<TR+.25?8*Math.sin((t-TR)*40)*(1-(t-TR)/.25):0);
@@ -10892,10 +10932,15 @@ function makeAnim(d){
   /* выигрыш внизу = сумма над самолётом: в конце это ровно общий выигрыш тиража */
   const q=id=>$('#'+id,root);if(q('crFly')){q('crFly').textContent=fly;q('crLand').textContent=land;q('crSea').textContent=sea;q('crSum').textContent=fmt(A.splashed?0:amtOf(cur))}}
  function hit(e,hy,i){const E=A.el;
+  if(e.op==='boost'){const b=E.wo.find(o=>o.classList.contains('pu')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');
+   E.hero.classList.add('boost');setTimeout(()=>E.hero.classList.remove('boost'),e.d*1000);A.kick=.04;sub('Ускорение! Летит вперёд не падая');floatTxt(E.fx,HX+8,hy-26,'⚡ Ускорение','good');SFX.price&&SFX.price();return}
+  if(e.op==='shield'){const b=E.wo.find(o=>o.classList.contains('pu')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');
+   E.hero.classList.add('shield');sub('Щит от ракет');floatTxt(E.fx,HX+8,hy-26,'🛡 Щит','good');SFX.price&&SFX.price();return}
+  if(e.op==='block'){E.hero.classList.add('shhit');setTimeout(()=>E.hero.classList.remove('shield','shhit'),450);boom(E.fx,HX+30,hy);A.shake=.4;sub('Щит отразил ракету · сумма не изменилась');floatTxt(E.fx,HX+8,hy-26,'Отражено','good');SFX.boom&&SFX.boom();return}
   cur=applyOp(cur,e);if(e.op==='star')star=true;
   if(isRocket(e)){A.shake=1;A.kick=.08;flash('fire');boom(E.fx,HX+6,hy+2);SFX.boom&&SFX.boom();haptic&&haptic(28);
    sub(e.op==='kill'?'Ракета сбила самолёт!':`Ракета! ${rubLab(e,i)}`)}
-  else{const b=E.wo.find(o=>o.classList.contains('bon')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');
+  else{const b=E.wo.find(o=>o.classList.contains('bon')&&Math.abs(+o.dataset.wx-HX-e.x)<1);if(b)b.classList.add('got');if(b&&!b.classList.contains('pu'))b.classList.add('tramp');
    burst(E.fx,HX+10,hy-2,opLabel(e),e.op==='star'||cur>=50);A.kick=.03;
    SFX.price&&SFX.price();haptic&&haptic(10);sub(e.op==='star'?'Золотая звезда — суперприз!':`Бонус ${rubLab(e,i)}`)}
   setX(cur,e,i,hy)}
