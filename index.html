@@ -2975,6 +2975,8 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .ak-badge{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;background:#0b0817cc;color:#fff;font-size:12px;line-height:16px;font-weight:700;white-space:nowrap}
 .ak-badge svg{width:14px;height:14px}.ak-badge.ok{background:#1f8f4ecc}.ak-badge.ok svg{color:#9af0b4}
 .ak-acc-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ak-acc .ak-left.in-top{position:static;margin:0;align-self:auto}
+.ak-acc-st{position:absolute;right:16px;bottom:24px;z-index:2}
 .ak-left{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;background:#0b081766;color:#e9e1ff;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap}
 .ak-left svg{width:12px;height:12px}
 /* акцентная карточка */
@@ -11216,11 +11218,11 @@ const ICO={
 let TAB='active',CUR=null;
 function bar(a){return `<div class="ak-prog"><span>${progTxt(a)}</span><i class="ak-track"><b style="width:${val(a)/a.goal*100}%"></b></i></div>`}
 function cardAccent(a){return `<button type="button" class="ak-card ak-acc" data-ak-open="${a.id}" style="--akbg:${a.bg};--akglow:${a.glow}">
-  <span class="ak-acc-top"><span class="ak-tag">${a.tag}</span>${badge(a)}</span>
+  <span class="ak-acc-top"><span class="ak-tag">${a.tag}</span><span class="ak-left in-top">${ICO.clock}${left(a.end)}</span></span>
   <span class="ak-acc-main"><b>${a.title}</b><small>${a.lead}</small></span>
   <img class="ak-acc-art" src="${art(a)}" alt="" draggable="false">
   ${a.auto?`<span class="ak-acc-cta">Играть</span>`:joined(a)&&!done(a)?bar(a):done(a)?`<span class="ak-prog done"><span>${ICO.gift}Промокод уже в «Бонусы и промокоды»</span></span>`:`<span class="ak-acc-cta">Участвую</span>`}
-  <span class="ak-left">${ICO.clock}${left(a.end)}</span></button>`}
+  ${badge(a)?`<span class="ak-acc-st">${badge(a)}</span>`:''}</button>`}   /* таймер — сверху справа, статус — снизу справа */
 function cardPlain(a){return `<button type="button" class="ak-card ak-row" data-ak-open="${a.id}" style="--akbg:${a.bg};--akglow:${a.glow}">
   <span class="ak-row-art"><img src="${art(a)}" alt="" draggable="false"></span>
   <span class="ak-row-main"><b>${a.title}</b><small>${joined(a)&&!done(a)?progTxt(a):done(a)?'Условия выполнены':a.lead}</small>${joined(a)&&!done(a)?`<i class="ak-track sm"><b style="width:${val(a)/a.goal*100}%"></b></i>`:''}</span>
