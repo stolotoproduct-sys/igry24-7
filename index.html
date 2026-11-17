@@ -1227,6 +1227,7 @@ button:not(:disabled):active{transform:scale(.97)}
 .pp-under .pp-u-bon .t small{grid-row:2;grid-column:2/4;line-height:1.15}
 .pp-under .pp-u-bon .pp-sw{grid-row:1;grid-column:3}
 .pp-ok-i{position:relative;align-self:center;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:800;color:#0c2a17;background:radial-gradient(circle at 35% 30%,#b9ffd0,#56d86f);box-shadow:0 0 24px #56d86f88}
+.pk-legal p{margin:0 0 8px}.pk-legal-h{padding:10px 12px;border-radius:12px;background:#ffffff0d;border:1px solid #ffffff14;color:#ffffffb3}.pk-legal-h b{color:#fff;font-weight:700}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -9972,6 +9973,8 @@ function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p
  <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p>
  </div>`}
 
+/* Покер 24/7 — только визуализация тиража «Рапидо»: юр. текст внизу экрана */
+const pkLegal=()=>`<div class="p2-legal pk-legal"><p class="pk-legal-h"><b>Это отображение тиража лотереи «Рапидо».</b> Карты на столе не разыгрываются: они показывают комбинацию, которая выпала в тираже. Выигрыш определяется только результатом тиража, а не действиями игрока.</p><p>«Рапидо» — коммерческое наименование лотереи «ВГТЛ-4 Туризм», алгоритм определения выигрышей № 4, срок проведения лотереи — до 01.07.2041. Лотерея проводится в соответствии с распоряжением Правительства РФ от 14.09.2009 № 1318-р. Призовой фонд — 67% от выручки. Организатор: Министерство финансов Российской Федерации. Оператор: ООО «Спортлото». 18+</p></div>`;
 function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE,v=P.bought?'Докупить':'Купить',c=window.PP?PP.cta(ID,sum,P.qty,v):{cls:'',html:`<span>${v}</span><b>${fmt(sum)} ₽</b>`};return `<div class="p2-foot"><div class="pp-line">${window.PP?PP.cfgHTML(ID,sum,P.qty):''}<button type="button" class="p2-pay ${c.cls}" data-p2="pay" data-pp-amt="${sum}" data-pp-u="${P.qty}" ${P.qty?'':'disabled'}>${c.html}</button></div>${window.PP?PP.underHTML(ID,P.qty*(typeof PAY==='function'?PAY():PRICE),P.qty):''}</div>`}
  if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
  return ''}
@@ -9987,7 +9990,7 @@ function resHTML(){const d=P.draw;if(!d||!P.resOpen)return '';
 const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' ₽';
 
 function render(){if(!mounted())return;const sc=root.scrollTop,tx=$('#p2Tix',root)?.scrollLeft||0;
- root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}${P.view==='buy'?' p2-inl':''}">${topHTML()}${tableHTML()}${buyHTML()}${P.view==='buy'?footHTML().replace('class="p2-foot"','class="p2-foot inline"'):''}${legalHTML()}</div>${P.view==='buy'?'':footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
+ root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}${P.view==='buy'?' p2-inl':''}">${topHTML()}${tableHTML()}${buyHTML()}${P.view==='buy'?footHTML().replace('class="p2-foot"','class="p2-foot inline"'):''}${pkLegal()}</div>${P.view==='buy'?'':footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();const d=P.draw;if(d&&P.view==='live'&&d.shown>=5&&!d.dealt)setTimeout(()=>d.dealt=true,900)}
 window.P2_rerender=()=>{try{if(P.view==='buy'&&P.tab==='game')render()}catch(e){}};
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%'}
