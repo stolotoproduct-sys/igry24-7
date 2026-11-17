@@ -1230,9 +1230,10 @@ button:not(:disabled):active{transform:scale(.97)}
 .pk-legal p{margin:0 0 8px}.pk-legal-h{padding:10px 12px;border-radius:12px;background:#ffffff0d;border:1px solid #ffffff14;color:#ffffffb3}.pk-legal-h b{color:#fff;font-weight:700}
 
 .p2-table>*{position:relative;z-index:1}
-.p2-table>.rp-felt{order:99;margin-top:auto;display:inline-flex;align-items:center;gap:5px;font-size:10px;line-height:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#ffffff8c;text-shadow:0 1px 0 #0006}.rp-felt img{width:16px;height:16px;filter:drop-shadow(0 1px 2px #0007)}
+.p2-table>.rp-felt{order:99;margin-top:auto;display:inline-flex;align-items:center;gap:5px;font-size:11px;line-height:14px;font-weight:600;color:#ffffff8c;text-shadow:0 1px 0 #0006}.rp-felt img{width:16px;height:16px;filter:drop-shadow(0 1px 2px #0007)}
 .pk-legal-h{position:relative}.pk-legal-h .rp-lg{float:left;width:36px;height:36px;margin:0 10px 2px 0}
 .p2-top .p2-sp{gap:8px}.p2-top .p2-sp .l small,.p2-top .p2-sp .l b{font-size:15px;line-height:19px}
+.pp-empty b{display:block;color:#fff;font-size:15px;line-height:20px;margin-bottom:4px}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -11179,14 +11180,14 @@ function pick(amount,units,full,check,only){const h=host();if(!h)return;const ga
   return `<div class="ak-sheet"><div class="ak-grab"></div><div class="ak-sh-head"><b>${only?'Промокод':check?'Покупка':'Оплата'}</b><button type="button" class="ak-x" data-pp-x aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    ${check?`<p class="pp-what">${h.kind==='quick'?`Ставка ${rub(amount)} · «${gName(game)}»`:`${units} ${tw(units)} · «${gName(game)}»`}</p>`:''}
    ${only?'':'<p class="pp-cap">Промокод</p>'}
-   <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty">Для этой игры промокодов нет</p>'}</div>
+   <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty"><b>Есть промокод?</b>Получили от друга, в письме или в соцсетях — введите его ниже. Он сразу появится здесь и в «Бонусы и промокоды».</p>'}</div>
    <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err${msg&&msg.ok?' ok':''}" data-pp-err>${msg?msg.t:''}</p><p class="pp-demo">Демо-коды: FLY1 · POKER1 · COIN200 · OLD2025</p>
    ${only?'':S.stb>0&&cap?`<p class="pp-cap">Бонусы</p><div class="pp-row${S.ppBon&&p.bonus?' on b':''}${b?' off':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${b?'Бонусы':S.ppBon&&p.bonus?`Списать ${num(p.bonus)} Б`:`Списать до ${num(p.maxB)} Б`}</b><small>${b?'Несовместимы с промокодом':`Есть ${num(S.stb)} Б · до ${cap}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.bonus}" ${p.maxB||b?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:''}
    ${only?'':sum}
    ${only?'':check?`<button type="button" class="pp-done pp-buy${p.short?' topup':''}" data-pp-buy>${p.short?`Пополнить на ${rub(p.topup)}`:p.free?'Забрать бесплатно':`${h.kind==='quick'?'Оплатить':'Купить'} · ${p.promo||p.bonus||full>amount?`<s class="pp-old">${num(full)}</s>`:''}${rub(p.wallet)}`}</button>`:'<button type="button" class="pp-done" data-pp-x>Готово</button>'}
    <p class="pp-note">Один промокод на покупку. Остаток — бонусами (до ${cap}% цены в этой игре) и рублями кошелька. В «Играх 24/7» бонусы не начисляются. Выигрыш по билетам с промокодом — рублями.</p></div>`}
  const paint=()=>{const sc=$('.ak-sheet',sh)?.scrollTop||0;sh.innerHTML=body();$('.ak-sheet',sh).scrollTop=sc;render()};
- sh.innerHTML=body();$('#scr').appendChild(sh);requestAnimationFrame(()=>sh.classList.add('show'));
+ sh.innerHTML=body();$('#scr').appendChild(sh);requestAnimationFrame(()=>sh.classList.add('show'));if(!codes(game).length)setTimeout(()=>{const i=sh.querySelector('[data-pp-form] input');if(i)try{i.focus({preventScroll:true})}catch(_){}},320);
  sh.addEventListener('click',e=>{const s=e.target.closest('[data-pp-sel]');if(s){selPromo(game,s.dataset.ppSel);msg=null;if(only){closeSheet(sh);render();try{haptic()}catch(_){}return}paint();try{haptic()}catch(_){}return}
   if(e.target.closest('[data-pp-bon]')){togBon(game);paint();try{haptic()}catch(_){}return}
   const go_=e.target.closest('[data-pp-go]');if(go_){const r=bonusModel.get(go_.dataset.ppGo);closeSheet(sh);if(r){PREFER=r.id;try{go('lobby')}catch(_){}setTimeout(()=>openGame(r.game),200)}return}
