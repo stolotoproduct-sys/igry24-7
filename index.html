@@ -1228,6 +1228,14 @@ button:not(:disabled):active{transform:scale(.97)}
 .pp-under .pp-u-bon .pp-sw{grid-row:1;grid-column:3}
 .pp-ok-i{position:relative;align-self:center;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:800;color:#0c2a17;background:radial-gradient(circle at 35% 30%,#b9ffd0,#56d86f);box-shadow:0 0 24px #56d86f88}
 .pk-legal p{margin:0 0 8px}.pk-legal-h{padding:10px 12px;border-radius:12px;background:#ffffff0d;border:1px solid #ffffff14;color:#ffffffb3}.pk-legal-h b{color:#fff;font-weight:700}
+
+.p2-table>*{position:relative;z-index:1}
+.p2-table>.rp-wm{position:absolute;z-index:0;left:50%;top:50%;width:170px;height:170px;transform:translate(-50%,-46%) rotate(-8deg);opacity:.35;mix-blend-mode:soft-light;pointer-events:none}
+.p2-table>.rp-dl{position:absolute;z-index:2;left:14px;bottom:12px;width:34px;height:34px;transform:rotate(14deg);filter:drop-shadow(0 3px 4px #0008)}
+.rp-no{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.rp-no img{width:14px;height:14px}
+.rp-lw{display:flex;flex-direction:column;align-items:center;gap:2px;flex:none}.rp-by{display:inline-flex;align-items:center;gap:3px;font-size:9px;line-height:11px;color:#ffffffa6;white-space:nowrap}.rp-by img{width:12px;height:12px}
+.pk-legal-h{position:relative}.pk-legal-h .rp-lg{float:left;width:36px;height:36px;margin:0 10px 2px 0}
+.p2-top .p2-sp{gap:8px}.p2-top .p2-sp .l small,.p2-top .p2-sp .l b{font-size:15px;line-height:19px}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -7976,6 +7984,7 @@ const DM_GROUPS=[
  {id:'att',t:'Попытки в «Еноте»',cls:'c4',opts:[[0,'0','нет попыток'],[1,'1','последняя'],[5,'5','за уровень'],[15,'15','максимум']]},
  {id:'bmode',t:'Бонусная система',cls:'c3',opts:[['none','Нет бонусов','только рубли и FS'],['wager','Отыгрыш','депозит ×'+BonusEngine.DEP_WAGER+' · FS ×'+BonusEngine.FS_WAGER],['orig','Оригинальные','бонусы Столото']]},
  {id:'series',t:'Серия в быстрых играх 1 из 3',cls:'c5',opts:[[0,'0','старт'],[2,'2','шаг до 3'],[3,'3','можно забрать'],[6,'6','середина'],[9,'9','шаг до 10']]},
+ {id:'rapido',t:'Покер: логотип «Рапидо»',cls:'c2',opts:[['1,3,5','Стол + тираж','принт на сукне, № тиража'],['2,4,5','Фишка + подпись','фишка дилера, под логотипом']]},
  {id:'payMode',t:'Оплата в 24/7: вариант флоу',cls:'c2',opts:[['row','Под кнопкой','промокод + бонусы'],['side','Кнопка слева','шторка «Оплата»'],['check','Предчек','по «Купить»']]},
  {id:'stb',t:'Бонусы Столото',cls:'c3',opts:[[0,'0','нет'],[300,'300','бонусов'],[2000,'2 000','бонусов']]},
  {id:'bonus',t:'Бонус с отыгрышем',cls:'c5',opts:[['none','Нет','без бонуса'],['active','20%','отыгрыша'],['almost','94%','почти'],['ready','Готов','перевести'],['expired','Истёк','срок вышел']]},
@@ -8053,6 +8062,7 @@ const SET={
  picks(v){rf.st.picks=v;rfRenderPicks()},
  npPerm(v){window.NP&&NP.set(v)},
  payMode(v){window.PP&&PP.setMode(v)},
+ rapido(v){try{localStorage.setItem('rapidoV',v)}catch(e){}if(window.RPV){RPV.clear();v.split(',').forEach(x=>RPV.add(x))}window.P2_rerender&&P2_rerender()},
  depScn(v){if(!window.DF)return;DF.scn=v;bonusModel.records.forEach(b=>{if(b.ended&&b.status==='available')b.ended=false});try{bpSync()}catch(e){}},
  wdId(v){window.WD&&WD.setId(v)},
  ntHour(v){window.NTDEMO&&NTDEMO.set('hour',v)},ntOnline(v){window.NTDEMO&&NTDEMO.set('online',v==='yes')},ntHist(v){window.NTDEMO&&NTDEMO.set('hist',v)},ntAds(v){window.NTDEMO&&NTDEMO.set('adlog',v)},ntReact(v){window.NTDEMO&&NTDEMO.set('react',v)},ntSelf(v){window.NTDEMO&&NTDEMO.set('self',v)},acEmail(v){if(!window.ACC)return;const A=ACC.get();ACC.set({emailState:v,email:v==='none'?'':A.email||'ivan.petrov@mail.ru'})},
@@ -8074,7 +8084,7 @@ function current(){
   cbState:(()=>{const L=window.lvLastGet&&lvLastGet();if(L)return window.ntIsRead&&ntIsRead('cb-credit-'+L.start)?'got':'ready';return lossbackModel.snapshot().periods[0]?'plus':'none'})(),
   bonus:!w?(bonusModel.records.some(b=>b.status==='expired'&&b.type==='deposit'&&!b.fsw&&!b.seen&&b.amount)?'expired':'none'):w.ready?'ready':w.target&&w.turnover/w.target>=.9?'almost':'active',
   fs:!fsLeft?'none':fsRecs.some(b=>String(b.id).startsWith('demo-fs-'))?'all':'some',
-  offers:bonusModel.list('available').length?'yes':'no',depScn:window.DF?DF.scn:'ok',payMode:window.PP?PP.mode():'row',
+  offers:bonusModel.list('available').length?'yes':'no',depScn:window.DF?DF.scn:'ok',payMode:window.PP?PP.mode():'row',rapido:window.RPV?[...RPV].sort().join(','):'1,3,5',
   raffle:rf.st.level,picks:rf.st.picks,
   wheel:ws.spun?'spun':'free1',
   acEmail:window.ACC?ACC.get().emailState:'confirmed',wdId:window.WD?WD.state.id:'none',npPerm:window.NP?NP.state.perm:'granted',
@@ -9945,18 +9955,20 @@ const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 const timer=()=>{const s=Math.max(0,Math.ceil((P.next-Date.now())/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 
 function topHTML(){const live=P.phase==='live'||P.view!=='buy';
- return `<div class="p2-top"><img class="p2-logo" src="${PK2_ART.logo}" alt="89×4"><div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live&&P.view==='live'?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
-  <div class="r">${P.view==='live'?`<small>Тираж № ${String(P.draw?P.draw.no:P.no).padStart(5,'0')}</small><b class="live">Трансляция<em></em></b>`:`<small>Тираж № ${String(P.no).padStart(5,'0')}</small><b class="p2-tm">${timer()}</b>`}</div>${P.view==='buy'?`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`:''}</div></div>`}
+ const rpNo=n=>RPV.has('3')?`<small class="rp-no"><img src="${RP_IMG}" alt="">Рапидо № ${n}</small>`:`<small>Тираж № ${n}</small>`;
+ return `<div class="p2-top">${RPV.has('4')?`<span class="rp-lw"><img class="p2-logo" src="${PK2_ART.logo}" alt="89×4"><small class="rp-by">на тиражах <img src="${RP_IMG}" alt="">Рапидо</small></span>`:`<img class="p2-logo" src="${PK2_ART.logo}" alt="89×4">`}<div class="p2-sp"><div class="l"><small>Суперприз</small><b>${live&&P.view==='live'?'Уточняется':fmt(P.sp)+' ₽'}</b></div><i class="sep"></i>
+  <div class="r">${P.view==='live'?`${rpNo(String(P.draw?P.draw.no:P.no).padStart(5,'0'))}<b class="live">Трансляция<em></em></b>`:`${rpNo(String(P.no).padStart(5,'0'))}<b class="p2-tm">${timer()}</b>`}</div>${P.view==='buy'?`<i class="p2-bar"><b style="width:${barW()}%"></b></i>`:''}</div></div>`}
 const barW=()=>Math.max(0,Math.min(100,(P.next-Date.now())/(realMode()?Q15:BUY_MS)*100));
 
+const rpTable=()=>`${RPV.has('1')?`<img class="rp-wm" src="${RP_IMG}" alt="" aria-hidden="true">`:''}${RPV.has('2')?`<img class="rp-dl" src="${RP_IMG}" alt="Рапидо">`:''}`;
 function tableHTML(){
  if(P.view==='live'){const d=P.draw;
-  return `<div class="p2-table live"><div class="p2-board">${d.board.map((c,i)=>card(c,{open:i<d.shown,cls:'bd'+(d.boardIn?'':' dl'),attr:` style="--i:${i}"`})).join('')}</div>
+  return `<div class="p2-table live">${rpTable()}<div class="p2-board">${d.board.map((c,i)=>card(c,{open:i<d.shown,cls:'bd'+(d.boardIn?'':' dl'),attr:` style="--i:${i}"`})).join('')}</div>
    ${d.mine?`<div class="p2-tix" id="p2Tix">${d.tickets.map((t,i)=>`<button type="button" class="p2-pair${d.dealt?' nd':''}${t.open?' open':''}${t.open&&t.cat?' win':''}" data-p2-t="${i}" style="animation-delay:${d.dealt?0:520+Math.min(i,8)*70}ms" ${d.shown<5?'disabled':''} aria-label="Билет ${i+1}">${t.open?`<em>${NAME(t.cat)}${t.cat&&d.wins?`<i>+${fmt(d.wins[i])} ₽</i>`:''}</em>`:''}${card(t.hole[0],{open:t.open})}${card(t.hole[1],{open:t.open})}</button>`).join('')}</div>
    <p class="p2-hint">${d.shown<5?'Открываем карты стола…':d.tickets.every(t=>t.open)?'Все билеты открыты':'Жми на карту, чтобы открыть'}</p>`
    :`<div class="p2-msg"><b>${d.shown<5?'Идёт трансляция':'Тираж состоялся'}</b><small>${d.shown<5?'Открываем карты стола':'Купите билеты на следующий тираж'}</small></div>`}</div>`}
  const n=P.qty,bought=P.bought;
- return `<div class="p2-table"><div class="p2-board">${slot.repeat(5)}</div>
+ return `<div class="p2-table">${rpTable()}<div class="p2-board">${slot.repeat(5)}</div>
   ${n||bought?`<div class="p2-msg"><b>Ваш набор карт${bought?'':' (билеты)'}</b><small>Карты откроются на трансляции</small></div>
    <div class="p2-stack"><img src="${PK2_ART.back}" alt=""><img src="${PK2_ART.back}" alt=""><span>×${bought+n}</span></div>`
   :`<div class="p2-msg big"><b>Выбери количество билетов</b><small>Одна пара карт — один билет · ${PRICE} ₽</small></div>`}</div>`}
@@ -9973,8 +9985,13 @@ function infoHTML(){return `<div class="p2-info"><h3>Как играть?</h3><p
  <p class="p2-note">Это билет «Рапидо»: категория выигрыша определяется тиражом, карты её показывают. Карты в разных парах могут повторяться.</p>
  </div>`}
 
+/* Логотип «Рапидо» в покере. Варианты размещения (?rapido=1,3,5):
+   1 — принт на сукне, 2 — фишка дилера на столе, 3 — «Тираж Рапидо №» в шапке, 4 — подпись под логотипом игры, 5 — в юр. плашке */
+const RP_IMG='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTg4LjU2IDIyLjIyQzk0Ljg0IDMyLjM1IDk2LjE2IDQxLjQgOTUuOTggNDYuMTNDOTUuMDkgNzAuMzEgNzQuNDEgOTIuNDggNDkuNzggOTUuNjNDNDMuNjUgOTYuNDEgMzcuODQgOTUuOTQgMzIuNTkgOTQuNDFDMjYuODUgOTIuNzUgMTkuNDkgODcuNjkgMTMuMSA4MC4zMkw4OC41NSAyMi4yMVoiIGZpbGw9IiNCQjFGODMiLz48cGF0aCBkPSJNNTAuMjMgNC4zN0M3NC44NiAxLjIzIDk0LjEgMTguMjggOTMuMjEgNDIuNDZDOTIuMzIgNjYuNjUgNzEuNjMgODguODIgNDcgOTEuOTZDMjIuMzggOTUuMTEgMy4xNCA3OC4wNiA0LjAzIDUzLjg3QzQuOTIgMjkuNjkgMjUuNjEgNy41MiA1MC4yMyA0LjM3WiIgZmlsbD0iI0U4NDE4RiIvPjxjbGlwUGF0aCBpZD0icnBjIj48cGF0aCBkPSJNNTAuMjMgNC4zN0M3NC44NiAxLjIzIDk0LjEgMTguMjggOTMuMjEgNDIuNDZDOTIuMzIgNjYuNjUgNzEuNjMgODguODIgNDcgOTEuOTZDMjIuMzggOTUuMTEgMy4xNCA3OC4wNiA0LjAzIDUzLjg3QzQuOTIgMjkuNjkgMjUuNjEgNy41MiA1MC4yMyA0LjM3WiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3JwYykiIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik05MS44OCAzMC4xNEM3OS41NCAzMS41NiA3OC41OSAyNy40MSA3Ny41MiAyNS40Qzc2LjY0IDIzLjc0IDc1LjkxIDIxLjIyIDgxLjE5IDEyLjkzTDg0LjM5IDEyLjE1TDk2LjA1IDIzLjc2WiIvPjxwYXRoIGQ9Ik04MC45NiA3Mi44NkM3Ny4yMyA2Ny44MiA3NC4zIDYzLjk3IDc3LjQ5IDU3LjEyQzgwLjYyIDUwLjM3IDg4LjYyIDQ5LjcgOTIuNDkgNDguOTlMOTkuMzIgNTEuMTZMODcuNzMgODEuNTJaIi8+PHBhdGggZD0iTTQwLjE5IDkyLjMyQzQxLjQxIDg5LjE1IDQ0LjAzIDgyLjEzIDQ5Ljc4IDgwLjI0QzU3LjU1IDc3LjY4IDU5LjY3IDgyLjA1IDY0LjE0IDg2LjQ1QzY0LjE0IDg2LjQ1IDcwLjA4IDkxLjI2IDcwLjE5IDkyLjMzQzcwLjMgOTMuMzkgNDIuMzYgOTkuODkgNDIuMzYgOTkuODlaIi8+PHBhdGggZD0iTTguODYgNzQuNThDMTUuODEgNzEuMTEgMTkuNDEgNzEuNTIgMjIuNDggNzQuOTRDMjUuNTUgNzguMzcgMjMuNTIgODMuNTkgMjIuODEgODcuOTlMMjIuMTMgOTQuMDdDMjIuMTMgOTQuMDcgNC4wMSA3Ni45NiAzLjk1IDc2Ljk2WiIvPjxwYXRoIGQ9Ik03LjA3IDM4LjY5QzExLjQ1IDQxLjE4IDE0LjIxIDQyLjUyIDEzLjA2IDQ4LjVDMTEuOTEgNTQuNDkgNy40NyA1Ni41NyA0LjA1IDU5TC0uMDMgNTlMMS4xOCAzOC42OVoiLz48cGF0aCBkPSJNMzIuMTYgMTAuMTlDMzIuMDIgMTQuMjIgMzIuNjYgMTcuNzYgMjguNDIgMjEuODZDMjMuNTYgMjYuNTQgMTguOTkgMjQuNzggMTUuNTQgMjQuMTFDMTUuNTQgMjQuMTEgMTAuMTEgMjEuODYgMTAuNzEgMjEuMjlDMTEuMzMgMjAuNzIgMjIuMDggMTAuNTEgMjIuMDggMTAuNTFMMzIuMTYgNi45M1oiLz48cGF0aCBkPSJNNjYuOSA1LjMxQzYyLjg0IDEwLjA2IDYwLjA0IDEyLjMxIDU0Ljg4IDEyLjE1QzQ5LjczIDExLjk5IDQ4Ljg1IDkuMTQgNDcuNzEgNC42MUM0Ny43MSA0LjYxIDQ4LjgxLTEuMzMgNDkuODItMS4zN0M1MC44My0xLjQyIDcyLjQ4LjggNzIuNDguOFoiLz48L2c+PHBhdGggZD0iTTQ3LjIzIDE4Ljc3QzYyLjQ0IDE2LjgzIDc0LjMxIDI3LjM2IDczLjc2IDQyLjI5QzczLjIxIDU3LjIzIDYwLjQzIDcwLjkgNDUuMjQgNzIuODVDMzAuMDMgNzQuNzkgMTguMTUgNjQuMjYgMTguNzEgNDkuMzNDMTkuMjYgMzQuMzkgMzIuMDQgMjAuNzIgNDcuMjMgMTguNzdaIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTQ2Ljk1IDIwLjNDNjEuMTcgMTguNDggNzIuMjggMjguMzQgNzEuNzcgNDIuM0M3MS4yNSA1Ni4yOCA1OS4zIDY5LjA4IDQ1LjA3IDcwLjg5QzMwLjg0IDcyLjcxIDE5Ljc0IDYyLjg2IDIwLjI1IDQ4Ljg5QzIwLjc3IDM0LjkyIDMyLjcyIDIyLjExIDQ2Ljk0IDIwLjNaIiBmaWxsPSIjRTg0MThGIi8+PHBhdGggZD0iTTQ2LjczIDIzLjAxQzU5LjM3IDIxLjM5IDY5LjI0IDMwLjE0IDY4Ljc4IDQyLjU1QzY4LjMyIDU0Ljk2IDU3LjcxIDY2LjM0IDQ1LjA3IDY3Ljk1QzMyLjQzIDY5LjU2IDIyLjU2IDYwLjgyIDIzLjAyIDQ4LjQxQzIzLjQ4IDM2IDM0LjA5IDI0LjYyIDQ2LjcyIDIzLjAxWiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTU4Ljc4IDM2Ljk3QzU4LjU5IDM1LjY2IDU4LjA0IDM0LjUzIDU3LjE2IDMzLjU5QzU2LjIzIDMyLjYgNTUuMDEgMzEuOSA1My40NCAzMS40NEM1Mi41NCAzMS4xNyA1MS41NiAzMS4wMSA1MC40NiAzMC45NUM0OS43NSAzMC44OSA0MC40NyAzMC4wNSA0MC4zMiAzMC4wNUM0MC4xNiAzMC4wNSA0MC4wMyAzMC4wOCAzOS45IDMwLjE0QzM5LjUxIDMwLjMgMzkuMjYgMzAuNjEgMzkuMDYgMzEuMjFDMzguNjggMzIuNCAzMS4xNyA1NS45NSAzMS4xNyA1NS45NUMzMS4xMyA1Ni4wNiAzMS4xMSA1Ni4xNiAzMS4xIDU2LjI1QzMxLjA1IDU2Ljc0IDMxLjIxIDU2LjkzIDMxLjcyIDU3LjAxQzMxLjcyIDU3LjAxIDM0LjU5IDU3LjQ3IDM1Ljc4IDU3LjY2QzM1Ljg4IDU3LjY3IDM1Ljk3IDU3LjY4IDM2LjA3IDU3LjY4QzM2LjU0IDU3LjY4IDM2Ljg0IDU3LjQ2IDM3LjA3IDU2Ljk1QzM3LjEzIDU2Ljc2IDM5LjIyIDUwLjAzIDM5LjIyIDUwLjAzQzM5LjQyIDQ5LjQ0IDM5Ljk5IDQ4LjggNDAuOCA0OC44QzQwLjg5IDQ4LjggNDMuNjIgNDkuMTcgNDQuMiA0OS4yNEM0NC45MSA0OS4zNSA0NS4zOSA0OS44NiA0NS41IDUwLjYxQzQ1LjUyIDUwLjc4IDQ2LjU4IDU3LjQxIDQ2Ljc2IDU4LjM5QzQ2Ljg5IDU5LjA3IDQ3LjE2IDU5LjQgNDcuNjggNTkuNDlDNDcuNzggNTkuNTEgNTIuNTQgNjAuMjkgNTIuNjMgNjAuMjlDNTIuOTggNjAuMjkgNTMuMTggNjAuMTUgNTMuMjcgNTkuODhDNTMuMzEgNTkuNjkgNTMuMzMgNTkuNDggNTMuMzEgNTkuMzJDNTMuMjQgNTguNzkgNTEuODkgNTAuNDYgNTEuNzMgNDkuNkM1MS42NCA0OS4wMSA1MS45IDQ4LjQ2IDUyLjQxIDQ4LjJDNTIuNTMgNDguMTQgNTIuODggNDcuOTggNTIuOTYgNDcuOTNDNTQuODMgNDcuMDIgNTYuMjEgNDUuODYgNTcuMiA0NC4zNUM1OC4yNyA0Mi43MiA1OC44MiA0MC43OSA1OC45MSAzOC4zMUM1OC45MSAzOC4zMSA1OC45MSAzNy41NiA1OC43OCAzNi45OFpNNTIuNTMgMzkuNzFDNTIuNDQgNDAuOTQgNTIuMDEgNDIuMDcgNTEuMiA0My4wM0M1MC42MSA0My43NiA0OS44IDQ0LjI0IDQ4Ljc4IDQ0LjQ0QzQ4LjQ1IDQ0LjUyIDQ3LjY4IDQ0LjY0IDQ3LjI0IDQ0LjYyQzQ3LjI0IDQ0LjYyIDQzLjE0IDQ0LjE0IDQyLjcyIDQ0LjExQzQyLjI3IDQ0LjA2IDQxLjkgNDMuODcgNDEuNyA0My41NkM0MS41IDQzLjI2IDQxLjQ1IDQyLjg3IDQxLjU3IDQyLjQ1QzQxLjU3IDQyLjQ1IDQyLjk2IDM3Ljk1IDQzLjI4IDM2LjkxQzQzLjQ3IDM2LjI5IDQ0LjExIDM1LjY3IDQ0Ljk0IDM1LjY3QzQ1LjAxIDM1LjY3IDQ4LjE5IDM2IDQ4Ljc4IDM2LjA3QzQ5LjYxIDM2LjE3IDUwLjgxIDM2LjQxIDUxLjcxIDM3LjM5QzUyLjI5IDM4LjAzIDUyLjU2IDM4LjggNTIuNTIgMzkuNzJaIiBmaWxsPSIjRTg0MThGIi8+PC9zdmc+';
+const RPV=(()=>{let v='1,3,5';try{const q=new URLSearchParams(location.search).get('rapido');if(q)v=q;else{const ls=localStorage.getItem('rapidoV');if(ls)v=ls}}catch(_){}return new Set(v.split(',').map(x=>x.trim()))})();
+window.RPV=RPV;
 /* Покер 24/7 — только визуализация тиража «Рапидо»: юр. текст внизу экрана */
-const pkLegal=()=>`<div class="p2-legal pk-legal"><p class="pk-legal-h"><b>Это отображение тиража лотереи «Рапидо».</b> Карты на столе не разыгрываются: они показывают комбинацию, которая выпала в тираже. Выигрыш определяется только результатом тиража, а не действиями игрока.</p><p>«Рапидо» — коммерческое наименование лотереи «ВГТЛ-4 Туризм», алгоритм определения выигрышей № 4, срок проведения лотереи — до 01.07.2041. Лотерея проводится в соответствии с распоряжением Правительства РФ от 14.09.2009 № 1318-р. Призовой фонд — 67% от выручки. Организатор: Министерство финансов Российской Федерации. Оператор: ООО «Спортлото». 18+</p></div>`;
+const pkLegal=()=>`<div class="p2-legal pk-legal"><p class="pk-legal-h">${RPV.has('5')?`<img class="rp-lg" src="${RP_IMG}" alt="Рапидо">`:''}<b>Это отображение тиража лотереи «Рапидо».</b> Карты на столе не разыгрываются: они показывают комбинацию, которая выпала в тираже. Выигрыш определяется только результатом тиража, а не действиями игрока.</p><p>«Рапидо» — коммерческое наименование лотереи «ВГТЛ-4 Туризм», алгоритм определения выигрышей № 4, срок проведения лотереи — до 01.07.2041. Лотерея проводится в соответствии с распоряжением Правительства РФ от 14.09.2009 № 1318-р. Призовой фонд — 67% от выручки. Организатор: Министерство финансов Российской Федерации. Оператор: ООО «Спортлото». 18+</p></div>`;
 function footHTML(){if(P.view==='buy'){const sum=P.qty*PRICE,v=P.bought?'Докупить':'Купить',c=window.PP?PP.cta(ID,sum,P.qty,v):{cls:'',html:`<span>${v}</span><b>${fmt(sum)} ₽</b>`};return `<div class="p2-foot"><div class="pp-line">${window.PP?PP.cfgHTML(ID,sum,P.qty):''}<button type="button" class="p2-pay ${c.cls}" data-p2="pay" data-pp-amt="${sum}" data-pp-u="${P.qty}" ${P.qty?'':'disabled'}>${c.html}</button></div>${window.PP?PP.underHTML(ID,P.qty*(typeof PAY==='function'?PAY():PRICE),P.qty):''}</div>`}
  if(P.view==='live'&&P.draw&&P.draw.mine)return `<div class="p2-foot"><button type="button" class="p2-gold" data-p2="result" ${P.draw.shown<5?'disabled':''}>${P.draw.tickets.every(t=>t.open)?'Итог тиража':'Смотреть результат'}</button></div>`;
  return ''}
@@ -9992,7 +10009,7 @@ const bpLabel=v=>typeof bpResultMoney==='function'?bpResultMoney(v,ID):fmt(v)+' 
 function render(){if(!mounted())return;const sc=root.scrollTop,tx=$('#p2Tix',root)?.scrollLeft||0;
  root.innerHTML=P.tab==='game'?`<div class="p2${P.view==='live'?' is-live':''}${P.view==='buy'?' p2-inl':''}">${topHTML()}${tableHTML()}${buyHTML()}${P.view==='buy'?footHTML().replace('class="p2-foot"','class="p2-foot inline"'):''}${pkLegal()}</div>${P.view==='buy'?'':footHTML()}`:`<div class="p2 p2-page">${topHTML()}${pageHTML()}</div>`;navSync();root.scrollTop=sc;{const t=$('#p2Tix',root);if(t)t.scrollLeft=tx}
  const host=$('#p2ResHost');if(host)host.innerHTML=resHTML();const d=P.draw;if(d&&P.view==='live'&&d.shown>=5&&!d.dealt)setTimeout(()=>d.dealt=true,900)}
-window.P2_rerender=()=>{try{if(P.view==='buy'&&P.tab==='game')render()}catch(e){}};
+window.P2_rerender=()=>{try{if(P.view==='buy'&&P.tab==='game')render()}catch(e){}};window.P2_draw=()=>runDraw();
 function tick(){if(!mounted())return;const t=$('.p2-tm',root);if(t){t.textContent=timer();t.classList.toggle('hot',P.next-Date.now()<10000)}const b=$('.p2-bar b',root);if(b)b.style.width=barW()+'%'}
 
 /* ---------- покупка ---------- */
