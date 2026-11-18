@@ -11359,8 +11359,8 @@ function front(a,past){return `<span class="akf-face akf-front" style="--akbg:${
   <b class="akf-t">${a.title}</b>${past?`<span class="akf-pill">${a.res}</span>`:`<span class="akf-pill">${ICO.clock}${left(a.end)}</span>`}
   <b class="akf-big">${a.big||a.short||a.lead}</b>${past?'':`<span class="akf-arrow" data-ak-more="${a.id}" role="button" aria-label="Подробнее">${ICO.chev}</span>`}</span>`}
 function cardFlip(a){return `<div class="akf" data-akf="${a.id}"><div class="akf-in">${front(a)}
-  <span class="akf-face akf-back"><span class="akf-pill dark">${ICO.clock}до ${dShort(a.end)} · ${left(a.end)}</span><b class="akf-bt">${a.title}</b><span class="akf-bl">${a.lead}</span>
-  <span class="akf-btns"><button type="button" class="akf-more" data-ak-more="${a.id}">Подробнее</button><span class="akf-back-hint" aria-hidden="true">↺</span></span></span></div></div>`}
+  <span class="akf-face akf-back"><span class="akf-pill dark">${ICO.clock}${left(a.end)}</span><b class="akf-bt">${a.title}</b><span class="akf-bl">${a.lead}</span>
+  <span class="akf-btns"><button type="button" class="akf-more" data-ak-go="${a.id}">Играть</button><span class="akf-back-hint" data-ak-more="${a.id}" role="button" aria-label="Подробнее об акции"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1.2" fill="currentColor"/></svg></span></span></span></div></div>`}
 function list(){const act=AK.filter(a=>a.end>now());
  const body=TAB==='active'?act.map(cardFlip).join('')||'<div class="ak-empty"><b>Сейчас акций нет</b><small>Загляните позже — новые акции появляются каждую неделю</small></div>'
   :PAST.map(p=>`<div class="akf past"><div class="akf-in">${front({...p,big:p.lead},1)}</div></div>`).join('');
@@ -11466,6 +11466,7 @@ document.addEventListener('click',e=>{const t=e.target;
  if(shb){if(t.closest('[data-aks-offer]')){e.preventDefault();openOffer(CUR.title,null,true);return}
   if(t.closest('[data-aks-play]')){const a=CUR;if(!a.auto&&!joined(a))join(a,1);closeSheet();closeAll();try{$('#pf')&&$('#pf').classList.remove('show')}catch(_){}playPromo(a);return}
   if(t===shb)closeSheet();return}
+ const gb=t.closest('[data-ak-go]');if(gb){e.preventDefault();e.stopImmediatePropagation();const a=AK.find(x=>x.id===gb.dataset.akGo);if(a){if(!a.auto&&!joined(a))join(a,1);closeAll();try{$('#pf')&&$('#pf').classList.remove('show')}catch(_){}playPromo(a)}return}
  const mr=t.closest('[data-ak-more]');if(mr){e.preventDefault();e.stopImmediatePropagation();openSheet(mr.dataset.akMore);return}
  const fl=t.closest('.akf[data-akf]');if(fl){e.preventDefault();e.stopImmediatePropagation();document.querySelectorAll('.akf.flip').forEach(x=>{if(x!==fl)x.classList.remove('flip')});fl.classList.toggle('flip');return}
  const op=t.closest('[data-ak-open]');if(op&&op.closest('.ak-ban')&&now()-(op.closest('.ak-ban').__dragAt||0)<350){e.preventDefault();e.stopImmediatePropagation();return}
