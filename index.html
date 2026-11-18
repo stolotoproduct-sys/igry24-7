@@ -1234,6 +1234,41 @@ button:not(:disabled):active{transform:scale(.97)}
 .pk-legal-h{position:relative}.pk-legal-h .rp-lg{float:left;width:36px;height:36px;margin:0 10px 2px 0}
 .p2-top .p2-sp{gap:8px}.p2-top .p2-sp .l small,.p2-top .p2-sp .l b{font-size:15px;line-height:19px}
 .pp-empty b{display:block;color:#fff;font-size:15px;line-height:20px;margin-bottom:4px}
+
+/* Акции — карточки-картинки с переворотом */
+#akc .pf-body{perspective:1200px}
+.akf{position:relative;width:100%;aspect-ratio:328/184;margin:0 0 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.akf-in{position:absolute;inset:0;transition:transform .55s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d}
+.akf.flip .akf-in{transform:rotateY(180deg)}
+.akf-face{position:absolute;inset:0;border-radius:20px;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;display:block;color:#fff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif)}
+.akf-front{background:radial-gradient(120% 90% at 85% 40%,color-mix(in srgb,var(--akglow) 35%,transparent),transparent 60%),var(--akbg)}
+.akf-art{position:absolute;right:-6px;top:50%;transform:translateY(-46%);height:96%;width:auto;max-width:56%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 10px 20px #0008)}
+.akf-t{position:absolute;left:16px;top:44px;max-width:56%;font-size:16px;line-height:20px;font-weight:800;text-shadow:0 1px 6px #0006}
+.akf-big{position:absolute;left:16px;bottom:16px;max-width:60%;font-size:20px;line-height:24px;font-weight:800;text-shadow:0 1px 8px #0008}
+.akf-pill{position:absolute;right:12px;top:12px;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;background:#0b0817a6;color:#fff;font-size:12px;line-height:16px;font-weight:700;white-space:nowrap}
+.akf-pill svg{width:13px;height:13px}
+.akf-arrow{position:absolute;right:12px;bottom:12px;width:32px;height:32px;border-radius:16px;background:#fff;color:#14121c;display:grid;place-items:center;box-shadow:0 4px 10px #0006}
+.akf-arrow svg{width:18px;height:18px}
+.akf-back{transform:rotateY(180deg);background:linear-gradient(160deg,#241a3a,#14121c);border:1px solid #ffffff1a;padding:16px;display:flex;flex-direction:column;gap:6px}
+.akf-back .akf-pill{position:static;align-self:flex-start;background:#ffffff14}
+.akf-bt{font-size:16px;line-height:20px;font-weight:800;margin-top:4px}
+.akf-bl{font-size:13px;line-height:18px;color:#cfc6e6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.akf-btns{margin-top:auto;display:flex;align-items:center;gap:10px}
+.akf-more{flex:1;height:40px;border:0;border-radius:20px;background:#fff;color:#14121c;font:800 14px/20px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.akf-back-hint{width:40px;height:40px;border-radius:20px;display:grid;place-items:center;background:#ffffff14;color:#cfc6e6;font-size:18px}
+.akf.past{cursor:default}.akf.past .akf-front{filter:grayscale(.85) brightness(.75)}
+/* шторка акции */
+.aks{max-height:90%}
+.aks-body{overflow:auto;padding:12px 16px 8px;color:#e6e0f4;font-size:14px;line-height:20px}
+.aks-body p{margin:0 0 14px}
+.aks-img{height:190px;border-radius:16px;margin:4px 0 16px;overflow:hidden;position:relative;background:radial-gradient(90% 90% at 50% 50%,color-mix(in srgb,var(--akglow) 40%,transparent),transparent 65%),var(--akbg)}
+.aks-img img{position:absolute;left:50%;top:50%;height:94%;transform:translate(-50%,-50%);filter:drop-shadow(0 10px 20px #0008)}
+.aks-legal{color:#a99fc2;font-size:12px;line-height:17px}
+.aks-of{font-size:12px;line-height:17px;color:#a99fc2}.aks-of a{color:#c9a0ff}
+.aks-foot{padding:8px 16px 16px}
+.aks-go{width:100%;height:48px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffd84d,#f5b800);color:#1a1300;font:800 16px/24px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer;box-shadow:0 8px 20px #f5b80044}
+.akf-scrim{position:absolute;inset:0;background:linear-gradient(90deg,#0009 0,#0005 45%,transparent 70%);pointer-events:none}
+.akf-front>.akf-art{height:88%;max-width:52%}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -11266,19 +11301,19 @@ const END0=now()+7*D,END1=now()+12*D;
 const ART={};   /* картинки акций подставляются из AK_ART (ChatGPT), иначе — обложка игры */
 const art=a=>(window.AK_ART&&AK_ART[a.art])||(IMG&&IMG[a.fallback])||'';
 const AK=[
- {id:'coin5',accent:1,tag:'Акция недели',title:'Неделя «Монетки»',lead:'Сыграйте 5 раз в «Монетку» — получите промокод на 5 бесплатных игр',
+ {id:'coin5',accent:1,tag:'Акция недели',title:'Неделя «Монетки»',big:'Сыграй 5 раз — получи 5 игр бесплатно',lead:'Сыграйте 5 раз в «Монетку» — получите промокод на 5 бесплатных игр',
   short:'5 игр в «Монетке» — промокод на 5 игр',goal:5,kind:'plays',game:'coin',unit:['игра','игры','игр'],prog:'Сыграно',reward:{n:1,games:5,game:'coin'},rewardTxt:'Промокод на 5 бесплатных игр в «Монетке»',
   end:END0,art:'coin',fallback:'q_coin',bg:'linear-gradient(135deg,#5b1fa6 0%,#3a1170 55%,#1d0a3c 100%)',glow:'#f5c84a',
   steps:['Нажмите «Участвую» и примите условия оферты','Сыграйте 5 раз в «Монетку» до '+dShort(END0),'Промокод придёт в «Бонусы и промокоды» — активировать не нужно'],
   terms:'Участвуют игры в «Монетке», оплаченные рублями после принятия условий. Игры по промокодам не учитываются. Один промокод на игрока за время акции.',
   cta:'Играть в «Монетку»'},
- {id:'quick1000',tag:'Быстрые игры',title:'3 промокода за 1\u00a0000\u00a0₽',lead:'Купите билеты на 1 000 ₽ в любых быстрых играх и получите 3 промокода',
+ {id:'quick1000',tag:'Быстрые игры',title:'Быстрые игры',big:'3 промокода за покупки на 1\u00a0000\u00a0₽',lead:'Купите билеты на 1 000 ₽ в любых быстрых играх и получите 3 промокода',
   short:'Купите на 1 000 ₽ — получите 3 промокода',goal:1000,kind:'money',unit:['₽','₽','₽'],prog:'Куплено на',reward:{n:3,games:3},rewardTxt:'3 промокода по 3 бесплатные игры в быстрых играх',
   end:END1,art:'gift',fallback:'q_shell',bg:'linear-gradient(135deg,#1d3fa8 0%,#2a1a7a 55%,#120a3a 100%)',glow:'#7fd3ff',
   steps:['Нажмите «Участвую» и примите условия оферты','Купите билеты в быстрых играх на 1 000 ₽ до '+dShort(END1),'3 промокода придут в «Бонусы и промокоды» сразу'],
   terms:'Учитываются покупки билетов за рубли в «Монетке», «Где шарик?», «Больше-меньше», «Весах» и других быстрых играх после принятия условий. Покупки по промокодам не учитываются.',
   cta:'К быстрым играм'},
- {id:'crashsale',tag:'Crash Games',title:'Билеты в «Остров удачи» дешевле',lead:'До конца недели билет стоит 70 ₽ вместо 100 ₽. Выигрыш — как за полный билет',
+ {id:'crashsale',tag:'Crash Games',title:'Играй в «Остров удачи»',big:'Билет 70\u00a0₽ вместо 100\u00a0₽',lead:'До конца недели билет стоит 70 ₽ вместо 100 ₽. Выигрыш — как за полный билет',
   short:'Билет 70 ₽ вместо 100 ₽',kind:'sale',goal:1,unit:['','',''],prog:'',reward:null,rewardTxt:'Скидка 30% на каждый билет: 70 ₽ вместо 100 ₽, выигрыш считается от 100 ₽',
   end:END0,art:'plane',fallback:'x_fly',bg:'linear-gradient(135deg,#0e5bd8 0%,#0b2f86 55%,#071a4a 100%)',glow:'#6fe3ff',
   steps:['Откройте «Остров удачи 2.0»','Купите билеты — цена уже со скидкой, участвовать отдельно не нужно','Скидка действует до '+dShort(END0)],
@@ -11316,9 +11351,19 @@ function cardPlain(a){return `<button type="button" class="ak-card ak-row" data-
   <span class="ak-row-art"><img src="${art(a)}" alt="" draggable="false"></span>
   <span class="ak-row-main"><b>${a.title}</b><small>${joined(a)&&!done(a)?progTxt(a):done(a)?'Условия выполнены':a.lead}</small>${joined(a)&&!done(a)?`<i class="ak-track sm"><b style="width:${val(a)/a.goal*100}%"></b></i>`:''}</span>
   <span class="ak-row-side">${done(a)?`<span class="ak-dot ok">${ICO.ok}</span>`:''}<span class="ak-chev">${ICO.chev}</span></span></button>`}
+/* Акции — только картинки. Тап по карточке — переворачивается: коротко об акции и «Подробнее».
+   «Подробнее» (или стрелка) — шторка с картинкой, сроками, условиями, юр. текстом и «Играть». */
+const fmtD=t=>new Date(t).toLocaleDateString('ru-RU');
+function front(a,past){return `<span class="akf-face akf-front" style="--akbg:${a.bg||'#2a1a4a'};--akglow:${a.glow||'#a25be6'}">
+  <img class="akf-art" src="${past?(IMG[a.fallback]||''):art(a)}" alt="" draggable="false"><i class="akf-scrim"></i>
+  <b class="akf-t">${a.title}</b>${past?`<span class="akf-pill">${a.res}</span>`:`<span class="akf-pill">${ICO.clock}${left(a.end)}</span>`}
+  <b class="akf-big">${a.big||a.short||a.lead}</b>${past?'':`<span class="akf-arrow" data-ak-more="${a.id}" role="button" aria-label="Подробнее">${ICO.chev}</span>`}</span>`}
+function cardFlip(a){return `<div class="akf" data-akf="${a.id}"><div class="akf-in">${front(a)}
+  <span class="akf-face akf-back"><span class="akf-pill dark">${ICO.clock}до ${dShort(a.end)} · ${left(a.end)}</span><b class="akf-bt">${a.title}</b><span class="akf-bl">${a.lead}</span>
+  <span class="akf-btns"><button type="button" class="akf-more" data-ak-more="${a.id}">Подробнее</button><span class="akf-back-hint" aria-hidden="true">↺</span></span></span></div></div>`}
 function list(){const act=AK.filter(a=>a.end>now());
- const body=TAB==='active'?act.map((a,i)=>i===0||a.accent?cardAccent(a):cardPlain(a)).join('')||'<div class="ak-empty"><b>Сейчас акций нет</b><small>Загляните позже — новые акции появляются каждую неделю</small></div>'
-  :PAST.map(p=>`<div class="ak-card ak-row past"><span class="ak-row-art"><img src="${IMG[p.fallback]||''}" alt=""></span><span class="ak-row-main"><b>${p.title}</b><small>${p.lead} · ${dShort(p.at)}</small></span><span class="ak-res${p.ok?' ok':''}">${p.res}</span></div>`).join('');
+ const body=TAB==='active'?act.map(cardFlip).join('')||'<div class="ak-empty"><b>Сейчас акций нет</b><small>Загляните позже — новые акции появляются каждую неделю</small></div>'
+  :PAST.map(p=>`<div class="akf past"><div class="akf-in">${front({...p,big:p.lead},1)}</div></div>`).join('');
  return `<div class="ak-tabs" role="tablist">${[['active','Активные'],['past','Завершённые']].map(([k,t])=>`<button type="button" role="tab" aria-selected="${TAB===k}" class="${TAB===k?'on':''}" data-ak-tab="${k}">${t}</button>`).join('')}</div><div class="ak-list">${body}</div>`}
 
 /* ---------- страница акции ---------- */
@@ -11337,6 +11382,21 @@ function footer(a){const J=joined(a),Dn=done(a);
  if(J)return `<div class="ak-foot"><button type="button" class="ak-go" data-ak-play="${a.id}">${a.cta}</button></div>`;
  return `<div class="ak-foot">${consentHTML('ak')}<button type="button" class="ak-go" data-ak-join="${a.id}" disabled>Участвую</button></div>`}
 function consentHTML(p){return `<label class="ak-check"><input type="checkbox" data-${p}-check><span>Я прочитал(а) и принимаю <a href="#" data-${p}-offerlink>условия оферты</a></span></label>`}
+
+/* ---------- шторка акции ---------- */
+const LEGAL='«ВГЛ 1 Спорт», алгоритм определения выигрышей № 4, срок проведения лотереи — до 31.12.2044. Информация об организаторе лотереи, о правилах её проведения, о призовом фонде лотереи, о количестве призов или выигрышей, о сроках, месте и порядке получения призов или выигрышей — на stoloto.ru или по телефону 8 900 555-00-55.';
+function openSheet(id){const a=AK.find(x=>x.id===id)||AK[0];CUR=a;let w=document.getElementById('akSheet');
+ if(!w){w=document.createElement('div');w.id='akSheet';w.className='ak-sheet-bg';w.setAttribute('role','dialog');w.setAttribute('aria-modal','true');document.getElementById('scr').appendChild(w)}
+ const start=a.start||now()-3*D;
+ w.innerHTML=`<div class="ak-sheet aks"><div class="ak-grab"></div><div class="aks-body">
+  <div class="aks-img" style="--akbg:${a.bg};--akglow:${a.glow}"><img src="${art(a)}" alt="" draggable="false"></div>
+  <p>Срок проведения акции: с ${fmtD(start)} по ${fmtD(a.end)} года.</p>
+  <p>${a.rewardTxt?(a.auto?'Выгода: ':'Награда: ')+a.rewardTxt+'. ':''}${a.terms}</p>
+  <p class="aks-legal">${a.legal||LEGAL}</p>
+  ${a.auto?'':`<p class="aks-of">Нажимая «Играть», вы принимаете <a href="#" data-aks-offer>условия акции</a></p>`}</div>
+  <div class="aks-foot"><button type="button" class="aks-go" data-aks-play>Играть</button></div></div>`;
+ requestAnimationFrame(()=>w.classList.add('show'))}
+function closeSheet(){const w=document.getElementById('akSheet');if(w)w.classList.remove('show')}
 
 /* ---------- оферта (общая шторка: акции, колесо, уровень) ---------- */
 function offerText(name){return `<p class="ak-of-meta">Публичная оферта · редакция от [дата] · текст — рыба для юристов</p>
@@ -11362,8 +11422,9 @@ function show(id,on){const P=document.getElementById(id);P.classList.toggle('sho
 function renderList(){const P=document.getElementById('akc');if(P)P.querySelector('.pf-body').innerHTML=list()}
 function renderDetail(keepScroll){if(!CUR)return;const P=document.getElementById('akd'),b=P.querySelector('.pf-body'),y=b.scrollTop;b.innerHTML=detail(CUR);P.querySelector('.ak-foot-wrap').innerHTML=footer(CUR);if(keepScroll)b.scrollTop=y}
 function openList(tab){TAB=tab||'active';renderList();show('akc',true);document.querySelector('#akc .pf-body').scrollTop=0}
-function openPromo(id){CUR=AK.find(a=>a.id===id)||AK[0];renderDetail();show('akd',true);document.querySelector('#akd .pf-body').scrollTop=0}
+function openPromo(id){openSheet(id)}
 function closeAll(){show('akd',false);show('akc',false)}
+function playPromo(a){if(a.game){go('lobby');openGame(a.game)}else{go('lobby');setTimeout(()=>{const h=[...document.querySelectorAll('#lobby h2.h-t')].find(x=>x.textContent.trim()==='Быстрые игры');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},250)}}
 function join(a){ST[a.id]={joined:1,at:now(),v:0};save();renderDetail(true);renderList();renderBanner();toast('Вы участвуете в акции · '+a.title)}
 
 /* ---------- прогресс: считаем покупки после принятия условий ---------- */
@@ -11401,6 +11462,12 @@ let auto=setInterval(()=>{const host=document.querySelector('#lobby>.l-banner.ak
 document.addEventListener('click',e=>{const t=e.target;
  const ofb=t.closest('#akOffer');
  if(ofb){if(t.closest('[data-ak-ofok]')){const f=OF&&OF.onAccept;closeOffer();if(f)f();return}if(t.closest('[data-ak-ofx]')||t===ofb)closeOffer();return}
+ const shb=t.closest('#akSheet');
+ if(shb){if(t.closest('[data-aks-offer]')){e.preventDefault();openOffer(CUR.title,null,true);return}
+  if(t.closest('[data-aks-play]')){const a=CUR;if(!a.auto&&!joined(a))join(a,1);closeSheet();closeAll();try{$('#pf')&&$('#pf').classList.remove('show')}catch(_){}playPromo(a);return}
+  if(t===shb)closeSheet();return}
+ const mr=t.closest('[data-ak-more]');if(mr){e.preventDefault();e.stopImmediatePropagation();openSheet(mr.dataset.akMore);return}
+ const fl=t.closest('.akf[data-akf]');if(fl){e.preventDefault();e.stopImmediatePropagation();document.querySelectorAll('.akf.flip').forEach(x=>{if(x!==fl)x.classList.remove('flip')});fl.classList.toggle('flip');return}
  const op=t.closest('[data-ak-open]');if(op&&op.closest('.ak-ban')&&now()-(op.closest('.ak-ban').__dragAt||0)<350){e.preventDefault();e.stopImmediatePropagation();return}
  if(op){e.preventDefault();e.stopImmediatePropagation();openPromo(op.dataset.akOpen);return}
  if(t.closest('[data-ak-all]')){e.preventDefault();e.stopImmediatePropagation();openList();return}
