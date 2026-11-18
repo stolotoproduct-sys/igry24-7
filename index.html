@@ -1269,6 +1269,10 @@ button:not(:disabled):active{transform:scale(.97)}
 .aks-go{width:100%;height:48px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffd84d,#f5b800);color:#1a1300;font:800 16px/24px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer;box-shadow:0 8px 20px #f5b80044}
 .akf-scrim{position:absolute;inset:0;background:linear-gradient(90deg,#0009 0,#0005 45%,transparent 70%);pointer-events:none}
 .akf-front>.akf-art{height:88%;max-width:52%}
+.akf-back{background:#fff;border:0;color:#14121c;padding:16px}
+.akf-back .akf-bl{color:#14121c;font-size:14px;line-height:20px;-webkit-line-clamp:5}
+.akf-back .akf-more{height:44px;border-radius:14px;background:linear-gradient(180deg,#ffd84d,#f5b800);color:#1a1300;font-size:16px}
+.akf-back .akf-back-hint{width:44px;height:44px;border-radius:14px;background:#a9b4c8;color:#14121c;cursor:pointer}
 </style>
 <style>
 /* Bonus cards / section rails */
@@ -11359,7 +11363,7 @@ function front(a,past){return `<span class="akf-face akf-front" style="--akbg:${
   <b class="akf-t">${a.title}</b>${past?`<span class="akf-pill">${a.res}</span>`:`<span class="akf-pill">${ICO.clock}${left(a.end)}</span>`}
   <b class="akf-big">${a.big||a.short||a.lead}</b>${past?'':`<span class="akf-arrow" data-ak-more="${a.id}" role="button" aria-label="Подробнее">${ICO.chev}</span>`}</span>`}
 function cardFlip(a){return `<div class="akf" data-akf="${a.id}"><div class="akf-in">${front(a)}
-  <span class="akf-face akf-back"><span class="akf-pill dark">${ICO.clock}${left(a.end)}</span><b class="akf-bt">${a.title}</b><span class="akf-bl">${a.lead}</span>
+  <span class="akf-face akf-back"><span class="akf-bl">${a.desc||(a.lead+'. Акция действует до '+dShort(a.end)+'. Попробовать можно прямо сейчас!')}</span>
   <span class="akf-btns"><button type="button" class="akf-more" data-ak-go="${a.id}">Играть</button><span class="akf-back-hint" data-ak-more="${a.id}" role="button" aria-label="Подробнее об акции"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1.2" fill="currentColor"/></svg></span></span></span></div></div>`}
 function list(){const act=AK.filter(a=>a.end>now());
  const body=TAB==='active'?act.map(cardFlip).join('')||'<div class="ak-empty"><b>Сейчас акций нет</b><small>Загляните позже — новые акции появляются каждую неделю</small></div>'
