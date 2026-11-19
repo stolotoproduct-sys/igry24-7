@@ -2575,7 +2575,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .no-promo #lobby #homeWheel .ws-chip{left:auto;right:92px;top:8px;bottom:auto;z-index:3}
 .no-promo #lobby #homeWheel.is-locked .ws-chip{display:none}
 
-/* ===== Профиль → «Бонусы и промокоды» ===== */
+/* ===== Профиль → «Промокоды» ===== */
 #pfb{z-index:74}
 #pfb .pf-h small{margin-left:4px;color:#a99fc2;font-weight:600}
 .pbn-code label{display:block;margin-bottom:12px;font-size:16px;line-height:24px;font-weight:700}
@@ -6848,7 +6848,7 @@ function bpWheelCard(){if(typeof wheelOpen!=='function')return '';const open=whe
   <div class="bp-mini-top"><span class="bp-wheel-art${open?'':' off'}"><svg viewBox="0 0 120 120">${wheelSVG(120)}</svg>${open?'':`<i>${WG_LOCK}</i>`}</span><div class="bp-mini-head"><b class="bp-mini-amt">Колесо удачи</b><span class="bp-mini-sub">${open?'1 бесплатное вращение в день':'войдите, чтобы крутить'}</span></div></div>
   ${info}
   <div class="bp-actions"><button class="bp-primary" data-wheel-go>${open?(free?'Крутить':'Открыть колесо'):'Играть'}</button><button class="bp-secondary bp-info" data-wheel-info aria-label="Условия колеса удачи">${bpInfoIco}</button></div></article>`}
-function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Колесо доступно всегда — без условий по ставкам.</p><ul class="cb-sheet-rules"><li>Новое вращение — каждый день в 00:00 по Москве.</li><li>Призы: промокоды (1, 2 или 3 — золотые сектора) и купончики (+20…+100). 200 купончиков = промокод на 3 бесплатные игры. Промокоды появляются в «Бонусы и промокоды».</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>Открыть колесо</button></div></div>`}
+function bpWheelInfo(){bonusModalView=null;bpOpenModal('Колесо удачи');$('#bpModalBody').innerHTML=`<div class="bp-detail"><p class="bp-detail-intro">Одно бесплатное вращение в сутки. Колесо доступно всегда — без условий по ставкам.</p><ul class="cb-sheet-rules"><li>Новое вращение — каждый день в 00:00 по Москве.</li><li>Призы: промокоды (1, 2 или 3 — золотые сектора) и купончики (+20…+100). 200 купончиков = промокод на 3 бесплатные игры. Промокоды появляются в «Промокоды».</li></ul><div class="bp-actions"><button class="bp-primary" data-wheel-go>Открыть колесо</button></div></div>`}
 document.addEventListener('click',e=>{if(e.target.closest('[data-wheel-info]')){e.stopPropagation();bpWheelInfo();return}
  if(e.target.closest('[data-wheel-go]')){e.stopPropagation();if($('#bpModal').classList.contains('show'))bpCloseModal();if(wheelOpen())openWheel();else{go('lobby');setTimeout(()=>{const h=$$('#lobby h2.h-t').find(x=>x.textContent.trim()==='Быстрые игры');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},250)}}},true);
 function bpEnd(empty=false){return `<article class="bp-card bp-end">${bpGift}<h4>${empty?'Пока нет активных бонусов':'Ещё бонусы'}</h4><button class="bp-primary" data-bp-more>Выбрать бонус</button><button class="bp-secondary" data-bp-topup>Пополнить счёт</button></article>`}
@@ -9199,19 +9199,19 @@ function authView(){
  const c=cb(),w=wheelLine(),lvl=c?c.s.level:{id:0,name:'Старт'},next=c&&c.s.next;
 
  const A=window.ACC?ACC.get():{phone:'+7 916 123-45-12',email:'',emailState:'confirmed'},em=A.emailState==='confirmed'&&A.email;
- return `<button type="button" class="pf-card pf-acc" data-pf="account"><span class="pf-ava">ИП</span><span class="pf-acc-main"><b>Иван Петров</b><small>${window.ACC?ACC.maskPhone(A.phone):A.phone} · ID 4821 3907</small>${em?`<span class="pf-ok">${I.check}Аккаунт подтверждён</span>`:`<span class="pf-ok warn">${A.emailState==='pending'?'Подтвердите почту':'Добавьте почту'}</span>`}</span><i class="pf-chev">${I.chev}</i></button>
- <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div><div><small>Купончики</small><b>${n(S.cp||0)}</b></div></div>
+ return `<button type="button" class="pf-card pf-acc" data-pf="account"><span class="pf-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="pf-acc-main"><b>${A.nick||'ivan_petrov'}</b><small>Личные данные</small></span><i class="pf-chev">${I.chev}</i></button>
+ <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div></div>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  ${LV.cb||LV.mines?`<h3 class="pf-h">${typeof lvTitle==='function'?lvTitle():'Мой уровень'}</h3>
  <button class="pf-card pf-cb lp-pf" type="button" data-pf="cashback"><span class="lp-w-art${lvl.id?'':' off'}">${typeof lvArt==='function'?lvArt(lvl):''}</span><span class="pf-cb-main"><b>${lvl.id?`${lvl.name} · уровень ${lvl.id}`:lvl.name}</b><span class="pf-track"><i style="width:${c?c.s.progress:0}%"></i></span><small>${next?`До «${next.name}» — ${n(c.s.remaining)} ₽ покупок`:'Максимальный уровень месяца'}</small></span><span class="pf-cb-side">${LV.cb&&lvl.pct?`<small>Кэшбек</small><b>${lvl.pct}%</b>`:LV.mines&&lvAttempts()?`<small>${lvGN('n')}</small><b>${lvAttempts()}</b>`:''}</span></button>`:''}
  <h3 class="pf-h">Колесо удачи и бонусы</h3>
  <div class="pf-card pf-list">
   <button class="pf-row" type="button" data-pf="wheel"><span class="pf-ri wheel">${I.ticket}</span><span class="pf-rt"><b>Колесо удачи</b><small>${w.t}</small>${w.p!==undefined?`<span class="pf-track sm"><i style="width:${w.p}%"></i></span>`:''}</span><span class="pf-tag">${w.b}</span></button>
-  ${row('gift','Мои бонусы',`Активных: ${typeof bonusModel!=='undefined'?bonusModel.list('active').length:0} `,'bonuses')}
+  ${row('gift','Промокоды',`Активных: ${typeof bonusModel!=='undefined'?bonusModel.list('active').length:0} `,'bonuses')}
   ${row('gift','Акции',window.AKC?AKC.summary():'Акции и условия участия','akcii')}
  </div>
  <h3 class="pf-h">Настройки</h3>
- <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return !A?'Телефон и почта':A.emailState==='confirmed'&&A.email?'Телефон и почта подтверждены':A.emailState==='pending'?'Почта не подтверждена':'Почта не указана'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
+ <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return A&&A.emailState==='pending'?'Почта не подтверждена':'Ник, телефон, почта'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  <button class="pf-out" type="button" data-pf="logout">${I.out}Выйти из аккаунта</button>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
 /* «О компании» перенесено в шторку «Меню» (nav-tabbar.js) */
@@ -9221,7 +9221,7 @@ function about(){return `<h3 class="pf-h">О компании</h3>
 function guestView(){return `<div class="pf-card pf-guest"><span class="pf-ava g">${I.user}</span><b>Вы не вошли</b><p>Войдите, чтобы играть, получать кэшбек, крутить колесо удачи и забирать бонусы.</p>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="login">Войти</button><button class="pf-btn" type="button" data-pf="register">Регистрация</button></div></div>
  <h3 class="pf-h">Что вы получите</h3>
- <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша за месяц — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Промокоды и купончики</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Турниры, промокоды и призы</small></span></div></div>
+ <div class="pf-card pf-list pf-perks"><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Уровень и кэшбек</b><small>До ${LossbackEngine.MAX_PCT}% проигрыша за месяц — бонусами</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Колесо удачи каждый день</b><small>Промокоды каждый день</small></span></div><div class="pf-perk"><span class="pf-ri">${I.check}</span><span><b>Бонусы и розыгрыши</b><small>Турниры, промокоды и призы</small></span></div></div>
  <div class="pf-card pf-list">${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
 function render(){const P=$('#pf');if(!P)return;$('.pf-body',P).innerHTML=PF.auth?authView():guestView();$('.pf-head h2',P).textContent='Профиль';
@@ -9296,8 +9296,8 @@ setAuth(true);
    добавить и подтвердить почту, сменить почту, сменить телефон, регистрация.
    Демо: подходит любой код, кроме 0000 (так показываем ошибку). */
 (function(){
-const KEY='acCfg2';
-const DEF={phone:'+7 916 123-45-12',email:'',emailState:'none',name:'Иван Петров',birth:'12.04.1990',nick:'ivan_petrov',gender:'m',links:{sber:false,yandex:true,vk:false,alfa:false}};
+const KEY='acCfg3';
+const DEF={phone:'+7 916 123-45-12',email:'ivan.petrov@mail.ru',emailState:'confirmed',name:'Иван Петров',birth:'12.04.1990',nick:'ivan_petrov',gender:'m',links:{sber:false,yandex:true,vk:false,alfa:false}};
 let AC;try{AC={...DEF,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){AC={...DEF}}
 AC.links={...DEF.links,...(AC.links||{})};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(AC))}catch(e){}};
@@ -9332,14 +9332,13 @@ window.ACC={get:()=>({...AC}),maskPhone,maskEmail,
 
 /* ================= экран «Личные данные» ================= */
 function emailRow(){
- if(!AC.email||AC.emailState==='none')return `<div class="ac-row"><span class="ac-ri warn">${I.mail}</span><span class="ac-rt"><b>Почта не указана</b><small>Нужна для чеков, результатов тиражей и восстановления доступа</small></span><button type="button" class="ac-act primary" data-ac="email-add">Добавить</button></div>`;
+ if(false)return `<div class="ac-row"><span class="ac-ri warn">${I.mail}</span><span class="ac-rt"><b>Почта не указана</b><small>Нужна для чеков, результатов тиражей и восстановления доступа</small></span><button type="button" class="ac-act primary" data-ac="email-add">Добавить</button></div>`;
  if(AC.emailState==='pending')return `<div class="ac-row"><span class="ac-ri warn">${I.mail}</span><span class="ac-rt"><b class="ac-em">${esc(AC.email)}</b><small class="ac-st warn">${I.warn}Не подтверждена</small></span><button type="button" class="ac-act primary" data-ac="email-confirm">Подтвердить</button></div>`;
  return `<div class="ac-row"><span class="ac-ri">${I.mail}</span><span class="ac-rt"><b class="ac-em">${esc(AC.email)}</b><small class="ac-st ok">${I.check}Подтверждена</small></span><button type="button" class="ac-act" data-ac="email-change">Сменить</button></div>`;
 }
 function accRender(){const P=$('#acc');if(!P)return;
  const em=AC.emailState==='confirmed'&&AC.email;
- $('.ac-body',P).innerHTML=`<div class="ac-card ac-who"><span class="ac-ava">${AC.name.split(' ').map(w=>w[0]).join('')}</span><span class="ac-rt"><b>${esc(AC.name)}</b><small>Дата рождения ${AC.birth}</small>${(()=>{const k=window.WD?WD.state.id:'full';return k==='none'?`<span class="ac-badge warn">${I.warn}Личность не подтверждена</span>`:`<span class="ac-badge">${I.check}${k==='simple'?'Подтверждена через Госуслуги':'Личность подтверждена'}</span>`})()}</span></div>
- <h4>Профиль</h4>
+ $('.ac-body',P).innerHTML=`<h4>Профиль</h4>
  <div class="ac-card ac-list ac-prof">
   <div class="ac-kv"><span>Никнейм</span><b>${esc(AC.nick)}</b></div>
   <div class="ac-kv"><span>Дата рождения</span><b>${AC.birth}</b></div>
@@ -9348,17 +9347,16 @@ function accRender(){const P=$('#acc');if(!P)return;
  </div>
  <h4>Контакты</h4>
  <div class="ac-card ac-list">
-  <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small class="ac-st ok">${I.check}Подтверждён · логин</small></span><button type="button" class="ac-act" data-ac="phone-change">Сменить</button></div>
+  <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small>Номер для входа · изменить нельзя</small></span></div>
   ${emailRow()}
  </div>
- ${em?'':`<p class="ac-warn">${AC.emailState==='pending'?'Мы отправили код на '+esc(AC.email)+'. Пока почта не подтверждена, канал E-mail в уведомлениях выключен.':'Без почты чеки и результаты тиражей приходят только в приложение и по SMS.'}</p>`}
  <h4>Вход</h4>
- <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b><small>Изменён 3 месяца назад</small></span><span class="ac-val">Изменить</span></button>
-  <div class="ac-row"><span class="ac-ri">${I.id}</span><span class="ac-rt"><b>Имя и дата рождения</b><small>${locked()?'Из документа. Изменить — через поддержку':'При подтверждении личности возьмём из документа'}</small></span></div>${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
+ <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b></span><span class="ac-val">Изменить</span></button>
+  ${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
  <h4>Привязанные аккаунты</h4>
  <p class="ac-sub">Привяжите аккаунт для быстрого входа</p>
  <div class="ac-card ac-list">${LINKS.map(l=>{const on=AC.links[l.id];return `<div class="ac-row"><span class="ac-brand" style="--c:${l.c}">${l.l}</span><span class="ac-rt"><b>${l.n}</b>${on?`<small class="ac-st ok">${I.check}${esc(AC.name)}</small>`:'<small>Не привязан</small>'}</span><button type="button" class="ac-act${on?'':' primary'}" data-ac-link="${l.id}" aria-label="${on?'Отвязать':'Привязать'} ${l.n}">${on?'Отвязать':'Привязать'}</button></div>`}).join('')}</div>
- <p class="ac-note">Номер и почту не показываем другим игрокам. Любое изменение подтверждаем кодом — без вас данные сменить нельзя. О смене сообщаем на старый контакт.</p>
+ <p class="ac-note">Номер и почту не показываем другим игрокам.</p>
  <button type="button" class="ac-revoke" data-ac="revoke">Отозвать согласие на обработку персональных данных</button>
  <div class="pf-confirm ac-cf" hidden></div>`}
 function accOpen(){accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
@@ -9451,7 +9449,7 @@ function confirmAsk(t,txt,yes,fn){CF=fn;const c=$('#acc .ac-cf');if(!c)return;c.
 function confirmClose(){CF=null;const c=$('#acc .ac-cf');if(c)c.hidden=true}
 /* ---------- редактирование профиля: никнейм, дата рождения, пол ---------- */
 const TAKEN=['player','admin','stoloto','ivan'];
-const locked=()=>!!(window.WD&&WD.state.id!=='none');     /* после подтверждения личности дата — из документа */
+const locked=()=>false;   /* даты «из документа» нет — дату рождения игрок указывает сам */     /* после подтверждения личности дата — из документа */
 let PE=null;
 function bdErr(v){const m=v.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);if(!m)return 'Введите дату в формате ДД.ММ.ГГГГ';const d=+m[1],mo=+m[2],y=+m[3];const dt=new Date(y,mo-1,d);
  if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d||y<1900)return 'Такой даты нет — проверьте';const n=new Date();let age=n.getFullYear()-y;if(n.getMonth()<mo-1||(n.getMonth()===mo-1&&n.getDate()<d))age--;return age<18?'Играть можно с 18 лет':''}
@@ -9465,7 +9463,7 @@ function peRender(){const P=$('#ape');if(!P||!PE)return;const lk=locked();const 
  <label class="acf-field${E.nick?' err':''}">Никнейм<input name="nick" value="${esc(PE.nick)}" maxlength="16" autocomplete="off"></label>${E.nick?`<p class="acf-err">${E.nick}</p>`:'<p class="pe-hint">Видят другие игроки в рейтингах и турнирах</p>'}
  <label class="acf-field${E.birth?' err':''}${lk?' ro':''}">Дата рождения<input name="birth" value="${esc(PE.birth)}" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10" ${lk?'readonly':''}></label>${E.birth?`<p class="acf-err">${E.birth}</p>`:lk?`<p class="pe-hint">${I.lock}Из документа — изменить можно через поддержку</p>`:''}
  <label class="acf-field">Пол<select name="gender">${Object.entries(GEN).map(([k,v])=>`<option value="${k}"${PE.gender===k?' selected':''}>${v}</option>`).join('')}</select></label>
- <label class="acf-field ro">Номер телефона<input value="${esc(AC.phone)}" readonly></label><p class="pe-hint">Сменить номер — в «Личные данные» → «Контакты»</p>
+ <label class="acf-field ro">Номер телефона<input value="${esc(AC.phone)}" readonly></label><p class="pe-hint">Номер — логин для входа, изменить его нельзя</p>
  <button class="pf-btn primary pe-save" type="button" data-pe="save" ${peDirty()&&peValid()?'':'disabled'}>Сохранить изменения</button>`}
 function peSave(){if(!peDirty())return;const ne=nickErr(PE.nick),be=locked()?'':bdErr(PE.birth);if(ne||be){PE.err={nick:ne,birth:be};peRender();return}
  AC.nick=PE.nick;if(!locked())AC.birth=PE.birth;AC.gender=PE.gender;save();peClose();refresh();toast('Изменения сохранены')}
@@ -10240,7 +10238,7 @@ box.innerHTML=`<div class="mn-in"><div class="mn-hd"><h3 id="mnT">${lvGN('n')}</
  <p class="mn-sub">Каждая безопасная клетка повышает приз. Забрать можно в любой момент</p>
  <div class="mn-att" id="mnAtt"></div>
  <ol class="mn-lad" id="mnLad" aria-label="Призы за открытые клетки"></ol>
- <p class="mn-legend"><span><svg class="mn-pc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1.5 1.5 0 0 1 1.5 1.5v2.7a1.8 1.8 0 0 0 0 3.6v2.7A1.5 1.5 0 0 1 20 18H4a1.5 1.5 0 0 1-1.5-1.5v-2.7a1.8 1.8 0 0 0 0-3.6V7.5A1.5 1.5 0 0 1 4 6z" fill="#f5c542"/><path d="m7 15 5-6" stroke="#5a2d00" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.6" cy="9.6" r="1.3" fill="#5a2d00"/><circle cx="11.4" cy="14.4" r="1.3" fill="#5a2d00"/><path d="M15.5 6v12" stroke="#5a2d00" stroke-width="1.2" stroke-dasharray="1.6 1.4"/></svg> — промокод на N бесплатных игр в быстрых играх. Придёт в «Бонусы и промокоды»</span></p>
+ <p class="mn-legend"><span><svg class="mn-pc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1.5 1.5 0 0 1 1.5 1.5v2.7a1.8 1.8 0 0 0 0 3.6v2.7A1.5 1.5 0 0 1 20 18H4a1.5 1.5 0 0 1-1.5-1.5v-2.7a1.8 1.8 0 0 0 0-3.6V7.5A1.5 1.5 0 0 1 4 6z" fill="#f5c542"/><path d="m7 15 5-6" stroke="#5a2d00" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.6" cy="9.6" r="1.3" fill="#5a2d00"/><circle cx="11.4" cy="14.4" r="1.3" fill="#5a2d00"/><path d="M15.5 6v12" stroke="#5a2d00" stroke-width="1.2" stroke-dasharray="1.6 1.4"/></svg> — промокод на N бесплатных игр в быстрых играх. Придёт в «Промокоды»</span></p>
  <div class="mn-gw"><div class="mn-grid" id="mnGrid" role="grid" aria-label="Поле 5 на 5"></div></div>
  <p class="mn-res" id="mnRes" role="status" aria-live="polite"></p>
  <div class="mn-act"><button class="mn-go" id="mnGo" type="button"></button><button class="mn-2" id="mn2" type="button"></button></div></div>`;
@@ -10262,7 +10260,7 @@ function mnRender(){
  if(p==='idle'){go.disabled=!att;go.textContent=att?'Начать попытку':'Нет попыток';b2.textContent=att?'Как играть':'Как получить попытки';res.textContent=R?(att?`${MN.ladder.length} этажей, на каждом 2 окна. Первый этаж — ${mnLabel(MN.ladder[0])}.`:`${MN.ladder.length} этажей, на каждом 2 окна. Попытки — с уровня «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}»`):att?`На поле ${MN.mines} мин из ${MN.size} клеток. Первая клетка — ${mnLabel(MN.ladder[0])}.`:`На поле ${MN.mines} мин из ${MN.size} клеток. Попытки — с уровня «${LossbackEngine.levels[LossbackEngine.MINES_FROM].name}»`;res.className='mn-res'}
  if(p==='play'){go.disabled=!cur;go.textContent=cur?`Забрать ${mnLabel(cur)}`:R?'Выберите окно':'Откройте клетку';b2.hidden=true;const nx=MN.ladder[st.step];res.textContent=nx?`${R?'Следующий этаж':'Следующая клетка'} — ${mnLabel(nx)}`:'';res.className='mn-res'}
  if(p==='boom'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.hidden=true;res.textContent=R?(cur?`Енота поймали! Приз ${mnLabel(cur)} сгорел`:'Енота поймали! Попытка сгорела'):cur?`Мина! Приз ${mnLabel(cur)} сгорел`:'Мина! Попытка сгорела';res.className='mn-res bad'}
- if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent='К промокодам';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Бонусы и промокоды»`;res.className='mn-res good'}
+ if(p==='won'){go.disabled=!att;go.textContent=att?`Ещё попытка · осталось ${att}`:'Попытки закончились';b2.textContent='К промокодам';res.textContent=`Ваш приз: ${mnLong(st.prize)} — в «Промокоды»`;res.className='mn-res good'}
 }
 function mnStart(){if(!lvUseAttempt()){toast('Нет попыток');return}st.phase='play';st.open.clear();st.mines.clear();st.step=0;st.last=null;st.prize=null;bpSync();renderLossback();if(isR())RACC.start();mnRender();haptic&&haptic()}
 /* «Енот»: выбор окна. Исход — как у «Мин»: настройка «Удача» или шанс 1 из 2 попасть на сторожа */
@@ -10583,7 +10581,7 @@ DF.SCN=SCN;window.DF=DF;
 </script>
 <script>
 /* ===== MVP 1–2: без раздела «Промо». Промокоды и все выданные бонусы — в профиле:
-   «Бонусы и промокоды» → ввод промокода, «Доступные» (с игрой и сроком), «История». Промо возвращается с MVP 3. ===== */
+   «Промокоды» → ввод промокода, «Доступные» (с игрой и сроком), «История». Промо возвращается с MVP 3. ===== */
 (function(){
 const promoOn=()=>PCFG.mvp==='3';window.promoOn=promoOn;
 const D=86400000,now=()=>Date.now();
@@ -10648,7 +10646,7 @@ function redeem(v){const code=norm(v);
 function focusIn(){const i=$('#pbnCode');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
 function open(){TAB='active';ADD=null;render();const P=$('#pfb');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.pf-body',P).scrollTop=0;$('.pf-back',P).focus()}
 function close(){const P=$('#pfb');P.classList.remove('show');P.setAttribute('aria-hidden','true');try{$('#pf').classList.contains('show')&&window.PF_render&&PF_render()}catch(e){}}
-$('#scr').insertAdjacentHTML('beforeend',`<section class="pf" id="pfb" aria-hidden="true" aria-label="Бонусы и промокоды"><div class="pf-head"><button class="pf-back" type="button" data-pbn-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Бонусы и промокоды</h2></div><div class="pf-body"></div></section>`);
+$('#scr').insertAdjacentHTML('beforeend',`<section class="pf" id="pfb" aria-hidden="true" aria-label="Промокоды"><div class="pf-head"><button class="pf-back" type="button" data-pbn-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Промокоды</h2></div><div class="pf-body"></div></section>`);
 
 document.addEventListener('click',e=>{
  /* баннер в лобби теперь ведёт в «Акции» (akcii.js) */
@@ -10663,17 +10661,17 @@ document.addEventListener('click',e=>{
  const pf=e.target.closest('#pf [data-pf="bonuses"]');if(pf&&!promoOn()){e.preventDefault();e.stopImmediatePropagation();open()}
 },true);
 
-/* MVP 1–2: всё, что вело в «Промо», ведёт в «Бонусы и промокоды» */
+/* MVP 1–2: всё, что вело в «Промо», ведёт в «Промокоды» */
 const _go=window.go;window.go=function(to,...a){if(to==='promo'&&!promoOn()){open();return}return _go.call(this,to,...a)};
 try{go=window.go}catch(e){}
 function gate(){const off=!promoOn();$('#scr').classList.toggle('no-promo',off);
- const r=$('#pf .pf-row[data-pf="bonuses"]');if(r&&off){const B=$('b',r);if(B.textContent!=='Бонусы и промокоды')B.textContent='Бонусы и промокоды';const s=$('small',r),t=`Доступно: ${items().length} · ввести промокод`;if(s&&s.textContent!==t)s.textContent=t}}
+ const r=$('#pf .pf-row[data-pf="bonuses"]');if(r&&off){const B=$('b',r);if(B.textContent!=='Промокоды')B.textContent='Промокоды';const s=$('small',r),t=`Доступно: ${items().length} · ввести промокод`;if(s&&s.textContent!==t)s.textContent=t}}
 const _sm=window.setMvp;if(_sm){window.setMvp=function(m){_sm(m);gate()};try{setMvp=window.setMvp}catch(e){}}
 new MutationObserver(gate).observe(document.getElementById('pf'),{childList:true,subtree:true});
 seed();gate();
 document.addEventListener('input',e=>{if(e.target.id!=='pbnCode'||!ADD)return;const v=norm(e.target.value);ADD={v};const f=fmtCode(v);if(e.target.value!==f)e.target.value=f;const b=$('.pbn-submit');if(b)b.disabled=v.length!==12;const m=$('#pbnMsg');if(m){m.className='pbn-msg';m.textContent='12 символов — латинские буквы и цифры'}e.target.classList.remove('err')});
 document.addEventListener('submit',e=>{if(e.target.id==='pbnAdd'){e.preventDefault();redeem($('#pbnCode').value)}});
-/* промокоды с колеса: N кодов в «Бонусы и промокоды», сразу готовы к игре */
+/* промокоды с колеса: N кодов в «Промокоды», сразу готовы к игре */
 const QG=['coin','hilo','shell','scale'];
 function grant(n,src,games=3,game){if(typeof bonusModel==='undefined')return [];const out=[];for(let i=0;i<n;i++){const pool=QG.filter(x=>GAMES[x]),g=game&&GAMES[game]?game:pool[Math.floor(Math.random()*pool.length)]||Object.keys(GAMES)[0];
  const code=Array.from({length:12},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');const b=mk('pw-'+code,fmtCode(code),g,games,7,'active',src+' · промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);out.push(b);log(`${src} · промокод ${fmtCode(code)}`,'Получен')}
@@ -11219,7 +11217,7 @@ function pick(amount,units,full,check,only){const h=host();if(!h)return;const ga
   return `<div class="ak-sheet"><div class="ak-grab"></div><div class="ak-sh-head"><b>${only?'Промокод':check?'Покупка':'Оплата'}</b><button type="button" class="ak-x" data-pp-x aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    ${check?`<p class="pp-what">${h.kind==='quick'?`Ставка ${rub(amount)} · «${gName(game)}»`:`${units} ${tw(units)} · «${gName(game)}»`}</p>`:''}
    ${only?'':'<p class="pp-cap">Промокод</p>'}
-   <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty"><b>Есть промокод?</b>Получили от друга, в письме или в соцсетях — введите его ниже. Он сразу появится здесь и в «Бонусы и промокоды».</p>'}</div>
+   <div class="pp-list">${L.map(c=>opt(c,b&&b.id===c.id)).join('')}${L.length?`<button type="button" class="pp-opt${!b?' on':''}" data-pp-sel="none"><span class="pp-ico none">₽</span><span class="pp-t"><b>Без промокода</b><small>${L.length?'Промокод останется на потом':''}</small></span><i class="pp-radio"></i></button>`:'<p class="pp-empty"><b>Есть промокод?</b>Получили от друга, в письме или в соцсетях — введите его ниже. Он сразу появится здесь и в «Промокоды».</p>'}</div>
    <form class="pp-enter" data-pp-form><input name="c" placeholder="Ввести промокод" autocomplete="off" maxlength="16" aria-label="Код промокода"><button type="submit">Применить</button></form><p class="pp-err${msg&&msg.ok?' ok':''}" data-pp-err>${msg?msg.t:''}</p><p class="pp-demo">Демо-коды: FLY1 · POKER1 · COIN200 · OLD2025</p>
    ${only?'':S.stb>0&&cap?`<p class="pp-cap">Бонусы</p><div class="pp-row${S.ppBon&&p.bonus?' on b':''}${b?' off':''}"><span class="pp-ico bon">Б</span><span class="pp-t"><b>${b?'Бонусы':S.ppBon&&p.bonus?`Списать ${num(p.bonus)} Б`:`Списать до ${num(p.maxB)} Б`}</b><small>${b?'Несовместимы с промокодом':`Есть ${num(S.stb)} Б · до ${cap}% цены в этой игре`}</small></span><button type="button" class="pp-sw" role="switch" aria-checked="${S.ppBon&&!!p.bonus}" ${p.maxB||b?'':'disabled'} aria-label="Списать бонусы" data-pp-bon><i></i></button></div>`:''}
    ${only?'':sum}
@@ -11247,7 +11245,7 @@ function okPop(r,game){const here=r.game===game,G=GAMES[r.game]||{};
  w.innerHTML=`<div class="rwd-c"><div class="rwd-glow"></div><span class="pp-ok-i" aria-hidden="true">✓</span>
   <small class="rwd-src">Промокод ${r.code}</small><h3>Промокод добавлен</h3>
   <div class="rwd-list"><div class="rwd-item"><img src="${IMG[G.img]||''}" alt=""><span><b>${codeTitle(r)}</b><small>в «${G.n||''}» · ${dLeft(r.expiresAt)}</small></span></div></div>
-  <p class="rwd-note">${here?'Уже применён к этой игре — осталось нажать кнопку оплаты.':`Он для «${G.n||''}» и применится, когда вы откроете эту игру. Найти его можно в «Бонусы и промокоды».`}</p>
+  <p class="rwd-note">${here?'Уже применён к этой игре — осталось нажать кнопку оплаты.':`Он для «${G.n||''}» и применится, когда вы откроете эту игру. Найти его можно в «Промокоды».`}</p>
   ${here?'<button type="button" class="ak-go" data-ppok-x>Отлично</button>':`<button type="button" class="ak-go" data-ppok-go="${r.id}">Перейти в «${G.n||''}»</button><button type="button" class="rwd-later" data-ppok-x>Позже</button>`}</div>`;
  requestAnimationFrame(()=>w.classList.add('show'))}
 document.addEventListener('click',e=>{const w=e.target.closest('#ppOk');if(!w)return;const close=()=>w.classList.remove('show');
@@ -11308,13 +11306,13 @@ const AK=[
  {id:'coin5',accent:1,tag:'Акция недели',title:'Неделя «Монетки»',big:'Сыграй 5 раз — получи 5 игр бесплатно',lead:'Сыграйте 5 раз в «Монетку» — получите промокод на 5 бесплатных игр',
   short:'5 игр в «Монетке» — промокод на 5 игр',goal:5,kind:'plays',game:'coin',unit:['игра','игры','игр'],prog:'Сыграно',reward:{n:1,games:5,game:'coin'},rewardTxt:'Промокод на 5 бесплатных игр в «Монетке»',
   end:END0,art:'coin',fallback:'q_coin',bg:'linear-gradient(135deg,#5b1fa6 0%,#3a1170 55%,#1d0a3c 100%)',glow:'#f5c84a',
-  steps:['Нажмите «Участвую» и примите условия оферты','Сыграйте 5 раз в «Монетку» до '+dShort(END0),'Промокод придёт в «Бонусы и промокоды» — активировать не нужно'],
+  steps:['Нажмите «Участвую» и примите условия оферты','Сыграйте 5 раз в «Монетку» до '+dShort(END0),'Промокод придёт в «Промокоды» — активировать не нужно'],
   terms:'Участвуют игры в «Монетке», оплаченные рублями после принятия условий. Игры по промокодам не учитываются. Один промокод на игрока за время акции.',
   cta:'Играть в «Монетку»'},
  {id:'quick1000',tag:'Быстрые игры',title:'Быстрые игры',big:'3 промокода за покупки на 1\u00a0000\u00a0₽',lead:'Купите билеты на 1 000 ₽ в любых быстрых играх и получите 3 промокода',
   short:'Купите на 1 000 ₽ — получите 3 промокода',goal:1000,kind:'money',unit:['₽','₽','₽'],prog:'Куплено на',reward:{n:3,games:3},rewardTxt:'3 промокода по 3 бесплатные игры в быстрых играх',
   end:END1,art:'gift',fallback:'q_shell',bg:'linear-gradient(135deg,#1d3fa8 0%,#2a1a7a 55%,#120a3a 100%)',glow:'#7fd3ff',
-  steps:['Нажмите «Участвую» и примите условия оферты','Купите билеты в быстрых играх на 1 000 ₽ до '+dShort(END1),'3 промокода придут в «Бонусы и промокоды» сразу'],
+  steps:['Нажмите «Участвую» и примите условия оферты','Купите билеты в быстрых играх на 1 000 ₽ до '+dShort(END1),'3 промокода придут в «Промокоды» сразу'],
   terms:'Учитываются покупки билетов за рубли в «Монетке», «Где шарик?», «Больше-меньше», «Весах» и других быстрых играх после принятия условий. Покупки по промокодам не учитываются.',
   cta:'К быстрым играм'},
  {id:'crashsale',tag:'Crash Games',title:'Играй в «Остров удачи»',big:'Билет 70\u00a0₽ вместо 100\u00a0₽',lead:'До конца недели билет стоит 70 ₽ вместо 100 ₽. Выигрыш — как за полный билет',
@@ -11349,7 +11347,7 @@ function cardAccent(a){return `<button type="button" class="ak-card ak-acc" data
   <span class="ak-acc-top"><span class="ak-tag">${a.tag}</span><span class="ak-left in-top">${ICO.clock}${left(a.end)}</span></span>
   <span class="ak-acc-main"><b>${a.title}</b><small>${a.lead}</small></span>
   <img class="ak-acc-art" src="${art(a)}" alt="" draggable="false">
-  ${a.auto?`<span class="ak-acc-cta">Играть</span>`:joined(a)&&!done(a)?bar(a):done(a)?`<span class="ak-prog done"><span>${ICO.gift}Промокод уже в «Бонусы и промокоды»</span></span>`:`<span class="ak-acc-cta">Участвую</span>`}
+  ${a.auto?`<span class="ak-acc-cta">Играть</span>`:joined(a)&&!done(a)?bar(a):done(a)?`<span class="ak-prog done"><span>${ICO.gift}Промокод уже в «Промокоды»</span></span>`:`<span class="ak-acc-cta">Участвую</span>`}
   ${badge(a)?`<span class="ak-acc-st">${badge(a)}</span>`:''}</button>`}   /* таймер — сверху справа, статус — снизу справа */
 function cardPlain(a){return `<button type="button" class="ak-card ak-row" data-ak-open="${a.id}" style="--akbg:${a.bg};--akglow:${a.glow}">
   <span class="ak-row-art"><img src="${art(a)}" alt="" draggable="false"></span>
@@ -11375,7 +11373,7 @@ function detail(a){const J=joined(a),Dn=done(a);
  return `<div class="ak-hero" style="--akbg:${a.bg};--akglow:${a.glow}"><span class="ak-acc-top"><span class="ak-tag">${a.tag}</span><span class="ak-left in-top">${ICO.clock}до ${dShort(a.end)} · ${left(a.end)}</span></span>
   <img class="ak-hero-art" src="${art(a)}" alt="" draggable="false"><h3>${a.title}</h3><p>${a.lead}</p>${badge(a)?`<span class="ak-hero-st">${badge(a)}</span>`:''}</div>
   ${J&&!Dn?`<div class="ak-box">${bar(a)}</div>`:''}
-  ${Dn?`<div class="ak-box ak-won"><span class="ak-won-i">${ICO.gift}</span><span><b>Условия выполнены</b><small>${a.rewardTxt} — уже в «Бонусы и промокоды»</small></span></div>`:''}
+  ${Dn?`<div class="ak-box ak-won"><span class="ak-won-i">${ICO.gift}</span><span><b>Условия выполнены</b><small>${a.rewardTxt} — уже в «Промокоды»</small></span></div>`:''}
   <div class="ak-box"><h4>${a.auto?'Выгода':'Награда'}</h4><p class="ak-reward">${ICO.gift}<span>${a.rewardTxt}</span></p></div>
   <div class="ak-box"><h4>${a.auto?'Как это работает':'Как получить промокод'}</h4><ol class="ak-steps">${a.steps.map((s,i)=>`<li${J&&i===0?' class="ok"':''}><i>${J&&i===0?ICO.ok:i+1}</i><span>${s}</span></li>`).join('')}</ol></div>
   <div class="ak-box"><h4>Условия акции</h4><p>${a.terms}</p></div>
@@ -11438,7 +11436,7 @@ function track(amount){const g=(document.getElementById('game')||{}).dataset?.g;
   if(a.kind==='plays'&&g===a.game){s.v=(s.v||0)+1;changed=true}
   if(a.kind==='money'&&quickIds().includes(g)){s.v=(s.v||0)+amount;changed=true}
   if(s.v>=a.goal&&!s.done){s.done=now();try{window.PB&&PB.grant(a.reward.n,'Акция · '+a.title,a.reward.games,a.reward.game)}catch(e){}
-   setTimeout(()=>{toast('Условия акции выполнены! '+(a.reward.n>1?'Промокоды уже':'Промокод уже')+' в «Бонусы и промокоды»');try{SFX.win&&SFX.win()}catch(e){}},400)}}
+   setTimeout(()=>{toast('Условия акции выполнены! '+(a.reward.n>1?'Промокоды уже':'Промокод уже')+' в «Промокоды»');try{SFX.win&&SFX.win()}catch(e){}},400)}}
  if(changed){save();renderList();renderBanner();if(document.getElementById('akd').classList.contains('show'))renderDetail(true)}}
 if(typeof window.charge==='function'){const oc=window.charge;window.charge=function(a,...r){const ok=oc.call(this,a,...r);if(ok)try{track(a)}catch(e){}return ok};try{charge=window.charge}catch(e){}}
 
@@ -11646,8 +11644,8 @@ function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.ge
  <div class="sm-body">
   <div class="sm-promos">${promos.map(a=>`<button type="button" class="sm-pc" data-mn-promo="${a.id}" style="--akbg:${a.bg}"><small>Акция</small><b>${a.title}</b><i class="sm-pc-go">${sv('chev')}</i><img src="${art(a)}" alt=""></button>`).join('')}</div>
   ${guest?`<button type="button" class="sm-card sm-me" data-mn="login"><span class="sm-ava">${sv('chat').replace(MI.chat,'<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3" fill="currentColor"/>')}</span><span class="sm-t"><b>Войти</b><small>Чтобы играть, получать промокоды и кэшбек</small></span><i class="sm-chev">${sv('chev')}</i></button>`
-   :`<button type="button" class="sm-card sm-me" data-mn="profile"><span class="sm-ava">ИП</span><span class="sm-t"><b>Иван Петров</b><small>ID клиента: 84841515${lv?` · ${lv}`:''}</small></span><i class="sm-chev">${sv('chev')}</i></button>`}
-  <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Бонусы и промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
+   :`<button type="button" class="sm-card sm-me" data-mn="profile"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Перейти в профиль</small></span><i class="sm-chev">${sv('chev')}</i></button>`}
+  <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
   <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
   <div class="sm-card">${mrow('coin','Чёт/нечет','chet','Игра на сайте Столото')}${mrow('ball','Лотереи','stoloto','Русское лото, Жилищная лотерея и другие')}${mrow('flag','Результаты тиражей','results')}</div>
   ${guest?'':`<div class="sm-card">${mrow('gear','Настройки','settings','Личные данные, безопасность, лимиты')}</div>`}
