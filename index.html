@@ -11854,7 +11854,7 @@ const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" 
 let railSig='';
 function railBuild(){if(rail.children.length)return;
  rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
-  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('support',sv('chat'),'Помощь и поддержка')+ri('settings',sv('gear'),'Настройки');
+  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('support',sv('chat'),'Помощь и поддержка');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
  $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='games'?lob&&cur==='lobby':k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
