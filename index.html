@@ -4670,6 +4670,13 @@ html.desk .ak-sheet.aks{position:relative}
 .dkx{display:none}
 html.desk .dkx{display:flex}
 .dkx-in{display:flex;flex-direction:column;gap:12px;padding-bottom:32px}
+/* страницы — отдельные, а не поверх главной: пока открыта страница, контент главной скрыт (остаётся только общая шапка), закрытые страницы не видны совсем */
+html.desk.dk-modal #lobby{overflow:hidden}
+html.desk.dk-modal #lobby>*:not(.app-header){visibility:hidden}
+html.desk .screen.off-r,html.desk .screen.off-l,html.desk .screen.off-b{visibility:hidden}
+html.desk #lobby.off-l,html.desk #lobby.off-r,html.desk #lobby.off-b{visibility:visible}
+html.desk #scr>:is(.pf,.nt,.ac):not(.show){visibility:hidden}
+html.desk .dpp:not(.show){visibility:hidden}
 /* пустые мобильные шапки внутри страниц на десктопе не нужны */
 html.desk #scr :is(#lossback,#promo,#cat)>.app-header{display:none!important}
 html.desk #scr #lossback>.bonus-title-row{margin-top:20px}
