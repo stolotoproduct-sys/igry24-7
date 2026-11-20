@@ -4655,6 +4655,14 @@ html.desk.dk-modal .dk-scrim{opacity:1;pointer-events:auto;cursor:default}
 /* дубли общей шапки внутри страниц (логотип, баланс) не нужны — она уже есть сверху */
 html.desk .screen:not(#lobby)>.app-header:not(.p2-hdr) .header-logo,html.desk .screen:not(#lobby)>.app-header .header-wallet,html.desk .screen:not(#lobby)>.app-header .header-right,html.desk .screen:not(#lobby)>.app-header .header-login{display:none!important}
 html.desk .pf-head,html.desk .nt>header,html.desk .ac>header{padding-top:24px}
+/* мой уровень — две колонки: слева карусель уровней и прогресс, справа привилегии, сброс и «Как работает» */
+html.desk #lossbackContent{columns:2;column-gap:32px;padding:24px 0 48px}
+html.desk #lossbackContent>*,html.desk #lossbackContent #lpDetail>*{break-inside:avoid}
+html.desk #lossbackContent .lp-hero{margin:0 0 12px}
+html.desk #lossbackContent .lp-card{margin:24px 0 0}
+html.desk #lossbackContent>.lp-reset{margin:12px 0}
+html.desk #lossbackContent .lp-h{break-before:column;margin-top:0}
+html.desk #lossbackContent>.lv-more{width:100%}
 /* акции — карточки в 2 колонки */
 html.desk #akc .ak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 html.desk #akc .ak-list .akf{margin:0}
