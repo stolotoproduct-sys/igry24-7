@@ -4646,6 +4646,8 @@ html.desk #lobby>.app-header .header-wallet{margin-left:auto}
 /* остальные экраны — отдельные страницы под общей шапкой: колонка по центру рабочей области, своя кнопка «Назад» */
 html.desk .screen:not(#lobby),html.desk .pf,html.desk .nt,html.desk .ac{--pw:min(960px,calc(100% - 144px));left:calc(72px + (100% - 72px - var(--pw))/2);right:auto;top:72px;bottom:0;width:var(--pw);border-radius:0;box-shadow:none;overflow:hidden auto;scrollbar-width:thin;transition:opacity .2s,transform .2s}
 html.desk #scr #game{--pw:560px}
+/* профиль и его разделы (личные данные, вывод, настройки) — узкой колонкой, как на сайте */
+html.desk #scr #pf,html.desk #scr .ac{--pw:min(664px,calc(100% - 144px))}
 html.desk #scr #game>.app-header.qf-hdr{display:none}
 html.desk #lobby.off-l,html.desk #lobby.off-r,html.desk #lobby.off-b{transform:none;opacity:1;pointer-events:auto}
 html.desk .dk-scrim{display:block;position:absolute;left:72px;top:72px;right:0;bottom:0;z-index:29;background:#0a0b11;opacity:0;pointer-events:none;transition:opacity .2s}
