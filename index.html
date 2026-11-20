@@ -4737,6 +4737,31 @@ html.desk.rail-open .drail .dr-t{opacity:1}
 .drail .dr-sp{flex:1}
 /* подсказка с подписью у свёрнутого рейла */
 html.desk:not(.rail-open) .drail button[data-tip]:hover::after{content:attr(data-tip);position:fixed;left:80px;margin-top:0;padding:6px 10px;border-radius:8px;background:#26222f;color:#fff;font-size:13px;line-height:18px;box-shadow:0 6px 18px #0008;pointer-events:none}
+/* десктоп: поповер профиля по наведению на аватар в шапке */
+.dpp{display:none}
+html.desk .dpp{display:block;position:absolute;z-index:96;top:64px;width:340px;padding:8px;border-radius:20px;background:#15131d;border:1px solid #ffffff14;box-shadow:0 24px 60px #000c;color:#f4efff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s}
+html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
+.dpp:before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.dpp button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.dpp .dpp-me{padding:8px 8px 12px;border-bottom:1px solid #ffffff12;margin-bottom:8px}
+.dpp .dpp-ava{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#b072f0,#6c2cc0);font-weight:800;font-size:16px}
+.dpp .dpp-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dpp .dpp-t b{font-size:16px;line-height:20px;font-weight:700}
+.dpp .dpp-t small{font-size:13px;line-height:16px;color:#a99fc2}
+.dpp .dpp-ch{flex:none;width:16px;height:16px;color:#7f7690}
+.dpp .dpp-card{margin-top:8px;padding:14px 16px;border-radius:16px;background:#1f1c29}
+.dpp .dpp-card:hover,.dpp .dpp-me:hover{background:#26222f}
+.dpp .dpp-me{border-radius:14px}
+.dpp .dpp-wal{display:block;margin-top:0;padding:14px 16px 16px;border-radius:16px;background:#1f1c29}
+.dpp .dpp-row{display:flex;align-items:center;gap:8px}
+.dpp .dpp-row b{flex:1;font-size:16px;line-height:22px;font-weight:700}
+.dpp .dpp-add{justify-content:center;height:44px;margin-top:12px;border-radius:12px;background:linear-gradient(180deg,#b072f0,#8d45dc)!important;color:#fff;font-weight:700;font-size:15px;box-shadow:0 4px 14px #8d45dc55}
+.dpp .dpp-bar{display:block;height:6px;margin-top:8px;border-radius:3px;background:#ffffff14;overflow:hidden}
+.dpp .dpp-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#9b5de5,#f3c06b)}
+.dpp .dpp-sub{display:block;margin-top:4px;font-size:13px;line-height:16px;color:#a99fc2}
+.dpp .dpp-sub em{font-style:normal;color:#f7b52c;font-weight:700}
+.dpp .dpp-out{justify-content:center;height:40px;margin-top:8px;border-radius:12px;color:#a99fc2;font-size:14px}
+.dpp .dpp-out:hover{color:#fff;background:#ffffff0a}
 /* переключатель вида прототипа */
 .vsw{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;padding:4px;border-radius:12px;background:#111;box-shadow:0 6px 20px #0004;font:600 13px/1 ALS Sirius Pro,Inter,sans-serif}
 .vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
@@ -11845,6 +11870,31 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentEle
 window.addEventListener('click',e=>{if(document.documentElement.classList.contains('desk')&&e.target.closest('#lobby .header-logo')){e.preventDefault();e.stopImmediatePropagation();dkHome()}},true);
 window.addEventListener('click',e=>{if(document.documentElement.classList.contains('desk')&&e.target.closest('#lobby .header-bell,#lobby .header-profile,#lobby .header-add'))dkClear()},true);
 setInterval(()=>{dkModal();if(document.documentElement.classList.contains('desk')){railBuild();railSync()}},150);
+
+/* поповер профиля (десктоп): наведение на аватар — имя, кошелёк, бонусы, уровень, промокоды */
+scr.insertAdjacentHTML('beforeend','<div class="dpp" id="dpp" role="dialog" aria-label="Личный кабинет"></div>');
+const dpp=$('#dpp');let dppT=0;
+const tx=sel=>{const e=$(sel);return e?e.textContent.trim():''};
+function dppHTML(){let A={};try{A=window.ACC?ACC.get():{}}catch(e){}const nick=A.nick||'ivan_petrov';
+ const cash=tx('#lobby .header-cash span'),bon=tx('#lobby .header-wager span');
+ const lvl=tx('#lossbackEntry .lp-w-top strong')||'Мой уровень',sub=tx('#lossbackEntry .lp-w-bottom span');
+ const bar=$('#lossbackEntry .lp-bar i'),w=bar?bar.style.width||getComputedStyle(bar).width:'0';
+ let codes=0;try{codes=PB.items().length}catch(e){}
+ const ch=`<svg class="dpp-ch" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+ return `<button type="button" class="dpp-me" data-dpp="profile"><span class="dpp-ava">${nick.slice(0,2).toUpperCase()}</span><span class="dpp-t"><b>Личный кабинет</b><small>${nick}</small></span>${ch}</button>
+  <div class="dpp-wal"><button type="button" class="dpp-row" data-dpp="profile"><b>Кошелёк: ${cash} ₽</b>${ch}</button><button type="button" class="dpp-add" data-dpp="add">＋ Пополнить</button></div>
+  <button type="button" class="dpp-card dpp-row" data-dpp="profile"><b>Бонусы: ${bon} Б</b>${ch}</button>
+  <button type="button" class="dpp-card" data-dpp="level" style="display:block"><span class="dpp-row"><b>${lvl}</b>${ch}</span><span class="dpp-bar"><i style="width:${w}"></i></span><span class="dpp-sub">${sub.replace(/(\d+%)/,'<em>$1</em>')}</span></button>
+  <button type="button" class="dpp-card dpp-row" data-dpp="codes"><b>Промокоды${codes?': '+codes:''}</b>${ch}</button>
+  <button type="button" class="dpp-out" data-dpp="logout">Выйти</button>`}
+function dppShow(){if(!document.documentElement.classList.contains('desk'))return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
+ const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();const r=b.getBoundingClientRect(),S=scr.getBoundingClientRect();
+ dpp.style.left=Math.max(80,r.right-S.left-340)+'px';dpp.style.top=(r.bottom-S.top+8)+'px';dpp.classList.add('show')}
+function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>dpp.classList.remove('show'),d)}
+document.addEventListener('mouseover',e=>{if(e.target.closest('#lobby .header-profile'))dppShow();else if(e.target.closest('#dpp'))clearTimeout(dppT)});
+document.addEventListener('mouseout',e=>{const f=e.target.closest('#lobby .header-profile,#dpp');if(f&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#lobby .header-profile,#dpp')))dppHide()});
+dpp.addEventListener('click',e=>{const b=e.target.closest('[data-dpp]');if(!b)return;const k=b.dataset.dpp;dppHide(0);dkClear();
+ if(k==='add'){const a=$('#lobby .header-add');a&&a.click()}else if(k==='level'||k==='codes')mnAct(k);else mnAct(k==='logout'?'logout':'profile');setTimeout(()=>{sync();railSync();dkModal()},0)});
 let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
 setView(v0==='desk'?'desk':'phone');
 })();
