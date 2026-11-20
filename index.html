@@ -4669,8 +4669,10 @@ html.desk .aks-x:hover{background:#ffffff2e}
 html.desk .ak-sheet.aks{position:relative}
 .dkx{display:none}
 html.desk .dkx{display:flex}
-html.desk #scr #dkx{--pw:min(664px,calc(100% - 144px))}
 .dkx-in{display:flex;flex-direction:column;gap:12px;padding-bottom:32px}
+/* пустые мобильные шапки внутри страниц на десктопе не нужны */
+html.desk #scr :is(#lossback,#promo,#cat)>.app-header{display:none!important}
+html.desk #scr #lossback>.bonus-title-row{margin-top:20px}
 /* акции — карточки в 2 колонки */
 html.desk #akc .ak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 html.desk #akc .ak-list .akf{margin:0}
