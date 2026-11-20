@@ -4667,6 +4667,10 @@ html.desk #lossbackContent>.lv-more{width:100%}
 html.desk .aks-x{display:grid;place-items:center;position:absolute;top:12px;right:12px;z-index:3;width:36px;height:36px;border:0;border-radius:18px;background:#ffffff1a;color:#fff;cursor:pointer}
 html.desk .aks-x:hover{background:#ffffff2e}
 html.desk .ak-sheet.aks{position:relative}
+.dkx{display:none}
+html.desk .dkx{display:flex}
+html.desk #scr #dkx{--pw:min(664px,calc(100% - 144px))}
+.dkx-in{display:flex;flex-direction:column;gap:12px;padding-bottom:32px}
 /* акции — карточки в 2 колонки */
 html.desk #akc .ak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 html.desk #akc .ak-list .akf{margin:0}
@@ -11867,18 +11871,18 @@ const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" 
 let railSig='';
 function railBuild(){if(rail.children.length)return;
  rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
-  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('support',sv('chat'),'Помощь и поддержка');
+  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('more',sv('info'),'Дополнительно');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
- $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='games'?lob&&cur==='lobby':k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
 document.addEventListener('click',e=>{
  const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
  if(k==='toggle'){H.classList.toggle('rail-open');return}
  if(k==='close'){H.classList.remove('rail-open');return}
  if(k==='modal'){dkHome();return;closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>{const bk=x.querySelector('.pf-back,.nt-back,.ac-back,[data-pbn-close],[aria-label="Назад"]');bk?bk.click():x.classList.remove('show')});const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');setTimeout(()=>{sync();railSync();dkModal()},0);return}
- H.classList.remove('rail-open');closeOverlays();$$('#scr>.nt.show,#scr>.ac.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(k!=='wheel'&&g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby'&&k!=='level')go('lobby');
-  mnAct(k);
+ H.classList.remove('rail-open');closeOverlays();dkxClose();$$('#scr>.nt.show,#scr>.ac.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(k!=='wheel'&&g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby'&&k!=='level')go('lobby');
+  if(k==='more')dkxOpen();else mnAct(k);
  setTimeout(()=>{sync();railSync()},0)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentElement.classList.remove('rail-open')});
 window.addEventListener('click',e=>{if(document.documentElement.classList.contains('desk')&&e.target.closest('#lobby .header-logo')){e.preventDefault();e.stopImmediatePropagation();dkHome()}},true);
@@ -11909,6 +11913,23 @@ document.addEventListener('mouseover',e=>{if(e.target.closest('#lobby .header-pr
 document.addEventListener('mouseout',e=>{const f=e.target.closest('#lobby .header-profile,#dpp');if(f&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#lobby .header-profile,#dpp')))dppHide()});
 dpp.addEventListener('click',e=>{const b=e.target.closest('[data-dpp]');if(!b)return;const k=b.dataset.dpp;dppHide(0);dkClear();
  if(k==='add'){const a=$('#lobby .header-add');a&&a.click()}else if(k==='level'||k==='codes')mnAct(k);else mnAct(k==='logout'?'logout':'profile');setTimeout(()=>{sync();railSync();dkModal()},0)});
+
+/* «Дополнительно» (десктоп): страница о Столото, лотереи, правила, поддержка и контакты */
+scr.insertAdjacentHTML('beforeend','<section class="pf dkx" id="dkx" aria-hidden="true" aria-label="Дополнительно"><div class="pf-head"><button class="pf-back" type="button" data-dkx-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Дополнительно</h2></div><div class="pf-body"></div></section>');
+const dkx=$('#dkx');
+function dkxHTML(){return `<div class="dkx-in">
+ <div class="sm-card sm-about"><b class="sm-logo">СТОЛОТО</b><p>Распространитель государственных лотерей России. Тиражи проходят под контролем, выигрыши выплачиваются в рублях.</p></div>
+ <h3 class="sm-h">Лотереи Столото</h3>
+ <div class="sm-card">${mrow('coin','Чёт/нечет','chet','Игра на сайте Столото')}${mrow('ball','Лотереи','stoloto','Русское лото, Жилищная лотерея и другие')}${mrow('flag','Результаты тиражей','results')}</div>
+ <h3 class="sm-h">Документы</h3>
+ <div class="sm-card">${mrow('doc','Правила игр и акций','rules')}${mrow('shield','Политика конфиденциальности','privacy')}</div>
+ <h3 class="sm-h">Поддержка и контакты</h3>
+ <div class="sm-card">${mrow('chat','Помощь и поддержка','support','Чат 24/7, частые вопросы')}${mrow('info','Контакты','contacts','8 800 200-00-00 · info@stoloto.ru')}</div>
+ <p class="sm-legal">Игры 24/7 — тиражные лотереи Столото. 18+</p></div>`}
+function dkxOpen(){$('.pf-body',dkx).innerHTML=dkxHTML();dkx.classList.add('show');dkx.setAttribute('aria-hidden','false');$('.pf-body',dkx).scrollTop=0}
+function dkxClose(){dkx.classList.remove('show');dkx.setAttribute('aria-hidden','true')}
+dkx.addEventListener('click',e=>{if(e.target.closest('[data-dkx-close]')){dkxClose();setTimeout(()=>{sync();railSync();dkModal()},0);return}
+ const b=e.target.closest('[data-mn]');if(!b)return;const k=b.dataset.mn;if(['chet','stoloto'].includes(k))dkxClose();mnAct(k);setTimeout(()=>{sync();railSync();dkModal()},0)});
 let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
 setView(v0==='desk'?'desk':'phone');
 })();
