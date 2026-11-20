@@ -4627,6 +4627,76 @@ button.lp-tile{font:inherit;cursor:pointer;border-color:#3fd1b040}
 .lv-mines-art.racc{display:grid;place-items:center}
 .lv-mines-art.racc img{width:44px;height:44px;object-fit:contain}
 
+/* ================= ДЕСКТОП 1280–1600 (вид «Десктоп»): рейл слева 72 px, шапка, контейнер 12 колонок =================
+   Сетка Столотеки: 1280–1600 — 12 колонок по 80, гаттер 16, рейл 72; 1601+ — колонки до 104 (контейнер 1424), дальше — только поля */
+html.desk,html.desk body{height:100%;overflow:hidden}
+html.desk body{display:block;background:#0a0b11}
+html.desk .side{display:none}
+html.desk .phone{width:100%;height:100vh;border-radius:0;padding:0;box-shadow:none}
+html.desk .phone:before{display:none}
+html.desk .scr{width:100%;height:100%;border-radius:0;--sb:0px;background:#0a0b11}
+html.desk .sbar,html.desk #tabbar{display:none!important}
+html.desk .screen{left:72px}
+html.desk .screen:not(#lobby){left:auto;right:0;width:440px;border-left:1px solid #ffffff14}
+html.desk .screen:not(#lobby):not(.off-r):not(.off-l):not(.off-b){box-shadow:-24px 0 60px #0009}
+html.desk .pf{left:auto;width:440px;border-left:1px solid #ffffff14}
+html.desk .pf.show{box-shadow:-24px 0 60px #0009}
+html.desk .sm .sm-sheet,html.desk .sheet .in{max-width:480px;margin-left:auto;margin-right:auto}
+html.desk .toast{left:calc(50% + 36px)}
+html.desk #lobby{--dkw:min(1424px,calc(100% - 72px));--lobby-gutter:0px;padding-bottom:64px}
+html.desk #lobby>*:not(.app-header){width:var(--dkw);margin-left:auto;margin-right:auto}
+/* шапка: слева логотип, справа баланс, колокольчик, профиль */
+html.desk #scr #lobby>.app-header{height:72px;padding:0 calc((100% - var(--dkw))/2)!important;gap:12px;background:#0a0b11eb;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid #ffffff0f;margin-bottom:24px}
+html.desk #lobby>.app-header .header-wallet{margin-left:auto}
+/* баннеры акций — три в ряд по 4 колонки */
+html.desk #lobby>.l-banner.ak-ban{margin-bottom:16px}
+html.desk #lobby .ak-ban-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;overflow:visible;border-radius:0}
+html.desk #lobby .ak-slide{height:200px;padding:24px;border-radius:24px}
+html.desk #lobby .ak-slide-main{max-width:58%;gap:10px}
+html.desk #lobby .ak-slide-main b{font-size:20px;line-height:26px}
+html.desk #lobby>.l-banner .ak-slide-art{width:184px;height:184px;right:-4px;top:auto;bottom:-8px;transform:none}
+html.desk #lobby .ak-dots{visibility:hidden}
+html.desk #lobby .ak-ban-foot{margin-top:8px}
+/* уровень и колесо — по 3 колонки */
+html.desk #scr #lobby>.home-rewards{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:8px auto!important;width:var(--dkw)}
+html.desk #lobby .home-rewards>*{height:72px;min-height:72px}
+/* разделы игр: заголовок + 6 карточек по 2 колонки */
+html.desk #lobbySections .sec-h{margin:40px 0 16px}
+html.desk #lobbySections .sec-h h3{font-size:24px}
+html.desk #lobbySections .sec-h p{font-size:14px}
+html.desk #lobbySections .grow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;overflow:visible;padding:0;scroll-snap-type:none}
+html.desk #scr #lobbySections .gc{flex:none;width:auto;border-radius:16px;transition:transform .15s,box-shadow .15s}
+html.desk #lobbySections .gc:hover{transform:translateY(-4px);box-shadow:0 10px 28px -8px var(--c)}
+html.desk #lobbySections .gc .pb{height:40px;font-size:15px;border-radius:12px}
+html.desk #lobbySections .gc .inf{padding:10px 12px 12px}
+html.desk #scr #lobbySections .gc .im{height:auto;aspect-ratio:196/182}
+html.desk #scr #lobbySections .gc.cl .im{aspect-ratio:196/220}
+/* рейл: иконки 48×48, по кнопке раскрывается с подписями поверх контента */
+.drail{display:none}
+html.desk .drail{position:absolute;left:0;top:0;bottom:0;z-index:95;display:flex;flex-direction:column;gap:4px;width:72px;padding:12px;background:#0e0c15;border-right:1px solid #ffffff12;overflow:hidden auto;scrollbar-width:none;transition:width .22s cubic-bezier(.3,.8,.3,1),box-shadow .22s;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif)}
+html.desk .drail::-webkit-scrollbar{display:none}
+html.desk.rail-open .drail{width:248px;box-shadow:24px 0 60px #000a}
+.drail-scrim{display:none}
+html.desk.rail-open .drail-scrim{display:block;position:absolute;inset:0 0 0 72px;z-index:94;background:#0006}
+.drail button{flex:none;display:flex;align-items:center;gap:12px;width:100%;height:48px;padding:0 12px;border:0;border-radius:12px;background:none;color:#a8a3bd;font:500 14px/20px inherit;font-family:inherit;text-align:left;cursor:pointer;white-space:nowrap;position:relative}
+.drail button:hover{background:#ffffff0d;color:#fff}
+.drail button.on{background:linear-gradient(180deg,#b072f0,#8d45dc);color:#fff;box-shadow:0 4px 14px #8d45dc55}
+.drail button:focus-visible{outline:2px solid #c58bf1;outline-offset:2px}
+.drail .dr-i{flex:none;width:24px;height:24px;display:grid;place-items:center}
+.drail .dr-i svg{width:24px;height:24px}
+.drail .dr-i img{width:28px;height:28px;object-fit:contain;mix-blend-mode:lighten}
+.drail .dr-t{opacity:0;transition:opacity .15s}
+html.desk.rail-open .drail .dr-t{opacity:1}
+.drail .dr-tog{margin-bottom:8px;color:#fff;background:#ffffff0d}
+.drail hr{flex:none;height:1px;margin:6px 4px;border:0;background:#ffffff12}
+.drail .dr-sp{flex:1}
+/* подсказка с подписью у свёрнутого рейла */
+html.desk:not(.rail-open) .drail button[data-tip]:hover::after{content:attr(data-tip);position:fixed;left:80px;margin-top:0;padding:6px 10px;border-radius:8px;background:#26222f;color:#fff;font-size:13px;line-height:18px;box-shadow:0 6px 18px #0008;pointer-events:none}
+/* переключатель вида прототипа */
+.vsw{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;padding:4px;border-radius:12px;background:#111;box-shadow:0 6px 20px #0004;font:600 13px/1 ALS Sirius Pro,Inter,sans-serif}
+.vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
+.vsw button.on{background:#fff;color:#111}
+@media (max-width:500px){.vsw{display:none}}
 </style>
 </head>
 <body>
@@ -11661,11 +11731,7 @@ const mn=$('#mnu');
 function menuOpen(){mn.innerHTML=menuHTML();mn.classList.add('show');mn.setAttribute('aria-hidden','false');setTimeout(sync,0)}
 function menuClose(){if(!mn.classList.contains('show'))return;mn.classList.remove('show');mn.setAttribute('aria-hidden','true');setTimeout(sync,0)}
 const lobbyTo=()=>{if(cur!=='lobby'&&cur!=='lossback')go('lobby')};
-mn.addEventListener('click',e=>{if(e.target===mn){menuClose();return}
- const pr=e.target.closest('[data-mn-promo]');if(pr){menuClose();lobbyTo();window.AKC&&AKC.openPromo(pr.dataset.mnPromo);return}
- const b=e.target.closest('[data-mn]');if(!b)return;const k=b.dataset.mn;
- if(k==='close'){menuClose();return}
- menuClose();
+function mnAct(k){
  const prof=()=>{const h=document.querySelector('#lobby .header-profile')||document.querySelector('[data-profile]');h&&h.click()};
  ({profile:prof,login:()=>{window.pfOpenLogin?pfOpenLogin('Войдите, чтобы играть'):prof()},
   akc:()=>{lobbyTo();window.AKC&&AKC.openList()},codes:()=>{lobbyTo();window.PB&&PB.open()},
@@ -11673,7 +11739,14 @@ mn.addEventListener('click',e=>{if(e.target===mn){menuClose();return}
   chet:()=>{go('home');toast('«Чёт/нечет» откроется на сайте Столото')},stoloto:()=>go('home'),results:()=>toast('Результаты тиражей — раздел сайта Столото (демо)'),
   settings:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="account"]');r&&r.scrollIntoView({block:'center'})},350)},
   support:()=>toast('Помощь и поддержка: чат 24/7, частые вопросы (демо)'),rules:()=>toast('Правила игр и акций (демо)'),privacy:()=>toast('Политика конфиденциальности (демо)'),contacts:()=>toast('Контакты (демо)'),
-  logout:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="logout"]');r&&r.click()},380)}})[k]?.();
+  logout:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="logout"]');r&&r.click()},380)}})[k]?.();}
+
+mn.addEventListener('click',e=>{if(e.target===mn){menuClose();return}
+ const pr=e.target.closest('[data-mn-promo]');if(pr){menuClose();lobbyTo();window.AKC&&AKC.openPromo(pr.dataset.mnPromo);return}
+ const b=e.target.closest('[data-mn]');if(!b)return;const k=b.dataset.mn;
+ if(k==='close'){menuClose();return}
+ menuClose();
+ mnAct(k);
  setTimeout(sync,0)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')menuClose()});
 window.MNU={open:menuOpen,close:menuClose};
@@ -11682,6 +11755,37 @@ new MutationObserver(()=>logoHeaders()).observe(scr,{childList:true,subtree:true
 setInterval(sync,300);sync();
 /* уровень и колесо — одним компактным рядом */
 const hr=$('#lobby .home-rewards'),le=$('#lossbackEntry');if(hr&&le)hr.prepend(le);
+/* ---------- ДЕСКТОП: вид прототипа + рейл слева ---------- */
+const VKEY='igry247View';
+function setView(v){document.documentElement.classList.toggle('desk',v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
+ $$('.vsw button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));railBuild()}
+document.body.insertAdjacentHTML('beforeend','<div class="vsw" role="group" aria-label="Вид прототипа"><button type="button" data-view="phone">Телефон</button><button type="button" data-view="desk">Десктоп</button></div>');
+scr.insertAdjacentHTML('beforeend','<div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
+const rail=$('#drail');
+const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" data-tip="${t}" aria-label="${t}"><i class="dr-i">${ico}</i><span class="dr-t">${t}</span></button>`;
+let railSig='';
+function railBuild(){const secs=$$('#lobbySections .sec-h');const sig=secs.map(h=>h.textContent.trim()).join('|');if(sig===railSig&&rail.children.length)return;railSig=sig;
+ rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Все игры')
+  +secs.map((h,i)=>{const im=$('img',h);return ri('sec'+i,im?`<img src="${im.src}" alt="">`:I.games,($('h3',h)||h).textContent.trim())}).join('')
+  +'<hr>'+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
+  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('support',sv('chat'),'Помощь и поддержка')+ri('settings',sv('gear'),'Настройки');
+ railSync()}
+function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
+ let sec=-1;if(lob&&cur==='lobby'){const L=$('#lobby'),hs=$$('#lobbySections .sec-h');hs.forEach((h,i)=>{if(h.getBoundingClientRect().top-L.getBoundingClientRect().top<160)sec=i})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='games'?lob&&sec<0:k.startsWith('sec')?lob&&k==='sec'+sec:k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+document.addEventListener('click',e=>{
+ const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
+ const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
+ if(k==='toggle'){H.classList.toggle('rail-open');return}
+ if(k==='close'){H.classList.remove('rail-open');return}
+ H.classList.remove('rail-open');closeOverlays();
+ if(k.startsWith('sec')){lobbyTo();const h=$$('#lobbySections .sec-h')[+k.slice(3)];if(h){const L=$('#lobby');setTimeout(()=>L.scrollTo({top:L.scrollTop+h.getBoundingClientRect().top-L.getBoundingClientRect().top-96,behavior:'smooth'}),cur==='lobby'?0:400)}}
+ else mnAct(k);
+ setTimeout(()=>{sync();railSync()},0)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentElement.classList.remove('rail-open')});
+setInterval(()=>{if(document.documentElement.classList.contains('desk')){railBuild();railSync()}},300);
+let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
+setView(v0==='desk'?'desk':'phone');
 })();
 
 </script>
