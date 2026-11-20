@@ -4662,8 +4662,10 @@ html.desk .screen:not(#lobby){z-index:40}
 html.desk .pf,html.desk .nt,html.desk .ac{transform:scale(.97);opacity:0}
 html.desk .pf.show,html.desk .nt.show,html.desk .ac.show{transform:none;opacity:1}
 /* шторки и попапы со своим затемнением — сама шторка шириной окна, по центру */
-html.desk #scr>:is(.sheet,.pm,.wm,.fw,.pfl,.bp-modal,.ak-sheet-bg,.sm,.mn,.acf)>*{width:480px;max-width:calc(100% - 32px);margin-left:calc(50% - 204px);margin-right:0}
+html.desk #scr>:is(.sheet,.pm,.pfl,.bp-modal,.ak-sheet-bg,.sm,.mn,.acf)>*{width:480px;max-width:calc(100% - 32px);margin-left:calc(50% - 204px);margin-right:0}
 html.desk #mnu.sm{bottom:0}
+/* колесо и окно выигрыша — по центру рабочей области (справа от меню) */
+html.desk #scr>:is(.fw,.wm){padding-left:72px}
 html.desk #game{overflow:hidden}
 .dk-scrim{display:none}
 /* меню игры (было снизу) — табами сверху окна */
