@@ -4732,6 +4732,14 @@ html.desk:not(.rail-open) .drail button[data-tip]:hover::after{content:attr(data
 .vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
 .vsw button.on{background:#fff;color:#111}
 @media (max-width:500px){.vsw{display:none}}
+/* десктоп: прокрутка — тонкая полупрозрачная полоска без трека, ярче при наведении */
+html.desk #scr *{scrollbar-width:thin;scrollbar-color:#ffffff1f transparent}
+html.desk #scr *:hover{scrollbar-color:#ffffff40 transparent}
+html.desk #scr ::-webkit-scrollbar{width:6px;height:6px;background:transparent}
+html.desk #scr ::-webkit-scrollbar-track{background:transparent}
+html.desk #scr ::-webkit-scrollbar-thumb{background:#ffffff1f;border-radius:3px}
+html.desk #scr ::-webkit-scrollbar-thumb:hover{background:#ffffff40}
+html.desk #scr .grow,html.desk #scr .ak-ban-rail,html.desk #scr .drail{scrollbar-width:none}
 /* лобби: карточки игр — только картинка, без кнопки «Играть» (тап по карточке открывает игру) */
 #scr #lobby .gc .inf{display:none}
 #scr #lobby .gc .im,html.desk #scr #lobbySections .gc .im,html.desk #scr #lobbySections .gc.cl .im{height:auto;aspect-ratio:3/4;background-size:cover;background-position:center bottom}
