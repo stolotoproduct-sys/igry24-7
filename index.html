@@ -2586,7 +2586,8 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .pbn-msg{margin:8px 0 0;font-size:12px;line-height:16px;color:#a99fc2;min-height:16px}
 .pbn-msg.err{color:#ff8fa3}.pbn-msg.ok{color:#70ed85}
 .pbn-card{display:flex;align-items:center;gap:12px;margin:0 0 8px;padding:12px;border-radius:16px;background:#15131d;border:1px solid #ffffff14}
-.pbn-card.on{border-color:#a25be666;background:linear-gradient(160deg,#251a36,#15131d)}
+.pbn-avail{margin:0 0 8px;font-size:14px;line-height:20px;color:#a99fc2}
+.pbn-card,.pbn-card.on{border-color:#a25be666;background:linear-gradient(160deg,#251a36,#15131d)}
 .pbn-art{flex:none;width:48px;height:48px;border-radius:12px;object-fit:cover}
 .pbn-art.gift{display:grid;place-items:center;background:#ffffff0f;font-size:24px}
 .pbn-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
@@ -10624,8 +10625,8 @@ function card(b){const g=b.game&&GAMES[b.game],rest=b.total-b.used,act=b.status=
   <button type="button" class="pbn-btn" data-pbn-go="${b.id}">Играть</button></div>`}
 function tabs(){return `<div class="pbn-tabs" role="tablist">${[['active','Активные'],['about','Всё о промокодах']].map(([k,t])=>`<button type="button" role="tab" class="${TAB===k?'on':''}" aria-selected="${TAB===k}" data-pbn-tab="${k}">${t}</button>`).join('')}</div>`}
 function render(){const P=$('#pfb');if(!P)return;seed();const L=items();let body='';
- if(TAB==='active')body=`<div class="pf-card pbn-sum"><span class="pbn-sum-i">🎟</span><span>Промокодов и бонусов доступно: <b>${L.length}</b></span></div>
-  ${L.length?L.map(card).join(''):`<div class="pf-card pbn-empty"><span class="pbn-empty-art">🎫</span><b>У вас нет активных промокодов</b></div>`}
+ if(TAB==='active')body=`<p class="pbn-avail">Доступно: ${L.length}</p>
+  ${L.length?L.map(card).join(''):`<div class="pf-card pbn-empty"><span class="pbn-empty-art">🎁</span><b>У вас нет активных промокодов</b><small>Получайте промокоды за акции и колесо удачи или добавьте код вручную</small></div>`}
   <button type="button" class="pbn-add" data-pbn-add><span>＋</span>Добавить промокод</button>`;
  else if(TAB==='hist')body=HIST.length?`<div class="pf-card pbn-hist">${HIST.map(h=>`<div class="pbn-h"><span><b>${h.t}</b><small>${dShort(h.at)}</small></span><em class="${h.s==='Истёк'?'off':h.s==='Активирован'?'on':''}">${h.s}</em></div>`).join('')}</div>`:`<div class="pf-card pbn-empty"><b>Истории пока нет</b></div>`;
  else body=`<div class="pbn-about"><div class="pbn-step"><i>1</i><span><b>Где взять</b><small>За акции, колесо удачи и в письмах Столото</small></span></div><div class="pbn-step"><i>2</i><span><b>Как добавить</b><small>«Добавить промокод» → 12 символов с карточки</small></span></div><div class="pbn-step"><i>3</i><span><b>Как использовать</b><small>Нажмите «Играть» — бесплатные игры спишутся сами</small></span></div></div>
