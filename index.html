@@ -10846,7 +10846,7 @@ const QG=['coin','hilo','shell','scale'];
 function grant(n,src,games=3,game){if(typeof bonusModel==='undefined')return [];const out=[];for(let i=0;i<n;i++){const pool=QG.filter(x=>GAMES[x]),g=game&&GAMES[game]?game:pool[Math.floor(Math.random()*pool.length)]||Object.keys(GAMES)[0];
  const code=Array.from({length:12},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]).join('');const b=mk('pw-'+code,fmtCode(code),g,games,7,'active',src+' · промокод '+fmtCode(code));b.fresh=1;bonusModel.records.push(b);out.push(b);log(`${src} · промокод ${fmtCode(code)}`,'Получен')}
  try{bpSync()}catch(e){}try{render()}catch(e){}return out}
-window.PB={open,close,redeem,items,HIST,grant,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
+window.PB={open:()=>{if(window.pfIsGuest&&pfIsGuest()){pfOpenLogin('Промокоды доступны после входа');return}open()},close,redeem,items,HIST,grant,tab:t=>{TAB=t;render()},add:v=>{ADD={v:norm(v||'')};render()}};
 })();
 
 </script>
@@ -11809,14 +11809,14 @@ function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.ge
  const promos=(window.AKC&&AKC.list?AKC.list:[]).filter(a=>a.end>Date.now());
  const art=a=>(window.AK_ART&&AK_ART[a.art])||(window.IMG&&IMG[a.fallback])||'';
  let lv='',lvIco='crown';try{const s=lossbackModel.snapshot();lv=s.level.id?`${s.level.name} · уровень ${s.level.id}`:'Старт';if(typeof lvArt==='function')lvIco=lvArt(s.level)}catch(e){}
- const codes=(()=>{try{return PB.items().filter(b=>b.status==='active').length}catch(e){return 0}})();
+ const codes=guest?0:(()=>{try{return PB.items().filter(b=>b.status==='active').length}catch(e){return 0}})();if(guest){lv='Кэшбек до 15% каждый месяц';lvIco='crown'}
  return `<div class="sm-sheet"><div class="sm-grab"></div><div class="sm-head"><h2>Меню</h2><button type="button" class="sm-x" data-mn="close" aria-label="Свернуть меню">${sv('down')}</button></div>
  <div class="sm-body">
   <div class="sm-promos">${promos.map(a=>`<button type="button" class="sm-pc" data-mn-promo="${a.id}" style="--akbg:${a.bg}"><small>Акция</small><b>${a.title}</b><i class="sm-pc-go">${sv('chev')}</i><img src="${art(a)}" alt=""></button>`).join('')}</div>
   ${guest?`<button type="button" class="sm-card sm-me" data-mn="login"><span class="sm-ava">${sv('chat').replace(MI.chat,'<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3" fill="currentColor"/>')}</span><span class="sm-t"><b>Войти</b><small>Чтобы играть, получать промокоды и кэшбек</small></span><i class="sm-chev">${sv('chev')}</i></button>`
    :`<button type="button" class="sm-card sm-me" data-mn="profile"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Перейти в профиль</small></span><i class="sm-chev">${sv('chev')}</i></button>`}
   <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
-  <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
+  <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{if(guest)return 'Доступно после входа';try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
   <div class="sm-card">${mrow('coin','Чёт/нечет','chet','Игра на сайте Столото')}${mrow('ball','Лотереи','stoloto','Русское лото, Жилищная лотерея и другие')}${mrow('flag','Результаты тиражей','results')}</div>
   ${guest?'':`<div class="sm-card">${mrow('gear','Настройки','settings','Личные данные, безопасность, лимиты')}</div>`}
   <h3 class="sm-h">О компании</h3>
@@ -11927,6 +11927,9 @@ function dkxOpen(){$('.pf-body',dkx).innerHTML=dkxHTML();dkx.classList.add('show
 function dkxClose(){dkx.classList.remove('show');dkx.setAttribute('aria-hidden','true')}
 dkx.addEventListener('click',e=>{if(e.target.closest('[data-dkx-close]')){dkxClose();setTimeout(()=>{sync();railSync();dkModal()},0);return}
  const b=e.target.closest('[data-mn]');if(!b)return;const k=b.dataset.mn;if(['chet','stoloto'].includes(k))dkxClose();mnAct(k);setTimeout(()=>{sync();railSync();dkModal()},0)});
+
+/* гость: участвовать в акции и играть по ней — только после входа */
+window.addEventListener('click',e=>{if(!(window.pfIsGuest&&pfIsGuest()))return;const t=e.target.closest('[data-ak-go],[data-aks-play],[data-pbn-go]');if(!t)return;e.preventDefault();e.stopImmediatePropagation();try{document.getElementById('akSheet')?.classList.remove('show')}catch(_){}pfOpenLogin('Чтобы участвовать в акции, войдите в аккаунт')},true);
 let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
 setView(v0==='desk'?'desk':'phone');
 })();
