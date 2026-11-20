@@ -9382,8 +9382,6 @@ function authView(){
  <div class="pf-card pf-bal"><div class="pf-bal-row"><div><small>Рубли</small><b data-pf-cash>${n(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${n(S.wagerBal||0)} Б</b></div></div>
   <div class="pf-btns"><button class="pf-btn primary" type="button" data-pf="deposit">Пополнить</button><button class="pf-btn" type="button" data-pf="withdraw">Вывести</button></div></div>
  <!-- уровень, колесо, промокоды и акции — в «Меню»: профиль только про аккаунт и деньги -->
- <h3 class="pf-h">Настройки</h3>
- <div class="pf-card pf-list">${row('user','Личные данные',(()=>{const A=window.ACC?ACC.get():null;return A&&A.emailState==='pending'?'Почта не подтверждена':'Ник, телефон, почта'})(),'account',window.ACC&&!ACC.emailOk()?'<span class="pf-dot"></span>':'')}${row('lock','Безопасность','Пароль, вход по коду','security')}${row('gear','Настройки прототипа','Сценарии, MVP, сброс','cfg')}</div>
  <button class="pf-out" type="button" data-pf="logout">${I.out}Выйти из аккаунта</button>
  <p class="pf-ver">Версия 4.12 · прототип «Игры 24/7»</p>`}
 /* «О компании» перенесено в шторку «Меню» (nav-tabbar.js) */
