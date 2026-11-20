@@ -4643,8 +4643,20 @@ html.desk #lobby>*:not(.app-header){width:var(--dkw);margin-left:auto;margin-rig
 /* шапка: слева логотип, справа баланс, колокольчик, профиль */
 html.desk #scr #lobby>.app-header{height:72px;padding:0 calc((100% - var(--dkw))/2)!important;gap:12px;background:#0a0b11eb;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid #ffffff0f;margin-bottom:24px}
 html.desk #lobby>.app-header .header-wallet{margin-left:auto}
-/* остальные экраны — мобильная вёрстка, окном по центру (шире телефона) поверх затемнённой главной */
-html.desk .screen:not(#lobby),html.desk .pf,html.desk .nt,html.desk .ac{left:calc(50% + 36px - 240px);right:auto;top:24px;bottom:24px;width:480px;border-radius:24px;overflow:hidden auto;box-shadow:0 30px 80px #000c,0 0 0 1px #ffffff14;transition:opacity .22s,transform .22s}
+/* остальные экраны — отдельные страницы под общей шапкой: колонка по центру рабочей области, своя кнопка «Назад» */
+html.desk .screen:not(#lobby),html.desk .pf,html.desk .nt,html.desk .ac{--pw:min(960px,calc(100% - 144px));left:calc(72px + (100% - 72px - var(--pw))/2);right:auto;top:72px;bottom:0;width:var(--pw);border-radius:0;box-shadow:none;overflow:hidden auto;scrollbar-width:thin;transition:opacity .2s,transform .2s}
+html.desk #scr #game{--pw:560px}
+html.desk #scr #game>.app-header.qf-hdr{display:none}
+html.desk #lobby.off-l,html.desk #lobby.off-r,html.desk #lobby.off-b{transform:none;opacity:1;pointer-events:auto}
+html.desk .dk-scrim{display:block;position:absolute;left:72px;top:72px;right:0;bottom:0;z-index:29;background:#0a0b11;opacity:0;pointer-events:none;transition:opacity .2s}
+html.desk.dk-modal .dk-scrim{opacity:1;pointer-events:auto;cursor:default}
+/* дубли общей шапки внутри страниц (логотип, баланс) не нужны — она уже есть сверху */
+html.desk .screen:not(#lobby)>.app-header:not(.p2-hdr) .header-logo,html.desk .screen:not(#lobby)>.app-header .header-wallet,html.desk .screen:not(#lobby)>.app-header .header-right,html.desk .screen:not(#lobby)>.app-header .header-login{display:none!important}
+html.desk .pf-head,html.desk .nt>header,html.desk .ac>header{padding-top:24px}
+/* акции — карточки в 2 колонки */
+html.desk #akc .ak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+html.desk #akc .ak-list .akf{margin:0}
+html.desk #akc .ak-list .ak-empty{grid-column:1/-1}
 html.desk .screen.off-r,html.desk .screen.off-l,html.desk .screen.off-b{transform:scale(.97);opacity:0}
 html.desk .screen:not(#lobby){z-index:40}
 html.desk .pf,html.desk .nt,html.desk .ac{transform:scale(.97);opacity:0}
@@ -4654,7 +4666,6 @@ html.desk #scr>:is(.sheet,.pm,.wm,.fw,.pfl,.bp-modal,.ak-sheet-bg,.sm,.mn,.acf)>
 html.desk #mnu.sm{bottom:0}
 html.desk #game{overflow:hidden}
 .dk-scrim{display:none}
-html.desk.dk-modal .dk-scrim{display:block;position:absolute;inset:0 0 0 72px;z-index:29;background:#05060bcc;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);cursor:pointer}
 /* меню игры (было снизу) — табами сверху окна */
 html.desk #scr #game>:is(#p2Nav,.qf-tabs){position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;order:-2;flex:none;height:auto;margin:0;padding:4px 16px 8px;background:none;z-index:5}
 html.desk #game>:is(.g-head,.app-header,.p2-hdr){order:-3}
@@ -11785,10 +11796,12 @@ function dkWrap(on){const L=$('#lobby'),ban=$('#lobby .l-banner.ak-ban'),hr=$('#
  if(on&&!w){w=document.createElement('div');w.className='dk-top';ban.before(w);w.append(ban,hr)}
  else if(!on&&w){w.before(ban,hr);w.remove()}}
 function dkModal(){const H=document.documentElement;let c='lobby';try{c=cur}catch(e){}const m=H.classList.contains('desk')&&(c!=='lobby'||!!document.querySelector('#scr>.screen:not(#lobby):not(.off-r):not(.off-l):not(.off-b),#scr>.pf.show,#scr>.nt.show,#scr>.ac.show'));H.classList.toggle('dk-modal',m)}
+function dkClear(){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby')}
+function dkHome(){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');$('#lobby').scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{sync();railSync();dkModal()},0)}
 function setView(v){document.documentElement.classList.toggle('desk',v==='desk');dkWrap(v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
  $$('.vsw button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));railBuild()}
 document.body.insertAdjacentHTML('beforeend','<div class="vsw" role="group" aria-label="Вид прототипа"><button type="button" data-view="phone">Телефон</button><button type="button" data-view="desk">Десктоп</button></div>');
-scr.insertAdjacentHTML('beforeend','<div class="dk-scrim" data-dr="modal"></div><div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
+scr.insertAdjacentHTML('beforeend','<div class="dk-scrim"></div><div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
 const rail=$('#drail');
 const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" data-tip="${t}" aria-label="${t}"><i class="dr-i">${ico}</i><span class="dr-t">${t}</span></button>`;
 let railSig='';
@@ -11803,11 +11816,13 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
  if(k==='toggle'){H.classList.toggle('rail-open');return}
  if(k==='close'){H.classList.remove('rail-open');return}
- if(k==='modal'){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>{const bk=x.querySelector('.pf-back,.nt-back,.ac-back,[data-pbn-close],[aria-label="Назад"]');bk?bk.click():x.classList.remove('show')});const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');setTimeout(()=>{sync();railSync();dkModal()},0);return}
+ if(k==='modal'){dkHome();return;closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>{const bk=x.querySelector('.pf-back,.nt-back,.ac-back,[data-pbn-close],[aria-label="Назад"]');bk?bk.click():x.classList.remove('show')});const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');setTimeout(()=>{sync();railSync();dkModal()},0);return}
  H.classList.remove('rail-open');closeOverlays();$$('#scr>.nt.show,#scr>.ac.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(k!=='wheel'&&g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby'&&k!=='level')go('lobby');
   mnAct(k);
  setTimeout(()=>{sync();railSync()},0)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentElement.classList.remove('rail-open')});
+window.addEventListener('click',e=>{if(document.documentElement.classList.contains('desk')&&e.target.closest('#lobby .header-logo')){e.preventDefault();e.stopImmediatePropagation();dkHome()}},true);
+window.addEventListener('click',e=>{if(document.documentElement.classList.contains('desk')&&e.target.closest('#lobby .header-bell,#lobby .header-profile,#lobby .header-add'))dkClear()},true);
 setInterval(()=>{dkModal();if(document.documentElement.classList.contains('desk')){railBuild();railSync()}},150);
 let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
 setView(v0==='desk'?'desk':'phone');
