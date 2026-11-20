@@ -4739,7 +4739,8 @@ html.desk.rail-open .drail .dr-t{opacity:1}
 html.desk:not(.rail-open) .drail button[data-tip]:hover::after{content:attr(data-tip);position:fixed;left:80px;margin-top:0;padding:6px 10px;border-radius:8px;background:#26222f;color:#fff;font-size:13px;line-height:18px;box-shadow:0 6px 18px #0008;pointer-events:none}
 /* десктоп: поповер профиля по наведению на аватар в шапке */
 .dpp{display:none}
-html.desk .dpp{display:block;position:absolute;z-index:96;top:64px;width:340px;padding:8px;border-radius:20px;background:#15131d;border:1px solid #ffffff14;box-shadow:0 24px 60px #000c;color:#f4efff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s}
+html.desk #lobby .header-right{position:relative}
+html.desk .dpp{display:block;position:absolute;z-index:96;top:calc(100% + 10px);right:0;width:340px;padding:8px;border-radius:20px;background:#15131d;border:1px solid #ffffff14;box-shadow:0 24px 60px #000c;color:#f4efff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s}
 html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .dpp:before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
 .dpp button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
@@ -6841,7 +6842,7 @@ const fwNextDayFn=()=>{if(fwBusy)return;if(fwPendingClaim)fwPendingClaim();if(S.
 renderPromos();setInterval(renderPromos,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderPromos()});renderBP();
 renderBal();
 /* вписываем телефон в экран на десктопе */
-function fit(){const ph=$('.phone');if(innerWidth<=500){ph.style.zoom='';return}ph.style.zoom=Math.min(1,(innerHeight-24)/824)}
+function fit(){const ph=$('.phone');if(innerWidth<=500||document.documentElement.classList.contains('desk')){ph.style.zoom='';return}ph.style.zoom=Math.min(1,(innerHeight-24)/824)}
 addEventListener('resize',fit);fit();
 
 /* Bonus programme navigation: panels intentionally empty for the next iteration. */
@@ -11844,7 +11845,7 @@ function dkWrap(on){const L=$('#lobby'),ban=$('#lobby .l-banner.ak-ban'),hr=$('#
 function dkModal(){const H=document.documentElement;let c='lobby';try{c=cur}catch(e){}const m=H.classList.contains('desk')&&(c!=='lobby'||!!document.querySelector('#scr>.screen:not(#lobby):not(.off-r):not(.off-l):not(.off-b),#scr>.pf.show,#scr>.nt.show,#scr>.ac.show'));H.classList.toggle('dk-modal',m)}
 function dkClear(){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby')}
 function dkHome(){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');$('#lobby').scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{sync();railSync();dkModal()},0)}
-function setView(v){document.documentElement.classList.toggle('desk',v==='desk');dkWrap(v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
+function setView(v){document.documentElement.classList.toggle('desk',v==='desk');setTimeout(()=>dispatchEvent(new Event('resize')),0);dkWrap(v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
  $$('.vsw button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));railBuild()}
 document.body.insertAdjacentHTML('beforeend','<div class="vsw" role="group" aria-label="Вид прототипа"><button type="button" data-view="phone">Телефон</button><button type="button" data-view="desk">Десктоп</button></div>');
 scr.insertAdjacentHTML('beforeend','<div class="dk-scrim"></div><div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
@@ -11888,9 +11889,9 @@ function dppHTML(){let A={};try{A=window.ACC?ACC.get():{}}catch(e){}const nick=A
   <button type="button" class="dpp-card dpp-row" data-dpp="codes"><b>Промокоды${codes?': '+codes:''}</b>${ch}</button>
   <button type="button" class="dpp-out" data-dpp="logout">Выйти</button>`}
 function dppShow(){if(!document.documentElement.classList.contains('desk'))return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
- const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();const r=b.getBoundingClientRect(),S=scr.getBoundingClientRect();
- dpp.style.left=Math.max(80,r.right-S.left-340)+'px';dpp.style.top=(r.bottom-S.top+8)+'px';dpp.classList.add('show')}
-function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>dpp.classList.remove('show'),d)}
+ const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();
+ const host=b.parentElement;if(dpp.parentElement!==host)host.appendChild(dpp);dpp.classList.add('show')}
+function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>{dpp.classList.remove('show');setTimeout(()=>{if(!dpp.classList.contains('show'))scr.appendChild(dpp)},200)},d)}
 document.addEventListener('mouseover',e=>{if(e.target.closest('#lobby .header-profile'))dppShow();else if(e.target.closest('#dpp'))clearTimeout(dppT)});
 document.addEventListener('mouseout',e=>{const f=e.target.closest('#lobby .header-profile,#dpp');if(f&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#lobby .header-profile,#dpp')))dppHide()});
 dpp.addEventListener('click',e=>{const b=e.target.closest('[data-dpp]');if(!b)return;const k=b.dataset.dpp;dppHide(0);dkClear();
