@@ -1396,8 +1396,8 @@ html.no-wager .header-wager,html.no-wager .g-wallet-bonus{display:none!important
 /* Shared lobby rhythm: 16px page gutter, 12px reward gaps, 24px sections. */
 #lobby{--lobby-gutter:16px;--lobby-gap:12px}
 #lobby>.app-header{padding-bottom:16px;background:#0a0b11}
-#lobby>.l-banner{margin:0 var(--lobby-gutter) var(--lobby-gap);border-radius:16px;line-height:0}
-#lobby>.l-banner img{display:block;width:100%;height:auto}
+#lobby .l-banner{margin:0 var(--lobby-gutter) var(--lobby-gap);border-radius:16px;line-height:0}
+#lobby .l-banner img{display:block;width:100%;height:auto}
 #lobby>.lb-entry{width:calc(100% - 2*var(--lobby-gutter));margin:0 var(--lobby-gutter) var(--lobby-gap);padding:12px;gap:10px;min-height:78px;border-radius:16px;background:#191620;border:1px solid #ffffff0e;box-shadow:none}
 #lobby .lb-entry-title strong{font-size:13px;line-height:18px}
 #lobby .lb-entry-title>span{color:#aea1bb;font-size:11px}
@@ -3153,8 +3153,8 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .pc-sheet .ak-foot{border-top:0;background:none;padding-top:8px}
 .pc-sheet .pc-later{height:40px;border:0;background:none;color:#a99fc2;font:600 14px/20px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
 /* баннер акций в лобби: карусель, выше прежнего */
-#lobby>.l-banner.ak-ban{position:relative;line-height:normal;height:auto;overflow:visible;border-radius:0;cursor:default}
-#lobby>.l-banner.ak-ban:active{transform:none}
+#lobby .l-banner.ak-ban{position:relative;line-height:normal;height:auto;overflow:visible;border-radius:0;cursor:default}
+#lobby .l-banner.ak-ban:active{transform:none}
 .ak-ban-rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:20px}
 .ak-ban-rail::-webkit-scrollbar{display:none}
 .ak-slide{position:relative;flex:0 0 100%;scroll-snap-align:start;height:148px;display:flex;align-items:stretch;padding:14px 16px;border:0;border-radius:20px;overflow:hidden;background:var(--akbg);color:#fff;text-align:left;font-family:inherit;cursor:pointer;box-shadow:inset 0 0 0 1px #ffffff1a}
@@ -3165,7 +3165,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .ak-slide-main .ak-track{width:160px;margin-top:auto}
 .ak-slide-cta{margin-top:auto;display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 10px 0 14px;border-radius:16px;background:#fff;color:#2a1150;font-size:13px;line-height:16px;font-weight:800}
 .ak-slide-cta svg{width:16px;height:16px}
-#lobby>.l-banner .ak-slide-art{position:absolute;right:-6px;top:50%;width:140px;height:140px;transform:translateY(-50%);object-fit:contain;filter:drop-shadow(0 10px 16px #0007);z-index:1;pointer-events:none}
+#lobby .l-banner .ak-slide-art{position:absolute;right:-6px;top:50%;width:140px;height:140px;transform:translateY(-50%);object-fit:contain;filter:drop-shadow(0 10px 16px #0007);z-index:1;pointer-events:none}
 .ak-ban-foot{display:flex;align-items:center;justify-content:space-between;height:24px;margin-top:6px;padding:0 2px}
 .ak-dots{display:flex;gap:6px}.ak-dots i{width:6px;height:6px;border-radius:3px;background:#ffffff33;transition:width .2s,background .2s}.ak-dots i.on{width:18px;background:#c48cff}
 .ak-all{display:inline-flex;align-items:center;gap:2px;height:24px;padding:0;border:0;background:none;color:#c9b6ea;font:700 13px/16px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
@@ -3174,7 +3174,7 @@ button.nt-foot{display:block;width:calc(100% - 32px);margin:0 16px 16px;height:4
 .ak-badge.sale{background:#ff4f6d;color:#fff}
 .ak-ban-rail{cursor:grab;user-select:none;-webkit-user-select:none}.ak-ban-rail:active{cursor:grabbing}
 .ak-ban-rail img{-webkit-user-drag:none}
-#lobby>.l-banner .ak-slide-art[src*="image/jpeg"],#lobby>.l-banner .ak-slide-art[src*="image/png"]{border-radius:20px;width:112px;height:112px;right:12px}
+#lobby .l-banner .ak-slide-art[src*="image/jpeg"],#lobby .l-banner .ak-slide-art[src*="image/png"]{border-radius:20px;width:112px;height:112px;right:12px}
 /* попап «Ваша награда» */
 .ak-sheet-bg.rwd{z-index:460;align-items:center;justify-content:center;padding:24px}
 .rwd-c{position:relative;width:100%;max-width:340px;display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:24px 20px 16px;border-radius:24px;background:linear-gradient(180deg,#2a1450,#14101f 60%);border:1px solid #a25be655;color:#fff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);text-align:center;overflow:hidden;transform:scale(.9);transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
@@ -3962,8 +3962,8 @@ body,button,input,select,textarea{font-family:var(--g4-font)}
 
 /* ---------- Главная ---------- */
 #lobby{--lobby-gutter:16px;--lobby-gap:12px}
-#lobby>.l-banner{margin:0 16px 12px;border-radius:16px;height:72px;overflow:hidden}
-#lobby>.l-banner img{width:100%;height:72px;object-fit:cover}
+#lobby .l-banner{margin:0 16px 12px;border-radius:16px;height:72px;overflow:hidden}
+#lobby .l-banner img{width:100%;height:72px;object-fit:cover}
 #lobby>.lb-entry{width:calc(100% - 32px);margin:0 16px 12px;padding:12px;gap:12px;min-height:0;border-radius:16px;align-items:center}
 #lobby .lb-entry .lb-medal.small{width:40px;height:40px}
 #lobby .lb-entry .lb-medal.small>b{font:800 20px/24px var(--g4-font)}
@@ -4637,29 +4637,51 @@ html.desk .phone:before{display:none}
 html.desk .scr{width:100%;height:100%;border-radius:0;--sb:0px;background:#0a0b11}
 html.desk .sbar,html.desk #tabbar{display:none!important}
 html.desk .screen{left:72px}
-html.desk .screen:not(#lobby){left:auto;right:0;width:440px;border-left:1px solid #ffffff14}
-html.desk .screen:not(#lobby):not(.off-r):not(.off-l):not(.off-b){box-shadow:-24px 0 60px #0009}
-html.desk .pf{left:auto;width:440px;border-left:1px solid #ffffff14}
-html.desk .pf.show{box-shadow:-24px 0 60px #0009}
-html.desk .sm .sm-sheet,html.desk .sheet .in{max-width:480px;margin-left:auto;margin-right:auto}
 html.desk .toast{left:calc(50% + 36px)}
 html.desk #lobby{--dkw:min(1424px,calc(100% - 72px));--lobby-gutter:0px;padding-bottom:64px}
 html.desk #lobby>*:not(.app-header){width:var(--dkw);margin-left:auto;margin-right:auto}
 /* шапка: слева логотип, справа баланс, колокольчик, профиль */
 html.desk #scr #lobby>.app-header{height:72px;padding:0 calc((100% - var(--dkw))/2)!important;gap:12px;background:#0a0b11eb;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid #ffffff0f;margin-bottom:24px}
 html.desk #lobby>.app-header .header-wallet{margin-left:auto}
-/* баннеры акций — три в ряд по 4 колонки */
-html.desk #lobby>.l-banner.ak-ban{margin-bottom:16px}
-html.desk #lobby .ak-ban-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;overflow:visible;border-radius:0}
-html.desk #lobby .ak-slide{height:200px;padding:24px;border-radius:24px}
-html.desk #lobby .ak-slide-main{max-width:58%;gap:10px}
-html.desk #lobby .ak-slide-main b{font-size:20px;line-height:26px}
-html.desk #lobby>.l-banner .ak-slide-art{width:184px;height:184px;right:-4px;top:auto;bottom:-8px;transform:none}
-html.desk #lobby .ak-dots{visibility:hidden}
-html.desk #lobby .ak-ban-foot{margin-top:8px}
-/* уровень и колесо — по 3 колонки */
-html.desk #scr #lobby>.home-rewards{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:8px auto!important;width:var(--dkw)}
-html.desk #lobby .home-rewards>*{height:72px;min-height:72px}
+/* остальные экраны — мобильная вёрстка, окном по центру (шире телефона) поверх затемнённой главной */
+html.desk .screen:not(#lobby),html.desk .pf,html.desk .nt,html.desk .ac{left:calc(50% + 36px - 240px);right:auto;top:24px;bottom:24px;width:480px;border-radius:24px;overflow:hidden auto;box-shadow:0 30px 80px #000c,0 0 0 1px #ffffff14;transition:opacity .22s,transform .22s}
+html.desk .screen.off-r,html.desk .screen.off-l,html.desk .screen.off-b{transform:scale(.97);opacity:0}
+html.desk .screen:not(#lobby){z-index:40}
+html.desk .pf,html.desk .nt,html.desk .ac{transform:scale(.97);opacity:0}
+html.desk .pf.show,html.desk .nt.show,html.desk .ac.show{transform:none;opacity:1}
+/* шторки и попапы со своим затемнением — сама шторка шириной окна, по центру */
+html.desk #scr>:is(.sheet,.pm,.wm,.fw,.pfl,.bp-modal,.ak-sheet-bg,.sm,.mn,.acf)>*{width:480px;max-width:calc(100% - 32px);margin-left:calc(50% - 204px);margin-right:0}
+html.desk #mnu.sm{bottom:0}
+html.desk #game{overflow:hidden}
+.dk-scrim{display:none}
+html.desk.dk-modal .dk-scrim{display:block;position:absolute;inset:0 0 0 72px;z-index:29;background:#05060bcc;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);cursor:pointer}
+/* меню игры (было снизу) — табами сверху окна */
+html.desk #scr #game>:is(#p2Nav,.qf-tabs){position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;order:-2;flex:none;height:auto;margin:0;padding:4px 16px 8px;background:none;z-index:5}
+html.desk #game>:is(.g-head,.app-header,.p2-hdr){order:-3}
+/* верх главной: большой баннер (8 колонок) + справа уровень и колесо (4 колонки) */
+html.desk .dk-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
+html.desk .dk-top>.l-banner.ak-ban{width:auto;margin:0}
+html.desk #lobby .dk-top .ak-slide{height:240px;padding:32px;border-radius:24px}
+html.desk #lobby .dk-top .ak-slide-main{max-width:55%;gap:12px}
+html.desk #lobby .dk-top .ak-slide-main b{font-size:28px;line-height:34px}
+html.desk #lobby .dk-top .ak-tag{font-size:16px;height:36px;padding:0 16px;border-radius:18px;display:inline-flex;align-items:center}
+html.desk #lobby .dk-top .ak-slide-cta{font-size:16px;height:40px;padding:0 18px;border-radius:20px;margin-top:auto}
+html.desk #lobby .dk-top .ak-slide-art{width:236px;height:236px;right:24px}
+html.desk #scr #lobby .dk-top .lp-w-bottom b,html.desk #scr #lobby .dk-top .lp-w-bottom span{font-size:16px}
+html.desk #lobby .dk-top .ak-ban-foot{margin-top:12px}
+html.desk #scr #lobby .dk-top .home-rewards{display:grid;grid-template-columns:1fr;grid-auto-rows:112px;gap:16px;width:auto;margin:0!important}
+html.desk #scr #lobby .dk-top .home-rewards>*{height:112px;min-height:112px;border-radius:20px}
+html.desk #scr #lobby .dk-top #lossbackEntry.lp-entry{gap:16px;padding:0 24px}
+html.desk #scr #lobby .dk-top .lp-w-art,html.desk #scr #lobby .dk-top .lp-w-art img{width:64px;height:64px}
+html.desk #scr #lobby .dk-top .lp-w-main{gap:8px}
+html.desk #scr #lobby .dk-top .lp-w-top strong{font-size:24px;line-height:30px}
+html.desk #scr #lobby .dk-top .lp-bar{height:6px}
+html.desk #scr #lobby .dk-top .lp-w-bottom{font-size:16px;line-height:20px}
+html.desk #scr #lobby .dk-top .reward-tile{padding:0 24px 0 112px}
+html.desk #scr #lobby .dk-top .reward-art{left:20px;width:76px;height:76px}
+html.desk #scr #lobby .dk-top .reward-copy{gap:8px}
+html.desk #scr #lobby .dk-top .reward-copy strong{font-size:24px;line-height:30px}
+html.desk #scr #lobby .dk-top .reward-claim,html.desk #scr #lobby .dk-top .reward-sub{height:36px;padding:0 16px;border-radius:18px;font-size:16px;line-height:20px}
 /* разделы игр: заголовок + 6 карточек по 2 колонки */
 html.desk #lobbySections .sec-h{margin:40px 0 16px}
 html.desk #lobbySections .sec-h h3{font-size:24px}
@@ -11512,7 +11534,7 @@ function track(amount){const g=(document.getElementById('game')||{}).dataset?.g;
 if(typeof window.charge==='function'){const oc=window.charge;window.charge=function(a,...r){const ok=oc.call(this,a,...r);if(ok)try{track(a)}catch(e){}return ok};try{charge=window.charge}catch(e){}}
 
 /* ---------- баннер в лобби: карусель акций, выше прежнего ---------- */
-function renderBanner(){const host=document.querySelector('#lobby>.l-banner');if(!host)return;const act=AK.filter(a=>a.end>now());
+function renderBanner(){const host=document.querySelector('#lobby .l-banner');if(!host)return;const act=AK.filter(a=>a.end>now());
  host.removeAttribute('data-nav');host.classList.add('ak-ban');host.setAttribute('role','region');host.setAttribute('aria-label','Акции');
  const idx=host.__i||0;
  host.innerHTML=`<div class="ak-ban-rail">${act.map(a=>`<button type="button" class="ak-slide" data-ak-open="${a.id}" style="--akbg:${a.bg};--akglow:${a.glow}">
@@ -11529,7 +11551,7 @@ function renderBanner(){const host=document.querySelector('#lobby>.l-banner');if
  window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end);
  rail.addEventListener('touchstart',()=>{host.__pause=now()},{passive:true});
  rail.addEventListener('scroll',()=>{const i=Math.round(rail.scrollLeft/Math.max(1,rail.clientWidth));if(i!==host.__i){host.__i=i;host.querySelectorAll('.ak-dots i').forEach((d,k)=>d.classList.toggle('on',k===i))}},{passive:true})}
-let auto=setInterval(()=>{const host=document.querySelector('#lobby>.l-banner.ak-ban');if(!host||document.hidden||host.matches(':hover')||now()-(host.__pause||0)<10000)return;const rail=host.querySelector('.ak-ban-rail');if(!rail)return;const k=rail.children.length;if(k<2)return;const i=((host.__i||0)+1)%k;rail.scrollTo({left:i*rail.clientWidth,behavior:'smooth'})},6000);
+let auto=setInterval(()=>{const host=document.querySelector('#lobby .l-banner.ak-ban');if(!host||document.hidden||host.matches(':hover')||now()-(host.__pause||0)<10000)return;const rail=host.querySelector('.ak-ban-rail');if(!rail)return;const k=rail.children.length;if(k<2)return;const i=((host.__i||0)+1)%k;rail.scrollTo({left:i*rail.clientWidth,behavior:'smooth'})},6000);
 
 /* ---------- клики ---------- */
 document.addEventListener('click',e=>{const t=e.target;
@@ -11757,33 +11779,34 @@ setInterval(sync,300);sync();
 const hr=$('#lobby .home-rewards'),le=$('#lossbackEntry');if(hr&&le)hr.prepend(le);
 /* ---------- ДЕСКТОП: вид прототипа + рейл слева ---------- */
 const VKEY='igry247View';
-function setView(v){document.documentElement.classList.toggle('desk',v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
+function dkWrap(on){const L=$('#lobby'),ban=$('#lobby .l-banner.ak-ban'),hr=$('#lobby .home-rewards');if(!ban||!hr)return;let w=$('#lobby>.dk-top');
+ if(on&&!w){w=document.createElement('div');w.className='dk-top';ban.before(w);w.append(ban,hr)}
+ else if(!on&&w){w.before(ban,hr);w.remove()}}
+function dkModal(){const H=document.documentElement;let c='lobby';try{c=cur}catch(e){}const m=H.classList.contains('desk')&&(c!=='lobby'||!!document.querySelector('#scr>.screen:not(#lobby):not(.off-r):not(.off-l):not(.off-b),#scr>.pf.show,#scr>.nt.show,#scr>.ac.show'));H.classList.toggle('dk-modal',m)}
+function setView(v){document.documentElement.classList.toggle('desk',v==='desk');dkWrap(v==='desk');document.documentElement.classList.remove('rail-open');try{localStorage.setItem(VKEY,v)}catch(e){}
  $$('.vsw button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));railBuild()}
 document.body.insertAdjacentHTML('beforeend','<div class="vsw" role="group" aria-label="Вид прототипа"><button type="button" data-view="phone">Телефон</button><button type="button" data-view="desk">Десктоп</button></div>');
-scr.insertAdjacentHTML('beforeend','<div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
+scr.insertAdjacentHTML('beforeend','<div class="dk-scrim" data-dr="modal"></div><div class="drail-scrim" data-dr="close"></div><nav class="drail" id="drail" aria-label="Разделы"></nav>');
 const rail=$('#drail');
 const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" data-tip="${t}" aria-label="${t}"><i class="dr-i">${ico}</i><span class="dr-t">${t}</span></button>`;
 let railSig='';
-function railBuild(){const secs=$$('#lobbySections .sec-h');const sig=secs.map(h=>h.textContent.trim()).join('|');if(sig===railSig&&rail.children.length)return;railSig=sig;
- rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Все игры')
-  +secs.map((h,i)=>{const im=$('img',h);return ri('sec'+i,im?`<img src="${im.src}" alt="">`:I.games,($('h3',h)||h).textContent.trim())}).join('')
-  +'<hr>'+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
+function railBuild(){if(rail.children.length)return;
+ rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
   +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('support',sv('chat'),'Помощь и поддержка')+ri('settings',sv('gear'),'Настройки');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
- let sec=-1;if(lob&&cur==='lobby'){const L=$('#lobby'),hs=$$('#lobbySections .sec-h');hs.forEach((h,i)=>{if(h.getBoundingClientRect().top-L.getBoundingClientRect().top<160)sec=i})}
- $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='games'?lob&&sec<0:k.startsWith('sec')?lob&&k==='sec'+sec:k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='games'?lob&&cur==='lobby':k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
 document.addEventListener('click',e=>{
  const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
  if(k==='toggle'){H.classList.toggle('rail-open');return}
  if(k==='close'){H.classList.remove('rail-open');return}
- H.classList.remove('rail-open');closeOverlays();
- if(k.startsWith('sec')){lobbyTo();const h=$$('#lobbySections .sec-h')[+k.slice(3)];if(h){const L=$('#lobby');setTimeout(()=>L.scrollTo({top:L.scrollTop+h.getBoundingClientRect().top-L.getBoundingClientRect().top-96,behavior:'smooth'}),cur==='lobby'?0:400)}}
- else mnAct(k);
+ if(k==='modal'){closeOverlays();$$('#scr>.nt.show,#scr>.ac.show,#scr>.pf.show').forEach(x=>{const bk=x.querySelector('.pf-back,.nt-back,.ac-back,[data-pbn-close],[aria-label="Назад"]');bk?bk.click():x.classList.remove('show')});const g=$('#game');if(g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby')go('lobby');setTimeout(()=>{sync();railSync();dkModal()},0);return}
+ H.classList.remove('rail-open');closeOverlays();$$('#scr>.nt.show,#scr>.ac.show').forEach(x=>x.classList.remove('show'));const g=$('#game');if(k!=='wheel'&&g&&!g.classList.contains('off-b')){try{closeGame()}catch(e){}}if(cur!=='lobby'&&k!=='level')go('lobby');
+  mnAct(k);
  setTimeout(()=>{sync();railSync()},0)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentElement.classList.remove('rail-open')});
-setInterval(()=>{if(document.documentElement.classList.contains('desk')){railBuild();railSync()}},300);
+setInterval(()=>{dkModal();if(document.documentElement.classList.contains('desk')){railBuild();railSync()}},150);
 let v0='phone';try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem(VKEY)||'phone'}catch(e){}
 setView(v0==='desk'?'desk':'phone');
 })();
