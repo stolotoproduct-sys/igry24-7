@@ -4720,8 +4720,10 @@ html.desk #scr #lobby .dk-top .reward-claim,html.desk #scr #lobby .dk-top .rewar
 html.desk #lobbySections .sec-h{margin:40px 0 16px}
 html.desk #lobbySections .sec-h h3{font-size:22px}
 html.desk #lobbySections .sec-h p{font-size:14px}
-html.desk #lobbySections .grow{display:grid;grid-template-columns:repeat(auto-fill,176px);justify-content:start;gap:16px;overflow:visible;padding:0;scroll-snap-type:none}
-html.desk #scr #lobbySections .gc{flex:none;width:auto;border-radius:16px;transition:transform .15s,box-shadow .15s}
+html.desk #lobbySections .grow{display:flex;flex-wrap:nowrap;gap:16px;overflow-x:auto;overflow-y:visible;padding:4px 0 8px;scroll-snap-type:x proximity;scrollbar-width:none}
+html.desk #scr #lobbySections .gc{flex:0 0 150px;width:150px}
+html.desk #scr #lobbySections .gc .im,html.desk #scr #lobbySections .gc.cl .im{height:200px;aspect-ratio:auto}
+html.desk #scr #lobbySections .gc{border-radius:16px;transition:transform .15s,box-shadow .15s}
 html.desk #lobbySections .gc:hover{transform:translateY(-4px);box-shadow:0 10px 28px -8px var(--c)}
 html.desk #lobbySections .gc .pb{height:40px;font-size:15px;border-radius:12px}
 html.desk #lobbySections .gc .inf{padding:10px 12px 12px}
