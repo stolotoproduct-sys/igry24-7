@@ -4663,6 +4663,10 @@ html.desk #lossbackContent .lp-card{margin:24px 0 0}
 html.desk #lossbackContent>.lp-reset{margin:12px 0}
 html.desk #lossbackContent .lp-h{break-before:column;margin-top:0}
 html.desk #lossbackContent>.lv-more{width:100%}
+.aks-x{display:none}
+html.desk .aks-x{display:grid;place-items:center;position:absolute;top:12px;right:12px;z-index:3;width:36px;height:36px;border:0;border-radius:18px;background:#ffffff1a;color:#fff;cursor:pointer}
+html.desk .aks-x:hover{background:#ffffff2e}
+html.desk .ak-sheet.aks{position:relative}
 /* акции — карточки в 2 колонки */
 html.desk #akc .ak-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 html.desk #akc .ak-list .akf{margin:0}
@@ -4693,30 +4697,30 @@ html.desk .dk-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr)
 html.desk .dk-top>.l-banner.ak-ban{width:auto;margin:0}
 html.desk #lobby .dk-top .ak-slide{height:204px;padding:24px 32px;border-radius:24px}
 html.desk #lobby .dk-top .ak-slide-main{max-width:55%;gap:12px}
-html.desk #lobby .dk-top .ak-slide-main b{font-size:28px;line-height:34px}
-html.desk #lobby .dk-top .ak-tag{font-size:16px;height:36px;padding:0 16px;border-radius:18px;display:inline-flex;align-items:center}
-html.desk #lobby .dk-top .ak-slide-cta{font-size:16px;height:40px;padding:0 18px;border-radius:20px;margin-top:auto}
+html.desk #lobby .dk-top .ak-slide-main b{font-size:22px;line-height:28px}
+html.desk #lobby .dk-top .ak-tag{font-size:13px;height:28px;padding:0 12px;border-radius:14px;display:inline-flex;align-items:center}
+html.desk #lobby .dk-top .ak-slide-cta{font-size:14px;height:32px;padding:0 14px;border-radius:16px;margin-top:auto}
 html.desk #lobby .dk-top .ak-slide-art{width:200px;height:200px;right:24px}
-html.desk #scr #lobby .dk-top .lp-w-bottom b,html.desk #scr #lobby .dk-top .lp-w-bottom span{font-size:16px}
+html.desk #scr #lobby .dk-top .lp-w-bottom b,html.desk #scr #lobby .dk-top .lp-w-bottom span{font-size:14px}
 html.desk #lobby .dk-top .ak-ban-foot{height:24px;margin-top:12px}
 html.desk #scr #lobby .dk-top .home-rewards{display:grid;grid-template-columns:1fr;grid-auto-rows:112px;gap:16px;width:auto;margin:0!important}
 html.desk #scr #lobby .dk-top .home-rewards>*{height:112px;min-height:112px;border-radius:20px}
 html.desk #scr #lobby .dk-top #lossbackEntry.lp-entry{gap:16px;padding:0 24px}
-html.desk #scr #lobby .dk-top .lp-w-art,html.desk #scr #lobby .dk-top .lp-w-art img{width:64px;height:64px}
+html.desk #scr #lobby .dk-top .lp-w-art,html.desk #scr #lobby .dk-top .lp-w-art img{width:56px;height:56px}
 html.desk #scr #lobby .dk-top .lp-w-main{gap:8px}
-html.desk #scr #lobby .dk-top .lp-w-top strong{font-size:24px;line-height:30px}
+html.desk #scr #lobby .dk-top .lp-w-top strong{font-size:18px;line-height:24px}
 html.desk #scr #lobby .dk-top .lp-bar{height:6px}
-html.desk #scr #lobby .dk-top .lp-w-bottom{font-size:16px;line-height:20px}
-html.desk #scr #lobby .dk-top .reward-tile{padding:0 24px 0 112px}
-html.desk #scr #lobby .dk-top .reward-art{left:20px;width:76px;height:76px}
+html.desk #scr #lobby .dk-top .lp-w-bottom{font-size:14px;line-height:18px}
+html.desk #scr #lobby .dk-top .reward-tile{padding:0 24px 0 96px}
+html.desk #scr #lobby .dk-top .reward-art{left:20px;width:60px;height:60px}
 html.desk #scr #lobby .dk-top .reward-copy{gap:8px}
-html.desk #scr #lobby .dk-top .reward-copy strong{font-size:24px;line-height:30px}
-html.desk #scr #lobby .dk-top .reward-claim,html.desk #scr #lobby .dk-top .reward-sub{height:36px;padding:0 16px;border-radius:18px;font-size:16px;line-height:20px}
+html.desk #scr #lobby .dk-top .reward-copy strong{font-size:18px;line-height:24px}
+html.desk #scr #lobby .dk-top .reward-claim,html.desk #scr #lobby .dk-top .reward-sub{height:30px;padding:0 14px;border-radius:15px;font-size:14px;line-height:18px}
 /* разделы игр: заголовок + 6 карточек по 2 колонки */
 html.desk #lobbySections .sec-h{margin:40px 0 16px}
-html.desk #lobbySections .sec-h h3{font-size:24px}
+html.desk #lobbySections .sec-h h3{font-size:22px}
 html.desk #lobbySections .sec-h p{font-size:14px}
-html.desk #lobbySections .grow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;overflow:visible;padding:0;scroll-snap-type:none}
+html.desk #lobbySections .grow{display:grid;grid-template-columns:repeat(auto-fill,176px);justify-content:start;gap:16px;overflow:visible;padding:0;scroll-snap-type:none}
 html.desk #scr #lobbySections .gc{flex:none;width:auto;border-radius:16px;transition:transform .15s,box-shadow .15s}
 html.desk #lobbySections .gc:hover{transform:translateY(-4px);box-shadow:0 10px 28px -8px var(--c)}
 html.desk #lobbySections .gc .pb{height:40px;font-size:15px;border-radius:12px}
@@ -11550,7 +11554,7 @@ const LEGAL='«ВГЛ 1 Спорт», алгоритм определения в
 function openSheet(id){const a=AK.find(x=>x.id===id)||AK[0];CUR=a;let w=document.getElementById('akSheet');
  if(!w){w=document.createElement('div');w.id='akSheet';w.className='ak-sheet-bg';w.setAttribute('role','dialog');w.setAttribute('aria-modal','true');document.getElementById('scr').appendChild(w)}
  const start=a.start||now()-3*D;
- w.innerHTML=`<div class="ak-sheet aks"><div class="ak-grab"></div><div class="aks-body">
+ w.innerHTML=`<div class="ak-sheet aks"><div class="ak-grab"></div><button type="button" class="aks-x" data-aks-close aria-label="Закрыть"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><div class="aks-body">
   <div class="aks-img" style="--akbg:${a.bg};--akglow:${a.glow}"><img src="${art(a)}" alt="" draggable="false"></div>
   <p>Срок проведения акции: с ${fmtD(start)} по ${fmtD(a.end)} года.</p>
   <p>${a.rewardTxt?(a.auto?'Выгода: ':'Награда: ')+a.rewardTxt+'. ':''}${a.terms}</p>
@@ -11627,7 +11631,7 @@ document.addEventListener('click',e=>{const t=e.target;
  const shb=t.closest('#akSheet');
  if(shb){if(t.closest('[data-aks-offer]')){e.preventDefault();openOffer(CUR.title,null,true);return}
   if(t.closest('[data-aks-play]')){const a=CUR;if(!a.auto&&!joined(a))join(a,1);closeSheet();closeAll();try{$('#pf')&&$('#pf').classList.remove('show')}catch(_){}playPromo(a);return}
-  if(t===shb)closeSheet();return}
+  if(t.closest('[data-aks-close]')||t===shb)closeSheet();return}
  const gb=t.closest('[data-ak-go]');if(gb){e.preventDefault();e.stopImmediatePropagation();const a=AK.find(x=>x.id===gb.dataset.akGo);if(a){if(!a.auto&&!joined(a))join(a,1);closeAll();try{$('#pf')&&$('#pf').classList.remove('show')}catch(_){}playPromo(a)}return}
  const mr=t.closest('[data-ak-more]');if(mr){e.preventDefault();e.stopImmediatePropagation();openSheet(mr.dataset.akMore);return}
  const fl=t.closest('.akf[data-akf]');if(fl){e.preventDefault();e.stopImmediatePropagation();document.querySelectorAll('.akf.flip').forEach(x=>{if(x!==fl)x.classList.remove('flip')});fl.classList.toggle('flip');return}
