@@ -4789,6 +4789,23 @@ html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .dpp .dpp-sub em{font-style:normal;color:#f7b52c;font-weight:700}
 .dpp .dpp-out{justify-content:center;height:40px;margin-top:8px;border-radius:12px;color:#a99fc2;font-size:14px}
 .dpp .dpp-out:hover{color:#fff;background:#ffffff0a}
+.sm-acc{gap:0}
+.sm-acc .sm-me{display:flex;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left}
+.sm-bal{display:flex;gap:24px;padding:4px 16px 12px}
+.sm-bal div{display:flex;flex-direction:column;gap:2px}
+.sm-bal small{font-size:12px;line-height:16px;color:#a99fc2}
+.sm-bal b{font-size:20px;line-height:24px;font-weight:800;color:#fff}
+.sm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 12px}
+.sm-btn{height:44px;border:1px solid #ffffff1a;border-radius:12px;background:#ffffff0a;color:#fff;font:700 15px/1 inherit;font-family:inherit;cursor:pointer}
+.sm-btn.primary{border:0;background:linear-gradient(180deg,#b072f0,#8d45dc);box-shadow:0 4px 14px #8d45dc55}
+.sm-btn.danger{border:0;background:#e5484d}
+.sm-outq{display:flex;flex-direction:column;gap:8px;padding:16px 4px 0;border-radius:16px;background:#2a1418;border:1px solid #e5484d55}
+.sm-outq[hidden]{display:none}
+.sm-outq b{padding:0 12px;font-size:16px;color:#fff}
+.sm-outq p{margin:0;padding:0 12px;font-size:13px;line-height:18px;color:#d9c7cc}
+.sm-cfg{align-self:center;border:0;background:none;color:#7f7690;font:500 12px/16px inherit;font-family:inherit;text-decoration:underline;cursor:pointer}
+/* мобильная версия: профиля нет — аккаунт, кошелёк и выход в меню */
+html:not(.desk) #lobby .header-profile{display:none!important}
 /* переключатель вида прототипа */
 .vsw{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;padding:4px;border-radius:12px;background:#111;box-shadow:0 6px 20px #0004;font:600 13px/1 ALS Sirius Pro,Inter,sans-serif}
 .vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
@@ -9404,7 +9421,7 @@ function closeLogin(){$('#pfLogin').classList.remove('show')}
 function setAuth(v){PF.auth=v;$('#scr').classList.toggle('is-guest',!v);
  $$('.header-profile').forEach(b=>{b.setAttribute('aria-label',v?'Профиль':'Войти или зарегистрироваться');b.title=v?'Профиль':'Войти'});
  try{renderBonuses()}catch(e){}try{renderLossback()}catch(e){}try{renderPromos()}catch(e){}try{renderHeaderBalances()}catch(e){}try{if($('#fw').classList.contains('show'))openWheel()}catch(e){}render()}
-window.pfIsGuest=()=>!PF.auth;window.pfRender=()=>render();window.pfLoginNow=m=>loginNow(m);window.pfOpenLogin=openLogin;window.pfOpen=open;
+window.pfIsGuest=()=>!PF.auth;window.pfSetAuth=v=>setAuth(v);window.pfRender=()=>render();window.pfLoginNow=m=>loginNow(m);window.pfOpenLogin=openLogin;window.pfOpen=open;
 // ---- разметка
 $('#scr').insertAdjacentHTML('beforeend',`<div class="pf" id="pf" role="dialog" aria-modal="true" aria-label="Профиль" aria-hidden="true">
  <div class="pf-head"><button class="pf-back" type="button" data-pf="close" aria-label="Назад">${I.back}</button><h2>Профиль</h2><button class="pf-gear" type="button" data-pf="cfg" aria-label="Настройки прототипа">${I.gear}</button></div>
@@ -11814,15 +11831,17 @@ function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.ge
  <div class="sm-body">
   <div class="sm-promos">${promos.map(a=>`<button type="button" class="sm-pc" data-mn-promo="${a.id}" style="--akbg:${a.bg}"><small>Акция</small><b>${a.title}</b><i class="sm-pc-go">${sv('chev')}</i><img src="${art(a)}" alt=""></button>`).join('')}</div>
   ${guest?`<button type="button" class="sm-card sm-me" data-mn="login"><span class="sm-ava">${sv('chat').replace(MI.chat,'<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3" fill="currentColor"/>')}</span><span class="sm-t"><b>Войти</b><small>Чтобы играть, получать промокоды и кэшбек</small></span><i class="sm-chev">${sv('chev')}</i></button>`
-   :`<button type="button" class="sm-card sm-me" data-mn="profile"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Перейти в профиль</small></span><i class="sm-chev">${sv('chev')}</i></button>`}
+   :`<div class="sm-card sm-acc"><button type="button" class="sm-me" data-mn="account"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Личные данные${window.ACC&&ACC.emailOk&&!ACC.emailOk()?' · подтвердите почту':''}</small></span><i class="sm-chev">${sv('chev')}</i></button>
+    <div class="sm-bal"><div><small>Рубли</small><b>${(typeof n==='function'?n(S.bal):S.bal)} ₽</b></div><div><small>Бонусы</small><b>${(typeof n==='function'?n(S.wagerBal||0):(S.wagerBal||0))} Б</b></div></div>
+    <div class="sm-btns"><button type="button" class="sm-btn primary" data-mn="deposit">Пополнить</button><button type="button" class="sm-btn" data-mn="withdraw">Вывести</button></div></div>`}
   <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
   <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{if(guest)return 'Доступно после входа';try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
   <div class="sm-card">${mrow('coin','Чёт/нечет','chet','Игра на сайте Столото')}${mrow('ball','Лотереи','stoloto','Русское лото, Жилищная лотерея и другие')}${mrow('flag','Результаты тиражей','results')}</div>
-  ${guest?'':`<div class="sm-card">${mrow('gear','Настройки','settings','Личные данные, безопасность, лимиты')}</div>`}
   <h3 class="sm-h">О компании</h3>
   <div class="sm-card sm-about"><b class="sm-logo">СТОЛОТО</b><p>Распространитель государственных лотерей России. Тиражи проходят под контролем, выигрыши выплачиваются в рублях.</p></div>
   <div class="sm-card">${mrow('doc','Правила игр и акций','rules')}${mrow('shield','Политика конфиденциальности','privacy')}${mrow('chat','Помощь и поддержка','support','Чат 24/7, частые вопросы')}${mrow('info','Контакты','contacts','8 800 200-00-00')}</div>
-  ${guest?'':`<button type="button" class="sm-out" data-mn="logout">Выйти</button>`}
+  ${guest?'':`<button type="button" class="sm-out" data-mn="logout">Выйти из аккаунта</button><div class="sm-outq" hidden><b>Выйти из аккаунта?</b><p>Чтобы снова играть и получать кэшбек, нужно будет войти по номеру телефона.</p><div class="sm-btns"><button type="button" class="sm-btn danger" data-mn="logout-yes">Выйти</button><button type="button" class="sm-btn" data-mn="logout-no">Отмена</button></div></div>`}
+  <button type="button" class="sm-cfg" data-mn="cfg">Настройки прототипа</button>
   <p class="sm-legal">Игры 24/7 — тиражные лотереи Столото. 18+</p>
  </div></div>`}
 scr.insertAdjacentHTML('beforeend','<div class="sm" id="mnu" role="dialog" aria-modal="true" aria-label="Меню" aria-hidden="true"></div>');
@@ -11838,12 +11857,17 @@ function mnAct(k){
   chet:()=>{go('home');toast('«Чёт/нечет» откроется на сайте Столото')},stoloto:()=>go('home'),results:()=>toast('Результаты тиражей — раздел сайта Столото (демо)'),
   settings:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="account"]');r&&r.scrollIntoView({block:'center'})},350)},
   support:()=>toast('Помощь и поддержка: чат 24/7, частые вопросы (демо)'),rules:()=>toast('Правила игр и акций (демо)'),privacy:()=>toast('Политика конфиденциальности (демо)'),contacts:()=>toast('Контакты (демо)'),
-  logout:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="logout"]');r&&r.click()},380)}})[k]?.();}
+  account:()=>{window.ACC&&ACC.open()},deposit:()=>{openSheet()},withdraw:()=>{window.WD&&WD.open()},cfg:()=>{openCfg()},
+  logout:()=>{if(document.documentElement.classList.contains('desk')){prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="logout"]');r&&r.click()},380);return}const q=document.querySelector('#mnu .sm-outq'),o=document.querySelector('#mnu .sm-out');if(q){q.hidden=false;o.hidden=true;q.scrollIntoView({block:'center',behavior:'smooth'})}},
+  'logout-no':()=>{const q=document.querySelector('#mnu .sm-outq'),o=document.querySelector('#mnu .sm-out');if(q){q.hidden=true;o.hidden=false}},
+  'logout-yes':()=>{try{closeWheel()}catch(_){}window.pfSetAuth&&pfSetAuth(false);toast('Вы вышли из аккаунта')}})[k]?.();}
 
 mn.addEventListener('click',e=>{if(e.target===mn){menuClose();return}
  const pr=e.target.closest('[data-mn-promo]');if(pr){menuClose();lobbyTo();window.AKC&&AKC.openPromo(pr.dataset.mnPromo);return}
  const b=e.target.closest('[data-mn]');if(!b)return;const k=b.dataset.mn;
  if(k==='close'){menuClose();return}
+ if(k==='logout'||k==='logout-no'){mnAct(k);return}
+ if(k==='logout-yes'){mnAct(k);mn.innerHTML=menuHTML();return}
  menuClose();
  mnAct(k);
  setTimeout(sync,0)});
