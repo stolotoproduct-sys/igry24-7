@@ -4791,7 +4791,7 @@ html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .dpp .dpp-out:hover{color:#fff;background:#ffffff0a}
 .sm-acc{gap:0}
 .sm-acc .sm-me{display:flex;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left}
-.sm-bal{display:flex;gap:24px;padding:4px 16px 12px}
+.sm-bal{display:flex;gap:24px;padding:14px 16px 12px}
 .sm-bal div{display:flex;flex-direction:column;gap:2px}
 .sm-bal small{font-size:12px;line-height:16px;color:#a99fc2}
 .sm-bal b{font-size:20px;line-height:24px;font-weight:800;color:#fff}
@@ -11831,8 +11831,8 @@ function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.ge
  <div class="sm-body">
   <div class="sm-promos">${promos.map(a=>`<button type="button" class="sm-pc" data-mn-promo="${a.id}" style="--akbg:${a.bg}"><small>Акция</small><b>${a.title}</b><i class="sm-pc-go">${sv('chev')}</i><img src="${art(a)}" alt=""></button>`).join('')}</div>
   ${guest?`<button type="button" class="sm-card sm-me" data-mn="login"><span class="sm-ava">${sv('chat').replace(MI.chat,'<circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3" fill="currentColor"/>')}</span><span class="sm-t"><b>Войти</b><small>Чтобы играть, получать промокоды и кэшбек</small></span><i class="sm-chev">${sv('chev')}</i></button>`
-   :`<div class="sm-card sm-acc"><button type="button" class="sm-me" data-mn="account"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Личные данные${window.ACC&&ACC.emailOk&&!ACC.emailOk()?' · подтвердите почту':''}</small></span><i class="sm-chev">${sv('chev')}</i></button>
-    <div class="sm-bal"><div><small>Рубли</small><b>${(typeof n==='function'?n(S.bal):S.bal)} ₽</b></div><div><small>Бонусы</small><b>${(typeof n==='function'?n(S.wagerBal||0):(S.wagerBal||0))} Б</b></div></div>
+   :`<div class="sm-card sm-acc"><button type="button" class="sm-me" data-mn="account"><span class="sm-ava">${(A.nick||'ivan_petrov').slice(0,2).toUpperCase()}</span><span class="sm-t"><b>${A.nick||'ivan_petrov'}</b><small>Личные данные${window.ACC&&ACC.emailOk&&!ACC.emailOk()?' · подтвердите почту':''}</small></span><i class="sm-chev">${sv('chev')}</i></button></div>
+    <div class="sm-card sm-wal"><div class="sm-bal"><div><small>Рубли</small><b>${(typeof n==='function'?n(S.bal):S.bal)} ₽</b></div><div><small>Бонусы</small><b>${(typeof n==='function'?n(S.wagerBal||0):(S.wagerBal||0))} Б</b></div></div>
     <div class="sm-btns"><button type="button" class="sm-btn primary" data-mn="deposit">Пополнить</button><button type="button" class="sm-btn" data-mn="withdraw">Вывести</button></div></div>`}
   <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
   <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{if(guest)return 'Доступно после входа';try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
