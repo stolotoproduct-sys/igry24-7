@@ -4766,7 +4766,7 @@ html.desk:not(.rail-open) .drail button[data-tip]:hover::after{content:attr(data
 /* десктоп: поповер профиля по наведению на аватар в шапке */
 .dpp{display:none}
 html.desk #lobby .header-right{position:relative}
-html.desk .dpp{display:block;position:absolute;z-index:96;top:calc(100% + 10px);right:0;width:340px;padding:8px;border-radius:20px;background:#15131d;border:1px solid #ffffff14;box-shadow:0 24px 60px #000c;color:#f4efff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s}
+html.desk .dpp{display:block;position:absolute;z-index:120;top:82px;right:36px;width:340px;padding:8px;border-radius:20px;background:#15131d;border:1px solid #ffffff14;box-shadow:0 24px 60px #000c;color:#f4efff;font-family:var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s}
 html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .dpp:before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
 .dpp button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
@@ -11906,8 +11906,8 @@ function dppHTML(){let A={};try{A=window.ACC?ACC.get():{}}catch(e){}const nick=A
   <button type="button" class="dpp-out" data-dpp="logout">Выйти</button>`}
 function dppShow(){if(!document.documentElement.classList.contains('desk'))return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
  const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();
- const host=b.parentElement;if(dpp.parentElement!==host)host.appendChild(dpp);dpp.classList.add('show')}
-function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>{dpp.classList.remove('show');setTimeout(()=>{if(!dpp.classList.contains('show'))scr.appendChild(dpp)},200)},d)}
+ if(dpp.parentElement!==scr)scr.appendChild(dpp);const r=b.getBoundingClientRect(),S=scr.getBoundingClientRect();dpp.style.right=Math.round(S.right-r.right)+'px';dpp.style.left='auto';dpp.style.top=Math.round(r.bottom-S.top+10)+'px';dpp.classList.add('show')}
+function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>dpp.classList.remove('show'),d)}
 document.addEventListener('mouseover',e=>{if(e.target.closest('#lobby .header-profile'))dppShow();else if(e.target.closest('#dpp'))clearTimeout(dppT)});
 document.addEventListener('mouseout',e=>{const f=e.target.closest('#lobby .header-profile,#dpp');if(f&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#lobby .header-profile,#dpp')))dppHide()});
 dpp.addEventListener('click',e=>{const b=e.target.closest('[data-dpp]');if(!b)return;const k=b.dataset.dpp;dppHide(0);dkClear();
