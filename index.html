@@ -12004,7 +12004,7 @@ function dppHTML(){let A={};try{A=window.ACC?ACC.get():{}}catch(e){}const nick=A
  return `<button type="button" class="dpp-me" data-dpp="profile"><span class="dpp-ava">${nick.slice(0,2).toUpperCase()}</span><span class="dpp-t"><b>Личный кабинет</b><small>${nick}</small></span>${ch}</button>
   <div class="dpp-wal"><button type="button" class="dpp-row" data-dpp="profile"><b>Кошелёк: ${cash} ₽</b>${ch}</button><button type="button" class="dpp-add" data-dpp="add">＋ Пополнить</button></div>
   <button type="button" class="dpp-card dpp-row" data-dpp="profile"><b>Бонусы: ${bon} Б</b>${ch}</button>
-  <button type="button" class="dpp-card dpp-row" data-dpp="profile"><b>Личные данные</b>${ch}</button>
+  <button type="button" class="dpp-card dpp-row" data-dpp="account"><b>Личные данные</b>${ch}</button>
   <button type="button" class="dpp-out" data-dpp="logout">Выйти</button>`}
 function dppShow(){if(!document.documentElement.classList.contains('desk'))return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
  const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();
@@ -12013,7 +12013,7 @@ function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>dpp.classList.rem
 document.addEventListener('mouseover',e=>{if(e.target.closest('#lobby .header-profile'))dppShow();else if(e.target.closest('#dpp'))clearTimeout(dppT)});
 document.addEventListener('mouseout',e=>{const f=e.target.closest('#lobby .header-profile,#dpp');if(f&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#lobby .header-profile,#dpp')))dppHide()});
 dpp.addEventListener('click',e=>{const b=e.target.closest('[data-dpp]');if(!b)return;const k=b.dataset.dpp;dppHide(0);dkClear();
- if(k==='add'){const a=$('#lobby .header-add');a&&a.click()}else if(k==='level'||k==='codes')mnAct(k);else mnAct(k==='logout'?'logout':'profile');setTimeout(()=>{sync();railSync();dkModal()},0)});
+ if(k==='add'){const a=$('#lobby .header-add');a&&a.click()}else if(k==='account'){window.ACC&&ACC.open()}else if(k==='level'||k==='codes')mnAct(k);else mnAct(k==='logout'?'logout':'profile');setTimeout(()=>{sync();railSync();dkModal()},0)});
 
 /* «Дополнительно» (десктоп): страница о Столото, лотереи, правила, поддержка и контакты */
 scr.insertAdjacentHTML('beforeend','<section class="pf dkx" id="dkx" aria-hidden="true" aria-label="Дополнительно"><div class="pf-head"><button class="pf-back" type="button" data-dkx-close aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Дополнительно</h2></div><div class="pf-body"></div></section>');
