@@ -4806,6 +4806,53 @@ html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .sm-cfg{align-self:center;border:0;background:none;color:#7f7690;font:500 12px/16px inherit;font-family:inherit;text-decoration:underline;cursor:pointer}
 /* мобильная версия: профиля нет — аккаунт, кошелёк и выход в меню */
 html:not(.desk) #lobby .header-profile{display:none!important}
+/* «Личные данные» — как в макете L01 */
+.acx-main{display:flex;flex-direction:column;gap:12px;padding:16px}
+.acx-ava{height:96px;border-radius:16px;display:grid;place-items:center;background:radial-gradient(120% 140% at 50% 0%,#5a2a8c66,#1b1426);border:1px solid #a25be655}
+.acx-ava span{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#b072f0,#6c2cc0);color:#fff;font-weight:800;font-size:18px;box-shadow:0 6px 24px #8d45dc88}
+.acx-btn{height:44px;border:0;border-radius:12px;background:#ffffff14;color:#fff;font:700 14px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acx-f{display:flex;flex-direction:column;gap:6px}
+.acx-f>span{font-size:12px;line-height:16px;color:#a99fc2}
+.acx-f input,.acx-f select{height:48px;padding:0 16px;border-radius:12px;border:1px solid #ffffff14;background:#0b0a10;color:#fff;font:500 16px/20px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);outline:none;appearance:none;-webkit-appearance:none}
+.acx-f select{background:#0b0a10 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center/20px}
+.acx-f input:focus,.acx-f select:focus{border-color:#a25be6}
+.acx-f.off input{background:transparent;color:#8f86a8}
+.acx-f small{font-size:12px;line-height:16px;color:#8f86a8}
+.acx-save{height:48px;border:0;border-radius:12px;background:linear-gradient(180deg,#b072f0,#8d45dc);color:#fff;font:700 15px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acx-save:disabled{opacity:.45;cursor:default}
+.acx-h{margin:8px 0 0;font-size:18px;line-height:24px;font-weight:700;color:#fff}
+.acx-row{display:flex;align-items:center;gap:12px;padding:16px}
+.acx-rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.acx-rt b{font-size:16px;line-height:20px;color:#fff}
+.acx-rt small{font-size:13px;line-height:18px;color:#c9c1dc;overflow:hidden;text-overflow:ellipsis}
+.acx-ed{flex:none;width:40px;height:40px;border:0;border-radius:12px;display:grid;place-items:center;background:#ffffff14;color:#fff;cursor:pointer}
+.acx-ed svg{width:20px;height:20px}
+.acx-links{display:flex;flex-direction:column;gap:8px;padding:16px}
+.acx-links .acx-h{margin:0}.acx-links .ac-sub{margin:0 0 4px}
+.acx-lk{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#ffffff08;border:1px solid #ffffff10}
+.acx-lk-i{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:#ffffff0f}
+.acx-lk-i .ac-brand{width:26px;height:26px;font-size:11px}
+.acx-out{height:48px;border-radius:12px;border:1px solid #e5484d66;background:#2a1418;color:#ff8a8f;font:700 15px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer;margin-bottom:16px}
+.acs{position:absolute;inset:0;z-index:98;display:flex;align-items:flex-end;background:#000a;opacity:0;pointer-events:none;transition:opacity .2s}
+.acs.show{opacity:1;pointer-events:auto}
+.acs-sh{width:100%;display:flex;flex-direction:column;gap:12px;padding:8px 16px 24px;border-radius:24px 24px 0 0;background:#15131d;transform:translateY(100%);transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.acs.show .acs-sh{transform:none}
+.acs-grab{align-self:center;width:36px;height:4px;border-radius:2px;background:#ffffff33}
+.acs-b{display:flex;flex-direction:column;gap:12px}
+.acx-st{font-size:20px;line-height:26px;font-weight:800;color:#fff}.acx-st.c{text-align:center}
+.acx-p{margin:0;font-size:14px;line-height:20px;color:#c9c1dc}.acx-p.c{text-align:center}
+.acx-call{align-self:center;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:#ffd23f;color:#1b1426;transform:rotate(-10deg)}
+.acx-call svg{width:30px;height:30px}
+.acx-ok{align-self:center}.acx-ok svg{width:64px;height:64px}
+.acx-num{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:14px;background:#ffffff0a;border:1px solid #ffffff14}
+.acx-num small{font-size:13px;color:#c9c1dc}.acx-num b{font-size:22px;line-height:28px;color:#fff}
+.acx-y{height:52px;border:0;border-radius:14px;background:#ffd23f;color:#1b1426;font:700 16px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acx-g{height:52px;border:0;border-radius:14px;background:#ffffff14;color:#fff;font:700 16px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acx-help{align-self:center;border:0;background:none;color:#c58bf1;font:600 13px/18px var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.acx-err{color:#ff8a8f!important}
+html.desk #scr>.acs{align-items:center;justify-content:center;padding-left:72px}
+html.desk #scr>.acs .acs-sh{width:440px;border-radius:24px}
+html.desk .acs-grab{display:none}
 /* переключатель вида прототипа */
 .vsw{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;padding:4px;border-radius:12px;background:#111;box-shadow:0 6px 20px #0004;font:600 13px/1 ALS Sirius Pro,Inter,sans-serif}
 .vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
@@ -9505,6 +9552,7 @@ const I={
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>',
  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 17.2V20h2.8L17 9.8 14.2 7 4 17.2Zm15.7-10.5a1 1 0 0 0 0-1.4l-1.9-1.9a1 1 0 0 0-1.4 0L15 4.8 17.8 7.6l1.9-.9Z"/><path d="M4 22h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',
  done:'<svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#2fbf7c26"/><path d="m15 24 6 6 12-13" stroke="#7fe0ae" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
@@ -9524,29 +9572,60 @@ function emailRow(){
  return `<div class="ac-row"><span class="ac-ri">${I.mail}</span><span class="ac-rt"><b class="ac-em">${esc(AC.email)}</b><small class="ac-st ok">${I.check}Подтверждена</small></span><button type="button" class="ac-act" data-ac="email-change">Сменить</button></div>`;
 }
 function accRender(){const P=$('#acc');if(!P)return;
- const em=AC.emailState==='confirmed'&&AC.email;
- $('.ac-body',P).innerHTML=`<h4>Профиль</h4>
- <div class="ac-card ac-list ac-prof">
-  <div class="ac-kv"><span>Никнейм</span><b>${esc(AC.nick)}</b></div>
-  <div class="ac-kv"><span>Дата рождения</span><b>${AC.birth}</b></div>
-  <div class="ac-kv"><span>Пол</span><b>${GEN[AC.gender]||'Не указан'}</b></div>
-  <button type="button" class="ac-row ac-edit" data-ac="profile-edit"><span class="ac-rt"><b>Редактировать профиль</b><small>Никнейм видят другие игроки в рейтингах и турнирах</small></span><span class="ac-val">Изменить</span></button>
+ const D=ACX.d||(ACX.d={nick:AC.nick,birth:AC.birth,gender:AC.gender});const dirty=D.nick!==AC.nick||D.birth!==AC.birth||D.gender!==AC.gender;
+ $('.ac-body',P).innerHTML=`<div class="ac-card acx-main">
+  <div class="acx-ava"><span>${esc((D.nick||AC.nick).slice(0,2).toUpperCase())}</span></div>
+  <button type="button" class="acx-btn" data-acx="ava">Изменить аватар и рамку</button>
+  <label class="acx-f"><span>Никнейм</span><input name="nick" value="${esc(D.nick)}" maxlength="20" autocomplete="off"><small>Будет видно другим пользователям</small></label>
+  <label class="acx-f"><span>Дата рождения</span><input name="birth" value="${esc(D.birth)}" inputmode="numeric" maxlength="10"></label>
+  <label class="acx-f"><span>Пол</span><select name="gender">${['m','f'].map(g=>`<option value="${g}"${D.gender===g?' selected':''}>${GEN[g]}</option>`).join('')}</select></label>
+  <label class="acx-f off"><span>Номер телефона</span><input value="${esc(AC.phone)}" disabled><small>Номер — логин для входа, изменить его нельзя</small></label>
+  <button type="button" class="acx-save" data-acx="save"${dirty?'':' disabled'}>Сохранить изменения</button>
  </div>
- <h4>Контакты</h4>
- <div class="ac-card ac-list">
-  <div class="ac-row"><span class="ac-ri">${I.phone}</span><span class="ac-rt"><b>${esc(AC.phone)}</b><small>Номер для входа · изменить нельзя</small></span></div>
-  ${emailRow()}
+ <h3 class="acx-h">Безопасность и вход</h3>
+ <div class="ac-card acx-row"><span class="acx-rt"><b>Электронная почта</b><small>${esc(AC.email||'Не указана')}</small></span><button type="button" class="acx-ed" data-acx="email" aria-label="Изменить почту">${I.pen}</button></div>
+ <div class="ac-card acx-row"><span class="acx-rt"><b>Пароль</b><small>••••••••••</small></span><button type="button" class="acx-ed" data-acx="pass" aria-label="Изменить пароль">${I.pen}</button></div>
+ <button type="button" class="ac-revoke" data-acx="revoke">Отозвать согласие на обработку персональных данных</button>
+ <div class="ac-card acx-links"><h3 class="acx-h">Привязанные аккаунты</h3><p class="ac-sub">Привяжите соцсеть для быстрого входа</p>
+  ${LINKS.map(l=>{const on=AC.links[l.id];return `<div class="acx-lk"><span class="acx-lk-i"><span class="ac-brand" style="--c:${l.c}">${l.l}</span></span><span class="acx-rt"><b>${l.n}</b>${on?`<small class="ac-st ok">${I.check}${esc(AC.name)}</small>`:'<small>Не привязан</small>'}</span><button type="button" class="acx-ed" data-acx="${on?'unlink':'link'}" data-id="${l.id}" aria-label="${on?'Отвязать':'Привязать'} ${l.n}">${on?I.trash:I.plus}</button></div>`}).join('')}
  </div>
- <h4>Вход</h4>
- <div class="ac-card ac-list"><button type="button" class="ac-row" data-ac="password"><span class="ac-ri">${I.lock}</span><span class="ac-rt"><b>Пароль</b></span><span class="ac-val">Изменить</span></button>
-  ${window.WD&&WD.state.id!=='full'?`<button type="button" class="ac-row" data-ac-wd><span class="ac-ri warn">${I.id}</span><span class="ac-rt"><b>Лимит вывода — ${(WD.lim[WD.state.id].one).toLocaleString('ru-RU')}\u00a0₽ за раз</b><small>Подтвердите личность — выводите больше</small></span><span class="ac-val">Поднять</span></button>`:''}</div>
- <h4>Привязанные аккаунты</h4>
- <p class="ac-sub">Привяжите аккаунт для быстрого входа</p>
- <div class="ac-card ac-list">${LINKS.map(l=>{const on=AC.links[l.id];return `<div class="ac-row"><span class="ac-brand" style="--c:${l.c}">${l.l}</span><span class="ac-rt"><b>${l.n}</b>${on?`<small class="ac-st ok">${I.check}${esc(AC.name)}</small>`:'<small>Не привязан</small>'}</span><button type="button" class="ac-act${on?'':' primary'}" data-ac-link="${l.id}" aria-label="${on?'Отвязать':'Привязать'} ${l.n}">${on?'Отвязать':'Привязать'}</button></div>`}).join('')}</div>
- <p class="ac-note">Номер и почту не показываем другим игрокам.</p>
- <button type="button" class="ac-revoke" data-ac="revoke">Отозвать согласие на обработку персональных данных</button>
- <div class="pf-confirm ac-cf" hidden></div>`}
-function accOpen(){accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
+ <button type="button" class="acx-out" data-acx="logout">Выйти из аккаунта</button>`}
+/* шторки «Личных данных» — как в макете L02–L08 */
+const ACX={d:null,k:null,id:null};
+function acxSheet(k,id){ACX.k=k;ACX.id=id;const L=id&&LINKS.find(x=>x.id===id);let h='';
+ const call=`<span class="acx-call">${I.phone}</span>`;
+ if(k==='email')h=`<b class="acx-st">Изменение почты</b><label class="acx-f"><span>Новая почта</span><input name="em" type="email" placeholder="name@mail.ru" value=""><small class="acx-err" hidden></small></label><button type="button" class="acx-y" data-acx="email-save">Сохранить почту</button>`;
+ if(k==='call')h=`${call}<b class="acx-st c">Подтвердите свой номер</b><p class="acx-p c">Чтобы изменить почту, позвоните с номера аккаунта на номер ниже. Вызов сбросится сам. Это бесплатно.</p><div class="acx-num"><small>Наберите номер с этого телефона</small><b>+7 917 462 91 00</b></div><button type="button" class="acx-y" data-acx="call-go">Позвонить</button><button type="button" class="acx-help" data-acx="help">Нужна помощь?</button>`;
+ if(k==='email-done')h=`<span class="acx-ok">${I.done}</span><b class="acx-st c">Почта изменена</b><p class="acx-p c">Новый адрес — ${esc(AC.email)}. На старый адрес отправили письмо о смене.</p><button type="button" class="acx-y" data-acx="x">Готово</button>`;
+ if(k==='pass')h=`<b class="acx-st">Изменение пароля</b><label class="acx-f"><span>Новый пароль</span><input name="p1" type="password" placeholder="Не меньше 8 символов"></label><label class="acx-f"><span>Повторите пароль</span><input name="p2" type="password"><small class="acx-err" hidden></small></label><button type="button" class="acx-y" data-acx="pass-save">Сохранить пароль</button>`;
+ if(k==='pass-done')h=`<span class="acx-ok">${I.done}</span><b class="acx-st c">Пароль изменён</b><p class="acx-p c">Теперь входите с новым паролем. На других устройствах нужно будет войти заново.</p><button type="button" class="acx-y" data-acx="x">Готово</button>`;
+ if(k==='unlink')h=`<b class="acx-st c">Отвязать ${L.n}?</b><p class="acx-p c">Входить через ${L.n.replace(' ID','')} больше не получится. Привязать снова можно в любой момент.</p><button type="button" class="acx-y" data-acx="unlink-yes">Отвязать</button><button type="button" class="acx-g" data-acx="x">Отмена</button>`;
+ if(k==='revoke')h=`<b class="acx-st c">Отозвать согласие?</b><p class="acx-p c">Без согласия мы не сможем обрабатывать ваши персональные данные — аккаунт будет заблокирован. [Текст — уточнить у юристов]</p><button type="button" class="acx-y" data-acx="revoke-yes">Отозвать согласие</button><button type="button" class="acx-g" data-acx="x">Отмена</button><button type="button" class="acx-help" data-acx="help">Нужна помощь?</button>`;
+ if(k==='logout')h=`<b class="acx-st c">Выйти из аккаунта?</b><p class="acx-p c">Чтобы снова играть и получать кэшбек, нужно будет войти по номеру телефона.</p><button type="button" class="acx-y" data-acx="logout-yes">Выйти</button><button type="button" class="acx-g" data-acx="x">Отмена</button>`;
+ let w=$('#acs');if(!w){$('#scr').insertAdjacentHTML('beforeend','<div class="acs" id="acs" role="dialog" aria-modal="true"><div class="acs-sh"><i class="acs-grab"></i><div class="acs-b"></div></div></div>');w=$('#acs')}
+ $('.acs-b',w).innerHTML=h;w.classList.add('show');setTimeout(()=>{const i=$('input',w);i&&i.focus()},250)}
+function acxClose(){const w=$('#acs');w&&w.classList.remove('show')}
+document.addEventListener('input',e=>{const t=e.target;if(!t.closest('#acc .acx-main'))return;const D=ACX.d;if(!D)return;
+ if(t.name==='birth'){let d=t.value.replace(/\D/g,'').slice(0,8);t.value=d.length>4?d.slice(0,2)+'.'+d.slice(2,4)+'.'+d.slice(4):d.length>2?d.slice(0,2)+'.'+d.slice(2):d}
+ if(t.name)D[t.name]=t.value;const dirty=D.nick!==AC.nick||D.birth!==AC.birth||D.gender!==AC.gender;$('#acc [data-acx=save]').disabled=!dirty||!D.nick.trim()||D.birth.length!==10},true);
+document.addEventListener('change',e=>{if(e.target.closest('#acc .acx-main')&&e.target.name==='gender'){ACX.d.gender=e.target.value;$('#acc [data-acx=save]').disabled=false}},true);
+document.addEventListener('click',e=>{const w=$('#acs');if(w&&e.target===w){acxClose();return}
+ const b=e.target.closest('[data-acx]');if(!b||!b.closest('#acc,#acs'))return;e.stopPropagation();const k=b.dataset.acx;
+ const err=m=>{const x=$('#acs .acx-err');if(x){x.textContent=m;x.hidden=!m}};
+ if(k==='x'){acxClose();return}
+ if(k==='ava'){toast('Аватар и рамка — в следующей итерации (демо)');return}
+ if(k==='save'){const D=ACX.d;AC.nick=D.nick.trim();AC.birth=D.birth;AC.gender=D.gender;save();ACX.d=null;refresh();toast('Изменения сохранены');return}
+ if(k==='email'||k==='pass'||k==='revoke'||k==='logout'){acxSheet(k);return}
+ if(k==='email-save'){const v=$('#acs input[name=em]').value.trim();if(!okEmail(v)){err('Проверьте адрес — например, name@mail.ru');return}ACX.em=v;acxSheet('call');return}
+ if(k==='call-go'){toast('Звоним… вызов сбросится сам');setTimeout(()=>{AC.email=ACX.em;AC.emailState='confirmed';save();refresh();acxSheet('email-done')},1200);return}
+ if(k==='help'){toast('Поддержка: чат 24/7 (демо)');return}
+ if(k==='pass-save'){const a=$('#acs input[name=p1]').value,c=$('#acs input[name=p2]').value;if(a.length<8){err('Не меньше 8 символов');return}if(a!==c){err('Пароли не совпадают');return}acxSheet('pass-done');return}
+ if(k==='link'){const L=LINKS.find(x=>x.id===b.dataset.id);toast(`Откроется вход через ${L.n} (демо)`);setTimeout(()=>{AC.links[L.id]=true;save();refresh();toast(`${L.n} привязан`)},900);return}
+ if(k==='unlink'){acxSheet('unlink',b.dataset.id);return}
+ if(k==='unlink-yes'){const L=LINKS.find(x=>x.id===ACX.id);AC.links[L.id]=false;save();refresh();acxClose();toast(`${L.n} отвязан`);return}
+ if(k==='revoke-yes'){acxClose();toast('Заявка на отзыв согласия отправлена (демо)');return}
+ if(k==='logout-yes'){acxClose();accClose();try{closeWheel()}catch(_){}window.pfSetAuth&&pfSetAuth(false);toast('Вы вышли из аккаунта');return}},true);
+function accOpen(){ACX.d=null;accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
 function accClose(){const P=$('#acc');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
 function refresh(){accRender();try{window.pfRender&&pfRender()}catch(e){}try{window.nsRender&&nsRender()}catch(e){}}
 
