@@ -4853,6 +4853,34 @@ html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 html.desk #scr>.acs{align-items:center;justify-content:center;padding-left:72px}
 html.desk #scr>.acs .acs-sh{width:440px;border-radius:24px}
 html.desk .acs-grab{display:none}
+/* аватар и рамка */
+.avf{position:relative;display:inline-grid;place-items:center;width:var(--s);height:var(--s);flex:none}
+.avf-i{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden}
+.avf-i svg{display:block;width:100%;height:100%}
+.avf-r{position:absolute;inset:calc(var(--s)*-0.09);border-radius:50%;-webkit-mask:radial-gradient(circle,transparent 61%,#000 62%);mask:radial-gradient(circle,transparent 61%,#000 62%);filter:drop-shadow(0 0 4px #0008)}
+.acx-ava.has-avf{background:radial-gradient(120% 140% at 50% 0%,#5a2a8c66,#1b1426)}
+.sm-ava.has-avf,.pf-ava.has-avf{background:none!important;box-shadow:none!important;overflow:visible}
+.avp-top{display:flex;align-items:center;gap:16px;padding:20px 16px}
+.avp-n{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.avp-n b{font-size:18px;line-height:22px;color:#fff}.avp-n small{font-size:12px;line-height:16px;color:#a99fc2}
+.avp-b{flex:none;height:28px;padding:0 10px;border-radius:14px;display:grid;place-items:center;background:#1f9d6b26;color:#7fe0ae;font-size:13px;font-weight:800}
+.avp-seg{display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:14px;background:#15131d;border:1px solid #ffffff14}
+.avp-seg button{height:40px;border:0;border-radius:10px;background:none;color:#a99fc2;font:700 14px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer}
+.avp-seg button.on{background:linear-gradient(180deg,#b072f0,#8d45dc);color:#fff;box-shadow:0 4px 14px #8d45dc55}
+.avg{padding:16px}.avg .acx-h{margin:0 0 12px}
+.avg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:14px 8px}
+.avc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;border:0;background:none;cursor:pointer;border-radius:12px}
+.avc:hover{background:#ffffff08}
+.avc.sel .avf{outline:2px solid #c58bf1;outline-offset:4px;border-radius:50%}
+.avc.dim .avf{opacity:.45;filter:grayscale(.6)}
+.avc-l{min-height:16px;font-size:12px;line-height:16px;font-weight:700;color:#a99fc2;display:flex;align-items:center;gap:2px}
+.avc-l.on{color:#c58bf1}.avc-l.pr{color:#ffd23f}.avc-l.lock svg{width:14px;height:14px}
+.avs-prev{align-self:center;padding:10px}
+.avs-buy{height:52px;border:0;border-radius:14px;background:linear-gradient(180deg,#b072f0,#8d45dc);color:#fff;font:700 16px/1 var(--g4-font,ALS Sirius Pro,'Roboto Flex',Inter,sans-serif);cursor:pointer;box-shadow:0 4px 14px #8d45dc55}
+.avs-bal{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:14px;background:#ffffff0a;border:1px solid #ffffff14}
+.avs-bal small{color:#a99fc2;font-size:13px}.avs-bal b{color:#fff;font-size:16px}
+#avp{z-index:76}#avs{z-index:99}
+html.desk #scr #avp{--pw:min(664px,calc(100% - 144px))}
 /* переключатель вида прототипа */
 .vsw{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;padding:4px;border-radius:12px;background:#111;box-shadow:0 6px 20px #0004;font:600 13px/1 ALS Sirius Pro,Inter,sans-serif}
 .vsw button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#aaa;cursor:pointer;font:inherit}
@@ -9613,7 +9641,7 @@ document.addEventListener('click',e=>{const w=$('#acs');if(w&&e.target===w){acxC
  const b=e.target.closest('[data-acx]');if(!b||!b.closest('#acc,#acs'))return;e.stopPropagation();const k=b.dataset.acx;
  const err=m=>{const x=$('#acs .acx-err');if(x){x.textContent=m;x.hidden=!m}};
  if(k==='x'){acxClose();return}
- if(k==='ava'){toast('Аватар и рамка — в следующей итерации (демо)');return}
+ if(k==='ava'){window.AVF&&AVF.open();return}
  if(k==='save'){const D=ACX.d;AC.nick=D.nick.trim();AC.birth=D.birth;AC.gender=D.gender;save();ACX.d=null;refresh();toast('Изменения сохранены');return}
  if(k==='email'||k==='pass'||k==='revoke'||k==='logout'){acxSheet(k);return}
  if(k==='email-save'){const v=$('#acs input[name=em]').value.trim();if(!okEmail(v)){err('Проверьте адрес — например, name@mail.ru');return}ACX.em=v;acxSheet('call');return}
@@ -12037,5 +12065,71 @@ setView(v0==='desk'?'desk':'phone');
 })();
 
 </script>
+<script>
+/* ================= Аватар и рамка (по флоу stoloto.ru/private/avatars, в стилистике 24/7) =================
+   Экран: превью (аватар в рамке, ник, бонусы) → табы «Аватар / Рамка» → «Полученные», «За задания», «За бонусы».
+   Полученный — тап = выбрать. За задание — шторка с условием. За бонусы — шторка покупки; не хватает бонусов — подсказка, где их взять.
+   Картинки нарисованы в прототипе (SVG и CSS), в продукте — ассеты из основного проекта. */
+(function(){
+const SK=['#f2c9a0','#e0ac85','#c68863','#8d5a3c','#f5d6bd','#b97a56'],HR=['#2b1d16','#5a3a22','#c98b3c','#e8c26b','#7a2f1d','#1d1d2b','#b8b8c8','#d94f8a'],BG=['#5b3bb5','#2f7de1','#1f9d6b','#e0703a','#c2408a','#2a8f9e','#8a4fd8','#d4a72c','#3b4a8f','#9e3b3b','#47a36b','#6f42c1','#e0508a','#3a7bd5','#b7791f','#2c8c99','#7b3fe4','#c05621','#2f855a','#805ad5'];
+const AV=Array.from({length:20},(_,i)=>({id:'a'+i,sk:SK[i%6],hr:HR[(i*3)%8],bg:BG[i],st:i%4,gl:i%5===3}));
+const FR=[['f0','Без рамки',''],['f1','Золото','conic-gradient(from 210deg,#fff3b0,#d9a520,#a8730c,#ffe27a,#d9a520,#fff3b0)'],['f2','Серебро','conic-gradient(from 200deg,#ffffff,#a9b1bd,#6e7685,#e6e9ee,#a9b1bd,#fff)'],['f3','Бронза','conic-gradient(from 200deg,#ffd2a8,#c0763a,#7d4419,#f0a868,#c0763a,#ffd2a8)'],['f4','Аметист','conic-gradient(from 0deg,#c58bf1,#7b3fe4,#e1b8ff,#7b3fe4,#c58bf1)'],['f5','Неон','conic-gradient(from 0deg,#ff4fd8,#7b3fe4,#2fd3ff,#7bff9e,#ff4fd8)'],['f6','Рубин','conic-gradient(from 0deg,#ff8a8f,#c81e3a,#ff4d5e,#7a0f22,#ff8a8f)'],['f7','Изумруд','conic-gradient(from 0deg,#7fe0ae,#1f9d6b,#c6ffe0,#0e6b45,#7fe0ae)'],['f8','Пунктир','repeating-conic-gradient(#c58bf1 0 10deg,transparent 10deg 20deg)'],['f9','Сапфир','conic-gradient(from 90deg,#9cc8ff,#2f6fe1,#dbeaff,#173f99,#9cc8ff)'],['f10','Пламя','conic-gradient(from 180deg,#ffe27a,#ff7a2f,#e02f2f,#ffb02f,#ffe27a)'],['f11','Лёд','conic-gradient(from 0deg,#e8fbff,#7fd6ff,#ffffff,#4fa8e0,#e8fbff)']].map(([id,n,g])=>({id,n,g}));
+/* что есть у игрока, что за задания, что за бонусы */
+const TASK_AV={a2:'Займите призовое место в турнире «Спринт 24/7»',a3:'Сыграйте 50 игр в «Монетку»',a4:'Достигните уровня «Платина»',a5:'Пригласите друга, который сыграет 5 раз',a6:'Крутите колесо удачи 7 дней подряд',a7:'Выиграйте 3 раза подряд в «Чёт/нечет»'};
+const TASK_FR={f1:'Достигните уровня «Золото» — рамка выдаётся автоматически',f2:'Достигните уровня «Серебро»',f3:'Достигните уровня «Бронза»',f8:'Войдите в топ-100 турнира «Кубок классики»',f9:'Соберите 10 промокодов за месяц'};
+const PRICE_AV={a8:150,a9:150,a10:150,a11:300,a12:300,a13:300,a14:300,a15:750,a16:750,a17:750,a18:1500,a19:1500};
+const PRICE_FR={f4:300,f5:750,f6:300,f7:300,f10:1500,f11:750};
+const KEY='igry247Avf';let V={av:'a0',fr:'f0',own:['a0','a1','f0'],tab:'av'};try{Object.assign(V,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({av:V.av,fr:V.fr,own:V.own}))}catch(e){}};
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+function face(a,sz){const s=a.st;
+ const hair=[`<path d="M14 26c0-12 8-18 18-18s18 6 18 18c-3-6-9-9-18-9s-15 3-18 9z" fill="${a.hr}"/>`,`<path d="M12 30c0-14 9-21 20-21s20 7 20 21l-4-2c-1-8-7-12-16-12s-15 4-16 12z" fill="${a.hr}"/><path d="M12 30c0 10 2 18 4 22h-4c-2-6-2-14 0-22zM52 30c0 10-2 18-4 22h4c2-6 2-14 0-22z" fill="${a.hr}"/>`,`<circle cx="32" cy="16" r="9" fill="${a.hr}"/><path d="M15 27c1-9 8-14 17-14s16 5 17 14c-5-4-11-6-17-6s-12 2-17 6z" fill="${a.hr}"/>`,`<path d="M15 24c2-9 9-14 17-14s15 5 17 14c-2-2-5-3-8-3-2 0-3 2-9 2s-7-2-9-2c-3 0-6 1-8 3z" fill="${a.hr}"/>`][s];
+ return `<svg viewBox="0 0 64 64" width="${sz}" height="${sz}" aria-hidden="true"><circle cx="32" cy="32" r="32" fill="${a.bg}"/><path d="M10 64c2-11 11-17 22-17s20 6 22 17z" fill="${a.bg==='#1f9d6b'?'#fff':'#ffffffd9'}"/><path d="M26 44h12v6c-2 2-4 3-6 3s-4-1-6-3z" fill="${a.sk}"/><ellipse cx="32" cy="31" rx="13" ry="15" fill="${a.sk}"/>${hair}<circle cx="27" cy="31" r="1.8" fill="#2b1d16"/><circle cx="37" cy="31" r="1.8" fill="#2b1d16"/><path d="M28 38c2.5 2 5.5 2 8 0" stroke="#2b1d16" stroke-width="1.6" fill="none" stroke-linecap="round"/>${a.gl?'<rect x="22.5" y="27.5" width="8" height="6" rx="2.5" fill="none" stroke="#1b1426" stroke-width="1.4"/><rect x="33.5" y="27.5" width="8" height="6" rx="2.5" fill="none" stroke="#1b1426" stroke-width="1.4"/><path d="M30.5 30h3" stroke="#1b1426" stroke-width="1.4"/>':''}</svg>`}
+/* аватар в рамке: --s размер, рамка — кольцо conic-gradient */
+function avaHTML(sz,av,fr){const a=AV.find(x=>x.id===(av||V.av))||AV[0],f=FR.find(x=>x.id===(fr||V.fr))||FR[0];
+ return `<span class="avf" style="--s:${sz}px">${f.g?`<i class="avf-r" style="background:${f.g}"></i>`:''}<span class="avf-i">${face(a,sz)}</span></span>`}
+window.AVF={html:avaHTML,open:()=>open()};
+/* ---------- экран ---------- */
+document.getElementById('scr').insertAdjacentHTML('beforeend',`<div class="ac avp" id="avp" role="dialog" aria-modal="true" aria-label="Аватар и рамка" aria-hidden="true"><div class="ac-head"><button class="ac-back" type="button" data-avp="close" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><h2>Аватар и рамка</h2></div><div class="ac-body"></div></div>
+<div class="acs" id="avs" role="dialog" aria-modal="true"><div class="acs-sh"><i class="acs-grab"></i><div class="acs-b"></div></div></div>`);
+const P=document.getElementById('avp'),SH=document.getElementById('avs');
+const own=id=>V.own.includes(id),bon=()=>(typeof S!=='undefined'?S.wagerBal||0:0);
+const nick=()=>{try{return ACC.get().nick}catch(e){return 'ivan_petrov'}};
+function cell(it,kind){const id=it.id,sel=kind==='av'?V.av===id:V.fr===id,price=(kind==='av'?PRICE_AV:PRICE_FR)[id],task=(kind==='av'?TASK_AV:TASK_FR)[id];
+ const pic=kind==='av'?avaHTML(56,id,'f0'):avaHTML(56,V.av,id);
+ const lab=sel?'<small class="avc-l on">Выбрано</small>':own(id)?'':price?`<small class="avc-l pr">${fmt(price)} Б</small>`:task?'<small class="avc-l lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></small>':'';
+ return `<button type="button" class="avc${sel?' sel':''}${!own(id)&&!price?' dim':''}" data-avc="${kind}:${id}" aria-label="${kind==='av'?'Аватар':'Рамка «'+it.n+'»'}${sel?', выбрано':''}">${pic}${lab}</button>`}
+function grid(t,items,kind){return items.length?`<section class="ac-card avg"><h3 class="acx-h">${t}</h3><div class="avg-g">${items.map(x=>cell(x,kind)).join('')}</div></section>`:''}
+function render(){const k=V.tab,L=k==='av'?AV:FR,T=k==='av'?TASK_AV:TASK_FR,PR=k==='av'?PRICE_AV:PRICE_FR;
+ const got=L.filter(x=>own(x.id)),tasks=L.filter(x=>!own(x.id)&&T[x.id]),buy=L.filter(x=>!own(x.id)&&PR[x.id]);
+ $('.ac-body',P).innerHTML=`<div class="ac-card avp-top">${avaHTML(88)}<span class="avp-n"><b>${nick()}</b><small>Так вас видят в рейтингах и турнирах</small></span><span class="avp-b">${fmt(bon())} Б</span></div>
+ <div class="avp-seg" role="tablist"><button type="button" role="tab" class="${k==='av'?'on':''}" data-avp="tab-av" aria-selected="${k==='av'}">Аватар</button><button type="button" role="tab" class="${k==='fr'?'on':''}" data-avp="tab-fr" aria-selected="${k==='fr'}">Рамка</button></div>
+ ${grid('Полученные',got,k)}${grid('За задания',tasks,k)}${grid('За бонусы',buy,k)}`}
+function open(){render();P.classList.add('show');P.setAttribute('aria-hidden','false')}
+function close(){P.classList.remove('show');P.setAttribute('aria-hidden','true');try{ACC&&document.querySelector('#acc.show')&&ACC.open()}catch(e){}}
+function sheet(h){$('.acs-b',SH).innerHTML=h;SH.classList.add('show')}
+const shClose=()=>SH.classList.remove('show');
+function tap(kind,id){const it=(kind==='av'?AV:FR).find(x=>x.id===id),price=(kind==='av'?PRICE_AV:PRICE_FR)[id],task=(kind==='av'?TASK_AV:TASK_FR)[id];
+ const prev=`<span class="avs-prev">${kind==='av'?avaHTML(96,id,V.fr):avaHTML(96,V.av,id)}</span>`;
+ if(own(id)){if(kind==='av')V.av=id;else V.fr=id;save();render();upd();toast(kind==='av'?'Аватар обновлён':id==='f0'?'Рамка снята':'Рамка обновлена');return}
+ if(task){sheet(`${prev}<b class="acx-st c">${kind==='av'?'Аватар за задание':'Рамка «'+it.n+'»'}</b><p class="acx-p c">${task}</p><button type="button" class="acx-g" data-avs="x">Понятно</button>`);return}
+ if(price){const ok=bon()>=price;
+  sheet(`${prev}<b class="acx-st c">${kind==='av'?'Аватар':'Рамка «'+it.n+'»'} за ${fmt(price)} Б</b>${ok?`<p class="acx-p c">Спишем ${fmt(price)} Б с бонусного баланса. После покупки ${kind==='av'?'аватар':'рамка'} сразу станет ${kind==='av'?'вашим':'вашей'}.</p><button type="button" class="avs-buy" data-avs="buy:${kind}:${id}">Купить за ${fmt(price)} Б</button><button type="button" class="acx-g" data-avs="x">Отмена</button>`
+   :`<p class="acx-p c">Не хватает ${fmt(price-bon())} Б. Бонусы начисляются за игры, кэшбек и колесо удачи.</p><div class="avs-bal"><small>Ваш баланс</small><b>${fmt(bon())} Б</b></div><button type="button" class="avs-buy" data-avs="play">Играть и копить бонусы</button><button type="button" class="acx-g" data-avs="x">Отмена</button>`}`)}}
+function upd(){/* аватар в личных данных, меню, профиле */
+ $$('.acx-ava,.sm-acc .sm-ava,.pf-acc .pf-ava').forEach(e=>{e.innerHTML=e.classList.contains('acx-ava')?avaHTML(64):avaHTML(e.offsetWidth||44);e.classList.add('has-avf')})}
+new MutationObserver(()=>{const n=$$('.acx-ava:not(.has-avf),.sm-acc .sm-ava:not(.has-avf),.pf-acc .pf-ava:not(.has-avf)');if(n.length)upd()}).observe(document.getElementById('scr'),{childList:true,subtree:true});
+document.addEventListener('click',e=>{
+ if(e.target===SH){shClose();return}
+ const b=e.target.closest('[data-avp],[data-avc],[data-avs]');if(!b||!b.closest('#avp,#avs'))return;e.stopPropagation();
+ if(b.dataset.avp){const k=b.dataset.avp;if(k==='close')close();else{V.tab=k.slice(4);render()}return}
+ if(b.dataset.avc){const [k,id]=b.dataset.avc.split(':');tap(k,id);return}
+ const k=b.dataset.avs;if(k==='x'){shClose();return}
+ if(k==='play'){shClose();P.classList.remove('show');try{document.getElementById('acc').classList.remove('show')}catch(_){}try{go('lobby')}catch(_){}return}
+ if(k.startsWith('buy:')){const [,kind,id]=k.split(':'),pr=(kind==='av'?PRICE_AV:PRICE_FR)[id];S.wagerBal-=pr;try{renderHeaderBalances()}catch(_){}V.own.push(id);if(kind==='av')V.av=id;else V.fr=id;save();shClose();render();upd();toast(`${kind==='av'?'Аватар':'Рамка'} куплен${kind==='av'?'':'а'} и выбран${kind==='av'?'':'а'} · −${fmt(pr)} Б`)}},true);
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(SH.classList.contains('show')){shClose();e.stopImmediatePropagation()}else if(P.classList.contains('show')){close();e.stopImmediatePropagation()}},true);
+})();
+</script>
+
 </body>
 </html>
