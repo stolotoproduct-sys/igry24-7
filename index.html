@@ -4805,7 +4805,7 @@ html.desk .dpp.show{opacity:1;transform:none;pointer-events:auto}
 .sm-outq p{margin:0;padding:0 12px;font-size:13px;line-height:18px;color:#d9c7cc}
 .sm-cfg{align-self:center;border:0;background:none;color:#7f7690;font:500 12px/16px inherit;font-family:inherit;text-decoration:underline;cursor:pointer}
 /* мобильная версия: профиля нет — аккаунт, кошелёк и выход в меню */
-html:not(.desk) #lobby .header-profile{display:none!important}
+#lobby .header-profile{display:none!important}
 /* «Личные данные» — как в макете L01 */
 .acx-main{display:flex;flex-direction:column;gap:12px;padding:16px}
 .acx-ava{height:96px;border-radius:16px;display:grid;place-items:center;background:radial-gradient(120% 140% at 50% 0%,#5a2a8c66,#1b1426);border:1px solid #a25be655}
@@ -11972,11 +11972,11 @@ const rail=$('#drail');
 const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" data-tip="${t}" aria-label="${t}"><i class="dr-i">${ico}</i><span class="dr-t">${t}</span></button>`;
 let railSig='';
 function railBuild(){if(rail.children.length)return;
- rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
+ rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('profile','<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3"/></svg>','Профиль')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
   +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('more',sv('info'),'Дополнительно');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
- $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='profile'?!!document.querySelector('#scr>.pf.show'):k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
 document.addEventListener('click',e=>{
  const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
@@ -12006,7 +12006,7 @@ function dppHTML(){let A={};try{A=window.ACC?ACC.get():{}}catch(e){}const nick=A
   <button type="button" class="dpp-card dpp-row" data-dpp="profile"><b>Бонусы: ${bon} Б</b>${ch}</button>
   <button type="button" class="dpp-card dpp-row" data-dpp="account"><b>Личные данные</b>${ch}</button>
   <button type="button" class="dpp-out" data-dpp="logout">Выйти</button>`}
-function dppShow(){if(!document.documentElement.classList.contains('desk'))return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
+function dppShow(){return;let g=false;try{g=window.pfIsGuest&&pfIsGuest()}catch(e){}if(g)return;clearTimeout(dppT);
  const b=$('#lobby .header-profile');if(!b)return;dpp.innerHTML=dppHTML();
  if(dpp.parentElement!==scr)scr.appendChild(dpp);const r=b.getBoundingClientRect(),S=scr.getBoundingClientRect();dpp.style.right=Math.round(S.right-r.right)+'px';dpp.style.left='auto';dpp.style.top=Math.round(r.bottom-S.top+10)+'px';dpp.classList.add('show')}
 function dppHide(d=180){clearTimeout(dppT);dppT=setTimeout(()=>dpp.classList.remove('show'),d)}
