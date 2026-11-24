@@ -4749,7 +4749,7 @@ html.desk .drail::-webkit-scrollbar{display:none}
 html.desk.rail-open .drail{width:248px;box-shadow:24px 0 60px #000a}
 .drail-scrim{display:none}
 html.desk.rail-open .drail-scrim{display:block;position:absolute;inset:0 0 0 72px;z-index:94;background:#0006}
-.drail button{flex:none;display:flex;align-items:center;gap:12px;width:100%;height:48px;padding:0 12px;border:0;border-radius:12px;background:none;color:#a8a3bd;font:500 14px/20px inherit;font-family:inherit;text-align:left;cursor:pointer;white-space:nowrap;position:relative}
+.drail button{flex:none;display:flex;align-items:center;gap:12px;width:100%;height:48px;padding:0 12px;border:0;border-radius:12px;background:none;color:#7f7690;font:500 14px/20px inherit;font-family:inherit;text-align:left;cursor:pointer;white-space:nowrap;position:relative}
 .drail button:hover{background:#ffffff0d;color:#fff}
 .drail button.on{background:linear-gradient(180deg,#b072f0,#8d45dc);color:#fff;box-shadow:0 4px 14px #8d45dc55}
 .drail button:focus-visible{outline:2px solid #c58bf1;outline-offset:2px}
@@ -9669,7 +9669,14 @@ document.addEventListener('click',e=>{const w=$('#acs');if(w&&e.target===w){acxC
  if(k==='unlink-yes'){const L=LINKS.find(x=>x.id===ACX.id);AC.links[L.id]=false;save();refresh();acxClose();toast(`${L.n} отвязан`);return}
  if(k==='revoke-yes'){acxClose();toast('Заявка на отзыв согласия отправлена (демо)');return}
  if(k==='logout-yes'){acxClose();accClose();try{closeWheel()}catch(_){}window.pfSetAuth&&pfSetAuth(false);toast('Вы вышли из аккаунта');return}},true);
-function accOpen(){ACX.d=null;accRender();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
+function accWal(){const P=$('#acc');if(!P)return;const B=$('.ac-body',P);if(!B)return;let w=$('.acc-wal',B);const desk=document.documentElement.classList.contains('desk');
+ if(!desk){w&&w.remove();return}
+ const F=x=>{try{return typeof n==='function'?n(x):Number(x).toLocaleString('ru-RU')}catch(e){return x}};
+ const h=`<div class="pf-card pf-bal acc-wal"><div class="pf-bal-row"><div><small>Рубли</small><b>${F(S.bal)} ₽</b></div><div><small>Бонусы</small><b>${F(S.wagerBal||0)} Б</b></div></div><div class="pf-btns"><button class="pf-btn primary" type="button" data-accw="deposit">Пополнить</button><button class="pf-btn" type="button" data-accw="withdraw">Вывести</button></div></div>`;
+ if(w)w.outerHTML=h;else B.insertAdjacentHTML('afterbegin',h)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-accw]');if(!b)return;e.preventDefault();if(b.dataset.accw==='deposit'){try{openSheet()}catch(_){}}else{window.WD&&WD.open()}});
+setInterval(()=>{const P=document.getElementById('acc');if(P&&P.classList.contains('show'))accWal()},400);
+function accOpen(){ACX.d=null;accRender();accWal();const P=$('#acc');P.classList.add('show');P.setAttribute('aria-hidden','false');$('.ac-back',P).focus()}
 function accClose(){const P=$('#acc');P.classList.remove('show');P.setAttribute('aria-hidden','true')}
 function refresh(){accRender();try{window.pfRender&&pfRender()}catch(e){}try{window.nsRender&&nsRender()}catch(e){}}
 
@@ -11975,7 +11982,7 @@ function menuOpen(){mn.innerHTML=menuHTML();mn.classList.add('show');mn.setAttri
 function menuClose(){if(!mn.classList.contains('show'))return;mn.classList.remove('show');mn.setAttribute('aria-hidden','true');setTimeout(sync,0)}
 const lobbyTo=()=>{if(cur!=='lobby'&&cur!=='lossback')go('lobby')};
 function mnAct(k){
- const prof=()=>{const h=document.querySelector('#lobby .header-profile')||document.querySelector('[data-profile]');h&&h.click()};
+ const prof=()=>{if(document.documentElement.classList.contains('desk')&&window.ACC&&!(typeof pfIsGuestSafe==='function'&&pfIsGuestSafe())){ACC.open();return}const h=document.querySelector('#lobby .header-profile')||document.querySelector('[data-profile]');h&&h.click()};
  ({profile:prof,login:()=>{window.pfOpenLogin?pfOpenLogin('Войдите, чтобы играть'):prof()},
   akc:()=>{lobbyTo();window.AKC&&AKC.openList()},codes:()=>{lobbyTo();window.PB&&PB.open()},
   level:()=>go('lossback'),wheel:()=>{try{openWheel()}catch(_){}},games:()=>{go('lobby');$('#lobby').scrollTo({top:0,behavior:'smooth'})},
@@ -12021,10 +12028,10 @@ const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" 
 let railSig='';
 function railBuild(){if(rail.children.length)return;
  rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('profile','<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3"/></svg>','Профиль')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
-  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('notif',sv('gear'),'Настройки уведомлений')+ri('more',sv('info'),'Дополнительно');
+  +'<i class="dr-sp"></i>'+ri('notif',sv('gear'),'Настройки уведомлений')+ri('more',sv('info'),'Дополнительно');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
- $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='profile'?!!document.querySelector('#scr>.pf.show'):k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='notif'?!!document.querySelector('#ntset.show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show,#ntset.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='profile'?!!document.querySelector('#scr>.pf.show,#acc.show,#avp.show'):k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='notif'?!!document.querySelector('#ntset.show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show,#ntset.show,#acc.show,#avp.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
 document.addEventListener('click',e=>{
  const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
