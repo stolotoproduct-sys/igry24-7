@@ -11942,7 +11942,9 @@ const MI={gift:'<path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14" fill="none" stroke=
  shield:'<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.5 10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>',
  info:'<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 11v6M12 7.5v.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
  chev:'<path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
- down:'<path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'};
+ down:'<path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+ bell:'<path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+ gear:'<circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>'};
 const sv=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${MI[k]}</svg>`;
 const mrow=(ico,t,act,sub='',extra='')=>`<button type="button" class="sm-row" data-mn="${act}"><i class="sm-i${ico[0]==='<'?' sm-img':''}">${ico[0]==='<'?ico:sv(ico)}</i><span class="sm-t"><b>${t}</b>${sub?`<small>${sub}</small>`:''}</span>${extra||`<i class="sm-chev">${sv('chev')}</i>`}</button>`;
 function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.get():{}}catch(e){}
@@ -11959,6 +11961,7 @@ function menuHTML(){const guest=pfIsGuestSafe();let A={};try{A=window.ACC?ACC.ge
     <div class="sm-btns"><button type="button" class="sm-btn primary" data-mn="deposit">Пополнить</button><button type="button" class="sm-btn" data-mn="withdraw">Вывести</button></div></div>`}
   <div class="sm-card">${mrow('tag','Акции','akc','Участвуйте и получайте промокоды',`<span class="sm-art"><img src="${(window.AK_ART&&AK_ART.gift)||''}" alt=""></span>`)}${mrow('gift','Промокоды','codes',codes?`Активных: ${codes}`:'Промокоды на бесплатные игры')}</div>
   <div class="sm-card">${mrow(lvIco,'Мой уровень','level',lv||'Кэшбек и попытки в «Еноте»')}${mrow(typeof wheelSVG==='function'?`<svg class="sm-wheel" viewBox="0 0 120 120">${wheelSVG(120)}</svg>`:'wheel','Колесо удачи','wheel',(()=>{if(guest)return 'Доступно после входа';try{return wheelFree()?'Вращение доступно':'Следующее через '+wheelCountdown()}catch(e){return 'Одно вращение каждый день'}})())}</div>
+  ${guest?'':`<div class="sm-card">${mrow('bell','Настройки уведомлений','notif','Push, почта и SMS')}</div>`}
   <h3 class="sm-h">О компании</h3>
   <div class="sm-card sm-about"><b class="sm-logo">СТОЛОТО</b><p>Распространитель государственных лотерей России. Тиражи проходят под контролем, выигрыши выплачиваются в рублях.</p></div>
   <div class="sm-card">${mrow('doc','Правила игр и акций','rules')}${mrow('shield','Политика конфиденциальности','privacy')}${mrow('chat','Помощь и поддержка','support','Чат 24/7, частые вопросы')}${mrow('info','Контакты','contacts','8 800 200-00-00')}</div>
@@ -11979,6 +11982,7 @@ function mnAct(k){
   chet:()=>{go('home');toast('«Чёт/нечет» откроется на сайте Столото')},stoloto:()=>go('home'),results:()=>toast('Результаты тиражей — раздел сайта Столото (демо)'),
   settings:()=>{prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="account"]');r&&r.scrollIntoView({block:'center'})},350)},
   support:()=>toast('Помощь и поддержка: чат 24/7, частые вопросы (демо)'),rules:()=>toast('Правила игр и акций (демо)'),privacy:()=>toast('Политика конфиденциальности (демо)'),contacts:()=>toast('Контакты (демо)'),
+  notif:()=>{if(typeof pfIsGuestSafe==='function'&&pfIsGuestSafe()){window.pfOpenLogin?pfOpenLogin('Настройки уведомлений доступны после входа'):prof();return}try{nsOpen()}catch(_){}},
   account:()=>{window.ACC&&ACC.open()},deposit:()=>{openSheet()},withdraw:()=>{window.WD&&WD.open()},cfg:()=>{openCfg()},
   logout:()=>{if(document.documentElement.classList.contains('desk')){prof();setTimeout(()=>{const r=document.querySelector('#pf [data-pf="logout"]');r&&r.click()},380);return}const q=document.querySelector('#mnu .sm-outq'),o=document.querySelector('#mnu .sm-out');if(q){q.hidden=false;o.hidden=true;q.scrollIntoView({block:'center',behavior:'smooth'})}},
   'logout-no':()=>{const q=document.querySelector('#mnu .sm-outq'),o=document.querySelector('#mnu .sm-out');if(q){q.hidden=true;o.hidden=false}},
@@ -12017,10 +12021,10 @@ const ri=(k,ico,t,cls='')=>`<button type="button" class="${cls}" data-dr="${k}" 
 let railSig='';
 function railBuild(){if(rail.children.length)return;
  rail.innerHTML=ri('toggle',I.menu,'Меню','dr-tog')+ri('profile','<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4 20.5c.6-4 4-6.3 8-6.3s7.4 2.3 8 6.3"/></svg>','Профиль')+ri('games',I.games,'Главная')+ri('akc',I.akc,'Акции')+ri('codes',I.codes,'Промокоды')+ri('level',I.loyal,'Мой уровень')+ri('wheel',sv('wheel'),'Колесо удачи')
-  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('more',sv('info'),'Дополнительно');
+  +'<hr>'+ri('stoloto',I.st,'Лотереи Столото')+'<i class="dr-sp"></i>'+ri('notif',sv('gear'),'Настройки уведомлений')+ri('more',sv('info'),'Дополнительно');
  railSync()}
 function railSync(){if(!rail.children.length)return;const act=bar.dataset.act;const lob=act==='games';
- $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='profile'?!!document.querySelector('#scr>.pf.show'):k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
+ $$('button[data-dr]',rail).forEach(b=>{const k=b.dataset.dr;const on=k==='profile'?!!document.querySelector('#scr>.pf.show'):k==='more'?(document.getElementById('dkx')||{}).classList?.contains('show'):k==='notif'?!!document.querySelector('#ntset.show'):k==='games'?lob&&cur==='lobby'&&!document.querySelector('#dkx.show,#ntset.show'):k==='level'?cur==='lossback':k===act;b.classList.toggle('on',on)})}
 document.addEventListener('click',e=>{
  const v=e.target.closest('.vsw [data-view]');if(v){setView(v.dataset.view);return}
  const b=e.target.closest('[data-dr]');if(!b)return;const k=b.dataset.dr;const H=document.documentElement;
